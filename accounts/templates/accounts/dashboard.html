@@ -6,7 +6,9 @@
 
 <body>
 
-<p>My Dashboard</p>
+<p>{{ user.username }}'s Dashboard</p>
+<a href="{% url 'accounts:logout' %}">Logout</a>
+
 </body>
 
 </html>

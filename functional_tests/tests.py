@@ -8,4 +8,6 @@
 # But is told that the username and password do not match
 
 # She tries again, this time she gets it right and is
-# taken to her 'dashboard'.
+# taken to her dashboard.
+
+# She clicks on 'Logout' and is redirected to the login page
