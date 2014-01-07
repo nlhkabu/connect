@@ -4,9 +4,20 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'connect.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
     url(r'^admin/', include(admin.site.urls)),
+
+    url(
+        r'^$',
+        'django.contrib.auth.views.login',
+        {
+            'template_name': 'accounts/login.html',
+            'extra_context': {'next': '/dashboard'}
+        },
+        name='login'
+    ),
+
+    url(r'^accounts/', include('accounts.urls')),
+
+    #TODO: Move this URL to a more relevant app
+    url(r'^dashboard/$', 'accounts.views.dashboard', name='dashboard'),
 )
