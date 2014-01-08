@@ -10,11 +10,34 @@
 <a href="{% url 'accounts:logout' %}">Logout</a>
 
 <ul class="">
-    <li>{{ user.first_name }} {{ user.last_name }}</li>
+    {% if user.first_name and user.last_name %}
+        <li>{{ user.first_name }} {{ user.last_name }}</li>
+    {% endif %}
     <li>{{ user.email }}</li>
     <li>bio:{{ profile.bio }}</li>
+    <li><img src="{{ MEDIA_URL }}{{ profile.photo }}" alt="My image"/></li>
 </ul>
 
+
+<p>Connect Preferences:</p>
+{% if profile.is_mentor or profile.is_mentee or profile.is_coding_buddy or profile.is_social %}
+    <ul class="">
+        {% if profile.is_mentor %}
+            <li>Mentoring</li>
+        {% endif %}
+        {% if profile.is_mentee %}
+            <li>Being mentored</li>
+        {% endif %}
+        {% if profile.is_coding_buddy %}
+            <li>Coding partnering/group projects</li>
+        {% endif %}
+        {% if profile.is_social %}
+            <li>Making social connections</li>
+        {% endif %}
+    </ul>
+{% else %}
+    You have not listed any preferences.
+{% endif %}
 
 </body>
 

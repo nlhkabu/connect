@@ -14,6 +14,8 @@
 
 # Her Name
 # Her Biography
+# Her image
+# Her connect preferences
 
 
 # She clicks on 'Logout' and is redirected to the login page
