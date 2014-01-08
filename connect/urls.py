@@ -17,7 +17,5 @@ urlpatterns = patterns('',
     ),
 
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-
-    #TODO: Move this URL to a more relevant app
-    url(r'^dashboard/$', 'accounts.views.dashboard', name='dashboard'),
+    url(r'^dashboard/', include('profiles.urls', namespace='profile')),
 )

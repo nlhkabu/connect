@@ -10,4 +10,10 @@
 # She tries again, this time she gets it right and is
 # taken to her dashboard.
 
+# There she sees:
+
+# Her Name
+# Her Biography
+
+
 # She clicks on 'Logout' and is redirected to the login page
