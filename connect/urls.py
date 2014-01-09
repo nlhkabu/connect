@@ -10,17 +10,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
-    url(
-        r'^$',
-        'django.contrib.auth.views.login',
-        {
-            'template_name': 'accounts/login.html',
-            'extra_context': {'next': '/dashboard'}
-        },
-        name='login'
-    ),
-
+    url(r'^$', 'profiles.views.dashboard', name='dashboard'),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^dashboard/', include('profiles.urls', namespace='profile')),
 
-)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #TODO: Remove for production
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #TODO: Remove for production

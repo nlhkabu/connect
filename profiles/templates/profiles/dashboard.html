@@ -9,6 +9,11 @@
 <p>{{ user.username }}'s Dashboard</p>
 <a href="{% url 'accounts:logout' %}">Logout</a>
 
+{% if perms.profiles.access_moderators_page %}
+    <a href="{% url 'accounts:moderators' %}">Moderators</a>
+{% endif %}
+
+
 <ul class="">
     {% if user.first_name and user.last_name %}
         <li>{{ user.first_name }} {{ user.last_name }}</li>

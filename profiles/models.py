@@ -10,5 +10,11 @@ class Profile(models.Model):
     is_coding_buddy = models.BooleanField(default=False, help_text='Wants to code with others')
     is_social = models.BooleanField(default=False, help_text='Wants to form social connections')
 
+    # TODO - move this to accounts app if possible
+    class Meta:
+        permissions = (
+            ("access_moderators_page", "Can see the moderators page"),
+        )
+
     def __unicode__(self):
         return self.user.get_full_name() or self.user.username

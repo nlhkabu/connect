@@ -3,6 +3,15 @@ from accounts import views
 
 urlpatterns = patterns('',
     url(
+        r'^login/$',
+        'django.contrib.auth.views.login',
+        {
+            'template_name': 'accounts/login.html',
+            'extra_context': {'next': '/'}
+        },
+        name='login'
+    ),
+    url(
         r'^logout/$',
         'django.contrib.auth.views.logout',
         {
@@ -11,4 +20,5 @@ urlpatterns = patterns('',
         },
         name='logout'
     ),
+    url(r'^moderators/$', 'accounts.views.moderators', name='moderators'),
 )
