@@ -25,20 +25,11 @@
 
 
 <p>Connect Preferences:</p>
-{% if profile.is_mentor or profile.is_mentee or profile.is_coding_buddy or profile.is_social %}
+{% if profile.connect_preferences.all %}
     <ul class="">
-        {% if profile.is_mentor %}
-            <li>Mentoring</li>
-        {% endif %}
-        {% if profile.is_mentee %}
-            <li>Being mentored</li>
-        {% endif %}
-        {% if profile.is_coding_buddy %}
-            <li>Coding partnering/group projects</li>
-        {% endif %}
-        {% if profile.is_social %}
-            <li>Making social connections</li>
-        {% endif %}
+    {% for preference in profile.connect_preferences.all %}
+        <li>{{ preference }}</li>
+    {% endfor %}
     </ul>
 {% else %}
     You have not listed any preferences.
