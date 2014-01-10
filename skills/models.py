@@ -5,7 +5,7 @@ class Skill(models.Model):
     """
     Represents a skill in the community.
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     owner = models.ManyToManyField(User, through='UserSkill')
 
     def __str__(self):
@@ -32,9 +32,12 @@ class UserSkill(models.Model):
 
     user = models.ForeignKey(User)
     skill = models.ForeignKey(Skill)
-    proficiency = models.CharField(max_length=2,
+    proficiency = models.IntegerField(max_length=2,
                                       choices=PROFICIENCY_CHOICES,
                                       default=BEGINNER)
+
+    class Meta:
+        unique_together = ["user", "skill"]
 
     def __str__(self):
         return '{} - {}'.format(self.user, self.skill)
