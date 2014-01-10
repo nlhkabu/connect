@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'south',
     'accounts',
     'profiles',
+    'skills',
 )
 
 MIDDLEWARE_CLASSES = (
