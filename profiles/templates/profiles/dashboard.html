@@ -23,7 +23,6 @@
     <li><img src="{{ MEDIA_URL }}{{ profile.photo }}" alt="My image"/></li>
 </ul>
 
-
 <p>Connect Preferences:</p>
 {% if profile.connect_preferences.all %}
     <ul class="">
@@ -34,6 +33,14 @@
 {% else %}
     You have not listed any preferences.
 {% endif %}
+
+<p>Skills</p>
+
+<ul class="">
+{% for skill in my_skills %}
+    <li>{{ skill.name }} ({{ skill.proficiency }})</li>
+{% endfor %}
+</ul>
 
 </body>
 

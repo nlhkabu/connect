@@ -14,6 +14,7 @@
 # Her Biography
 # Her image
 # Her connect preferences
+# Her skills and how proficient she is at each one
 
 # Sam is a moderator  - Janine has asked her for an invitation to the site
 # Sam clicks on the link to the 'moderators' page
