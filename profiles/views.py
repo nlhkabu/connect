@@ -20,7 +20,7 @@ def dashboard(request):
         skill.proficiency = userskill.get_proficiency_display()
 
     extra_context = {
-        'profile': profile,
+        #'profile': profile,
         'my_skills': my_skills,
         'gravatar_exists': gravatar_exists,
     }

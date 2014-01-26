@@ -6,3 +6,53 @@
 @import
     'css3_mixins',
     'ribs/ribs';
+
+
+// Generic Styles
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.clearfic {
+    @clearfix;
+}
+
+
+// Site Structure
+
+nav {
+    padding: 15px 0;
+    background-color: #ececec;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+
+// Login Page
+
+.login-form {
+    margin-bottom: 5px;
+
+    .field {
+        margin-right: 10px;
+    }
+
+    label,
+    input {
+        margin-bottom: 0;
+    }
+
+    input[type='text'],
+    input[type='password']{
+        width: 170px;
+    }
+
+    .login {
+        margin-top: 21px;
+    }
+}

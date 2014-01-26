@@ -2,11 +2,16 @@
 
 {% load gravatar %}
 
+{% block nav_content %}
+    <a href="{% url 'accounts:logout' %}">Logout</a>
+{% endblock %}
+
 
 {% block content %}
 
+<div class="five columns alpha">
     <p>{{ user.username }}'s Dashboard</p>
-    <a href="{% url 'accounts:logout' %}">Logout</a>
+
 
     {% if perms.profiles.access_moderators_page %}
         <a href="{% url 'accounts:moderators' %}">Moderators</a>
@@ -18,22 +23,22 @@
             <li>{{ user.first_name }} {{ user.last_name }}</li>
         {% endif %}
         <li>{{ user.email }}</li>
-        <li>bio:{{ profile.bio }}</li>
+        <li>bio:{{ user.profile.bio }}</li>
     </ul>
 
     {% if gravatar_exists %}
         {% gravatar user.email 150 %}
-    {% elif profile.photo %}
-        <img src="{{ MEDIA_URL }}{{ profile.photo }}" alt="My image"/>
+    {% elif user.profile.photo %}
+        <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
     {% else %}
-        <p>NO PHOTO HERE LADY!!</p> <!-- TODO: Make default image -->
+        <p>No photo found</p> <!-- TODO: Make default image -->
     {% endif %}
 
 
     <p>Connect Preferences:</p>
-    {% if profile.connect_preferences.all %}
+    {% if user.profile.connect_preferences.all %}
         <ul class="">
-        {% for preference in profile.connect_preferences.all %}
+        {% for preference in user.profile.connect_preferences.all %}
             <li>{{ preference }}</li>
         {% endfor %}
         </ul>
@@ -44,9 +49,15 @@
     <p>Skills</p>
 
     <ul class="">
-    {% for skill in my_skills %}
-        <li>{{ skill.name }} ({{ skill.proficiency }})</li>
-    {% endfor %}
-</ul>
+        {% for skill in my_skills %}
+            <li>{{ skill.name }} ({{ skill.proficiency }})</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="eleven columns omega">
+    Content here
+</div>
+
 
 {% endblock %}
