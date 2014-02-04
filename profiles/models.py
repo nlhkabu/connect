@@ -18,6 +18,7 @@ class Profile(models.Model):
         for skill in skills:
             userskill = UserSkill.objects.get(user=self.user, skill=skill)
             skill.proficiency = userskill.get_proficiency_display()
+            skill.percentage = userskill.get_proficiency_percentage()
 
         return skills
 

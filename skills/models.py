@@ -36,6 +36,18 @@ class UserSkill(models.Model):
                                       choices=PROFICIENCY_CHOICES,
                                       default=BEGINNER)
 
+
+    def get_proficiency_percentage(self):
+        choice_values = [choice[0] for choice in self.PROFICIENCY_CHOICES]
+        choice_values.sort() # Ensure values are in the correct order
+
+        value = choice_values.index(self.proficiency) + 1
+        factor = 100 / len(choice_values)
+        percentage = round(value * factor)
+
+        return percentage
+
+
     class Meta:
         unique_together = ["user", "skill"]
 

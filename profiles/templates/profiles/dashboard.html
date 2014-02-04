@@ -161,29 +161,24 @@
                     <div class="member-expand">
                         <div class="padding">
                             <blockquote>
-                                <p>Mauris varius sodales ipsum et congue. Aliquam ultricies tempus metus, id gravida sem iaculis eget. Aenean adipiscing porttitor ligula ut ultricies.</p>
-                                <p>In ac diam quis magna porttitor condimentum. Nam eu diam eget libero mattis bibendum ac nec arcu.</p>
-                                <p>Morbi sollicitudin congue odio ut scelerisque. Morbi a egestas ipsum. Cras pharetra, purus eu iaculis dictum, dolor nisi dictum nisl, at volutpat sem sapien vel arcu. Sed et purus ligula. Nam nisl arcu, luctus aliquam purus et, consectetur faucibus justo. </p>
+                                {{ member.profile.bio|linebreaks }}
                             </blockquote>
 
-                            <div class="skills-container">
-                                <table class="skills">
-                                    <tbody>
+                            {% if member.profile.get_skills %}
+                                <div class="skills-container">
+                                    <table class="skills">
+                                        <tbody>
+                                    {% for skill in member.profile.get_skills %}
                                         <tr>
-                                            <td class="skill-name">Django</td>
-                                            <td class="skill-ability"><div class="ability" data-value="25" data-description="Beginner"></div></td>
+                                            <td class="skill-name">{{ skill.name }}</td>
+                                            <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>
                                         </tr>
-                                        <tr>
-                                            <td>Web Development</td>
-                                            <td><div class="ability" data-value="50" data-description="Intermediate"></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Public Speaking</td>
-                                            <td><div class="ability" data-value="75" data-description="Advanced"></div></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+
                             <ul class="member-links">
                                 <li><a href=""><i class="fa fa-envelope"></i>email@email.com</a></li>
                                 <li><a href=""><i class="fa fa-twitter"></i>usename</a></li>
