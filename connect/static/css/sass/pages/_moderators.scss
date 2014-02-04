@@ -1,0 +1,41 @@
+// MODERATORS PAGE
+
+.moderators-title {
+    height: 15px;
+    background: $lightest-grey url(../../img/shadow-bottom.png) repeat-x left bottom;
+    border-bottom: 1px solid #ddd;
+}
+
+.moderators-menu {
+    margin: 30px 0;
+    border-top: 1px solid #ddd;
+
+    li {
+        margin: 0;
+    }
+
+    .ui-state-active a {
+        background-color: $lighter-grey;
+    }
+
+    .ui-state-hover a {
+        background-color: #fafafa;
+    }
+
+    a {
+        display: block;
+        text-decoration: none;
+        padding: 15px 10px;
+        border-bottom: 1px solid #ddd;
+
+        .badge {
+            float: right;
+            position: relative;
+            top: -3px;
+        }
+    }
+}
+
+.moderator-tab-content {
+    margin: 30px 0 30px 30px;
+}

@@ -1,0 +1,226 @@
+
+// COLOURS
+
+// Main colour.  Currently set to pink.
+
+$highlight : #e51e41;
+$highlight-dark : $highlight *.95;
+
+
+// Shades of Grey
+
+$dark-grey: #333;
+
+$light-grey: #ececec;
+$lighter-grey: #f4f4f4;
+$lightest-grey: #f9f9f9;
+
+$off-white: #fcfcfc;
+$white: #fff;
+
+
+
+// GENERIC STYLES
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.clearfix {
+    @clearfix;
+}
+
+.centered {
+    text-align: center;
+}
+
+.well {
+    background-color: #fefefe;
+    border: 1px solid $light-grey;
+    padding: 20px;
+}
+
+.badge {
+    background-color: $highlight;
+    padding: 3px 5px;
+    color: $white;
+    font-size: 12px;
+}
+
+.badge-grey {
+    background-color: $dark-grey;
+}
+
+
+// PAGE STRUCTURE
+
+header {
+    background-color: #fdfdfd;
+    border-bottom: 1px solid #ccc;
+
+    a {
+        text-decoration: none;
+    }
+
+    nav a {
+        display: inline-block;
+        padding: 15px;
+        margin: 0;
+        border-left: 1px solid #ddd;
+        float: left;
+
+        &:hover {
+            background-color: #fafafa;
+        }
+    }
+
+    .app-title {
+        padding-top:14px;
+        font-size: 20px;
+        font-family: georgia, sans-serif;
+    }
+}
+
+
+// BANNER
+
+.connect-title {
+    padding: 35px 0 20px 0;
+    background: $lightest-grey url(../../img/shadow-top.png) repeat-x 0 0;
+
+    h1 {
+        font-size: 40px;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 18px;
+        color: $highlight;
+        line-height: 1.2;
+        margin-top: -10px;
+    }
+}
+
+
+footer {
+    background: $lightest-grey url(../../img/shadow-top.png) repeat-x 0 0;
+    border-top: 1px solid #ddd;
+    font-size: 12px;
+
+    .container {
+        padding: 20px 0 0 0;
+    }
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            color: $highlight-dark;
+        }
+    }
+
+    .pull-right a {
+        margin-left: 10px;
+    }
+
+    .pull-left span {
+        margin-right: 10px;
+
+        i {
+            margin: 0 3px;
+        }
+    }
+}
+
+
+
+// STICKY FOOTER
+
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -61px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.footer, .push {
+    height: 61px; /* .push must be the same height as .footer */
+}
+
+
+
+// RIBS
+
+
+.container .twelve {
+    width: 793px;
+}
+
+fieldset {
+    border: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+    padding: 10px 0;
+
+    label {
+        margin-bottom: 5px;
+    }
+}
+
+input[type='checkbox'],
+input[type='radio']{
+    position: relative;
+    top: 3px;
+}
+
+button,
+.button,
+button:hover,
+.button:hover {
+    background-image: none;
+    background-color: $highlight-dark;
+    font-size: 12px !important;
+    color: $white;
+    text-shadow: none;
+    border: 0;
+    padding: 7px 12px 8px 12px;
+    font-weight: normal;
+    position: relative;
+    top: -1px;
+}
+
+button:hover,
+.button:hover {
+    background-color: $highlight;
+}
+
+.active {
+    background-color: $lighter-grey;
+}
+
+
+// JQUERY UI
+
+.ui-progressbar-value {
+    height: 100%;
+}
+
+.ui-tooltip {
+    display: inline-block;
+    background-color: $dark-grey;
+    color: $white;
+    padding: 3px 5px;
+    font-size: 12px;
+}

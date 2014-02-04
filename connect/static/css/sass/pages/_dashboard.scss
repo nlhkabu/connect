@@ -1,0 +1,247 @@
+// DASHBOARD
+
+
+// TABS
+
+.tabs {
+    border: 0;
+    padding: 0;
+    margin-top: -35px;
+
+    .tab-container {
+        background: $lightest-grey url(../../img/shadow-bottom.png) repeat-x left bottom;
+    }
+
+    .ui-tabs-nav {
+        padding: 0;
+        margin: 0;
+
+        li {
+            border: 0;
+            padding: 0;
+            margin: 0;
+            float: left;
+
+
+            a {
+                text-decoration: none;
+                display: inline-block;
+                padding: 15px;
+                font-size: 14px;
+                background-color: $highlight-dark;
+                color: $white;
+                border-top: 1px solid #ddd;
+                border-left: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                margin-right: 2px;
+                position: relative;
+                top: 1px;
+
+
+                i {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        li.ui-state-active a {
+            background-color: $white;
+            color: $dark-grey;
+        }
+    }
+
+    .ui-tabs-panel {
+        padding: 0;
+    }
+
+    .tabs-content {
+        padding: 20px 0;
+        border-top: 1px solid #ddd;
+    }
+}
+
+
+// LIST VIEW
+
+.filter {
+    h3 {
+        font-size: 14px;
+        text-transform: uppercase;
+        border-bottom: 1px solid $light-grey;
+
+        a {
+            float: right;
+            font-size: 12px;
+            color: $highlight;
+            text-transform: lowercase;
+        }
+    }
+
+    // Close to Me
+
+    .close-to-me {
+        display: none;
+    }
+
+    label.within {
+        display: inline-block;
+        font-weight: normal;
+        margin-right: 5px;
+    }
+
+    input.tiny {
+        width: 40px;
+        display: inline-block;
+    }
+
+    select.tiny {
+        display: inline-block;
+        width: 70px;
+        padding: 4px;
+    }
+
+}
+
+.member-card {
+    margin: 10px 0px 30px 30px;
+    border: 1px solid #ddd;
+    webkit-box-shadow: 2px 2px 2px 0px rgba(0,0,0,.1);
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,.1);
+}
+
+.member-card-content {
+    padding: 15px;
+    background-color: $off-white;
+    border-bottom: 1px solid $light-grey;
+
+    .member-img {
+        float: left;
+        width: 20%;
+        margin-right: 5%;
+
+        img {
+            border: 3px solid $white;
+            webkit-box-shadow: 1px 1px 1px 0px rgba(0,0,0,.2);
+            box-shadow: 1px 1px 1px 0px rgba(0,0,0,.2);
+        }
+    }
+
+    .member-details {
+        float: right;
+        width: 75%;
+
+        h3 {
+            margin-top: 5px;
+            font-size: 25px;
+            line-height: 1.2;
+
+            a {
+                color: #010101;
+                text-decoration: none;
+            }
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .connect-preferences {
+            display: block;
+            width: 100%;
+            padding-bottom: 7px;
+        }
+    }
+
+    .member-expand {
+        display: none;
+
+        .padding {
+            padding: 30px 20px 20px 0;
+        }
+
+        .skills-container {
+            padding: 30px 0;
+            margin: 30px 0;
+            border-top: 1px dashed #ccc;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .skills {
+            max-width: 400px;
+            margin: 0;
+        }
+
+        .member-links {
+            margin: 0;
+
+            li {
+                margin: 0;
+                padding: 5px 0;
+
+                a {
+                    text-decoration: none;
+
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.member-card-footer {
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        display: inline-block;
+        padding: 10px 15px;
+        border-left: 1px solid #ddd;
+        text-decoration: none;
+        font-size: 13px;
+
+        &:hover {
+            background-color: $lighter-grey;
+        }
+    }
+
+}
+
+
+// MAP VIEW
+
+#map-canvas {
+    width: 100%;
+    height: 700px;
+    margin: 0px;
+    padding: 0px
+}
+
+.map-content {
+    min-width: 300px;
+}
+
+.map-heading {
+    width: 200px;
+    margin-left: 15px;
+}
+
+.map-name,
+.map-name a {
+    font-size: 25px !important;
+    line-height: 1.2;
+    margin-bottom:0;
+    margin-top: 5px;
+}
+
+.map-skills {
+    margin-bottom: 0;
+
+    li {
+        display:inline-block;
+        margin: 0 5px 10px 0;
+    }
+}

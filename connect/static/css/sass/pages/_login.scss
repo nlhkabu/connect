@@ -1,0 +1,32 @@
+// LOGIN PAGE
+
+.login-banner {
+    padding: 30px 0 10px 0;
+    margin-bottom: 20px;
+    background: $lightest-grey url(../../img/shadow-top.png) repeat-x 0 0;
+    border-bottom: 1px solid $light-grey;
+}
+
+.login-form {
+    padding: 10px 0;
+    margin-bottom: 0;
+
+    .field {
+        margin-right: 10px;
+    }
+
+    label,
+    input {
+        margin-bottom: 0;
+    }
+
+    input[type='text'],
+    input[type='password']{
+        width: 170px;
+    }
+
+    .login {
+        //margin-top: 21px;
+        margin-bottom: 0;
+    }
+}

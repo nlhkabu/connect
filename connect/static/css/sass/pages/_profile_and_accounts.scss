@@ -1,0 +1,133 @@
+// PROFILE
+
+.profile {
+    display: none;
+    padding: 30px 0 0 0;
+    background-color: $lighter-grey;
+    border-bottom: 1px solid #ddd;
+
+    h3 {
+        line-height: 35px;
+    }
+
+    img {
+        padding: 5px;
+        background-color: $white;
+        webkit-box-shadow: 1px 1px 1px 0px rgba(0,0,0,.2);
+        box-shadow: 1px 1px 1px 0px rgba(0,0,0,.2);
+    }
+
+    .profile-info {
+        margin-left: 25px;
+        width: 190px;
+
+        .location {
+            margin-top: 0;
+        }
+    }
+}
+
+
+.connect-preferences,
+.member-skills {
+    margin: 0;
+
+    li.badge {
+        margin: 0 0 5px 0;
+        display: inline-block;
+    }
+}
+
+.skills {
+    margin: 15px 0 0 0;
+    background-color: transparent;
+    font-size: 13px;
+
+    td {
+        padding: 5px 0;
+        border: 0;
+        vertical-align: middle;
+    }
+
+    td.skill-description {
+        width: 30%;
+    }
+
+    td.skill-ability {
+        width: 70%;
+    }
+
+    .ability {
+        height: 20px;
+        width: 85%;
+        margin-left: 15%;
+        border: 1px solid #ddd;
+
+        .ui-progressbar-value {
+            background-color: $highlight;
+            background-image: none;
+            border: 1px solid $highlight;
+        }
+    }
+
+    // TODO: Style Tooltip
+}
+
+.links {
+    border-top: 1px dashed #ddd;
+    margin-top: 10px;
+
+    ul {
+        margin: 0 auto;
+
+        li {
+            display: inline-block;
+            margin: 0;
+            padding: 15px 20px 15px 0;
+
+            a {
+                text-decoration: none;
+
+                i {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}
+
+
+
+// ACCOUNT SETTINGS
+
+.account-settings {
+    display: none;
+    background-color: $lighter-grey;
+    border-bottom: 1px solid #ddd;
+
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        float: left;
+        padding: 15px 50px 15px 0;
+        text-decoration: none;
+
+
+        strong {
+            margin-right: 1px;
+        }
+
+        .edit {
+            margin-left: 5px;
+            color: #aaa;
+
+            &:hover {
+                color: #000;
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 // #Grid System Variables
 $gutter: 20px !default;
 $column-count: 16 !default;
-$desktop-container-width: 960px !default;
+$desktop-container-width: 1060px !default;
 $tablet-container-width: 768px !default;
 $mobile-container-width: 90% !default;
 $mobile-column-width: 100% !default;
@@ -135,9 +135,9 @@ $blockquote_border_left: 1px solid #ddd !default;
 $blockquote_cite_colour: #555 !default;
 $blockquote_cite_link_colour: #555 !default;
 $blockquote_cite_font_size: 12px !default;
-$blockquote_margin: 0 0 20px !default;
-$blockquote_padding: 9px 20px 0 19px !default;
-$blockquote_font_size: 17px !default;
+$blockquote_margin: 0 0 0px !default;
+$blockquote_padding: 0px 20px 0 19px !default;
+$blockquote_font_size: 13px !default;
 $blockquote_line_height: 24px !default;
 $blockquote_font_style: italic !default;
 
