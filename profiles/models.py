@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from skills.models import UserSkill
+
 class Profile(models.Model):
     """
     Member profile.
@@ -10,6 +12,16 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to='homepage/image_links', blank=True)
     connect_preferences = models.ManyToManyField('ConnectPreferences')
 
+    def get_skills(self):
+        skills = self.user.skill_set.all()
+
+        for skill in skills:
+            userskill = UserSkill.objects.get(user=self.user, skill=skill)
+            skill.proficiency = userskill.get_proficiency_display()
+
+        return skills
+
+
     # TODO - move this to accounts app if possible
     class Meta:
         permissions = (
@@ -18,6 +30,7 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username
+
 
 
 class ConnectPreferences(models.Model):

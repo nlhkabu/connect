@@ -26,7 +26,7 @@
         <li>bio:{{ user.profile.bio }}</li>
     </ul>
 
-    {% if gravatar_exists %}
+    {% if user.gravatar_exists %}
         {% gravatar user.email 150 %}
     {% elif user.profile.photo %}
         <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
@@ -49,15 +49,164 @@
     <p>Skills</p>
 
     <ul class="">
-        {% for skill in my_skills %}
+        {% for skill in user.profile.get_skills %}
             <li>{{ skill.name }} ({{ skill.proficiency }})</li>
         {% endfor %}
     </ul>
 </div>
 
-<div class="eleven columns omega">
-    Content here
-</div>
+<hr/>
 
+
+<div class="container">
+    <div class="four columns alpha filter">
+        <h3>
+            Refine Search
+            <a href="" class="clear-filters">Clear All</a>
+        </h3>
+
+
+        <form action="" method="post">
+            <fieldset>
+                <label for="">Location</label>
+                <label for="all">
+                    <input type="radio" name="locationRadios" id="all" value="all" checked />
+                    <span>All Members</span>
+                </label>
+                <label for="close">
+                    <input type="radio" name="locationRadios" id="close" value="close" />
+                    <span>Close to me</span>
+                </label>
+
+                <div class="close-to-me">
+                    <label class="within">Within</label>
+                    <input type="number" name="" value="" id="" class="tiny"/>
+                    <select class="tiny">
+                        <option>km</option>
+                        <option>mi</option>
+                    </select>
+                    <button type="">apply</button>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <label for="">Skills / Interests</label>
+                <label for="django">
+                    <input type="checkbox" id="django" value="django" />
+                    <span>Django</span>
+                </label>
+                <label for="scientific python">
+                    <input type="checkbox" id="scientific python" value="scientific python" />
+                    <span>Scientific Python</span>
+                </label>
+                <label for="design">
+                    <input type="checkbox" id="design" value="design" />
+                    <span>Design</span>
+                </label>
+                <label for="public-speaking">
+                    <input type="checkbox" id="public-speaking" value="public-speaking" />
+                    <span>Public Speaking</span>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <label for="">User Preferences</label>
+                <label for="pref1">
+                    <input type="checkbox" id="pref1" value="Mentor" />
+                    <span>Mentor</span>
+                </label>
+                <label for="pref2">
+                    <input type="checkbox" id="pref2" value="Mentee" />
+                    <span>Mentee</span>
+                </label>
+                <label for="pref3">
+                    <input type="checkbox" id="pref3" value="Code Partnering" />
+                    <span>Code Partnering</span>
+                </label>
+                <label for="pref4">
+                    <input type="checkbox" id="pref4" value="Social" />
+                    <span>Social</span>
+                </label>
+            </fieldset>
+        </form>
+    </div>
+    <div class="twelve columns omega">
+
+    {% for member in listed_members %}
+        <!-- start card -->
+        <div class="member-card">
+            <div class="member-card-content">
+                <a href="#" class="member-img toggle-member-expand"><img class="scale-with-grid" src="http://placekitten.com/150/150" alt="" title="" /></a>
+                <div class="member-details">
+                    <h3><a href="#" class="toggle-member-expand">{{ member.get_full_name }}</a></h3>
+                    <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
+
+                    {% if member.profile.connect_preferences.all %}
+                        <ul class="connect-preferences">
+                        {% for preference in member.profile.connect_preferences.all %}
+                            <li class="badge">{{ preference }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if member.profile.get_skills %}
+                        <ul class="member-skills">
+                            {% for skill in member.profile.get_skills %}
+                                <li class="badge badge-grey">{{ skill.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+
+                    <div class="member-expand">
+                        <div class="padding">
+                            <blockquote>
+                                <p>Mauris varius sodales ipsum et congue. Aliquam ultricies tempus metus, id gravida sem iaculis eget. Aenean adipiscing porttitor ligula ut ultricies.</p>
+                                <p>In ac diam quis magna porttitor condimentum. Nam eu diam eget libero mattis bibendum ac nec arcu.</p>
+                                <p>Morbi sollicitudin congue odio ut scelerisque. Morbi a egestas ipsum. Cras pharetra, purus eu iaculis dictum, dolor nisi dictum nisl, at volutpat sem sapien vel arcu. Sed et purus ligula. Nam nisl arcu, luctus aliquam purus et, consectetur faucibus justo. </p>
+                            </blockquote>
+
+                            <div class="skills-container">
+                                <table class="skills">
+                                    <tbody>
+                                        <tr>
+                                            <td class="skill-name">Django</td>
+                                            <td class="skill-ability"><div class="ability" data-value="25" data-description="Beginner"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Web Development</td>
+                                            <td><div class="ability" data-value="50" data-description="Intermediate"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Public Speaking</td>
+                                            <td><div class="ability" data-value="75" data-description="Advanced"></div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ul class="member-links">
+                                <li><a href=""><i class="fa fa-envelope"></i>email@email.com</a></li>
+                                <li><a href=""><i class="fa fa-twitter"></i>usename</a></li>
+                                <li><a href=""><i class="fa fa-github"></i>github username</a></li>
+                                <li><a href=""><i class="fa fa-globe"></i>mywebsite.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="member-card-footer">
+                <ul class="">
+                    <li><a href="#" class="pull-right toggle-member-expand full-profile">View Full Profile</a></li>
+                    <li><a href="#" class="pull-right">Connect</a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end card-->
+        {% endfor %}
+
+    </div>
+</div>
 
 {% endblock %}

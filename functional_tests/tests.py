@@ -10,6 +10,18 @@
 
 # There she sees:
 
+# A card for each member registered on the site, with:
+# Member name
+
+
+# Member photo
+#   Uploaded img (if they have one)
+#   OR gravatar (if they have one)
+#   ELSE a default image
+
+
+
+
 # Her Name
 # Her Biography
 # Her gravatar image (if she has one)
@@ -23,8 +35,6 @@
 # She enters Janine's email address and clicks on the 'invite member' button
 
 # Sam clicks on 'Logout' and is redirected to the login page
-
-
 
 # Janine receives an email from the site  that contains a link to activate her account
 # She clicks on it and is taken to a page where she can select a username and password
