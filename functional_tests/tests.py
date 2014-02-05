@@ -12,12 +12,39 @@
 
 # A card for each member registered on the site, with:
 # Member name
-
-
 # Member photo
 #   Uploaded img (if they have one)
 #   OR gravatar (if they have one)
 #   ELSE a default image
+# Member connect preferences
+# Member skills (and their proficiency)
+# Member bio
+
+# Sam notices a form on the page where she can 'Refine' her search
+
+# SKILLS/INTERESTS
+
+# When she selects 'Django' and clicks on 'submit', she notices that
+# the members she sees all have the skill 'Django'
+
+# When she selects 'Django' and 'Game Development' she sees all of
+# the members with the skills 'Django' OR 'Game Development'
+
+# CONNECT PREFERENCES
+
+# Sam also notices that she can filter results by their connect preferences.
+# She selects 'Mentor' to see all of the members who have the preference 'mentor'.
+# Likewise, when she selects 'Mentor' and 'Mentee' she sees all of the members
+# with the preferences 'Mentor' or 'Game Development'
+
+# Sam notices that she can filter members by BOTH skill/interest & connect preference.
+# She is looking for a Django mentor, so selects 'Django' and 'Mentor'
+# All of the members listed in the results have the skill 'Django' and the
+# preference 'Mentor'.
+
+# Sam is also making a Python game and is looking for members to join her.
+# She selects 'Game Development' and 'Coding Buddy', but there is nobody in
+# the system who matches this search, so she sees a 'no results' message.
 
 
 
@@ -29,6 +56,8 @@
 # Her connect preferences
 # Her skills and how proficient she is at each one
 
+
+# TODO:
 # Sam is a moderator  - Janine has asked her for an invitation to the site
 # Sam clicks on the link to the 'moderators' page
 # There she sees a form to invite new members

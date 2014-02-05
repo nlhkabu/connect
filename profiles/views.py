@@ -24,7 +24,15 @@ def dashboard(request):
         form = FilterMemberForm(request.POST)
         if form.is_valid():
             skills = form.cleaned_data['selected_skills']
-            listed_members = listed_members.filter(skill__in=skills)
+            preferences = form.cleaned_data['selected_preferences']
+
+            if skills:
+                listed_members = listed_members.filter(
+                                                skill__in=skills).distinct()
+            if preferences:
+                listed_members = listed_members.filter(
+                    profile__connect_preferences__in=preferences).distinct()
+
     else:
         form = FilterMemberForm()
 
