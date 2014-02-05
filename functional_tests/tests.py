@@ -35,7 +35,7 @@
 # Sam also notices that she can filter results by their connect preferences.
 # She selects 'Mentor' to see all of the members who have the preference 'mentor'.
 # Likewise, when she selects 'Mentor' and 'Mentee' she sees all of the members
-# with the preferences 'Mentor' or 'Game Development'
+# with the preferences 'Mentor' OR 'Game Development'
 
 # Sam notices that she can filter members by BOTH skill/interest & connect preference.
 # She is looking for a Django mentor, so selects 'Django' and 'Mentor'
