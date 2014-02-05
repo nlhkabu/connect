@@ -5,6 +5,7 @@ from django.shortcuts import render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
+from .forms import FilterMemberForm
 from .models import Profile
 from skills.models import UserSkill
 
@@ -14,18 +15,24 @@ def dashboard(request):
 
     # Get additional profile data
     user = request.user
-
     user.gravatar_exists = has_gravatar(user.email)
 
     # Display other members
-
     listed_members = User.objects.exclude(id=request.user.id)
 
-    #~for member in listed_members:
-        #~skills = member.get_skills()
+    if request.method == 'POST':
+        form = FilterMemberForm(request.POST)
+        if form.is_valid():
+            skills = form.cleaned_data['selected_skills']
+            listed_members = listed_members.filter(skill__in=skills)
+    else:
+        form = FilterMemberForm()
+
+
 
     extra_context = {
         'listed_members': listed_members,
+        'form': form,
     }
 
     return render(request, 'profiles/dashboard.html', extra_context)

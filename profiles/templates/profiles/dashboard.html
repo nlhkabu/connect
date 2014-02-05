@@ -65,6 +65,13 @@
             <a href="" class="clear-filters">Clear All</a>
         </h3>
 
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="button" value="Submit" />
+        </form>
+
+
 
         <form action="" method="post">
             <fieldset>
