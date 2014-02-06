@@ -10,8 +10,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', 'profiles.views.dashboard', name='dashboard'),
+    url(r'^$', 'discover.views.dashboard', name='dashboard'),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-    url(r'^dashboard/', include('profiles.urls', namespace='profile')),
+    url(r'^dashboard/', include('discover.urls', namespace='discover')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #TODO: Remove for production

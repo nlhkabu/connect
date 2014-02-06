@@ -41,6 +41,6 @@ def dashboard(request):
         'form': form,
     }
 
-    return render(request, 'profiles/dashboard.html', extra_context)
+    return render(request, 'discover/dashboard.html', extra_context)
 
 
