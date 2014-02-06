@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
 
+
+
 @login_required
 def profile_settings(request):
 

@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
 from .forms import FilterMemberForm
-from .models import Profile
+from accounts.models import Profile
 from skills.models import UserSkill
 
 

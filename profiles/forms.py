@@ -1,7 +1,7 @@
 from django import forms
 
 from skills.models import Skill
-from .models import ConnectPreferences
+from accounts.models import ConnectPreference
 
 
 class FilterMemberForm(forms.Form):
@@ -11,7 +11,7 @@ class FilterMemberForm(forms.Form):
                         widget=forms.CheckboxSelectMultiple(),
                         required=False)
 
-    preferences = ConnectPreferences.objects.all()
+    preferences = ConnectPreference.objects.all()
     selected_preferences = forms.ModelMultipleChoiceField(
                             queryset=preferences,
                             widget=forms.CheckboxSelectMultiple(),
