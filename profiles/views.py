@@ -36,8 +36,6 @@ def dashboard(request):
     else:
         form = FilterMemberForm()
 
-
-
     extra_context = {
         'listed_members': listed_members,
         'form': form,

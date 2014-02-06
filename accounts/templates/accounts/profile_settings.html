@@ -1,0 +1,43 @@
+{% extends "accounts/settings_base.html" %}
+{% load gravatar %}
+
+{% block profile_active %}active{% endblock %}
+
+{% block settings_content %}
+
+    <ul class="">
+        {% if user.first_name and user.last_name %}
+            <li>{{ user.first_name }} {{ user.last_name }}</li>
+        {% endif %}
+        <li>bio:{{ user.profile.bio }}</li>
+    </ul>
+
+    {% if user.gravatar_exists %}
+        {% gravatar user.email 150 %}
+    {% elif user.profile.photo %}
+        <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
+    {% else %}
+        <p>No photo found</p> <!-- TODO: Make default image -->
+    {% endif %}
+
+
+    <p>Connect Preferences:</p>
+    {% if user.profile.connect_preferences.all %}
+        <ul class="">
+        {% for preference in user.profile.connect_preferences.all %}
+            <li>{{ preference }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        You have not listed any preferences.
+    {% endif %}
+
+    <p>Skills</p>
+
+    <ul class="">
+        {% for skill in user.profile.get_skills %}
+            <li>{{ skill.name }} ({{ skill.proficiency }})</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

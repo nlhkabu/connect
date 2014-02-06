@@ -5,8 +5,9 @@
 
 ul.dash-tabs {
     padding: 0;
-    margin: -15px 0 0 0;
-    float: right;
+    margin: -14px 0 0 0;
+    position: absolute;
+    right: 0;
 
     li {
         border: 0;

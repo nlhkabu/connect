@@ -17,5 +17,7 @@ urlpatterns = patterns('',
         },
         name='logout'
     ),
+    url(r'^settings/$', 'accounts.views.account_settings', name='account-settings'),
+    url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
     url(r'^moderators/$', 'accounts.views.moderators', name='moderators'),
 )

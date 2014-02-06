@@ -1,0 +1,10 @@
+{% extends "accounts/settings_base.html" %}
+
+{% block settings_active %}active{% endblock %}
+
+{% block settings_content %}
+    <p>Username: {{ user.username }}</p>
+    <p>Email Address: {{ user.email }}</p>
+    <p>Password: *****</p>
+
+{% endblock %}

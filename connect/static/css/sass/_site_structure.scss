@@ -89,7 +89,7 @@ header {
 // BANNER
 
 .connect-banner {
-    padding: 35px 0 0 0;
+    padding: 35px 0;
     background-color: $lightest-grey;
     -webkit-box-shadow:inset 0px 0px 5px 1px rgba(0,0,0,.06);
     box-shadow:inset 0px 0px 5px 1px rgba(0,0,0,.06);
@@ -104,6 +104,39 @@ header {
         color: $highlight;
         line-height: 1.2;
         margin-top: -10px;
+    }
+}
+
+
+// SIDEBAR MENU
+
+.sidebar-menu  {
+    margin: 30px 0;
+    border-top: 1px solid #ddd;
+
+    li {
+        margin: 0;
+    }
+
+    .ui-state-active a {
+        background-color: $lighter-grey;
+    }
+
+    .ui-state-hover a {
+        background-color: #fafafa;
+    }
+
+    a {
+        display: block;
+        text-decoration: none;
+        padding: 15px 10px;
+        border-bottom: 1px solid #ddd;
+
+        .badge {
+            float: right;
+            position: relative;
+            top: -3px;
+        }
     }
 }
 
