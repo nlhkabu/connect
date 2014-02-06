@@ -23,20 +23,37 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <nav>
-            <div class="container">
-                <a href="/" class="pull-left">Connect</a>
-                <div class="pull-right">
-                    {% block nav_content %}
-                    {% endblock %}
+        <div class="wrapper">
+            <header>
+                <div class="container">
+                    <a href="/" class="pull-left app-title">Connect</a>
+                    <div class="pull-right">
+                        {% block nav_content %}
+                        {% endblock %}
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
+            </header>
+
+            {% block content %}{% endblock %}
+
+            <div class="push"></div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="pull-left">
+                    <span>Made with <i class="fa fa-heart"></i> by <a href="http://twitter.com/nlhkabu">nlh</a>, other names here.</span>
+                    <a href="">Fork me on Github.</a>
+                </p>
+                <p class="pull-right">
+                    <a href="">Privacy Policy</a>
+                    <a href="">Code of Conduct</a>
+                    {% block abuse %}{% endblock %}
+                </p>
                 <div class="clearfix"></div>
             </div>
-        </nav>
-
-        <div class="container">
-            {% block content %}{% endblock %}
-        </div>
+        </footer>
 
         <!-- Load Extra JS  -->
 

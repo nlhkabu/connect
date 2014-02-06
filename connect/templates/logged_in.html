@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block nav_content %}
+    <nav>
+        <a href="dashboard.html" class="active"><i class="fa fa-home"></i></a>
+        <a href="moderators.html">Moderators</a>
+        <a href="#" class="profile-toggle">My Profile</a>
+        <a href="#" class="account-toggle">Account Settings</a>
+        <a href="{% url 'accounts:logout' %}">Logout</a>
+    </nav>
+    <div class="clearfix"></div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="connect-banner">
+        <div class="container">
+            <div>
+                <h1>Connect</h1>
+                <h2>Connect with PyLadies from around the globe!</h2>
+            </div>
+            {% block tabs %}{% endblock %}
+        </div>
+    </div>
+
+    <div class="page-content">
+        {% block page_content %}{% endblock %}
+    </div>
+
+{% endblock %}
+
+{% block abuse %}
+    <a href="">Report Abuse</a>
+{% endblock %}

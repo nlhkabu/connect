@@ -1,219 +1,180 @@
-{% extends "base.html" %}
+{% extends "logged_in.html" %}
 
 {% load gravatar %}
 
-{% block nav_content %}
-    <a href="{% url 'accounts:logout' %}">Logout</a>
+{% comment %}
+    <div class="five columns alpha">
+        <p>{{ user.username }}'s Dashboard</p>
+
+
+        {% if perms.profiles.access_moderators_page %}
+            <a href="{% url 'accounts:moderators' %}">Moderators</a>
+        {% endif %}
+
+
+        <ul class="">
+            {% if user.first_name and user.last_name %}
+                <li>{{ user.first_name }} {{ user.last_name }}</li>
+            {% endif %}
+            <li>{{ user.email }}</li>
+            <li>bio:{{ user.profile.bio }}</li>
+        </ul>
+
+        {% if user.gravatar_exists %}
+            {% gravatar user.email 150 %}
+        {% elif user.profile.photo %}
+            <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
+        {% else %}
+            <p>No photo found</p> <!-- TODO: Make default image -->
+        {% endif %}
+
+
+        <p>Connect Preferences:</p>
+        {% if user.profile.connect_preferences.all %}
+            <ul class="">
+            {% for preference in user.profile.connect_preferences.all %}
+                <li>{{ preference }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            You have not listed any preferences.
+        {% endif %}
+
+        <p>Skills</p>
+
+        <ul class="">
+            {% for skill in user.profile.get_skills %}
+                <li>{{ skill.name }} ({{ skill.proficiency }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endcomment %}
+
+
+{% block tabs %}
+    <ul class="dash-tabs">
+        <li class="active"""><a href="#"><i class="fa fa-bars"></i>List View</a></li>
+        <li><a href="#tabs-2" id="map-tab"><i class="fa fa-map-marker"></i>Map View</a></li>
+    </ul>
 {% endblock %}
 
 
-{% block content %}
+{% block page_content %}
+    <div class="container">
+        <div class="four columns alpha filter">
+            <h3>
+                Refine Search
+                <a href="" class="clear-filters">Clear All</a>
+            </h3>
 
-<div class="five columns alpha">
-    <p>{{ user.username }}'s Dashboard</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="button" value="Submit" />
+            </form>
 
+            <form action="" method="post">
+                <fieldset>
+                    <label for="">Location</label>
+                    <label for="all">
+                        <input type="radio" name="locationRadios" id="all" value="all" checked />
+                        <span>All Members</span>
+                    </label>
+                    <label for="close">
+                        <input type="radio" name="locationRadios" id="close" value="close" />
+                        <span>Close to me</span>
+                    </label>
 
-    {% if perms.profiles.access_moderators_page %}
-        <a href="{% url 'accounts:moderators' %}">Moderators</a>
-    {% endif %}
+                    <div class="close-to-me">
+                        <label class="within">Within</label>
+                        <input type="number" name="" value="" id="" class="tiny"/>
+                        <select class="tiny">
+                            <option>km</option>
+                            <option>mi</option>
+                        </select>
+                        <button type="">apply</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="twelve columns omega">
 
+        {% if listed_members %}
+            {% for member in listed_members %}
+                <!-- start card -->
+                <div class="member-card">
+                    <div class="member-card-content">
+                        <a href="#" class="member-img toggle-member-expand"><img class="scale-with-grid" src="http://placekitten.com/150/150" alt="" title="" /></a>
+                        <div class="member-details">
+                            <h3><a href="#" class="toggle-member-expand">{{ member.get_full_name }}</a></h3>
+                            <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
 
-    <ul class="">
-        {% if user.first_name and user.last_name %}
-            <li>{{ user.first_name }} {{ user.last_name }}</li>
-        {% endif %}
-        <li>{{ user.email }}</li>
-        <li>bio:{{ user.profile.bio }}</li>
-    </ul>
-
-    {% if user.gravatar_exists %}
-        {% gravatar user.email 150 %}
-    {% elif user.profile.photo %}
-        <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
-    {% else %}
-        <p>No photo found</p> <!-- TODO: Make default image -->
-    {% endif %}
-
-
-    <p>Connect Preferences:</p>
-    {% if user.profile.connect_preferences.all %}
-        <ul class="">
-        {% for preference in user.profile.connect_preferences.all %}
-            <li>{{ preference }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        You have not listed any preferences.
-    {% endif %}
-
-    <p>Skills</p>
-
-    <ul class="">
-        {% for skill in user.profile.get_skills %}
-            <li>{{ skill.name }} ({{ skill.proficiency }})</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<hr/>
-
-
-<div class="container">
-    <div class="four columns alpha filter">
-        <h3>
-            Refine Search
-            <a href="" class="clear-filters">Clear All</a>
-        </h3>
-
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="button" value="Submit" />
-        </form>
-
-        <form action="" method="post">
-            <fieldset>
-                <label for="">Location</label>
-                <label for="all">
-                    <input type="radio" name="locationRadios" id="all" value="all" checked />
-                    <span>All Members</span>
-                </label>
-                <label for="close">
-                    <input type="radio" name="locationRadios" id="close" value="close" />
-                    <span>Close to me</span>
-                </label>
-
-                <div class="close-to-me">
-                    <label class="within">Within</label>
-                    <input type="number" name="" value="" id="" class="tiny"/>
-                    <select class="tiny">
-                        <option>km</option>
-                        <option>mi</option>
-                    </select>
-                    <button type="">apply</button>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <label for="">Skills / Interests</label>
-                <label for="django">
-                    <input type="checkbox" id="django" value="django" />
-                    <span>Django</span>
-                </label>
-                <label for="scientific python">
-                    <input type="checkbox" id="scientific python" value="scientific python" />
-                    <span>Scientific Python</span>
-                </label>
-                <label for="design">
-                    <input type="checkbox" id="design" value="design" />
-                    <span>Design</span>
-                </label>
-                <label for="public-speaking">
-                    <input type="checkbox" id="public-speaking" value="public-speaking" />
-                    <span>Public Speaking</span>
-                </label>
-            </fieldset>
-
-            <fieldset>
-                <label for="">User Preferences</label>
-                <label for="pref1">
-                    <input type="checkbox" id="pref1" value="Mentor" />
-                    <span>Mentor</span>
-                </label>
-                <label for="pref2">
-                    <input type="checkbox" id="pref2" value="Mentee" />
-                    <span>Mentee</span>
-                </label>
-                <label for="pref3">
-                    <input type="checkbox" id="pref3" value="Code Partnering" />
-                    <span>Code Partnering</span>
-                </label>
-                <label for="pref4">
-                    <input type="checkbox" id="pref4" value="Social" />
-                    <span>Social</span>
-                </label>
-            </fieldset>
-        </form>
-    </div>
-    <div class="twelve columns omega">
-
-    {% if listed_members %}
-        {% for member in listed_members %}
-            <!-- start card -->
-            <div class="member-card">
-                <div class="member-card-content">
-                    <a href="#" class="member-img toggle-member-expand"><img class="scale-with-grid" src="http://placekitten.com/150/150" alt="" title="" /></a>
-                    <div class="member-details">
-                        <h3><a href="#" class="toggle-member-expand">{{ member.get_full_name }}</a></h3>
-                        <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
-
-                        {% if member.profile.connect_preferences.all %}
-                            <ul class="connect-preferences">
-                            {% for preference in member.profile.connect_preferences.all %}
-                                <li class="badge">{{ preference }}</li>
-                            {% endfor %}
-                            </ul>
-                        {% endif %}
-
-                        {% if member.profile.get_skills %}
-                            <ul class="member-skills">
-                                {% for skill in member.profile.get_skills %}
-                                    <li class="badge badge-grey">{{ skill.name }}</li>
+                            {% if member.profile.connect_preferences.all %}
+                                <ul class="connect-preferences">
+                                {% for preference in member.profile.connect_preferences.all %}
+                                    <li class="badge">{{ preference }}</li>
                                 {% endfor %}
-                            </ul>
-                        {% endif %}
-
-
-                        <div class="member-expand">
-                            <div class="padding">
-                                <blockquote>
-                                    {{ member.profile.bio|linebreaks }}
-                                </blockquote>
-
-                                {% if member.profile.get_skills %}
-                                    <div class="skills-container">
-                                        <table class="skills">
-                                            <tbody>
-                                        {% for skill in member.profile.get_skills %}
-                                            <tr>
-                                                <td class="skill-name">{{ skill.name }}</td>
-                                                <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>
-                                            </tr>
-                                        {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                {% endif %}
-
-                                <ul class="member-links">
-                                    <li><a href=""><i class="fa fa-envelope"></i>email@email.com</a></li>
-                                    <li><a href=""><i class="fa fa-twitter"></i>usename</a></li>
-                                    <li><a href=""><i class="fa fa-github"></i>github username</a></li>
-                                    <li><a href=""><i class="fa fa-globe"></i>mywebsite.com</a></li>
                                 </ul>
+                            {% endif %}
+
+                            {% if member.profile.get_skills %}
+                                <ul class="member-skills">
+                                    {% for skill in member.profile.get_skills %}
+                                        <li class="badge badge-grey">{{ skill.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+
+                            <div class="member-expand">
+                                <div class="padding">
+                                    <blockquote>
+                                        {{ member.profile.bio|linebreaks }}
+                                    </blockquote>
+
+                                    {% if member.profile.get_skills %}
+                                        <div class="skills-container">
+                                            <table class="skills">
+                                                <tbody>
+                                            {% for skill in member.profile.get_skills %}
+                                                <tr>
+                                                    <td class="skill-name">{{ skill.name }}</td>
+                                                    <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>
+                                                </tr>
+                                            {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+
+                                    <ul class="member-links">
+                                        <li><a href=""><i class="fa fa-envelope"></i>email@email.com</a></li>
+                                        <li><a href=""><i class="fa fa-twitter"></i>usename</a></li>
+                                        <li><a href=""><i class="fa fa-github"></i>github username</a></li>
+                                        <li><a href=""><i class="fa fa-globe"></i>mywebsite.com</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="clearfix"></div>
+                    <div class="member-card-footer">
+                        <ul class="">
+                            <li><a href="#" class="pull-right toggle-member-expand full-profile">View Full Profile</a></li>
+                            <li><a href="#" class="pull-right">Connect</a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
-                <div class="member-card-footer">
-                    <ul class="">
-                        <li><a href="#" class="pull-right toggle-member-expand full-profile">View Full Profile</a></li>
-                        <li><a href="#" class="pull-right">Connect</a></li>
-                    </ul>
-                    <div class="clearfix"></div>
+                <!-- end card-->
+                {% endfor %}
+            {% else %}
+                <div class="no-results member-card">
+                    <h4>Sorry!</h4>
+                    <p>There are no members matching your selected search.  Please try again.</p>
                 </div>
-            </div>
-            <!-- end card-->
-            {% endfor %}
-        {% else %}
-            <div class="no-results member-card">
-                <h4>Sorry!</h4>
-                <p>There are no members matching your selected search.  Please try again.</p>
-            </div>
-        {% endif %}
+            {% endif %}
 
+        </div>
     </div>
-</div>
-
 {% endblock %}

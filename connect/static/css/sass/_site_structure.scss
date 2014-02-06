@@ -88,9 +88,11 @@ header {
 
 // BANNER
 
-.connect-title {
-    padding: 35px 0 20px 0;
-    background: $lightest-grey url(../../img/shadow-top.png) repeat-x 0 0;
+.connect-banner {
+    padding: 35px 0 0 0;
+    background-color: $lightest-grey;
+    -webkit-box-shadow:inset 0px 0px 5px 1px rgba(0,0,0,.06);
+    box-shadow:inset 0px 0px 5px 1px rgba(0,0,0,.06);
 
     h1 {
         font-size: 40px;
@@ -105,6 +107,8 @@ header {
     }
 }
 
+
+// FOOTER
 
 footer {
     background: $lightest-grey url(../../img/shadow-top.png) repeat-x 0 0;
@@ -188,7 +192,9 @@ input[type='radio']{
 button,
 .button,
 button:hover,
-.button:hover {
+.button:hover,
+input.button,
+input.button:hover {
     background-image: none;
     background-color: $highlight-dark;
     font-size: 12px !important;
