@@ -41,6 +41,11 @@ def dashboard(request):
         'form': form,
     }
 
-    return render(request, 'discover/dashboard.html', extra_context)
+    return render(request, 'discover/list.html', extra_context)
+
+
+def map(request):
+
+    return render(request, 'discover/map.html')
 
 
