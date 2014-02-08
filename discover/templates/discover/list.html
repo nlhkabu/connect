@@ -90,12 +90,17 @@
                                         </div>
                                     {% endif %}
 
-                                    <ul class="member-links">
-                                        <li><a href=""><i class="fa fa-envelope"></i>email@email.com</a></li>
-                                        <li><a href=""><i class="fa fa-twitter"></i>usename</a></li>
-                                        <li><a href=""><i class="fa fa-github"></i>github username</a></li>
-                                        <li><a href=""><i class="fa fa-globe"></i>mywebsite.com</a></li>
-                                    </ul>
+
+                                    {% if member.userlink_set.all %}
+                                        <ul class="member-links">
+                                            {% for link in member.userlink_set.all %}
+                                                <li>
+                                                    <i class="fa {{ link.get_icon }}"></i>
+                                                    <a href="{{ link.url }}">{{ link.anchor }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

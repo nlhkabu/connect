@@ -2,6 +2,9 @@
 
 Custom app to help PyLadies connect with each other based on location, python ability and python interests.
 
+# Font Awesome
+
+Integrated with Font Awesome v4.0.3
 
 ## What's with functional tests?
 

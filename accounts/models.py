@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -50,15 +52,54 @@ class ConnectPreference(models.Model):
 
 class UserLink(models.Model):
     """
-    Link attached to a user's profile, e.g. github account, twitter account, etc·
+    Link attached to a user's profile, e.g. github account,
+    twitter account, etc.
     """
 
     user = models.ForeignKey(User)
     anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
     url = models.URLField()
 
+    def get_icon(self):
+        """
+        Attempt to match a user link to a recognised brand (LinkBrand).
+        """
+        domain = urlsplit(self.url).netloc
+        icon = 'fa-globe'
+
+        try:
+            brand = LinkBrand.objects.get(domain=domain)
+            icon = brand.fa_icon
+
+        except LinkBrand.DoesNotExist:
+            pass # Keep the default icon
+
+        return icon
+
+
     class Meta:
         verbose_name = 'Link'
 
     def __str__(self):
         return self.anchor
+
+
+class LinkBrand(models.Model):
+    """
+    Recognised third-party services.
+    """
+    name = models.CharField(max_length=100, unique=True)
+    domain = models.CharField(max_length=100, unique=True)
+    fa_icon = models.CharField(
+        max_length=100,
+        verbose_name='Font Awesome Icon',
+        help_text='Choose an icon name from '
+                  '<a href="http://fontawesome.io/icons/">Font Awesome</a> '
+                  '(v4.0.3)')
+
+    class Meta:
+        verbose_name = 'Brand'
+
+    def __str__(self):
+        return self.name
+

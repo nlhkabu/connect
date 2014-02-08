@@ -43,9 +43,14 @@
     <p>Links</p>
 
     {% if user.userlink_set.all %}
-        {% for link in user.userlink_set.all %}
-            <a href="{{ link.url }}">{{ link.anchor }}</a>
-        {% endfor %}
+        <ul class="">
+            {% for link in user.userlink_set.all %}
+                <li>
+                    <i class="fa {{ link.get_icon }}"></i>
+                    <a href="{{ link.url }}">{{ link.anchor }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 
 {% endblock %}

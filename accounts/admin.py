@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .models import Profile, ConnectPreference, UserLink
+from .models import Profile, ConnectPreference, UserLink, LinkBrand
 from skills.admin import UserSkillInline
 
 
@@ -27,3 +27,4 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(ConnectPreference)
+admin.site.register(LinkBrand)
