@@ -43,7 +43,22 @@ class ConnectPreference(models.Model):
 
     class Meta:
         verbose_name = "Preference"
-        verbose_name_plural = "Preferences"
 
     def __str__(self):
         return self.name
+
+
+class UserLink(models.Model):
+    """
+    Link attached to a user's profile, e.g. github account, twitter account, etc·
+    """
+
+    user = models.ForeignKey(User)
+    anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
+    url = models.URLField()
+
+    class Meta:
+        verbose_name = 'Link'
+
+    def __str__(self):
+        return self.anchor

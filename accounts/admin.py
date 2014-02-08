@@ -2,20 +2,25 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .models import Profile, ConnectPreference
+from .models import Profile, ConnectPreference, UserLink
 from skills.admin import UserSkillInline
 
-# Define an inline admin descriptor for Employee model
-# which acts a bit like a singleton
+
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name = 'Profile'
     verbose_name_plural = 'Profile'
 
+
+class UserLinkInline(admin.StackedInline):
+    model = UserLink
+
+
 # Define a new User admin
 class UserAdmin(UserAdmin):
-    inlines = (ProfileInline, UserSkillInline)
+    inlines = (ProfileInline, UserSkillInline, UserLinkInline)
+
 
 # Re-register UserAdmin
 admin.site.unregister(User)

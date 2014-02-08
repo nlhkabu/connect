@@ -6,7 +6,7 @@
 # She enters her username and password
 # But is told that the username and password do not match
 
-# She tries again, this time she gets it right and is taken to her dashboard
+# She tries again, this time she gets it right and is taken to a dashboard
 
 # There she sees:
 
@@ -19,6 +19,7 @@
 # Member connect preferences
 # Member skills (and their proficiency)
 # Member bio
+# Member links
 
 # Sam notices a form on the page where she can 'Refine' her search
 
@@ -46,19 +47,40 @@
 # She selects 'Game Development' and 'Coding Buddy', but there is nobody in
 # the system who matches this search, so she sees a 'no results' message.
 
+# MY ACCOUNT
 
+# Sam notices a link at the top right called 'My Account'.
+# When she clicks on the link, she is taken to a page where she sees her
+# 'profile' settings.
 
-
+# Here she sees:
 # Her Name
 # Her Biography
 # Her gravatar image (if she has one)
-# OR if she has uploaded a different image, she sees this instead
+#     OR if she has uploaded a different image, she sees this instead
 # Her connect preferences
 # Her skills and how proficient she is at each one
 
+# She notices a link on the left hand side for her 'account settings'
+# When she clicks on this she sees a page with:
+# Her Username
+# Her password (as bullets)
+# Her email address
+
+
+
+# MODERATORS
+
+
+# Sam is a moderator.  She notices a link on the top menu to a moderators page.
+# When she clicks on this page she sees
+
+
+
+
 
 # TODO:
-# Sam is a moderator  - Janine has asked her for an invitation to the site
+# Janine has asked Sam for an invitation to the site
 # Sam clicks on the link to the 'moderators' page
 # There she sees a form to invite new members
 # She enters Janine's email address and clicks on the 'invite member' button
