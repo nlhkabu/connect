@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'south',
+    'debug_toolbar',
     'django_gravatar',
     'connect',
     'accounts',
