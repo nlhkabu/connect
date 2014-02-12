@@ -34,7 +34,8 @@ class MemberVisitTest(LiveServerTestCase):
         input_password.send_keys(Keys.ENTER)
 
         # But is told that the username and password do not match
-        error_message = self.browser.find_element_by_id('login-error') #TODO: Add a cleaner error message
+        header_content = self.browser.find_element_by_tag_name('header').text
+        self.assertIn("Your username and password didn't match", header_content)
 
         # She tries again, this time with the correct password
         input_password = self.browser.find_element_by_id('id_password')
