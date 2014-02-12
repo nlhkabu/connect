@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block page_title %}Login{% endblock %}
+
 {% block nav_content %}
 
     <form method="post" action="{% url 'accounts:login' %}" class="login-form">
@@ -23,7 +25,9 @@
     </form>
 
     {% if form.errors %}
-        <small>Your username and password didn't match. Please try again.</small>
+        <div id="login-error">
+            Your username and password didn't match. Please try again.
+        </div>
     {% endif %}
 
 {% endblock %}

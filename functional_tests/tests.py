@@ -1,12 +1,50 @@
+from django.test import LiveServerTestCase
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+from django.contrib.auth.models import User
+
 # test what happens from the users' points of view
 # ================================================
 
-# Sam visits the connect homepage and sees a login form with username and password fields
+class MemberVisitTest(LiveServerTestCase):
 
-# She enters her username and password
-# But is told that the username and password do not match
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
 
-# She tries again, this time she gets it right and is taken to a dashboard
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_can_login_via_login_page(self):
+
+        sam = User.objects.create_user(username="sam", email="sam@example.com", password="pass")
+
+        # Sam visits the connect homepage and sees that she needs to login
+        self.browser.get(self.live_server_url)
+        self.assertIn('Login', self.browser.title)
+
+        # There she sees a login form with username and password fields
+        input_username = self.browser.find_element_by_id('id_username')
+        input_password = self.browser.find_element_by_id('id_password')
+
+        # Sam enters her username and an incorrect password
+        input_username.send_keys('sam')
+        input_password.send_keys('wrongpass')
+        input_password.send_keys(Keys.ENTER)
+
+        # But is told that the username and password do not match
+        error_message = self.browser.find_element_by_id('login-error') #TODO: Add a cleaner error message
+
+        # She tries again, this time with the correct password
+        input_password = self.browser.find_element_by_id('id_password')
+
+        input_password.send_keys('pass')
+        input_password.send_keys(Keys.ENTER)
+
+        # Success! She is redirected to the connect dashboard
+        self.assertIn('Dashboard', self.browser.title)
+
 
 # There she sees:
 
