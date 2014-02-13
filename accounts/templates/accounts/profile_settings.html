@@ -1,56 +1,137 @@
 {% extends "accounts/settings_base.html" %}
 {% load gravatar %}
 
+{% block page_title %}Profile Settings{% endblock %}
 {% block profile_active %}active{% endblock %}
 
 {% block settings_content %}
 
-    <ul class="">
-        {% if user.first_name and user.last_name %}
-            <li>{{ user.first_name }} {{ user.last_name }}</li>
-        {% endif %}
-        <li>bio:{{ user.profile.bio }}</li>
-    </ul>
+<div class="profile-wrapper">
+    <table class="profile-table">
+        <tbody>
+            <tr>
+                <td class="profile-heading"><strong>Connect Gravatar</strong></td>
+                <td>
+                    <div class="image">
+                        {% if user.gravatar_exists %}
+                            {% gravatar user.email 100 %}
+                        {% elif user.profile.photo %}
+                            <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
+                        {% else %}
+                            <p>No photo found</p> <!-- TODO: Make default image -->
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="profile-heading"><strong>Name</strong></td>
+                <td>
+                    <div class="name">
+                        {% if user.first_name and user.last_name %}
+                            {{ user.first_name }} {{ user.last_name }}
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
 
-    {% if user.gravatar_exists %}
-        {% gravatar user.email 150 %}
-    {% elif user.profile.photo %}
-        <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
-    {% else %}
-        <p>No photo found</p> <!-- TODO: Make default image -->
-    {% endif %}
+
+            <tr>
+                <td class="profile-heading"><strong>Biography</strong></td>
+                <td class="profile-bio">
+                    <div class="bio">
+                        {% if user.profile.bio %}
+                            {{ user.profile.bio|linebreaks }}
+                        {% else %}
+                            You have not written a biography.
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
 
 
-    <p>Connect Preferences:</p>
-    {% if user.profile.connect_preferences.all %}
-        <ul class="">
-        {% for preference in user.profile.connect_preferences.all %}
-            <li>{{ preference }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        You have not listed any preferences.
-    {% endif %}
+            <tr>
+                <td class="profile-heading"><strong>Connect Preferences</strong></td>
+                <td>
+                    <form action="" method="post" class="profile-preferences">
+                        <ul class="">
+                            <li>
+                                <label for="mentor">
+                                    <input type="checkbox" value="1" name="mentor" id="mentor"></input>
+                                    Mentor <span>(I want to mentor others)</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label for="mentee">
+                                    <input type="checkbox" value="1" name="mentee" id="mentee"></input>
+                                    Mentee <span>(I want to be mentored by others)</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label for="social">
+                                    <input type="checkbox" value="1" name="social" id="social"></input>
+                                    Social <span>(I want to make social connections)</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label for="codingpartner">
+                                    <input type="checkbox" value="1" name="codingpartner" id="codingpartner"></input>
+                                    Coding Partner <span>(I want to code with others)</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </form>
+                </td>
+            </tr>
 
-    <p>Skills</p>
+            <tr>
+                <td class="profile-heading"><strong>Skills</strong></td>
+                <td>
+                    {% if user.profile.get_skills %}
+                        <table class="skills profile-skills">
+                            <tbody>
+                        {% for skill in user.profile.get_skills %}
+                            <tr>
+                                <td class="skill-name">{{ skill.name }}</td>
+                                <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>
+                                <td class="skill-edit">
+                                    <a href="" class="delete"><i class="fa fa-times"></i></a>
+                                    <a href="" class="edit"><i class="fa fa-pencil"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                         You have not listed any skills.
+                    {% endif %}
+                    <a href="" class="button mini">Add New Skill</a>
+                </td>
+            </tr>
 
-    <ul class="">
-        {% for skill in user.profile.get_skills %}
-            <li>{{ skill.name }} ({{ skill.proficiency }})</li>
-        {% endfor %}
-    </ul>
+            <tr>
+                <td class="profile-heading"><strong>Links</strong></td>
+                <td>
+                    {% if user.userlink_set.all %}
+                        <ul class="profile-links">
+                            {% for link in user.userlink_set.all %}
+                                <li>
+                                    <i class="fa {{ link.get_icon }}"></i>
+                                    <a href="{{ link.url }}">
+                                        {{ link.anchor }}
+                                    </a>
+                                    <a href="" class="delete"><i class="fa fa-times"></i></a>
+                                    <a href="" class="edit"><i class="fa fa-pencil"></i></a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                         You have not listed added any links.
+                    {% endif %}
+                    <a href="" class="button mini">Add New Link</a>
+                </td>
+            </tr>
 
-    <p>Links</p>
-
-    {% if user.userlink_set.all %}
-        <ul class="">
-            {% for link in user.userlink_set.all %}
-                <li>
-                    <i class="fa {{ link.get_icon }}"></i>
-                    <a href="{{ link.url }}">{{ link.anchor }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
+        </tbody>
+    </table>
+</div>
 {% endblock %}

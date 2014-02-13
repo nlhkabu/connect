@@ -1,133 +1,137 @@
-// PROFILE
+// PROFILE SETTINGS
 
-.profile {
-    display: none;
-    padding: 30px 0 0 0;
-    background-color: $lighter-grey;
-    border-bottom: 1px solid #ddd;
+.profile-wrapper {
+   margin: 10px 0px 30px 30px;
+}
 
-    h3 {
-        line-height: 35px;
+.profile-table {
+
+    td {
+        padding: 20px 0;
+        border-top: 1px solid $light-grey * .95;
     }
 
-    img {
-        padding: 5px;
-        background-color: $white;
-        webkit-box-shadow: 1px 1px 1px 0px rgba(0,0,0,.2);
-        box-shadow: 1px 1px 1px 0px rgba(0,0,0,.2);
+    td.profile-bio {
+        padding: 20px 0 0 0;
+    }
+}
+
+
+td.profile-heading {
+    width: 25%;
+    text-align: right;
+
+    strong {
+        padding-right: 15px;
+    }
+}
+
+
+// 10px padding on each LHS item in table-layout
+
+.profile-table {
+
+    .skill-name {
+        padding-left: 10px;
     }
 
-    .profile-info {
-        margin-left: 25px;
-        width: 190px;
+    .image,
+    .name,
+    .bio,
+    .button {
+        margin-left: 10px;
+    }
+}
 
-        .location {
-            margin-top: 0;
+
+.profile-preferences {
+    margin: 0;
+
+    ul {
+        margin-bottom: 0;
+
+        li {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    label {
+        padding: 7px 10px;
+
+        span {
+            color: $light-grey * .5;
+            padding-left: 5px;
+        }
+
+        &:hover {
+            background-color: $lighter-grey;
         }
     }
 }
 
+.profile-skills {
+    margin: -5px 0 15px 0;
 
-.connect-preferences,
-.member-skills {
-    margin: 0;
-
-    li.badge {
-        margin: 0 0 5px 0;
-        display: inline-block;
+    tbody {
+        border: 0;
     }
-}
-
-.skills {
-    margin: 15px 0 0 0;
-    background-color: transparent;
-    font-size: 13px;
 
     td {
-        padding: 5px 0;
         border: 0;
-        vertical-align: middle;
-    }
-
-    td.skill-description {
-        width: 30%;
+        padding: 5px 0;
     }
 
     td.skill-ability {
-        width: 70%;
+        width: 60%;
     }
 
     .ability {
         height: 20px;
-        width: 85%;
-        margin-left: 15%;
         border: 1px solid #ddd;
+    }
 
-        .ui-progressbar-value {
-            background-color: $highlight;
-            background-image: none;
-            border: 1px solid $highlight;
+    td.skill-edit {
+        width: 15%;
+
+        a {
+            float: right;
+            display: none;
+            margin-right: 10px;
         }
     }
 
-    // TODO: Style Tooltip
-}
+    tr:hover > .skill-edit a {
+        display: block;
+    }
 
-.links {
-    border-top: 1px dashed #ddd;
-    margin-top: 10px;
-
-    ul {
-        margin: 0 auto;
-
-        li {
-            display: inline-block;
-            margin: 0;
-            padding: 15px 20px 15px 0;
-
-            a {
-                text-decoration: none;
-
-                i {
-                    margin-right: 5px;
-                }
-            }
-        }
+    tr:hover > td {
+        background-color: $lighter-grey;
     }
 }
 
-
-
-// ACCOUNT SETTINGS
-
-.account-settings {
-    display: none;
-    background-color: $lighter-grey;
-    border-bottom: 1px solid #ddd;
-
-    ul, li {
-        margin: 0;
-        padding: 0;
-    }
+.profile-links {
+    margin: -5px 0 15px 0;
+    padding: 0;
 
     li {
-        display: inline-block;
-        float: left;
-        padding: 15px 50px 15px 0;
-        text-decoration: none;
+        padding: 7px 0 7px 10px;
+        margin: 0;
 
-
-        strong {
-            margin-right: 1px;
+        &:hover {
+            background-color: $lighter-grey;
         }
 
-        .edit {
-            margin-left: 5px;
-            color: #aaa;
-
-            &:hover {
-                color: #000;
-            }
+        &:hover > a.delete,
+        &:hover > a.edit {
+            display: inline-block;
         }
+    }
+
+    a.delete,
+    a.edit {
+        display: none;
+        float: right;
+        margin-right: 10px;
     }
 }

@@ -185,6 +185,16 @@ ul.dash-tabs {
     }
 }
 
+.connect-preferences,
+.member-skills {
+    margin: 0;
+
+    li.badge {
+        margin: 0 0 5px 0;
+        display: inline-block;
+    }
+}
+
 .member-card-footer {
     ul, li {
         margin: 0;

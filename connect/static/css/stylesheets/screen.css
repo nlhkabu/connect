@@ -2,7 +2,7 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-/* line 17, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -24,45 +24,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -1905,34 +1905,34 @@ table table {
   background-color: #999999;
 }
 
-/* line 25, ../sass/_site_structure.scss */
+/* line 26, ../sass/_site_structure.scss */
 .pull-left {
   float: left;
 }
 
-/* line 29, ../sass/_site_structure.scss */
+/* line 30, ../sass/_site_structure.scss */
 .pull-right {
   float: right;
 }
 
-/* line 33, ../sass/_site_structure.scss */
+/* line 34, ../sass/_site_structure.scss */
 .clearfix {
   @clearfix;
 }
 
-/* line 37, ../sass/_site_structure.scss */
+/* line 38, ../sass/_site_structure.scss */
 .centered {
   text-align: center;
 }
 
-/* line 41, ../sass/_site_structure.scss */
+/* line 42, ../sass/_site_structure.scss */
 .well {
   background-color: #fefefe;
   border: 1px solid #ececec;
   padding: 20px;
 }
 
-/* line 47, ../sass/_site_structure.scss */
+/* line 48, ../sass/_site_structure.scss */
 .badge {
   background-color: #e51e41;
   padding: 3px 5px;
@@ -1940,52 +1940,57 @@ table table {
   font-size: 12px;
 }
 
-/* line 54, ../sass/_site_structure.scss */
+/* line 55, ../sass/_site_structure.scss */
 .badge-grey {
   background-color: #333333;
 }
 
-/* line 61, ../sass/_site_structure.scss */
+/* line 62, ../sass/_site_structure.scss */
 header {
   background-color: #fdfdfd;
   border-bottom: 1px solid #ccc;
 }
-/* line 65, ../sass/_site_structure.scss */
+/* line 66, ../sass/_site_structure.scss */
 header a {
   text-decoration: none;
 }
-/* line 69, ../sass/_site_structure.scss */
-header nav a {
+/* line 71, ../sass/_site_structure.scss */
+header nav a,
+header nav a:visited {
   display: inline-block;
   padding: 15px;
   margin: 0;
   border-left: 1px solid #ddd;
   float: left;
+  color: #333333;
 }
-/* line 76, ../sass/_site_structure.scss */
-header nav a:hover {
+/* line 79, ../sass/_site_structure.scss */
+header nav a:hover,
+header nav a:visited:hover {
+  color: black;
   background-color: #fafafa;
+  text-decoration: none;
 }
-/* line 81, ../sass/_site_structure.scss */
+/* line 86, ../sass/_site_structure.scss */
 header .app-title {
   padding-top: 14px;
   font-size: 20px;
   font-family: georgia, sans-serif;
 }
 
-/* line 91, ../sass/_site_structure.scss */
+/* line 96, ../sass/_site_structure.scss */
 .connect-banner {
   padding: 35px 0;
   background-color: #f9f9f9;
   -webkit-box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
   box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
 }
-/* line 97, ../sass/_site_structure.scss */
+/* line 102, ../sass/_site_structure.scss */
 .connect-banner h1 {
   font-size: 40px;
   line-height: 1.2;
 }
-/* line 102, ../sass/_site_structure.scss */
+/* line 107, ../sass/_site_structure.scss */
 .connect-banner h2 {
   font-size: 18px;
   color: #e51e41;
@@ -1993,79 +1998,92 @@ header .app-title {
   margin-top: -10px;
 }
 
-/* line 113, ../sass/_site_structure.scss */
+/* line 118, ../sass/_site_structure.scss */
 .sidebar-menu {
-  margin: 30px 0;
+  margin: 10px 0;
   border-top: 1px solid #ddd;
 }
-/* line 117, ../sass/_site_structure.scss */
+/* line 122, ../sass/_site_structure.scss */
 .sidebar-menu li {
   margin: 0;
 }
-/* line 121, ../sass/_site_structure.scss */
+/* line 126, ../sass/_site_structure.scss */
 .sidebar-menu .ui-state-active a {
   background-color: #f4f4f4;
 }
-/* line 125, ../sass/_site_structure.scss */
+/* line 130, ../sass/_site_structure.scss */
 .sidebar-menu .ui-state-hover a {
   background-color: #fafafa;
 }
-/* line 129, ../sass/_site_structure.scss */
-.sidebar-menu a {
+/* line 135, ../sass/_site_structure.scss */
+.sidebar-menu a,
+.sidebar-menu a:visited {
   display: block;
   text-decoration: none;
   padding: 15px 10px;
   border-bottom: 1px solid #ddd;
+  color: #333333;
 }
-/* line 135, ../sass/_site_structure.scss */
-.sidebar-menu a .badge {
+/* line 142, ../sass/_site_structure.scss */
+.sidebar-menu a:hover,
+.sidebar-menu a:visited:hover {
+  color: black;
+  text-decoration: none;
+}
+/* line 147, ../sass/_site_structure.scss */
+.sidebar-menu a .badge,
+.sidebar-menu a:visited .badge {
   float: right;
   position: relative;
   top: -3px;
 }
 
-/* line 146, ../sass/_site_structure.scss */
+/* line 158, ../sass/_site_structure.scss */
 footer {
   background: #f9f9f9 url(../../img/shadow-top.png) repeat-x 0 0;
   border-top: 1px solid #ddd;
   font-size: 12px;
 }
-/* line 151, ../sass/_site_structure.scss */
+/* line 163, ../sass/_site_structure.scss */
 footer .container {
   padding: 20px 0 0 0;
 }
-/* line 155, ../sass/_site_structure.scss */
-footer a {
+/* line 168, ../sass/_site_structure.scss */
+footer a,
+footer a:visited {
+  text-decoration: none;
+  color: #333333;
+}
+/* line 172, ../sass/_site_structure.scss */
+footer a:hover,
+footer a:visited:hover {
+  color: #d91c3d;
   text-decoration: none;
 }
-/* line 158, ../sass/_site_structure.scss */
-footer a:hover {
-  color: #d91c3d;
-}
-/* line 163, ../sass/_site_structure.scss */
+/* line 178, ../sass/_site_structure.scss */
 footer .pull-right a {
   margin-left: 10px;
 }
-/* line 167, ../sass/_site_structure.scss */
+/* line 182, ../sass/_site_structure.scss */
 footer .pull-left span {
   margin-right: 10px;
 }
-/* line 170, ../sass/_site_structure.scss */
+/* line 185, ../sass/_site_structure.scss */
 footer .pull-left span i {
   margin: 0 3px;
 }
 
-/* line 180, ../sass/_site_structure.scss */
+/* line 195, ../sass/_site_structure.scss */
 * {
   margin: 0;
 }
 
-/* line 184, ../sass/_site_structure.scss */
+/* line 199, ../sass/_site_structure.scss */
 html, body {
   height: 100%;
 }
 
-/* line 188, ../sass/_site_structure.scss */
+/* line 203, ../sass/_site_structure.scss */
 .wrapper {
   min-height: 100%;
   height: auto !important;
@@ -2074,37 +2092,56 @@ html, body {
   /* the bottom margin is the negative value of the footer's height */
 }
 
-/* line 195, ../sass/_site_structure.scss */
+/* line 210, ../sass/_site_structure.scss */
 .footer, .push {
   height: 61px;
   /* .push must be the same height as .footer */
 }
 
-/* line 204, ../sass/_site_structure.scss */
+/* line 219, ../sass/_site_structure.scss */
+a,
+a:visited {
+  text-decoration: none;
+  color: #e51e41;
+}
+/* line 223, ../sass/_site_structure.scss */
+a:hover,
+a:visited:hover {
+  text-decoration: underline;
+  color: #d91c3d;
+}
+/* line 228, ../sass/_site_structure.scss */
+a i,
+a:visited i {
+  color: #333333;
+}
+
+/* line 233, ../sass/_site_structure.scss */
 .container .twelve {
   width: 793px;
 }
 
-/* line 208, ../sass/_site_structure.scss */
+/* line 237, ../sass/_site_structure.scss */
 fieldset {
   border: 0;
   margin-left: 0;
   margin-bottom: 0;
   padding: 10px 0;
 }
-/* line 214, ../sass/_site_structure.scss */
+/* line 243, ../sass/_site_structure.scss */
 fieldset label {
   margin-bottom: 5px;
 }
 
-/* line 220, ../sass/_site_structure.scss */
+/* line 249, ../sass/_site_structure.scss */
 input[type='checkbox'],
 input[type='radio'] {
   position: relative;
   top: 3px;
+  margin-right: 2px;
 }
 
-/* line 230, ../sass/_site_structure.scss */
+/* line 260, ../sass/_site_structure.scss */
 button,
 .button,
 button:hover,
@@ -2114,7 +2151,7 @@ input.button:hover {
   background-image: none;
   background-color: #d91c3d;
   font-size: 12px !important;
-  color: white;
+  color: white !important;
   text-shadow: none;
   border: 0;
   padding: 7px 12px 8px 12px;
@@ -2123,23 +2160,34 @@ input.button:hover {
   top: -1px;
 }
 
-/* line 244, ../sass/_site_structure.scss */
+/* line 274, ../sass/_site_structure.scss */
 button:hover,
 .button:hover {
   background-color: #e51e41;
+  text-decoration: none;
 }
 
-/* line 248, ../sass/_site_structure.scss */
+/* line 279, ../sass/_site_structure.scss */
 .active {
   background-color: #f4f4f4;
 }
 
-/* line 255, ../sass/_site_structure.scss */
+/* line 283, ../sass/_site_structure.scss */
+label {
+  font-weight: normal;
+}
+
+/* line 287, ../sass/_site_structure.scss */
+p label {
+  font-weight: bold;
+}
+
+/* line 294, ../sass/_site_structure.scss */
 .ui-progressbar-value {
   height: 100%;
 }
 
-/* line 259, ../sass/_site_structure.scss */
+/* line 298, ../sass/_site_structure.scss */
 .ui-tooltip {
   display: inline-block;
   background-color: #333333;
@@ -2148,134 +2196,175 @@ button:hover,
   font-size: 12px;
 }
 
-/* line 3, ../sass/pages/_profile_and_accounts.scss */
-.profile {
-  display: none;
-  padding: 30px 0 0 0;
-  background-color: #f4f4f4;
-  border-bottom: 1px solid #ddd;
-}
-/* line 9, ../sass/pages/_profile_and_accounts.scss */
-.profile h3 {
-  line-height: 35px;
-}
-/* line 13, ../sass/pages/_profile_and_accounts.scss */
-.profile img {
-  padding: 5px;
-  background-color: white;
-  webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
-}
-/* line 20, ../sass/pages/_profile_and_accounts.scss */
-.profile .profile-info {
-  margin-left: 25px;
-  width: 190px;
-}
-/* line 24, ../sass/pages/_profile_and_accounts.scss */
-.profile .profile-info .location {
-  margin-top: 0;
+/* line 309, ../sass/_site_structure.scss */
+.button.mini {
+  padding: 5px 7px;
 }
 
-/* line 32, ../sass/pages/_profile_and_accounts.scss */
-.connect-preferences,
-.member-skills {
-  margin: 0;
-}
-/* line 35, ../sass/pages/_profile_and_accounts.scss */
-.connect-preferences li.badge,
-.member-skills li.badge {
-  margin: 0 0 5px 0;
-  display: inline-block;
+/* line 313, ../sass/_site_structure.scss */
+table .button {
+  margin-bottom: 0;
 }
 
-/* line 41, ../sass/pages/_profile_and_accounts.scss */
+/* line 318, ../sass/_site_structure.scss */
 .skills {
   margin: 15px 0 0 0;
   background-color: transparent;
-  font-size: 13px;
 }
-/* line 46, ../sass/pages/_profile_and_accounts.scss */
+/* line 322, ../sass/_site_structure.scss */
 .skills td {
   padding: 5px 0;
   border: 0;
   vertical-align: middle;
 }
-/* line 52, ../sass/pages/_profile_and_accounts.scss */
-.skills td.skill-description {
-  width: 30%;
-}
-/* line 56, ../sass/pages/_profile_and_accounts.scss */
+/* line 328, ../sass/_site_structure.scss */
 .skills td.skill-ability {
   width: 70%;
 }
-/* line 60, ../sass/pages/_profile_and_accounts.scss */
+/* line 332, ../sass/_site_structure.scss */
 .skills .ability {
   height: 20px;
   width: 85%;
   margin-left: 15%;
   border: 1px solid #ddd;
+  background-color: white;
 }
-/* line 66, ../sass/pages/_profile_and_accounts.scss */
+/* line 339, ../sass/_site_structure.scss */
 .skills .ability .ui-progressbar-value {
   background-color: #e51e41;
   background-image: none;
   border: 1px solid #e51e41;
 }
 
-/* line 76, ../sass/pages/_profile_and_accounts.scss */
-.links {
-  border-top: 1px dashed #ddd;
-  margin-top: 10px;
-}
-/* line 80, ../sass/pages/_profile_and_accounts.scss */
-.links ul {
-  margin: 0 auto;
-}
-/* line 83, ../sass/pages/_profile_and_accounts.scss */
-.links ul li {
-  display: inline-block;
-  margin: 0;
-  padding: 15px 20px 15px 0;
-}
-/* line 88, ../sass/pages/_profile_and_accounts.scss */
-.links ul li a {
-  text-decoration: none;
-}
-/* line 91, ../sass/pages/_profile_and_accounts.scss */
-.links ul li a i {
-  margin-right: 5px;
+/* line 3, ../sass/pages/_profile_and_accounts.scss */
+.profile-wrapper {
+  margin: 10px 0px 30px 30px;
 }
 
-/* line 103, ../sass/pages/_profile_and_accounts.scss */
-.account-settings {
-  display: none;
-  background-color: #f4f4f4;
-  border-bottom: 1px solid #ddd;
+/* line 9, ../sass/pages/_profile_and_accounts.scss */
+.profile-table td {
+  padding: 20px 0;
+  border-top: 1px solid #e0e0e0;
 }
-/* line 108, ../sass/pages/_profile_and_accounts.scss */
-.account-settings ul, .account-settings li {
+/* line 14, ../sass/pages/_profile_and_accounts.scss */
+.profile-table td.profile-bio {
+  padding: 20px 0 0 0;
+}
+
+/* line 20, ../sass/pages/_profile_and_accounts.scss */
+td.profile-heading {
+  width: 25%;
+  text-align: right;
+}
+/* line 24, ../sass/pages/_profile_and_accounts.scss */
+td.profile-heading strong {
+  padding-right: 15px;
+}
+
+/* line 34, ../sass/pages/_profile_and_accounts.scss */
+.profile-table .skill-name {
+  padding-left: 10px;
+}
+/* line 41, ../sass/pages/_profile_and_accounts.scss */
+.profile-table .image,
+.profile-table .name,
+.profile-table .bio,
+.profile-table .button {
+  margin-left: 10px;
+}
+
+/* line 47, ../sass/pages/_profile_and_accounts.scss */
+.profile-preferences {
+  margin: 0;
+}
+/* line 50, ../sass/pages/_profile_and_accounts.scss */
+.profile-preferences ul {
+  margin-bottom: 0;
+}
+/* line 53, ../sass/pages/_profile_and_accounts.scss */
+.profile-preferences ul li {
   margin: 0;
   padding: 0;
 }
+/* line 59, ../sass/pages/_profile_and_accounts.scss */
+.profile-preferences label {
+  padding: 7px 10px;
+}
+/* line 62, ../sass/pages/_profile_and_accounts.scss */
+.profile-preferences label span {
+  color: #767676;
+  padding-left: 5px;
+}
+/* line 67, ../sass/pages/_profile_and_accounts.scss */
+.profile-preferences label:hover {
+  background-color: #f4f4f4;
+}
+
+/* line 73, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills {
+  margin: -5px 0 15px 0;
+}
+/* line 76, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills tbody {
+  border: 0;
+}
+/* line 80, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills td {
+  border: 0;
+  padding: 5px 0;
+}
+/* line 85, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills td.skill-ability {
+  width: 60%;
+}
+/* line 89, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills .ability {
+  height: 20px;
+  border: 1px solid #ddd;
+}
+/* line 94, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills td.skill-edit {
+  width: 15%;
+}
+/* line 97, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills td.skill-edit a {
+  float: right;
+  display: none;
+  margin-right: 10px;
+}
+/* line 104, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills tr:hover > .skill-edit a {
+  display: block;
+}
+/* line 108, ../sass/pages/_profile_and_accounts.scss */
+.profile-skills tr:hover > td {
+  background-color: #f4f4f4;
+}
+
 /* line 113, ../sass/pages/_profile_and_accounts.scss */
-.account-settings li {
+.profile-links {
+  margin: -5px 0 15px 0;
+  padding: 0;
+}
+/* line 117, ../sass/pages/_profile_and_accounts.scss */
+.profile-links li {
+  padding: 7px 0 7px 10px;
+  margin: 0;
+}
+/* line 121, ../sass/pages/_profile_and_accounts.scss */
+.profile-links li:hover {
+  background-color: #f4f4f4;
+}
+/* line 126, ../sass/pages/_profile_and_accounts.scss */
+.profile-links li:hover > a.delete, .profile-links li:hover > a.edit {
   display: inline-block;
-  float: left;
-  padding: 15px 50px 15px 0;
-  text-decoration: none;
 }
-/* line 120, ../sass/pages/_profile_and_accounts.scss */
-.account-settings li strong {
-  margin-right: 1px;
-}
-/* line 124, ../sass/pages/_profile_and_accounts.scss */
-.account-settings li .edit {
-  margin-left: 5px;
-  color: #aaa;
-}
-/* line 128, ../sass/pages/_profile_and_accounts.scss */
-.account-settings li .edit:hover {
-  color: #000;
+/* line 132, ../sass/pages/_profile_and_accounts.scss */
+.profile-links a.delete,
+.profile-links a.edit {
+  display: none;
+  float: right;
+  margin-right: 10px;
 }
 
 /* line 6, ../sass/pages/_dashboard.scss */
@@ -2454,11 +2543,23 @@ ul.dash-tabs li.active a {
 }
 
 /* line 189, ../sass/pages/_dashboard.scss */
+.connect-preferences,
+.member-skills {
+  margin: 0;
+}
+/* line 192, ../sass/pages/_dashboard.scss */
+.connect-preferences li.badge,
+.member-skills li.badge {
+  margin: 0 0 5px 0;
+  display: inline-block;
+}
+
+/* line 199, ../sass/pages/_dashboard.scss */
 .member-card-footer ul, .member-card-footer li {
   margin: 0;
   padding: 0;
 }
-/* line 194, ../sass/pages/_dashboard.scss */
+/* line 204, ../sass/pages/_dashboard.scss */
 .member-card-footer a {
   display: inline-block;
   padding: 10px 15px;
@@ -2466,12 +2567,12 @@ ul.dash-tabs li.active a {
   text-decoration: none;
   font-size: 13px;
 }
-/* line 201, ../sass/pages/_dashboard.scss */
+/* line 211, ../sass/pages/_dashboard.scss */
 .member-card-footer a:hover {
   background-color: #f4f4f4;
 }
 
-/* line 211, ../sass/pages/_dashboard.scss */
+/* line 221, ../sass/pages/_dashboard.scss */
 #map-canvas {
   width: 100%;
   height: 700px;
@@ -2479,18 +2580,18 @@ ul.dash-tabs li.active a {
   padding: 0px;
 }
 
-/* line 218, ../sass/pages/_dashboard.scss */
+/* line 228, ../sass/pages/_dashboard.scss */
 .map-content {
   min-width: 300px;
 }
 
-/* line 222, ../sass/pages/_dashboard.scss */
+/* line 232, ../sass/pages/_dashboard.scss */
 .map-heading {
   width: 200px;
   margin-left: 15px;
 }
 
-/* line 228, ../sass/pages/_dashboard.scss */
+/* line 238, ../sass/pages/_dashboard.scss */
 .map-name,
 .map-name a {
   font-size: 25px !important;
@@ -2499,11 +2600,11 @@ ul.dash-tabs li.active a {
   margin-top: 5px;
 }
 
-/* line 235, ../sass/pages/_dashboard.scss */
+/* line 245, ../sass/pages/_dashboard.scss */
 .map-skills {
   margin-bottom: 0;
 }
-/* line 238, ../sass/pages/_dashboard.scss */
+/* line 248, ../sass/pages/_dashboard.scss */
 .map-skills li {
   display: inline-block;
   margin: 0 5px 10px 0;
