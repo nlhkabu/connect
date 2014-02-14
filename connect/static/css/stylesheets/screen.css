@@ -1590,12 +1590,12 @@ input[type="url"]:focus,
 input[type="number"]:focus,
 input[type="tel"]:focus,
 textarea:focus {
-  border: 1px solid #aaaaaa;
+  border: 1px solid #ed6c81;
   color: #444444;
   outline: none;
-  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 3px rgba(229, 30, 65, 0.6);
+  -webkit-box-shadow: 0 0 3px rgba(229, 30, 65, 0.6);
+  box-shadow: 0 0 3px rgba(229, 30, 65, 0.6);
 }
 
 /* line 141, ../sass/ribs/_forms.scss */
@@ -2182,12 +2182,12 @@ p label {
   font-weight: bold;
 }
 
-/* line 294, ../sass/_site_structure.scss */
+/* line 296, ../sass/_site_structure.scss */
 .ui-progressbar-value {
   height: 100%;
 }
 
-/* line 298, ../sass/_site_structure.scss */
+/* line 300, ../sass/_site_structure.scss */
 .ui-tooltip {
   display: inline-block;
   background-color: #333333;
@@ -2196,32 +2196,32 @@ p label {
   font-size: 12px;
 }
 
-/* line 309, ../sass/_site_structure.scss */
+/* line 311, ../sass/_site_structure.scss */
 .button.mini {
   padding: 5px 7px;
 }
 
-/* line 313, ../sass/_site_structure.scss */
+/* line 315, ../sass/_site_structure.scss */
 table .button {
   margin-bottom: 0;
 }
 
-/* line 318, ../sass/_site_structure.scss */
+/* line 320, ../sass/_site_structure.scss */
 .skills {
   margin: 15px 0 0 0;
   background-color: transparent;
 }
-/* line 322, ../sass/_site_structure.scss */
+/* line 324, ../sass/_site_structure.scss */
 .skills td {
   padding: 5px 0;
   border: 0;
   vertical-align: middle;
 }
-/* line 328, ../sass/_site_structure.scss */
+/* line 330, ../sass/_site_structure.scss */
 .skills td.skill-ability {
   width: 70%;
 }
-/* line 332, ../sass/_site_structure.scss */
+/* line 334, ../sass/_site_structure.scss */
 .skills .ability {
   height: 20px;
   width: 85%;
@@ -2229,7 +2229,7 @@ table .button {
   border: 1px solid #ddd;
   background-color: white;
 }
-/* line 339, ../sass/_site_structure.scss */
+/* line 341, ../sass/_site_structure.scss */
 .skills .ability .ui-progressbar-value {
   background-color: #e51e41;
   background-image: none;
@@ -2246,120 +2246,145 @@ table .button {
   padding: 20px 0;
   border-top: 1px solid #e0e0e0;
 }
-/* line 14, ../sass/pages/_profile_and_accounts.scss */
-.profile-table td.profile-bio {
-  padding: 20px 0 0 0;
-}
 
-/* line 20, ../sass/pages/_profile_and_accounts.scss */
+/* line 15, ../sass/pages/_profile_and_accounts.scss */
 td.profile-heading {
   width: 25%;
   text-align: right;
 }
-/* line 24, ../sass/pages/_profile_and_accounts.scss */
+/* line 19, ../sass/pages/_profile_and_accounts.scss */
 td.profile-heading strong {
   padding-right: 15px;
 }
 
-/* line 34, ../sass/pages/_profile_and_accounts.scss */
+/* line 29, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .skill-name {
   padding-left: 10px;
 }
-/* line 41, ../sass/pages/_profile_and_accounts.scss */
+/* line 35, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .image,
 .profile-table .name,
-.profile-table .bio,
 .profile-table .button {
   margin-left: 10px;
 }
 
-/* line 47, ../sass/pages/_profile_and_accounts.scss */
+/* line 44, ../sass/pages/_profile_and_accounts.scss */
+td.profile-bio {
+  padding: 10px 0;
+}
+
+/* line 48, ../sass/pages/_profile_and_accounts.scss */
+.bio {
+  padding: 10px 10px 0 10px;
+  margin: 0;
+  border: 1px solid white;
+}
+/* line 53, ../sass/pages/_profile_and_accounts.scss */
+.bio p:last-child {
+  margin-bottom: 10px;
+}
+
+/* line 58, ../sass/pages/_profile_and_accounts.scss */
+.bio.inactive {
+  resize: none;
+}
+/* line 61, ../sass/pages/_profile_and_accounts.scss */
+.bio.inactive:hover {
+  border: 1px solid #d4d4d4;
+  cursor: pointer;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
+}
+
+/* line 75, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences {
   margin: 0;
 }
-/* line 50, ../sass/pages/_profile_and_accounts.scss */
+/* line 78, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences ul {
   margin-bottom: 0;
 }
-/* line 53, ../sass/pages/_profile_and_accounts.scss */
+/* line 81, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences ul li {
   margin: 0;
   padding: 0;
 }
-/* line 59, ../sass/pages/_profile_and_accounts.scss */
+/* line 87, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label {
   padding: 7px 10px;
 }
-/* line 62, ../sass/pages/_profile_and_accounts.scss */
+/* line 90, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label span {
   color: #767676;
   padding-left: 5px;
 }
-/* line 67, ../sass/pages/_profile_and_accounts.scss */
+/* line 95, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label:hover {
   background-color: #f4f4f4;
 }
 
-/* line 73, ../sass/pages/_profile_and_accounts.scss */
+/* line 104, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills {
   margin: -5px 0 15px 0;
 }
-/* line 76, ../sass/pages/_profile_and_accounts.scss */
+/* line 107, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills tbody {
   border: 0;
 }
-/* line 80, ../sass/pages/_profile_and_accounts.scss */
+/* line 111, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills td {
   border: 0;
   padding: 5px 0;
 }
-/* line 85, ../sass/pages/_profile_and_accounts.scss */
+/* line 116, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills td.skill-ability {
   width: 60%;
 }
-/* line 89, ../sass/pages/_profile_and_accounts.scss */
+/* line 120, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills .ability {
   height: 20px;
   border: 1px solid #ddd;
 }
-/* line 94, ../sass/pages/_profile_and_accounts.scss */
+/* line 125, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills td.skill-edit {
   width: 15%;
 }
-/* line 97, ../sass/pages/_profile_and_accounts.scss */
+/* line 128, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills td.skill-edit a {
   float: right;
   display: none;
   margin-right: 10px;
 }
-/* line 104, ../sass/pages/_profile_and_accounts.scss */
+/* line 135, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills tr:hover > .skill-edit a {
   display: block;
 }
-/* line 108, ../sass/pages/_profile_and_accounts.scss */
+/* line 139, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills tr:hover > td {
   background-color: #f4f4f4;
 }
 
-/* line 113, ../sass/pages/_profile_and_accounts.scss */
+/* line 147, ../sass/pages/_profile_and_accounts.scss */
 .profile-links {
   margin: -5px 0 15px 0;
   padding: 0;
 }
-/* line 117, ../sass/pages/_profile_and_accounts.scss */
+/* line 151, ../sass/pages/_profile_and_accounts.scss */
 .profile-links li {
   padding: 7px 0 7px 10px;
   margin: 0;
 }
-/* line 121, ../sass/pages/_profile_and_accounts.scss */
+/* line 155, ../sass/pages/_profile_and_accounts.scss */
 .profile-links li:hover {
   background-color: #f4f4f4;
 }
-/* line 126, ../sass/pages/_profile_and_accounts.scss */
+/* line 160, ../sass/pages/_profile_and_accounts.scss */
 .profile-links li:hover > a.delete, .profile-links li:hover > a.edit {
   display: inline-block;
 }
-/* line 132, ../sass/pages/_profile_and_accounts.scss */
+/* line 166, ../sass/pages/_profile_and_accounts.scss */
 .profile-links a.delete,
 .profile-links a.edit {
   display: none;
@@ -2387,7 +2412,7 @@ ul.dash-tabs li a {
   display: inline-block;
   padding: 15px;
   font-size: 14px;
-  background-color: #d91c3d;
+  background-color: #e51e41;
   color: white;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
@@ -2399,60 +2424,70 @@ ul.dash-tabs li a {
 /* line 34, ../sass/pages/_dashboard.scss */
 ul.dash-tabs li a i {
   margin-right: 5px;
+  color: white;
 }
-/* line 40, ../sass/pages/_dashboard.scss */
+/* line 39, ../sass/pages/_dashboard.scss */
+ul.dash-tabs li a:hover {
+  color: white;
+  background-color: #d91c3d;
+}
+/* line 46, ../sass/pages/_dashboard.scss */
 ul.dash-tabs li.active a {
   background-color: white;
   color: #333333;
 }
+/* line 50, ../sass/pages/_dashboard.scss */
+ul.dash-tabs li.active a i {
+  color: #333333;
+}
 
-/* line 46, ../sass/pages/_dashboard.scss */
+/* line 56, ../sass/pages/_dashboard.scss */
 .page-content {
   padding: 20px 0;
   border-top: 1px solid #ddd;
 }
 
-/* line 55, ../sass/pages/_dashboard.scss */
+/* line 65, ../sass/pages/_dashboard.scss */
 .filter h3 {
   font-size: 14px;
   text-transform: uppercase;
   border-bottom: 1px solid #ececec;
 }
-/* line 60, ../sass/pages/_dashboard.scss */
+/* line 70, ../sass/pages/_dashboard.scss */
 .filter h3 a {
   float: right;
   font-size: 12px;
   color: #e51e41;
   text-transform: lowercase;
 }
-/* line 70, ../sass/pages/_dashboard.scss */
+/* line 80, ../sass/pages/_dashboard.scss */
 .filter .close-to-me {
   display: none;
 }
-/* line 74, ../sass/pages/_dashboard.scss */
+/* line 84, ../sass/pages/_dashboard.scss */
 .filter label.within {
   display: inline-block;
   font-weight: normal;
   margin-right: 5px;
 }
-/* line 80, ../sass/pages/_dashboard.scss */
+/* line 90, ../sass/pages/_dashboard.scss */
 .filter input.tiny {
   width: 40px;
   display: inline-block;
 }
-/* line 85, ../sass/pages/_dashboard.scss */
+/* line 95, ../sass/pages/_dashboard.scss */
 .filter select.tiny {
   display: inline-block;
   width: 70px;
   padding: 4px;
 }
 
-/* line 96, ../sass/pages/_dashboard.scss */
+/* line 106, ../sass/pages/_dashboard.scss */
 .no-results {
   padding: 15px 15px 0 15px;
 }
 
-/* line 100, ../sass/pages/_dashboard.scss */
+/* line 110, ../sass/pages/_dashboard.scss */
 .member-card {
   margin: 10px 0px 30px 30px;
   border: 1px solid #ddd;
@@ -2460,106 +2495,106 @@ ul.dash-tabs li.active a {
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
-/* line 107, ../sass/pages/_dashboard.scss */
+/* line 117, ../sass/pages/_dashboard.scss */
 .member-card-content {
   padding: 15px;
   background-color: #fcfcfc;
   border-bottom: 1px solid #ececec;
 }
-/* line 112, ../sass/pages/_dashboard.scss */
+/* line 122, ../sass/pages/_dashboard.scss */
 .member-card-content .member-img {
   float: left;
   width: 20%;
   margin-right: 5%;
 }
-/* line 117, ../sass/pages/_dashboard.scss */
+/* line 127, ../sass/pages/_dashboard.scss */
 .member-card-content .member-img img {
   border: 3px solid white;
   webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
 }
-/* line 124, ../sass/pages/_dashboard.scss */
+/* line 134, ../sass/pages/_dashboard.scss */
 .member-card-content .member-details {
   float: right;
   width: 75%;
 }
-/* line 128, ../sass/pages/_dashboard.scss */
+/* line 138, ../sass/pages/_dashboard.scss */
 .member-card-content .member-details h3 {
   margin-top: 5px;
   font-size: 25px;
   line-height: 1.2;
 }
-/* line 133, ../sass/pages/_dashboard.scss */
+/* line 143, ../sass/pages/_dashboard.scss */
 .member-card-content .member-details h3 a {
   color: #010101;
   text-decoration: none;
 }
-/* line 139, ../sass/pages/_dashboard.scss */
+/* line 149, ../sass/pages/_dashboard.scss */
 .member-card-content .member-details p {
   margin-bottom: 15px;
 }
-/* line 143, ../sass/pages/_dashboard.scss */
+/* line 153, ../sass/pages/_dashboard.scss */
 .member-card-content .member-details .connect-preferences {
   display: block;
   width: 100%;
   padding-bottom: 7px;
 }
-/* line 150, ../sass/pages/_dashboard.scss */
+/* line 160, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand {
   display: none;
 }
-/* line 153, ../sass/pages/_dashboard.scss */
+/* line 163, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .padding {
   padding: 30px 20px 20px 0;
 }
-/* line 157, ../sass/pages/_dashboard.scss */
+/* line 167, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .skills-container {
   padding: 30px 0;
   margin: 30px 0;
   border-top: 1px dashed #ccc;
   border-bottom: 1px dashed #ccc;
 }
-/* line 164, ../sass/pages/_dashboard.scss */
+/* line 174, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .skills {
   max-width: 400px;
   margin: 0;
 }
-/* line 169, ../sass/pages/_dashboard.scss */
+/* line 179, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .member-links {
   margin: 0;
 }
-/* line 172, ../sass/pages/_dashboard.scss */
+/* line 182, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .member-links li {
   margin: 0;
   padding: 5px 0;
 }
-/* line 176, ../sass/pages/_dashboard.scss */
+/* line 186, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .member-links li a {
   text-decoration: none;
 }
-/* line 179, ../sass/pages/_dashboard.scss */
+/* line 189, ../sass/pages/_dashboard.scss */
 .member-card-content .member-expand .member-links li a i {
   margin-right: 5px;
 }
 
-/* line 189, ../sass/pages/_dashboard.scss */
+/* line 199, ../sass/pages/_dashboard.scss */
 .connect-preferences,
 .member-skills {
   margin: 0;
 }
-/* line 192, ../sass/pages/_dashboard.scss */
+/* line 202, ../sass/pages/_dashboard.scss */
 .connect-preferences li.badge,
 .member-skills li.badge {
   margin: 0 0 5px 0;
   display: inline-block;
 }
 
-/* line 199, ../sass/pages/_dashboard.scss */
+/* line 209, ../sass/pages/_dashboard.scss */
 .member-card-footer ul, .member-card-footer li {
   margin: 0;
   padding: 0;
 }
-/* line 204, ../sass/pages/_dashboard.scss */
+/* line 214, ../sass/pages/_dashboard.scss */
 .member-card-footer a {
   display: inline-block;
   padding: 10px 15px;
@@ -2567,12 +2602,12 @@ ul.dash-tabs li.active a {
   text-decoration: none;
   font-size: 13px;
 }
-/* line 211, ../sass/pages/_dashboard.scss */
+/* line 221, ../sass/pages/_dashboard.scss */
 .member-card-footer a:hover {
   background-color: #f4f4f4;
 }
 
-/* line 221, ../sass/pages/_dashboard.scss */
+/* line 231, ../sass/pages/_dashboard.scss */
 #map-canvas {
   width: 100%;
   height: 700px;
@@ -2580,18 +2615,18 @@ ul.dash-tabs li.active a {
   padding: 0px;
 }
 
-/* line 228, ../sass/pages/_dashboard.scss */
+/* line 238, ../sass/pages/_dashboard.scss */
 .map-content {
   min-width: 300px;
 }
 
-/* line 232, ../sass/pages/_dashboard.scss */
+/* line 242, ../sass/pages/_dashboard.scss */
 .map-heading {
   width: 200px;
   margin-left: 15px;
 }
 
-/* line 238, ../sass/pages/_dashboard.scss */
+/* line 248, ../sass/pages/_dashboard.scss */
 .map-name,
 .map-name a {
   font-size: 25px !important;
@@ -2600,11 +2635,11 @@ ul.dash-tabs li.active a {
   margin-top: 5px;
 }
 
-/* line 245, ../sass/pages/_dashboard.scss */
+/* line 255, ../sass/pages/_dashboard.scss */
 .map-skills {
   margin-bottom: 0;
 }
-/* line 248, ../sass/pages/_dashboard.scss */
+/* line 258, ../sass/pages/_dashboard.scss */
 .map-skills li {
   display: inline-block;
   margin: 0 5px 10px 0;

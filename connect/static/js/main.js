@@ -1,16 +1,8 @@
 $(document).ready(function(){
 
-    // Toggle 'profile' panel
-    $('.profile-toggle').click(function() {
-        $('.profile').slideToggle(150);
-        $(this).toggleClass('active');
-    });
-
-    $('.account-toggle').click(function() {
-        $('.account-settings').slideToggle(100);
-        $(this).toggleClass('active');
-    });
-
+    // -------
+    // ALL APP
+    // -------
 
     // Ability progressbar and tooltip
     $('.ability').each(function(){
@@ -36,6 +28,10 @@ $(document).ready(function(){
         }
     });
 
+
+    // ---------
+    // DASHBOARD
+    // ---------
 
     // Toggle 'close to me' form on radio select
 
@@ -65,7 +61,26 @@ $(document).ready(function(){
     });
 
 
-    // Moderator Tabs
-    $('.moderator-tabs').tabs();
+    // ----------------
+    // PROFILE SETTINGS
+    // ----------------
+
+    // Set bio textarea width based on container
+
+    var bioContainerWidth = $('td.profile-bio').width();
+
+    $('.bio').css({
+        width: bioContainerWidth - 20 // accounts for padding
+    })
+
+    // Enable fancy hover/focus CSS
+    $('.bio').on('blur', function(){
+        $(this).addClass('inactive');
+    }).on('focus', function(){
+        $(this).removeClass('inactive');
+    });
+
+    // Fancy vertical resizing
+    $('.bio').autosize();
 
 });

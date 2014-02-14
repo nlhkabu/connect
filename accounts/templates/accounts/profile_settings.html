@@ -1,4 +1,6 @@
 {% extends "accounts/settings_base.html" %}
+
+{% load staticfiles %}
 {% load gravatar %}
 
 {% block page_title %}Profile Settings{% endblock %}
@@ -38,13 +40,13 @@
             <tr>
                 <td class="profile-heading"><strong>Biography</strong></td>
                 <td class="profile-bio">
-                    <div class="bio">
+                    <textarea name="" class="bio inactive" >
                         {% if user.profile.bio %}
                             {{ user.profile.bio|linebreaks }}
                         {% else %}
                             You have not written a biography.
                         {% endif %}
-                    </div>
+                    </textarea>
                 </td>
             </tr>
 
@@ -134,4 +136,9 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'js/vendor/jquery.autosize.min.js' %}"></script>
 {% endblock %}

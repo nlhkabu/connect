@@ -10,12 +10,7 @@
         padding: 20px 0;
         border-top: 1px solid $light-grey * .95;
     }
-
-    td.profile-bio {
-        padding: 20px 0 0 0;
-    }
 }
-
 
 td.profile-heading {
     width: 25%;
@@ -37,12 +32,45 @@ td.profile-heading {
 
     .image,
     .name,
-    .bio,
     .button {
         margin-left: 10px;
     }
 }
 
+
+
+// BIO
+
+td.profile-bio {
+    padding: 10px 0;
+}
+
+.bio {
+    padding: 10px 10px 0 10px;
+    margin: 0;
+    border:  1px solid $white;
+
+    p:last-child {
+        margin-bottom: 10px;
+    }
+}
+
+.bio.inactive {
+    resize: none;
+
+    &:hover {
+        border: 1px solid $light-grey * .9;
+        cursor: pointer;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+        box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+    }
+}
+
+
+
+// PREFERENCES
 
 .profile-preferences {
     margin: 0;
@@ -69,6 +97,9 @@ td.profile-heading {
         }
     }
 }
+
+
+// SKILLS
 
 .profile-skills {
     margin: -5px 0 15px 0;
@@ -109,6 +140,9 @@ td.profile-heading {
         background-color: $lighter-grey;
     }
 }
+
+
+// LINKS
 
 .profile-links {
     margin: -5px 0 15px 0;

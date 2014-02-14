@@ -54,13 +54,13 @@ $form_input_border_radius: 2px !default;
 $form_input_checkbox_display: inline !default;
 
 // ##Form input focus
-$form_input_focus_border: 1px solid #aaa !default;
+$form_input_focus_border: 1px solid #ed6c81 !default;
 $form_input_focus_text_colour: #444 !default;
 $form_input_focus_outline: none !default;
 $form_input_focus_box_shadow_x: 0 !default;
 $form_input_focus_box_shadow_y: 0 !default;
 $form_input_focus_box_shadow_blur: 3px !default;
-$form_input_focus_box_shadow_colour: rgba(0, 0, 0, .2) !default;
+$form_input_focus_box_shadow_colour: rgba(229, 30, 65, .6) !default;
 
 // ##select
 $form_input_select_padding: 10px !default;

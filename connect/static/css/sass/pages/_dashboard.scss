@@ -21,7 +21,7 @@ ul.dash-tabs {
             display: inline-block;
             padding: 15px;
             font-size: 14px;
-            background-color: $highlight-dark;
+            background-color: $highlight;
             color: $white;
             border-top: 1px solid #ddd;
             border-left: 1px solid #ddd;
@@ -33,6 +33,12 @@ ul.dash-tabs {
 
             i {
                 margin-right: 5px;
+                color: $white;
+            }
+
+            &:hover {
+                color: $white;
+                background-color: $highlight-dark;
             }
         }
     }
@@ -40,6 +46,10 @@ ul.dash-tabs {
     li.active a {
         background-color: $white;
         color: $dark-grey;
+
+        i {
+            color: $dark-grey;
+        }
     }
 }
 

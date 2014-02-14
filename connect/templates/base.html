@@ -61,6 +61,9 @@
         <script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.10.1.min.js' %}"><\/script>')</script>
 
         <script src="{% static 'js/vendor/jquery-ui-1.10.4.custom.js' %}"></script>
+
+        {% block extra_js %}{% endblock %}
+
         <script src="{% static 'js/main.js' %}"></script>
 
         <script>
@@ -70,6 +73,6 @@
             s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
 
-        {% block extra_js %}{% endblock %}
+
     </body>
 </html>
