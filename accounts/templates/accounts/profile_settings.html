@@ -26,26 +26,28 @@
                 </td>
             </tr>
             <tr>
-                <td class="profile-heading"><strong>Name</strong></td>
+                <td class="profile-heading"><strong>First Name</strong></td>
                 <td>
                     <div class="name">
-                        {% if user.first_name and user.last_name %}
-                            {{ user.first_name }} {{ user.last_name }}
-                        {% endif %}
+                        {{ user.first_name }}
                     </div>
                 </td>
             </tr>
 
+            <tr>
+                <td class="profile-heading"><strong>Last Name</strong></td>
+                <td>
+                    <div class="name">
+                        {{ user.last_name }}
+                    </div>
+                </td>
+            </tr>
 
             <tr>
                 <td class="profile-heading"><strong>Biography</strong></td>
                 <td class="profile-bio">
                     <textarea name="" class="bio inactive" >
-                        {% if user.profile.bio %}
-                            {{ user.profile.bio|linebreaks }}
-                        {% else %}
-                            You have not written a biography.
-                        {% endif %}
+                        {{ user.profile.bio}}
                     </textarea>
                 </td>
             </tr>
@@ -107,6 +109,27 @@
                          You have not listed any skills.
                     {% endif %}
                     <a href="" class="button mini">Add New Skill</a>
+
+                    <div class="add-new-skill">
+                        <div class="fieldsets">
+                            <fieldset class="skill">
+                                <input type="text" name="" value="" class="add-skill" placeholder="skill name"/>
+                                <select name="Proficiency" id="">
+                                    <option value="">Beginner</option>
+                                    <option value="">Intermediate</option>
+                                    <option value="">Advanced</option>
+                                    <option value="">Expert</option>
+                                </select>
+                                <div class="action-links">
+                                    <a href="remove" class="remove">remove</a>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <a href="another" class="add-another">add another</a><br/>
+
+                        <input type="submit" value="Add" class="button mini"/>
+                        <a href="" class="button mini grey">Cancel</a>
+                    </div>
                 </td>
             </tr>
 
@@ -141,4 +164,30 @@
 
 {% block extra_js %}
     <script src="{% static 'js/vendor/jquery.autosize.min.js' %}"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            var skills = [
+                'Django',
+                'Web Development',
+                'Public Speaking',
+                'Another Skill'
+            ];
+
+            $( ".add-skill" ).autocomplete({
+                source: skills
+            });
+
+            var skillsForm = $('.fieldsets').html();
+
+            $('.add-another').click(function(e){
+                e.preventDefault();
+                $(this).prev('.fieldsets').append(skillsForm);
+            });
+
+        });
+
+    </script>
 {% endblock %}
+

@@ -1,0 +1,47 @@
+// PROGRESS BAR
+
+.ui-progressbar-value {
+    height: 100%;
+}
+
+.ui-tooltip {
+    display: inline-block;
+    background-color: $dark-grey;
+    color: $white;
+    padding: 3px 5px;
+    font-size: 12px;
+}
+
+
+// AUTOCOMPLETE
+
+.ui-helper-hidden-accessible {
+    display: none;
+}
+
+.ui-autocomplete {
+    border-top: 1px solid $light-grey * .9;
+    border-left: 1px solid $light-grey * .9;
+    border-right: 1px solid $light-grey * .9;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    position:absolute;
+}
+
+.ui-menu-item {
+    background-color: $white;
+    margin: 0;
+
+    a {
+        display: block;
+        padding: 5px;
+        border-bottom: 1px solid $light-grey * .9;
+        color: $dark-grey;
+        font-size: 13px;
+
+        &:hover {
+            background-color: $lightest-grey;
+            text-decoration: none;
+        }
+    }
+}

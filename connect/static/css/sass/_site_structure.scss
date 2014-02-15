@@ -5,6 +5,7 @@
 
 $highlight : #e51e41;
 $highlight-dark : $highlight *.95;
+$highlight-light : $highlight * 1.5;
 
 
 // Shades of Grey
@@ -213,7 +214,7 @@ html, body {
 
 
 
-// RIBS
+// CUSTOMISE RIBS
 
 a,
 a:visited {
@@ -259,7 +260,7 @@ button:hover,
 input.button,
 input.button:hover {
     background-image: none;
-    background-color: $highlight-dark;
+    background-color: $highlight;
     font-size: 12px !important;
     color: $white !important;
     text-shadow: none;
@@ -272,7 +273,7 @@ input.button:hover {
 
 button:hover,
 .button:hover {
-    background-color: $highlight;
+    background-color: $highlight-dark;
     text-decoration: none;
 }
 
@@ -289,27 +290,16 @@ p label {
 }
 
 
-
-
-// JQUERY UI
-
-.ui-progressbar-value {
-    height: 100%;
-}
-
-.ui-tooltip {
-    display: inline-block;
-    background-color: $dark-grey;
-    color: $white;
-    padding: 3px 5px;
-    font-size: 12px;
-}
-
-
 // SHARED
 
-.button.mini {
+.button.mini,
+.button.mini:hover {
     padding: 5px 7px;
+}
+
+.button.grey {
+    background-color: $dark-grey;
+    color: $white;
 }
 
 table .button {

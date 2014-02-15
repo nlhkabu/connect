@@ -217,9 +217,11 @@ ul.dash-tabs {
         border-left: 1px solid #ddd;
         text-decoration: none;
         font-size: 13px;
+        color: $dark-grey;
 
         &:hover {
             background-color: $lighter-grey;
+            color: $black;
         }
     }
 
