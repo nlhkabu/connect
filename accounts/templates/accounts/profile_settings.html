@@ -25,32 +25,35 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td class="profile-heading"><strong>First Name</strong></td>
-                <td>
-                    <div class="name">
-                        {{ user.first_name }}
-                    </div>
-                </td>
-            </tr>
 
-            <tr>
-                <td class="profile-heading"><strong>Last Name</strong></td>
-                <td>
-                    <div class="name">
-                        {{ user.last_name }}
-                    </div>
-                </td>
-            </tr>
+            <form action="" method="post">
+                {% csrf_token %}
+                <tr>
+                    <td class="profile-heading"><strong>First Name</strong></td>
+                    <td>
+                        <div class="name">
+                            {{ form.first_name }}
+                        </div>
+                    </td>
+                </tr>
 
-            <tr>
-                <td class="profile-heading"><strong>Biography</strong></td>
-                <td class="profile-bio">
-                    <textarea name="" class="bio inactive" >
-                        {{ user.profile.bio}}
-                    </textarea>
-                </td>
-            </tr>
+                <tr>
+                    <td class="profile-heading"><strong>Last Name</strong></td>
+                    <td>
+                        <div class="name">
+                            {{ form.last_name }}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="profile-heading"><strong>Biography</strong></td>
+                    <td class="profile-bio">
+                        {{ form.bio }}
+                        <input type="submit" value="Submit" />
+                    </td>
+                </tr>
+            </form>
 
 
             <tr>

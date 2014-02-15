@@ -99,6 +99,14 @@ class MemberVisitTest(LiveServerTestCase):
 #     OR if she has uploaded a different image, she sees this instead
 # Her connect preferences
 # Her skills and how proficient she is at each one
+# Her links
+
+
+# Sam updates her first name and clicks 'save preferences'
+# When the page reloads, her updated name appears.
+
+# She does the same for her last name and bio.
+
 
 # She notices a link on the left hand side for her 'account settings'
 # When she clicks on this she sees a page with:

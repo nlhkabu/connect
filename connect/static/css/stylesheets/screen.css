@@ -2317,7 +2317,7 @@ td.profile-bio {
 
 /* line 48, ../sass/pages/_profile_and_accounts.scss */
 .bio {
-  padding: 10px 10px 0 10px;
+  padding: 10px;
   margin: 0;
   border: 1px solid white;
   width: 95%;
