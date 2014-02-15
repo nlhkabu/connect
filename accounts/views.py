@@ -19,6 +19,7 @@ def profile_settings(request):
             request.user.first_name = form.cleaned_data['first_name']
             request.user.last_name = form.cleaned_data['last_name']
             request.user.profile.bio = form.cleaned_data['bio']
+            request.user.profile.connect_preferences = form.cleaned_data['preferences']
 
             request.user.save()
             request.user.profile.save()

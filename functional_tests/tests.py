@@ -105,7 +105,7 @@ class MemberVisitTest(LiveServerTestCase):
 # Sam updates her first name and clicks 'save preferences'
 # When the page reloads, her updated name appears.
 
-# She does the same for her last name and bio.
+# She does the same for her last name, bio and connect preferences.
 
 
 # She notices a link on the left hand side for her 'account settings'

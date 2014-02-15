@@ -50,15 +50,20 @@
                     <td class="profile-heading"><strong>Biography</strong></td>
                     <td class="profile-bio">
                         {{ form.bio }}
-                        <input type="submit" value="Submit" />
+
                     </td>
                 </tr>
-            </form>
+
 
 
             <tr>
                 <td class="profile-heading"><strong>Connect Preferences</strong></td>
                 <td>
+
+                    {{ form.preferences }}
+                    <input type="submit" value="Submit" />
+                    </form>
+<!--
                     <form action="" method="post" class="profile-preferences">
                         <ul class="">
                             <li>
@@ -87,6 +92,7 @@
                             </li>
                         </ul>
                     </form>
+-->
                 </td>
             </tr>
 

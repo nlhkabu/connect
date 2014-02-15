@@ -1,6 +1,8 @@
 from django import forms
+from django.forms.formsets import formset_factory
 
 from .models import Profile, ConnectPreference
+
 
 class ProfileForm(forms.Form):
 
@@ -30,10 +32,10 @@ class ProfileForm(forms.Form):
                                     'rows': 'auto',
                                 }))
 
+        preferences = ConnectPreference.objects.all()
+        self.fields['preferences'] = forms.ModelMultipleChoiceField(
+                                initial = self.user.profile.connect_preferences.all(),
+                                queryset=preferences,
+                                widget=forms.CheckboxSelectMultiple(),
+                                required=False)
 
-
-    #~preferences = ConnectPreference.objects.all()
-    #~selected_preferences = forms.ModelMultipleChoiceField(
-                            #~queryset=preferences,
-                            #~widget=forms.CheckboxSelectMultiple(),
-                            #~required=False)
