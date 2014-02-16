@@ -9,25 +9,27 @@
 {% block settings_content %}
 
 <div class="profile-wrapper">
-    <table class="profile-table">
-        <tbody>
-            <tr>
-                <td class="profile-heading"><strong>Connect Gravatar</strong></td>
-                <td>
-                    <div class="image">
-                        {% if user.gravatar_exists %}
-                            {% gravatar user.email 100 %}
-                        {% elif user.profile.photo %}
-                            <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
-                        {% else %}
-                            <p>No photo found</p> <!-- TODO: Make default image -->
-                        {% endif %}
-                    </div>
-                </td>
-            </tr>
 
-            <form action="" method="post">
-                {% csrf_token %}
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form.errors }}
+
+        <table class="profile-table">
+            <tbody>
+                <tr>
+                    <td class="profile-heading"><strong>Connect Gravatar</strong></td>
+                    <td>
+                        <div class="image">
+                            {% if user.gravatar_exists %}
+                                {% gravatar user.email 100 %}
+                            {% elif user.profile.photo %}
+                                <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
+                            {% else %}
+                                <p>No photo found</p> <!-- TODO: Make default image -->
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td class="profile-heading"><strong>First Name</strong></td>
                     <td>
@@ -54,149 +56,79 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="profile-heading"><strong>Connect Preferences</strong></td>
+                    <td class="profile-preferences">
+                        {{ form.preferences }}
+                    </td>
+                </tr>
 
-
-            <tr>
-                <td class="profile-heading"><strong>Connect Preferences</strong></td>
-                <td>
-
-                    {{ form.preferences }}
-                    <input type="submit" value="Submit" />
-                    </form>
-<!--
-                    <form action="" method="post" class="profile-preferences">
-                        <ul class="">
-                            <li>
-                                <label for="mentor">
-                                    <input type="checkbox" value="1" name="mentor" id="mentor"></input>
-                                    Mentor <span>(I want to mentor others)</span>
-                                </label>
-                            </li>
-                            <li>
-                                <label for="mentee">
-                                    <input type="checkbox" value="1" name="mentee" id="mentee"></input>
-                                    Mentee <span>(I want to be mentored by others)</span>
-                                </label>
-                            </li>
-                            <li>
-                                <label for="social">
-                                    <input type="checkbox" value="1" name="social" id="social"></input>
-                                    Social <span>(I want to make social connections)</span>
-                                </label>
-                            </li>
-                            <li>
-                                <label for="codingpartner">
-                                    <input type="checkbox" value="1" name="codingpartner" id="codingpartner"></input>
-                                    Coding Partner <span>(I want to code with others)</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </form>
--->
-                </td>
-            </tr>
-
-            <tr>
-                <td class="profile-heading"><strong>Skills</strong></td>
-                <td>
-                    {% if user.profile.get_skills %}
-                        <table class="skills profile-skills">
-                            <tbody>
-                        {% for skill in user.profile.get_skills %}
-                            <tr>
-                                <td class="skill-name">{{ skill.name }}</td>
-                                <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>
-                                <td class="skill-edit">
-                                    <a href="" class="delete"><i class="fa fa-times"></i></a>
-                                    <a href="" class="edit"><i class="fa fa-pencil"></i></a>
-                                </td>
-                            </tr>
+                <tr>
+                    <td class="profile-heading"><strong>Skills</strong></td>
+                    <td class="profile-skills">
+                        {{ skill_formset.management_form }}
+                        {% for form in skill_formset %}
+                            <div class="skill-formset">
+                                {{ form.skill }}
+                                {{ form.proficiency.errors }}
+                                <span class="divider">
+                                    <i class="fa fa-arrows-h"></i>
+                                </span>
+                                {{ form.proficiency }}
+                                {{ form.proficiency.errors }}
+                            </div>
                         {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                         You have not listed any skills.
-                    {% endif %}
-                    <a href="" class="button mini">Add New Skill</a>
+                    </td>
+                </tr>
 
-                    <div class="add-new-skill">
-                        <div class="fieldsets">
-                            <fieldset class="skill">
-                                <input type="text" name="" value="" class="add-skill" placeholder="skill name"/>
-                                <select name="Proficiency" id="">
-                                    <option value="">Beginner</option>
-                                    <option value="">Intermediate</option>
-                                    <option value="">Advanced</option>
-                                    <option value="">Expert</option>
-                                </select>
-                                <div class="action-links">
-                                    <a href="remove" class="remove">remove</a>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <a href="another" class="add-another">add another</a><br/>
+                <tr>
+                    <td class="profile-heading"><strong>Links</strong></td>
+                    <td class="profile-links">
+                        {{ link_formset.management_form }}
+                        {% for form in link_formset %}
+                            <div class="link-formset">
+                                {{ form.anchor }}
+                                {{ form.anchor.errors }}
+                                <span class="divider">
+                                    <i class="fa fa-arrows-h"></i>
+                                </span>
+                                {{ form.url }}
+                                {{ form.url.errors }}
+                            </div>
+                        {% endfor %}
+                    </td>
+                </tr>
 
-                        <input type="submit" value="Add" class="button mini"/>
-                        <a href="" class="button mini grey">Cancel</a>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="profile-heading"><strong>Links</strong></td>
-                <td>
-                    {% if user.userlink_set.all %}
-                        <ul class="profile-links">
-                            {% for link in user.userlink_set.all %}
-                                <li>
-                                    <i class="fa {{ link.get_icon }}"></i>
-                                    <a href="{{ link.url }}">
-                                        {{ link.anchor }}
-                                    </a>
-                                    <a href="" class="delete"><i class="fa fa-times"></i></a>
-                                    <a href="" class="edit"><i class="fa fa-pencil"></i></a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                         You have not listed added any links.
-                    {% endif %}
-                    <a href="" class="button mini">Add New Link</a>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Update Profile Settings" class="button"/>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
 </div>
 {% endblock %}
 
 
 {% block extra_js %}
     <script src="{% static 'js/vendor/jquery.autosize.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.formset.js' %}"></script>
 
     <script>
-        $(document).ready(function(){
-
-            var skills = [
-                'Django',
-                'Web Development',
-                'Public Speaking',
-                'Another Skill'
-            ];
-
-            $( ".add-skill" ).autocomplete({
-                source: skills
-            });
-
-            var skillsForm = $('.fieldsets').html();
-
-            $('.add-another').click(function(e){
-                e.preventDefault();
-                $(this).prev('.fieldsets').append(skillsForm);
-            });
-
+        // Add additional fields to formsets
+        $('.skill-formset').formset({
+            prefix: '{{ skill_formset.prefix }}',
+            formCssClass: 'dynamic-skill-formset',
+            addText: 'add skill'
         });
 
+        $('.link-formset').formset({
+            prefix: '{{ link_formset.prefix }}',
+            formCssClass: 'dynamic-link-formset',
+            addText: 'add link'
+        });
     </script>
 {% endblock %}
-

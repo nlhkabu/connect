@@ -79,6 +79,7 @@ class UserLink(models.Model):
 
     class Meta:
         verbose_name = 'Link'
+        unique_together = (('user', 'anchor'), ('user', 'url'))
 
     def __str__(self):
         return self.anchor

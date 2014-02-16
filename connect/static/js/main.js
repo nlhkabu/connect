@@ -65,6 +65,13 @@ $(document).ready(function(){
     // PROFILE SETTINGS
     // ----------------
 
+    // Enable fancy hover/focus CSS
+    $('.bio, .name').on('blur', function(){
+        $(this).addClass('inactive');
+    }).on('focus', function(){
+        $(this).removeClass('inactive');
+    });
+
     // Set bio textarea width based on container
 
     var bioContainerWidth = $('td.profile-bio').width();
@@ -72,13 +79,6 @@ $(document).ready(function(){
     $('.bio').css({
         width: bioContainerWidth - 20 // accounts for padding
     })
-
-    // Enable fancy hover/focus CSS
-    $('.bio').on('blur', function(){
-        $(this).addClass('inactive');
-    }).on('focus', function(){
-        $(this).removeClass('inactive');
-    });
 
     // Fancy vertical resizing
     $('.bio').autosize();

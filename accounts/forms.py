@@ -1,7 +1,33 @@
 from django import forms
-from django.forms.formsets import formset_factory
 
 from .models import Profile, ConnectPreference
+from skills.models import Skill, UserSkill
+
+
+class SkillForm(forms.Form):
+
+    skills = Skill.objects.all()
+    skill = forms.ModelChoiceField(
+                        queryset=skills,
+                        required=True)
+
+    proficiency = forms.ChoiceField(
+                        choices=UserSkill.PROFICIENCY_CHOICES,
+                        required=True)
+
+
+class LinkForm(forms.Form):
+
+    anchor = forms.CharField(
+                    max_length=100,
+                    widget=forms.TextInput(attrs={
+                        'placeholder': 'Link Name / Anchor Text',
+                    }))
+
+    url = forms.URLField(
+                    widget=forms.URLInput(attrs={
+                        'placeholder': 'URL',
+                    }))
 
 
 class ProfileForm(forms.Form):
@@ -14,6 +40,7 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.first_name,
                                         widget=forms.TextInput(attrs={
+                                            'class' : 'name inactive',
                                             'placeholder': 'First Name',
                                         }))
 
@@ -21,6 +48,7 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.last_name,
                                         widget=forms.TextInput(attrs={
+                                            'class' : 'name inactive',
                                             'placeholder': 'Last Name',
                                         }))
 
@@ -38,4 +66,3 @@ class ProfileForm(forms.Form):
                                 queryset=preferences,
                                 widget=forms.CheckboxSelectMultiple(),
                                 required=False)
-

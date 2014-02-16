@@ -17,36 +17,30 @@ td.profile-heading {
     text-align: right;
 
     strong {
-        padding-right: 15px;
+        padding-right: 25px;
     }
 }
 
+// NAME FIELDS
 
-// 10px padding on each LHS item in table-layout
-
-.profile-table {
-
-    .skill-name {
-        padding-left: 10px;
-    }
-
-    .image,
-    .name,
-    .button {
-        margin-left: 10px;
-    }
+input.name {
+    padding: 7px;
+    margin: 0;
+    border:  1px solid $white;
 }
 
+.name.inactive:hover {
+    border: 1px solid $light-grey * .9;
+    cursor: pointer;
+    -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+    box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+}
 
 
 // BIO
 
-td.profile-bio {
-    padding: 10px 0;
-}
-
 .bio {
-    padding: 10px;
+    padding: 7px;
     margin: 0;
     border:  1px solid $white;
     width: 95%; //default
@@ -62,8 +56,6 @@ td.profile-bio {
     &:hover {
         border: 1px solid $light-grey * .9;
         cursor: pointer;
-        -webkit-border-radius: 2px;
-        border-radius: 2px;
         -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
         box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
     }
@@ -74,10 +66,8 @@ td.profile-bio {
 // PREFERENCES
 
 .profile-preferences {
-    margin: 0;
-
     ul {
-        margin-bottom: 0;
+        margin: -5px 0 0 0;
 
         li {
             margin: 0;
@@ -100,115 +90,36 @@ td.profile-bio {
 }
 
 
-// SKILLS
+// SKILLS & LINKS
 
-.profile-skills {
-    margin: -5px 0 15px 0;
+.profile-skills,
+.profile-links {
 
-    tbody {
-        border: 0;
-    }
-
-    td {
-        border: 0;
-        padding: 5px 0;
-    }
-
-    td.skill-ability {
-        width: 60%;
-    }
-
-    .ability {
-        height: 20px;
-        border: 1px solid #ddd;
-    }
-
-    td.skill-edit {
-        width: 15%;
-
-        a {
-            float: right;
-            display: none;
-            margin-right: 10px;
-        }
-    }
-
-    tr:hover > .skill-edit a {
-        display: block;
-    }
-
-    tr:hover > td {
-        background-color: $lighter-grey;
-    }
-}
-
-
-.add-new-skill {
-    position: relative;
-    background-color: $lighter-grey;
-    padding: 10px;
-    margin-top: 20px;
-
-    fieldset {
-        padding: 0;
+    .skill-formset,
+    .link-formset {
+        border-bottom: 1px dotted $light-grey * .9;
         margin-bottom: 10px;
-    }
 
-    input, select {
-        display: inline-block;
-        margin: 0 5px 0 0;
-    }
+        select,
+        input {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
 
-    select {
-        padding: 5px;
-        margin-right: 10px;
-    }
-
-    .action-links {
-        display: inline-block;
-
-        a {
-            font-size: 12px;
+        .divider {
+            margin: 0 10px;
+            color: $light-grey * .7;
         }
     }
 
-    .button {
-        margin: 0;
-    }
-
-    a.add-another {
+    a.add-row,
+    a.delete-row {
         display: inline-block;
         font-size: 12px;
-        margin-bottom: 10px;
-
-    }
-}
-
-
-// LINKS
-
-.profile-links {
-    margin: -5px 0 15px 0;
-    padding: 0;
-
-    li {
-        padding: 7px 0 7px 10px;
-        margin: 0;
-
-        &:hover {
-            background-color: $lighter-grey;
-        }
-
-        &:hover > a.delete,
-        &:hover > a.edit {
-            display: inline-block;
-        }
     }
 
-    a.delete,
-    a.edit {
-        display: none;
-        float: right;
-        margin-right: 10px;
+    a.delete-row {
+        margin-left: 15px;
     }
 }

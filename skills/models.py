@@ -17,13 +17,13 @@ class UserSkill(models.Model):
     How proficient an individual user is at a particular skill.
     This model joins User and Skill ('through' table).
     """
-
     BEGINNER = 10
     INTERMEDIATE = 20
     ADVANCED = 30
     EXPERT = 40
 
     PROFICIENCY_CHOICES = (
+        ('', '---------'),
         (BEGINNER, 'Beginner'),
         (INTERMEDIATE, 'Intermediate'),
         (ADVANCED, 'Advanced'),
@@ -49,7 +49,7 @@ class UserSkill(models.Model):
 
 
     class Meta:
-        unique_together = ["user", "skill"]
+        unique_together = ('user', 'skill')
 
     def __str__(self):
         return '{} - {}'.format(self.user, self.skill)
