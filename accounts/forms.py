@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.formsets import BaseFormSet
 
 from .models import Profile, ConnectPreference
 from skills.models import Skill, UserSkill
@@ -16,18 +17,62 @@ class SkillForm(forms.Form):
                         required=True)
 
 
+class BaseLinkFormSet(BaseFormSet):
+    def clean(self):
+        """
+        Check that no two links have the same anchor or URL
+        and that all links have both an anchor and URL.
+        """
+        if any(self.errors):
+            return
+
+        anchors = []
+        urls = []
+        duplicates = False
+
+        for form in self.forms:
+            if form.cleaned_data:
+                anchor = form.cleaned_data['anchor']
+                url = form.cleaned_data['url']
+
+                # Check that no two links have the same anchor or URL
+                if anchor and url:
+                    if anchor in anchors:
+                        duplicates = True
+                    anchors.append(anchor)
+
+                    if url in urls:
+                        duplicates = True
+                    urls.append(url)
+
+                if duplicates:
+                    raise forms.ValidationError(
+                          'Links must have unique anchors and URLs')
+
+                # Check that all links have both an anchor and URL.
+                if url and not anchor:
+                    raise forms.ValidationError(
+                          'All links must specify an anchor')
+                elif anchor and not url:
+                    raise forms.ValidationError(
+                          'All links must specify a URL')
+
+
+
 class LinkForm(forms.Form):
 
     anchor = forms.CharField(
                     max_length=100,
                     widget=forms.TextInput(attrs={
                         'placeholder': 'Link Name / Anchor Text',
-                    }))
+                    }),
+                    required=False)
 
     url = forms.URLField(
                     widget=forms.URLInput(attrs={
                         'placeholder': 'URL',
-                    }))
+                    }),
+                    required=False)
 
 
 class ProfileForm(forms.Form):
@@ -35,6 +80,7 @@ class ProfileForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(ProfileForm, self).__init__(*args, **kwargs)
+
 
         self.fields['first_name'] = forms.CharField(
                                         max_length=30,
@@ -50,7 +96,8 @@ class ProfileForm(forms.Form):
                                         widget=forms.TextInput(attrs={
                                             'class' : 'name inactive',
                                             'placeholder': 'Last Name',
-                                        }))
+                                        }),
+                                        required=False)
 
         self.fields['bio'] = forms.CharField(
                                 initial = self.user.profile.bio,
@@ -58,7 +105,8 @@ class ProfileForm(forms.Form):
                                     'class': 'bio inactive',
                                     'placeholder': 'Add some details about yourself...',
                                     'rows': 'auto',
-                                }))
+                                }),
+                                required=False)
 
         preferences = ConnectPreference.objects.all()
         self.fields['preferences'] = forms.ModelMultipleChoiceField(

@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
-from .forms import LinkForm, ProfileForm, SkillForm
+from .forms import BaseLinkFormSet, LinkForm, ProfileForm, SkillForm
 from .models import UserLink
 from skills.models import UserSkill
 
@@ -23,7 +23,8 @@ def profile_settings(request):
     skill_data = [{'skill': s.skill, 'proficiency': s.proficiency}
                     for s in user_skills]
 
-    LinkFormSet = formset_factory(LinkForm, extra=1, max_num=None)
+    LinkFormSet = formset_factory(LinkForm, extra=1, max_num=None,
+                                                     formset=BaseLinkFormSet)
     user_links = UserLink.objects.filter(user=user)
     link_data = [{'anchor': l.anchor, 'url': l.url}
                     for l in user_links]
@@ -34,7 +35,6 @@ def profile_settings(request):
         link_formset = LinkFormSet(request.POST, prefix='link')
 
         if form.is_valid() and skill_formset.is_valid() and link_formset.is_valid():
-
             # Save user info
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']

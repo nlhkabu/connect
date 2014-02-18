@@ -10,32 +10,22 @@
 
 <div class="profile-wrapper">
 
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.errors }}
 
         <table class="profile-table">
             <tbody>
-                <tr>
-                    <td class="profile-heading"><strong>Connect Gravatar</strong></td>
-                    <td>
-                        <div class="image">
-                            {% if user.gravatar_exists %}
-                                {% gravatar user.email 100 %}
-                            {% elif user.profile.photo %}
-                                <img src="{{ MEDIA_URL }}{{ user.profile.photo }}" alt="{{ user.first_name }} {{ user.last_name }}"/>
-                            {% else %}
-                                <p>No photo found</p> <!-- TODO: Make default image -->
-                            {% endif %}
-                        </div>
-                    </td>
-                </tr>
                 <tr>
                     <td class="profile-heading"><strong>First Name</strong></td>
                     <td>
                         <div class="name">
                             {{ form.first_name }}
                         </div>
+                        {% if form.first_name.errors %}
+                            <div class="form-error">
+                                {{ form.first_name.errors }}
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
 
@@ -52,7 +42,6 @@
                     <td class="profile-heading"><strong>Biography</strong></td>
                     <td class="profile-bio">
                         {{ form.bio }}
-
                     </td>
                 </tr>
 
@@ -60,6 +49,11 @@
                     <td class="profile-heading"><strong>Connect Preferences</strong></td>
                     <td class="profile-preferences">
                         {{ form.preferences }}
+                        {% if form.preferences.errors %}
+                            <div class="form-error">
+                                {{ form.preferences.errors }}
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
 
@@ -88,14 +82,32 @@
                         {% for form in link_formset %}
                             <div class="link-formset">
                                 {{ form.anchor }}
-                                {{ form.anchor.errors }}
+
+                                {% if form.anchor.errors %}
+                                    <div class="form-error">
+                                        {{ form.anchor.errors }}
+                                    </div>
+                                {% endif %}
+
                                 <span class="divider">
                                     <i class="fa fa-arrows-h"></i>
                                 </span>
+
                                 {{ form.url }}
-                                {{ form.url.errors }}
+
+                                {% if form.url.errors %}
+                                    <div class="form-error">
+                                        {{ form.url.errors }}
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endfor %}
+
+                        {% if link_formset.non_form_errors %}
+                            <div class="form-error">
+                                {{ link_formset.non_form_errors }}
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
 
