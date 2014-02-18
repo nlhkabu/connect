@@ -110,4 +110,4 @@ LOGIN_REDIRECT_URL = '/'
 
 # Gravatar Settings
 
-GRAVATAR_DEFAULT_IMAGE = 'identicon'
+GRAVATAR_DEFAULT_IMAGE = 'retro'
