@@ -61,7 +61,7 @@ class MemberVisitTest(LiveServerTestCase):
 
 # Sam notices a form on the page where she can 'Refine' her search
 
-# SKILLS/INTERESTS
+## SKILLS/INTERESTS
 
 # When she selects 'Django' and clicks on 'submit', she notices that
 # the members she sees all have the skill 'Django'
@@ -69,7 +69,7 @@ class MemberVisitTest(LiveServerTestCase):
 # When she selects 'Django' and 'Game Development' she sees all of
 # the members with the skills 'Django' OR 'Game Development'
 
-# CONNECT PREFERENCES
+## CONNECT PREFERENCES
 
 # Sam also notices that she can filter results by their connect preferences.
 # She selects 'Mentor' to see all of the members who have the preference 'mentor'.
@@ -85,7 +85,7 @@ class MemberVisitTest(LiveServerTestCase):
 # She selects 'Game Development' and 'Coding Buddy', but there is nobody in
 # the system who matches this search, so she sees a 'no results' message.
 
-# MY ACCOUNT
+## MY ACCOUNT
 
 # Sam notices a link at the top right called 'My Account'.
 # When she clicks on the link, she is taken to a page where she sees her
@@ -114,14 +114,87 @@ class MemberVisitTest(LiveServerTestCase):
 # Then she tries to remove her first name, but is prompted by a message telling
 # her that this is a required field.
 
+## SKILLS
+
 # Sam looks at her skills and realises that 'Django' is listed as 'beginner'
 # - but she thinks she is better than that
 
 # She selects 'intermediate' next to the 'Django' form
 # When the page reloads, this skill has been saved
 
+# She adds another skill - game development - beginner.
+# When the page reloads, this skill has been saved
 
+# She notices that she has previously nominated 'scienfic python' as a skill
+# by mistake.
 
+# She clicks on the 'remove' button and it dissapears.  When she saves
+# the form, it is perminately removed from her skills list.
+
+## CUSTOM VALIDATION
+
+# She decides to add the skill 'Django' - but an error message appears telling her
+# that she has already registered 'Django' as a skill
+
+# She notices that 'Public Speaking' is in the list, so she selects this
+# and clicks save.
+
+# A validation message appears telling her that she must specify a proficieny.
+
+# She selects 'beginner'.  Then she accidently changes 'Public Speaking' to blank.
+
+# A validation message appears telling her that she must specify a skill
+
+# Finally, she selects 'Public Speaking' making sure that 'beginner' is still selected.
+# This time it saves as expected
+
+## LINKS
+
+# Sam looks at her links and decides to change her link labelled with 'Facebook'
+# to say 'My Facebook Page'
+
+# She also notices that 'facebook' is misspelt in the url so corrects it.
+
+# When she saves the form, the link updates as expected
+
+# Sam notices a youtube link for an account that is no longer active.
+# She clicks on the 'remove' button and it dissapears.  When she saves the
+# form, it is perminately removed from her links list.
+
+# She adds another link 'GitHub', 'http://github.com/sam'.
+# Then she clicks on the 'add another' button.
+# A new form appears and she inputs 'Bitbucket' and 'http://bitbucket.org/sam
+# When she saves the form, both new links stay on her list.
+
+## CUSTOM VALIDATION
+
+# Sam has two facebook accounts.
+# She adds another link - 'My Facebook Page' - 'http://facebook.com/samssecondpage
+
+# When she submits the form a validation message appears telling her that
+# the link anchor text must be unique.
+
+# She changes the anchor to 'My Other Facebook Page' and the form submits as
+# expected
+
+# Sam wants to add her second github account.
+# She adds another link - 'My Second Github account', 'http://github.com/sam'
+
+# Whoops!  A validation message appears telling her that URLs must be unique.
+# She realises what she has done and changes the URL to 'http://github.com/samssecondaccount'
+
+# Sam enters a new link for her personal homepage - 'http://samshomepage.com'
+# and submits the form
+
+# A validation message appears telling her that she needs to specify the
+# anchor text
+
+# She enters - 'My homepage' but accidently deletes 'http://samshomepage.com'
+
+# A validation message appears telling her that she needs to specify the URL
+
+# Finally, she re-enters 'http://samshomepage.com' next to 'My homepage'
+# The form submits as expected.
 
 
 
@@ -131,26 +204,3 @@ class MemberVisitTest(LiveServerTestCase):
 # Her Username
 # Her password (as bullets)
 # Her email address
-
-
-
-# MODERATORS
-
-
-# Sam is a moderator.  She notices a link on the top menu to a moderators page.
-# When she clicks on this page she sees
-
-
-
-
-
-# TODO:
-# Janine has asked Sam for an invitation to the site
-# Sam clicks on the link to the 'moderators' page
-# There she sees a form to invite new members
-# She enters Janine's email address and clicks on the 'invite member' button
-
-# Sam clicks on 'Logout' and is redirected to the login page
-
-# Janine receives an email from the site  that contains a link to activate her account
-# She clicks on it and is taken to a page where she can select a username and password
