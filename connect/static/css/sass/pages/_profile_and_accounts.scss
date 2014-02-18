@@ -7,7 +7,7 @@
 .profile-table {
 
     td {
-        padding: 20px 0;
+        padding: 15px 0;
         border-top: 1px solid $light-grey * .95;
     }
 }
@@ -18,8 +18,11 @@ td.profile-heading {
 
     strong {
         padding-right: 25px;
+        position: relative;
+        top: 6px;
     }
 }
+
 
 // NAME FIELDS
 
@@ -62,12 +65,11 @@ input.name {
 }
 
 
-
 // PREFERENCES
 
 .profile-preferences {
     ul {
-        margin: -5px 0 0 0;
+        margin: 0;
 
         li {
             margin: 0;
@@ -121,5 +123,26 @@ input.name {
 
     a.delete-row {
         margin-left: 15px;
+    }
+}
+
+
+// Validation
+
+.profile-table .form-error {
+    background-color: $dark-grey;
+    color: $white;
+    font-size: 13px;
+    margin-top: 5px;
+    display: inline-block;
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin: 0;
+            padding: 3px 7px;
+        }
     }
 }
