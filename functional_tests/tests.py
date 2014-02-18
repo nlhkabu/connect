@@ -18,7 +18,9 @@ class MemberVisitTest(LiveServerTestCase):
 
     def test_can_login_via_login_page(self):
 
-        sam = User.objects.create_user(username="sam", email="sam@example.com", password="pass")
+        sam = User.objects.create_user(username="sam",
+                                       email="sam@example.com",
+                                       password="pass")
 
         # Sam visits the connect homepage and sees that she needs to login
         self.browser.get(self.live_server_url)
@@ -51,10 +53,7 @@ class MemberVisitTest(LiveServerTestCase):
 
 # A card for each member registered on the site, with:
 # Member name
-# Member photo
-#   Uploaded img (if they have one)
-#   OR gravatar (if they have one)
-#   ELSE a default image
+# Member gravatar (if they have one)
 # Member connect preferences
 # Member skills (and their proficiency)
 # Member bio
@@ -93,9 +92,8 @@ class MemberVisitTest(LiveServerTestCase):
 # 'profile' settings.
 
 # Here she sees:
-# Her gravatar image (if she has one)
-#     OR if she has uploaded a different image, she sees this instead
-# Her Name
+# Her First Name
+# Her Last Name
 # Her Biography
 # Her connect preferences
 # Her skills and how proficient she is at each one
@@ -106,6 +104,26 @@ class MemberVisitTest(LiveServerTestCase):
 # When the page reloads, her updated name appears.
 
 # She does the same for her last name, bio and connect preferences.
+
+# Sam decides that she doesn't want the connect community to know her last name.
+# So she makes this field empty and saves her preferences.
+
+# When the page reloads, she can see that no last name is registered on her account.
+# She does the same for her biography.
+
+# Then she tries to remove her first name, but is prompted by a message telling
+# her that this is a required field.
+
+# Sam looks at her skills and realises that 'Django' is listed as 'beginner'
+# - but she thinks she is better than that
+
+# She selects 'intermediate' next to the 'Django' form
+# When the page reloads, this skill has been saved
+
+
+
+
+
 
 
 # She notices a link on the left hand side for her 'account settings'

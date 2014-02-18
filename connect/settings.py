@@ -107,7 +107,6 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
 
-
 # Gravatar Settings
 
 GRAVATAR_DEFAULT_IMAGE = 'retro'

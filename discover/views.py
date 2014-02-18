@@ -12,7 +12,10 @@ from skills.models import UserSkill
 
 @login_required
 def dashboard(request):
-
+    """
+    Shows all members as a list - with the capacity to filter by
+    member skills and preferences.
+    """
     # Get additional profile data
     user = request.user
     user.gravatar_exists = has_gravatar(user.email)
@@ -44,8 +47,11 @@ def dashboard(request):
     return render(request, 'discover/list.html', extra_context)
 
 
+@login_required
 def map(request):
-
+    """
+    Shows all members on a world map.
+    """
     return render(request, 'discover/map.html')
 
 

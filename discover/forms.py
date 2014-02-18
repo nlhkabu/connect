@@ -5,6 +5,9 @@ from accounts.models import ConnectPreference
 
 
 class FilterMemberForm(forms.Form):
+    """
+    Form for searching for members by their skills and connect preferences.
+    """
     skills = Skill.objects.all()
     selected_skills = forms.ModelMultipleChoiceField(
                         queryset=skills,

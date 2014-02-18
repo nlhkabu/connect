@@ -8,8 +8,8 @@ from skills.models import Skill, UserSkill
 class BaseSkillFormSet(BaseFormSet):
     def clean(self):
         """
-        Check that no skill is listed twice and that
-        all skills have both a name and proficiency.
+        Adds validation to check that no skill is listed twice
+        and that all skills have both a name and proficiency.
         """
         if any(self.errors):
             return
@@ -39,7 +39,9 @@ class BaseSkillFormSet(BaseFormSet):
 
 
 class SkillForm(forms.Form):
-
+    """
+    Form for individual user skills
+    """
     skills = Skill.objects.all()
     skill = forms.ModelChoiceField(
                         queryset=skills,
@@ -53,7 +55,7 @@ class SkillForm(forms.Form):
 class BaseLinkFormSet(BaseFormSet):
     def clean(self):
         """
-        Check that no two links have the same anchor or URL
+        Adds validation to check that no two links have the same anchor or URL
         and that all links have both an anchor and URL.
         """
         if any(self.errors):
@@ -92,7 +94,10 @@ class BaseLinkFormSet(BaseFormSet):
 
 
 class LinkForm(forms.Form):
+    """
+    Form for individual user links
 
+    """
     anchor = forms.CharField(
                     max_length=100,
                     widget=forms.TextInput(attrs={
@@ -108,7 +113,10 @@ class LinkForm(forms.Form):
 
 
 class ProfileForm(forms.Form):
-
+    """
+    Form for user to update their own profile details
+    (excluding skills and links which are handled by separate formsets)
+    """
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(ProfileForm, self).__init__(*args, **kwargs)

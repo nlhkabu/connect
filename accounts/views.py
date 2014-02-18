@@ -13,10 +13,10 @@ from skills.models import UserSkill
 
 @login_required
 def profile_settings(request):
-
+    """
+    Allows a user to update their own profile.
+    """
     user = request.user
-
-    user.gravatar_exists = has_gravatar(user.email)
 
     SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None,
                                                        formset=BaseSkillFormSet)
@@ -99,6 +99,9 @@ def profile_settings(request):
 
 @login_required
 def account_settings(request):
+    """
+    Allows a user to update their own accounts settings.
+    """
     user = request.user
     return render(request, 'accounts/account_settings.html')
 
