@@ -26,16 +26,16 @@ class BaseSkillFormSet(BaseFormSet):
                 if skill and proficiency:
                     if skill in skills:
                         raise forms.ValidationError(
-                          'Skills must be unique')
+                          'Each skill can only be entered once.')
                     skills.append(skill)
 
                 # Check that all skills have both a name and proficiency
                 if skill and not proficiency:
                     raise forms.ValidationError(
-                          'All skills must have a proficiency')
+                          'All skills must have a proficiency.')
                 elif proficiency and not skill:
                     raise forms.ValidationError(
-                          'All profiencies must be attached to a skill')
+                          'All profiencies must be attached to a skill.')
 
 
 class SkillForm(forms.Form):
@@ -80,15 +80,15 @@ class BaseLinkFormSet(BaseFormSet):
 
                 if duplicates:
                     raise forms.ValidationError(
-                          'Links must have unique anchors and URLs')
+                          'Links must have unique anchors and URLs.')
 
                 # Check that all links have both an anchor and URL
                 if url and not anchor:
                     raise forms.ValidationError(
-                          'All links must specify an anchor')
+                          'All links must have an anchor.')
                 elif anchor and not url:
                     raise forms.ValidationError(
-                          'All links must specify a URL')
+                          'All links must have a URL.')
 
 
 class LinkForm(forms.Form):

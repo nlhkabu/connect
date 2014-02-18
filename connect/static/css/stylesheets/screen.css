@@ -2413,13 +2413,15 @@ input.name {
   font-size: 13px;
   margin-top: 5px;
   display: inline-block;
+  webkit-border-radius: 3px;
+  border-radius: 3px;
 }
-/* line 139, ../sass/pages/_profile_and_accounts.scss */
+/* line 141, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .form-error ul {
   margin: 0;
   padding: 0;
 }
-/* line 143, ../sass/pages/_profile_and_accounts.scss */
+/* line 145, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .form-error ul li {
   margin: 0;
   padding: 3px 7px;
