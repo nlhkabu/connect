@@ -22,8 +22,11 @@
                             {{ form.first_name }}
                         </div>
                         {% if form.first_name.errors %}
-                            <div class="form-error">
-                                {{ form.first_name.errors }}
+                            <div>
+                                <span class="form-error">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    {{ form.first_name.errors }}
+                                </span>
                             </div>
                         {% endif %}
                     </td>
@@ -50,8 +53,11 @@
                     <td class="profile-preferences">
                         {{ form.preferences }}
                         {% if form.preferences.errors %}
-                            <div class="form-error">
-                                {{ form.preferences.errors }}
+                            <div>
+                                <span class="form-error">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    {{ form.preferences.errors }}
+                                </span>
                             </div>
                         {% endif %}
                     </td>
@@ -74,6 +80,7 @@
                         {% if skill_formset.non_form_errors %}
                             <div>
                                 <span class="form-error">
+                                    <i class="fa fa-exclamation-triangle"></i>
                                     {{ skill_formset.non_form_errors }}
                                 </span>
                             </div>
@@ -99,6 +106,7 @@
                         {% if link_formset.non_form_errors %}
                             <div>
                                 <span class="form-error">
+                                    <i class="fa fa-exclamation-triangle"></i>
                                     {{ link_formset.non_form_errors }}
                                 </span>
                             </div>

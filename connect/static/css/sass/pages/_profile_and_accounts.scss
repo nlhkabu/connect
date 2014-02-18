@@ -130,8 +130,9 @@ input.name {
 // Validation
 
 .profile-table .form-error {
-    background-color: $dark-grey;
-    color: $white;
+    background-color: $white;
+    color: $highlight;
+    border: 1px solid $highlight;
     font-size: 13px;
     margin-top: 5px;
     display: inline-block;
@@ -139,12 +140,18 @@ input.name {
     border-radius: 3px;
 
     ul {
+        display: inline-block;
         margin: 0;
         padding: 0;
 
         li {
             margin: 0;
-            padding: 3px 7px;
+            padding: 3px 7px 3px 0;
         }
     }
+
+    .fa {
+        margin: 0 2px 0 5px;
+    }
+
 }
