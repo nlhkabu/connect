@@ -1,5 +1,8 @@
 {% extends "discover/dashboard.html" %}
 
+{% load staticfiles %}
+{% load gravatar %}
+
 {% block page_title %}Dashboard{% endblock %}
 
 {% block list_active %}active{% endblock %}
@@ -49,9 +52,19 @@
                 <!-- start card -->
                 <div class="member-card">
                     <div class="member-card-content">
-                        <a href="#" class="member-img toggle-member-expand"><img class="scale-with-grid" src="http://placekitten.com/150/150" alt="" title="" /></a>
+                        <div class="image">
+                            <a href="#" class="member-img toggle-member-expand">
+                                {% gravatar member.email 150 %}
+                            </a>
+                        </div>
+
                         <div class="member-details">
-                            <h3><a href="#" class="toggle-member-expand">{{ member.get_full_name }}</a></h3>
+                            <h3><a href="#" class="toggle-member-expand">
+                                {{ member.first_name }}
+                                {% if member.last_name %}
+                                    {{ member.last_name }}
+                                {% endif %}
+                            </a></h3>
                             <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
 
                             {% if member.profile.connect_preferences.all %}
@@ -91,7 +104,6 @@
                                             </table>
                                         </div>
                                     {% endif %}
-
 
                                     {% if member.userlink_set.all %}
                                         <ul class="member-links">

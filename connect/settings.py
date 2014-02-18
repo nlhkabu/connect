@@ -106,3 +106,8 @@ MEDIA_URL = '/media/'
 # Authentication
 
 LOGIN_REDIRECT_URL = '/'
+
+
+# Gravatar Settings
+
+GRAVATAR_DEFAULT_IMAGE = 'identicon'

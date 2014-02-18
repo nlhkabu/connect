@@ -93,10 +93,10 @@ class MemberVisitTest(LiveServerTestCase):
 # 'profile' settings.
 
 # Here she sees:
-# Her Name
-# Her Biography
 # Her gravatar image (if she has one)
 #     OR if she has uploaded a different image, she sees this instead
+# Her Name
+# Her Biography
 # Her connect preferences
 # Her skills and how proficient she is at each one
 # Her links
