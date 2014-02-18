@@ -39,6 +39,8 @@ class UserSkill(models.Model):
 
     def get_proficiency_percentage(self):
         choice_values = [choice[0] for choice in self.PROFICIENCY_CHOICES]
+        if '' in choice_values:
+            choice_values.remove('') # Remove the empty proficiency choice
         choice_values.sort() # Ensure values are in the correct order
 
         value = choice_values.index(self.proficiency) + 1
