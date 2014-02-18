@@ -5,16 +5,49 @@ from .models import Profile, ConnectPreference
 from skills.models import Skill, UserSkill
 
 
+class BaseSkillFormSet(BaseFormSet):
+    def clean(self):
+        """
+        Check that no skill is listed twice and that
+        all skills have both a name and proficiency.
+        """
+        if any(self.errors):
+            return
+
+        skills = []
+        duplicates = False
+
+        for form in self.forms:
+            if form.cleaned_data:
+                skill = form.cleaned_data['skill']
+                proficiency = form.cleaned_data['proficiency']
+
+                # Check that no two skills are the same
+                if skill and proficiency:
+                    if skill in skills:
+                        raise forms.ValidationError(
+                          'Skills must be unique')
+                    skills.append(skill)
+
+                # Check that all skills have both a name and proficiency
+                if skill and not proficiency:
+                    raise forms.ValidationError(
+                          'All skills must have a proficiency')
+                elif proficiency and not skill:
+                    raise forms.ValidationError(
+                          'All profiencies must be attached to a skill')
+
+
 class SkillForm(forms.Form):
 
     skills = Skill.objects.all()
     skill = forms.ModelChoiceField(
                         queryset=skills,
-                        required=True)
+                        required=False)
 
     proficiency = forms.ChoiceField(
                         choices=UserSkill.PROFICIENCY_CHOICES,
-                        required=True)
+                        required=False)
 
 
 class BaseLinkFormSet(BaseFormSet):
@@ -49,14 +82,13 @@ class BaseLinkFormSet(BaseFormSet):
                     raise forms.ValidationError(
                           'Links must have unique anchors and URLs')
 
-                # Check that all links have both an anchor and URL.
+                # Check that all links have both an anchor and URL
                 if url and not anchor:
                     raise forms.ValidationError(
                           'All links must specify an anchor')
                 elif anchor and not url:
                     raise forms.ValidationError(
                           'All links must specify a URL')
-
 
 
 class LinkForm(forms.Form):

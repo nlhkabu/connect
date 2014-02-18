@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
-from .forms import BaseLinkFormSet, LinkForm, ProfileForm, SkillForm
+from .forms import BaseLinkFormSet, BaseSkillFormSet, LinkForm, ProfileForm, SkillForm
 from .models import UserLink
 from skills.models import UserSkill
 
@@ -18,7 +18,8 @@ def profile_settings(request):
 
     user.gravatar_exists = has_gravatar(user.email)
 
-    SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None)
+    SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None,
+                                                       formset=BaseSkillFormSet)
     user_skills = UserSkill.objects.filter(user=user)
     skill_data = [{'skill': s.skill, 'proficiency': s.proficiency}
                     for s in user_skills]

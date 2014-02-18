@@ -64,14 +64,21 @@
                         {% for form in skill_formset %}
                             <div class="skill-formset">
                                 {{ form.skill }}
-                                {{ form.proficiency.errors }}
                                 <span class="divider">
                                     <i class="fa fa-arrows-h"></i>
                                 </span>
                                 {{ form.proficiency }}
-                                {{ form.proficiency.errors }}
                             </div>
                         {% endfor %}
+
+                        {% if skill_formset.non_form_errors %}
+                            <div>
+                                <span class="form-error">
+                                    {{ skill_formset.non_form_errors }}
+                                </span>
+                            </div>
+                        {% endif %}
+
                     </td>
                 </tr>
 
@@ -82,30 +89,18 @@
                         {% for form in link_formset %}
                             <div class="link-formset">
                                 {{ form.anchor }}
-
-                                {% if form.anchor.errors %}
-                                    <div class="form-error">
-                                        {{ form.anchor.errors }}
-                                    </div>
-                                {% endif %}
-
                                 <span class="divider">
                                     <i class="fa fa-arrows-h"></i>
                                 </span>
-
                                 {{ form.url }}
-
-                                {% if form.url.errors %}
-                                    <div class="form-error">
-                                        {{ form.url.errors }}
-                                    </div>
-                                {% endif %}
                             </div>
                         {% endfor %}
 
                         {% if link_formset.non_form_errors %}
-                            <div class="form-error">
-                                {{ link_formset.non_form_errors }}
+                            <div>
+                                <span class="form-error">
+                                    {{ link_formset.non_form_errors }}
+                                </span>
                             </div>
                         {% endif %}
                     </td>
