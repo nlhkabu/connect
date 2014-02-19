@@ -126,7 +126,7 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.first_name,
                                         widget=forms.TextInput(attrs={
-                                            'class' : 'name inactive',
+                                            'class' : 'account-input inactive',
                                             'placeholder': 'First Name',
                                         }))
 
@@ -134,7 +134,7 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.last_name,
                                         widget=forms.TextInput(attrs={
-                                            'class' : 'name inactive',
+                                            'class' : 'account-input inactive',
                                             'placeholder': 'Last Name',
                                         }),
                                         required=False)
@@ -154,3 +154,59 @@ class ProfileForm(forms.Form):
                                 queryset=preferences,
                                 widget=forms.CheckboxSelectMultiple(),
                                 required=False)
+
+
+class AccountSettingsForm(forms.Form):
+    """
+    Form for user to update their not publically viewable settings
+    """
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(AccountSettingsForm, self).__init__(*args, **kwargs)
+
+
+        self.fields['username'] = forms.CharField(
+                                        max_length=30,
+                                        initial = self.user.username,
+                                        widget=forms.TextInput(attrs={
+                                            'class' : 'account-input inactive',
+                                            'placeholder': 'Username',
+                                        }))
+
+        self.fields['email'] = forms.EmailField(
+                                        initial = self.user.email,
+                                        widget=forms.TextInput(attrs={
+                                            'class' : 'account-input inactive',
+                                            'placeholder': 'Email Address',
+                                        }),
+                                        required=False)
+
+        self.fields['reset_password'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'class' : 'account-input inactive pw',
+                                            'placeholder' : 'Password'
+                                        }),
+                                        required=False)
+
+        self.fields['reset_password_confirm'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'class' : 'account-input inactive',
+                                            'placeholder' : 'Confirm Password'
+                                        }),
+                                        required=False)
+
+    def clean(self):
+        """
+        Adds validation to ensure reset password and reset password confirm
+        are the same.
+        """
+        password1 = self.cleaned_data['reset_password']
+        password2 = self.cleaned_data['reset_password_confirm']
+
+        if password1:
+            if not password2:
+                raise forms.ValidationError("Please confirm your password")
+            if password1 != password2:
+                raise forms.ValidationError("Your passwords do not match")
+
+        return self.cleaned_data

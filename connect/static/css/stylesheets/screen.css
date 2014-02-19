@@ -2279,60 +2279,66 @@ table .button {
 }
 
 /* line 3, ../sass/pages/_profile_and_accounts.scss */
-.profile-wrapper {
+.account-wrapper {
   margin: 10px 0px 30px 30px;
 }
 
-/* line 9, ../sass/pages/_profile_and_accounts.scss */
-.profile-table td {
+/* line 10, ../sass/pages/_profile_and_accounts.scss */
+.profile-table td,
+.account-table td {
   padding: 15px 0;
   border-top: 1px solid #e0e0e0;
 }
 
-/* line 15, ../sass/pages/_profile_and_accounts.scss */
+/* line 16, ../sass/pages/_profile_and_accounts.scss */
 td.profile-heading {
   width: 25%;
   text-align: right;
 }
-/* line 19, ../sass/pages/_profile_and_accounts.scss */
+/* line 20, ../sass/pages/_profile_and_accounts.scss */
 td.profile-heading strong {
   padding-right: 25px;
   position: relative;
   top: 6px;
 }
 
-/* line 29, ../sass/pages/_profile_and_accounts.scss */
-input.name {
+/* line 30, ../sass/pages/_profile_and_accounts.scss */
+input.account-input {
   padding: 7px;
   margin: 0;
   border: 1px solid white;
 }
 
-/* line 35, ../sass/pages/_profile_and_accounts.scss */
-.name.inactive:hover {
+/* line 36, ../sass/pages/_profile_and_accounts.scss */
+input.pw {
+  margin-bottom: 10px;
+}
+
+/* line 40, ../sass/pages/_profile_and_accounts.scss */
+input.account-input.inactive:hover {
   border: 1px solid #d4d4d4;
   cursor: pointer;
   -webkit-box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
   box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
 }
 
-/* line 45, ../sass/pages/_profile_and_accounts.scss */
+/* line 50, ../sass/pages/_profile_and_accounts.scss */
 .bio {
   padding: 7px;
   margin: 0;
   border: 1px solid white;
   width: 95%;
 }
-/* line 51, ../sass/pages/_profile_and_accounts.scss */
+/* line 56, ../sass/pages/_profile_and_accounts.scss */
 .bio p:last-child {
   margin-bottom: 10px;
 }
 
-/* line 56, ../sass/pages/_profile_and_accounts.scss */
+/* line 61, ../sass/pages/_profile_and_accounts.scss */
 .bio.inactive {
   resize: none;
 }
-/* line 59, ../sass/pages/_profile_and_accounts.scss */
+/* line 64, ../sass/pages/_profile_and_accounts.scss */
 .bio.inactive:hover {
   border: 1px solid #d4d4d4;
   cursor: pointer;
@@ -2340,30 +2346,30 @@ input.name {
   box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
 }
 
-/* line 71, ../sass/pages/_profile_and_accounts.scss */
+/* line 76, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences ul {
   margin: 0;
 }
-/* line 74, ../sass/pages/_profile_and_accounts.scss */
+/* line 79, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences ul li {
   margin: 0;
   padding: 0;
 }
-/* line 80, ../sass/pages/_profile_and_accounts.scss */
+/* line 85, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label {
   padding: 7px 10px;
 }
-/* line 83, ../sass/pages/_profile_and_accounts.scss */
+/* line 88, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label span {
   color: #767676;
   padding-left: 5px;
 }
-/* line 88, ../sass/pages/_profile_and_accounts.scss */
+/* line 93, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label:hover {
   background-color: #f4f4f4;
 }
 
-/* line 101, ../sass/pages/_profile_and_accounts.scss */
+/* line 106, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills .skill-formset,
 .profile-skills .link-formset,
 .profile-links .skill-formset,
@@ -2371,7 +2377,7 @@ input.name {
   border-bottom: 1px dotted #d4d4d4;
   margin-bottom: 10px;
 }
-/* line 106, ../sass/pages/_profile_and_accounts.scss */
+/* line 111, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills .skill-formset select,
 .profile-skills .skill-formset input,
 .profile-skills .link-formset select,
@@ -2384,7 +2390,7 @@ input.name {
   margin-bottom: 10px;
   padding: 5px;
 }
-/* line 112, ../sass/pages/_profile_and_accounts.scss */
+/* line 117, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills .skill-formset .divider,
 .profile-skills .link-formset .divider,
 .profile-links .skill-formset .divider,
@@ -2392,7 +2398,7 @@ input.name {
   margin: 0 10px;
   color: #a5a5a5;
 }
-/* line 119, ../sass/pages/_profile_and_accounts.scss */
+/* line 124, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills a.add-row,
 .profile-skills a.delete-row,
 .profile-links a.add-row,
@@ -2400,13 +2406,13 @@ input.name {
   display: inline-block;
   font-size: 12px;
 }
-/* line 124, ../sass/pages/_profile_and_accounts.scss */
+/* line 129, ../sass/pages/_profile_and_accounts.scss */
 .profile-skills a.delete-row,
 .profile-links a.delete-row {
   margin-left: 15px;
 }
 
-/* line 132, ../sass/pages/_profile_and_accounts.scss */
+/* line 137, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .form-error {
   background-color: white;
   color: #e51e41;
@@ -2417,18 +2423,18 @@ input.name {
   webkit-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 142, ../sass/pages/_profile_and_accounts.scss */
+/* line 147, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .form-error ul {
   display: inline-block;
   margin: 0;
   padding: 0;
 }
-/* line 147, ../sass/pages/_profile_and_accounts.scss */
+/* line 152, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .form-error ul li {
   margin: 0;
   padding: 3px 7px 3px 0;
 }
-/* line 153, ../sass/pages/_profile_and_accounts.scss */
+/* line 158, ../sass/pages/_profile_and_accounts.scss */
 .profile-table .form-error .fa {
   margin: 0 2px 0 5px;
 }

@@ -1,10 +1,11 @@
-// PROFILE SETTINGS
+// MY ACCOUNT
 
-.profile-wrapper {
+.account-wrapper {
    margin: 10px 0px 30px 30px;
 }
 
-.profile-table {
+.profile-table,
+.account-table {
 
     td {
         padding: 15px 0;
@@ -24,15 +25,19 @@ td.profile-heading {
 }
 
 
-// NAME FIELDS
+// TEXTINPUT FIELDS
 
-input.name {
+input.account-input {
     padding: 7px;
     margin: 0;
     border:  1px solid $white;
 }
 
-.name.inactive:hover {
+input.pw {
+    margin-bottom: 10px;
+}
+
+input.account-input.inactive:hover {
     border: 1px solid $light-grey * .9;
     cursor: pointer;
     -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);

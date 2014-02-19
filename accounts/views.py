@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.forms.formsets import formset_factory
@@ -6,7 +7,8 @@ from django.shortcuts import redirect, render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
-from .forms import BaseLinkFormSet, BaseSkillFormSet, LinkForm, ProfileForm, SkillForm
+from .forms import (AccountSettingsForm ,BaseLinkFormSet, BaseSkillFormSet,
+                    LinkForm, ProfileForm, SkillForm)
 from .models import UserLink
 from skills.models import UserSkill
 
@@ -103,7 +105,30 @@ def account_settings(request):
     Allows a user to update their own accounts settings.
     """
     user = request.user
-    return render(request, 'accounts/account_settings.html')
+
+    if request.method == 'POST':
+        form = AccountSettingsForm(request.POST, user=user)
+
+        if form.is_valid():
+            user.username = form.cleaned_data['username']
+            user.email = form.cleaned_data['email']
+
+            new_pass = make_password(form.cleaned_data['reset_password'])
+            user.password = new_pass
+
+            user.save()
+
+            return redirect(reverse('accounts:account-settings'))
+
+    else:
+        form = AccountSettingsForm(user=user)
+
+
+    context = {
+        'form' : form,
+    }
+
+    return render(request, 'accounts/account_settings.html', context)
 
 
 @login_required

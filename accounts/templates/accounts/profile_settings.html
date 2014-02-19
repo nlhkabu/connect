@@ -1,15 +1,13 @@
 {% extends "accounts/settings_base.html" %}
 
 {% load staticfiles %}
-{% load gravatar %}
 
 {% block page_title %}Profile Settings{% endblock %}
 {% block profile_active %}active{% endblock %}
 
 {% block settings_content %}
 
-<div class="profile-wrapper">
-
+<div class="account-wrapper">
     <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -18,9 +16,7 @@
                 <tr>
                     <td class="profile-heading"><strong>First Name</strong></td>
                     <td>
-                        <div class="name">
-                            {{ form.first_name }}
-                        </div>
+                        {{ form.first_name }}
                         {% if form.first_name.errors %}
                             <div>
                                 <span class="form-error">
@@ -35,9 +31,7 @@
                 <tr>
                     <td class="profile-heading"><strong>Last Name</strong></td>
                     <td>
-                        <div class="name">
-                            {{ form.last_name }}
-                        </div>
+                        {{ form.last_name }}
                     </td>
                 </tr>
 
@@ -113,7 +107,6 @@
                         {% endif %}
                     </td>
                 </tr>
-
                 <tr>
                     <td></td>
                     <td>

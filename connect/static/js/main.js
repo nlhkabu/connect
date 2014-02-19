@@ -66,7 +66,7 @@ $(document).ready(function(){
     // ----------------
 
     // Enable fancy hover/focus CSS
-    $('.bio, .name').on('blur', function(){
+    $('.bio, .account-input').on('blur', function(){
         $(this).addClass('inactive');
     }).on('focus', function(){
         $(this).removeClass('inactive');
