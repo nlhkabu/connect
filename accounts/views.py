@@ -96,7 +96,7 @@ def profile_settings(request):
         'link_formset' : link_formset,
     }
 
-    return render(request, 'accounts/profile_settings.html', context)
+    return render(request, 'accounts/settings/profile_settings.html', context)
 
 
 @login_required
@@ -128,10 +128,28 @@ def account_settings(request):
         'form' : form,
     }
 
-    return render(request, 'accounts/account_settings.html', context)
+    return render(request, 'accounts/settings/account_settings.html', context)
 
 
 @login_required
-def moderators(request):
+def invite_member(request):
     context = ''
-    return render(request, 'accounts/moderators.html', context)
+    return render(request, 'accounts/moderators/invite_member.html', context)
+
+
+@login_required
+def review_applications(request):
+    context = ''
+    return render(request, 'accounts/moderators/review_applications.html', context)
+
+
+@login_required
+def review_abuse(request):
+    context = ''
+    return render(request, 'accounts/moderators/review_abuse.html', context)
+
+
+@login_required
+def logs(request):
+    context = ''
+    return render(request, 'accounts/moderators/logs.html', context)
