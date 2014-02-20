@@ -5,6 +5,26 @@
 
 
 {% block moderators_content %}
-    Invite a new member
+    <h3>Invite a New Member</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Invite New Member" class="button" />
+    </form>
+
+
+    <h3>Invitations pending activation</h3>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 
 {% endblock %}

@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
 from .forms import (AccountSettingsForm ,BaseLinkFormSet, BaseSkillFormSet,
-                    LinkForm, ProfileForm, SkillForm)
+                    InviteMemberForm, LinkForm, ProfileForm, SkillForm)
 from .models import UserLink
 from skills.models import UserSkill
 
@@ -133,7 +133,28 @@ def account_settings(request):
 
 @login_required
 def invite_member(request):
-    context = ''
+    """
+    Allows a moderator to invite a new member to the system.
+    """
+    moderator = request.user
+
+    if request.method == 'POST':
+        form = InviteMemberForm(request.POST)
+
+        if form.is_valid():
+            new_member_first_name = form.cleaned_data['first_name']
+            new_member_email = form.cleaned_data['email']
+            new_member_is_moderator = form.cleaned_data['is_moderator']
+
+            return redirect(reverse('accounts:moderators'))
+
+    else:
+        form = InviteMemberForm()
+
+    context = {
+        'form' : form,
+    }
+
     return render(request, 'accounts/moderators/invite_member.html', context)
 
 
