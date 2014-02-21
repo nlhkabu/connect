@@ -96,7 +96,7 @@ def profile_settings(request):
         'link_formset' : link_formset,
     }
 
-    return render(request, 'accounts/settings/profile_settings.html', context)
+    return render(request, 'accounts/profile_settings.html', context)
 
 
 @login_required
@@ -128,4 +128,4 @@ def account_settings(request):
         'form' : form,
     }
 
-    return render(request, 'accounts/settings/account_settings.html', context)
+    return render(request, 'accounts/account_settings.html', context)
