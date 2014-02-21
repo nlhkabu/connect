@@ -4,7 +4,7 @@
     <nav>
         <a href="{% url 'dashboard' %}" class="{% block dashboard_active %}{% endblock %}"><i class="fa fa-home"></i></a>
         {% if perms.accounts.access_moderators_page %}
-            <a href="{% url 'accounts:moderators' %}" class="{% block moderators_active %}{% endblock %}">Moderators</a>
+            <a href="{% url 'moderators:moderators' %}" class="{% block moderators_active %}{% endblock %}">Moderators</a>
         {% endif %}
         <a href="{% url 'accounts:profile-settings' %}" class="{% block myaccount_active %}{% endblock %}">My Account</a>
         <a href="{% url 'accounts:logout' %}">Logout</a>

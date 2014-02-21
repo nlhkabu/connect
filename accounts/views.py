@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
 from .forms import (AccountSettingsForm ,BaseLinkFormSet, BaseSkillFormSet,
-                    InviteMemberForm, LinkForm, ProfileForm, SkillForm)
+                    LinkForm, ProfileForm, SkillForm)
 from .models import UserLink
 from skills.models import UserSkill
 
@@ -129,48 +129,3 @@ def account_settings(request):
     }
 
     return render(request, 'accounts/settings/account_settings.html', context)
-
-
-@login_required
-def invite_member(request):
-    """
-    Allows a moderator to invite a new member to the system.
-    """
-    moderator = request.user
-
-    if request.method == 'POST':
-        form = InviteMemberForm(request.POST)
-
-        if form.is_valid():
-            new_member_first_name = form.cleaned_data['first_name']
-            new_member_email = form.cleaned_data['email']
-            new_member_is_moderator = form.cleaned_data['is_moderator']
-
-            return redirect(reverse('accounts:moderators'))
-
-    else:
-        form = InviteMemberForm()
-
-    context = {
-        'form' : form,
-    }
-
-    return render(request, 'accounts/moderators/invite_member.html', context)
-
-
-@login_required
-def review_applications(request):
-    context = ''
-    return render(request, 'accounts/moderators/review_applications.html', context)
-
-
-@login_required
-def review_abuse(request):
-    context = ''
-    return render(request, 'accounts/moderators/review_abuse.html', context)
-
-
-@login_required
-def logs(request):
-    context = ''
-    return render(request, 'accounts/moderators/logs.html', context)

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'discover.views.dashboard', name='dashboard'),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^moderators/', include('moderation.urls', namespace='moderators')),
     url(r'^dashboard/', include('discover.urls', namespace='discover')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #TODO: Remove for production

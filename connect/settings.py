@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django_gravatar',
     'connect',
     'accounts',
+    'moderation',
     'discover',
     'skills',
 )

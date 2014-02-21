@@ -210,12 +210,3 @@ class AccountSettingsForm(forms.Form):
                 raise forms.ValidationError("Your passwords do not match")
 
         return self.cleaned_data
-
-
-class InviteMemberForm(forms.Form):
-    """
-    Form for moderator to invite a new member
-    """
-    first_name = forms.CharField()
-    email = forms.EmailField()
-    is_moderator = forms.BooleanField()
