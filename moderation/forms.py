@@ -7,4 +7,3 @@ class InviteMemberForm(forms.Form):
     """
     first_name = forms.CharField()
     email = forms.EmailField()
-    is_moderator = forms.BooleanField()

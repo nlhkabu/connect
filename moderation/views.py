@@ -16,7 +16,6 @@ def invite_member(request):
         if form.is_valid():
             new_member_first_name = form.cleaned_data['first_name']
             new_member_email = form.cleaned_data['email']
-            new_member_is_moderator = form.cleaned_data['is_moderator']
 
             return redirect(reverse('moderators:moderators'))
 
