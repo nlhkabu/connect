@@ -1,7 +1,28 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, render
 
 from .forms import InviteMemberForm
+
+
+def create_username_from_email(email):
+    """
+    Cleans an email address to ensure it can be used as a
+    username with django.contrib.auth.models.User
+    """
+    allowed_chars = '_@+.-'
+    cleaned = ''
+
+    for char in email:
+        if char in allowed_chars or char.isalnum():
+            cleaned += char
+
+    if len(cleaned) > 30:
+        cleaned = cleaned[:30]
+
+    return cleaned
+
 
 @login_required
 def invite_member(request):
@@ -14,8 +35,16 @@ def invite_member(request):
         form = InviteMemberForm(request.POST)
 
         if form.is_valid():
-            new_member_first_name = form.cleaned_data['first_name']
-            new_member_email = form.cleaned_data['email']
+
+            email = form.cleaned_data['email']
+            username = create_username_from_email(email)
+            password = 'random'
+
+            user = User.objects.create_user(username, email, password)
+
+            user.is_active = False
+            user.set_unusable_password()
+            user.save()
 
             return redirect(reverse('moderators:moderators'))
 

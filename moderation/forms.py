@@ -5,5 +5,5 @@ class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member
     """
-    first_name = forms.CharField()
+    #first_name = forms.CharField()
     email = forms.EmailField()
