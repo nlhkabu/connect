@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 
 from .forms import InviteMemberForm
+from .utils import generate_html_email
 
 
 def create_username_from_email(email):
@@ -45,6 +47,30 @@ def invite_member(request):
             user.is_active = False
             user.set_unusable_password()
             user.save()
+
+
+            # Send invitation email to new user
+
+            # Render HTML email:
+            subject = 'Welcome to Connect' # TODO: Make site name
+            recipient = user
+
+            template_vars = {
+                'recipient': recipient,
+                'site_name': 'Connect', #TODO: Make site name
+                'activation_url': 'url here', #TODO: create key
+                'inviter': request.user,
+            }
+
+            email = generate_html_email(
+                subject,
+                'no-reply@urlnamehere.com', #TODO: Make site URL
+                [recipient.email],
+                'moderation/emails/invite_new_user.html',
+                template_vars,
+            )
+
+            email.send()
 
             return redirect(reverse('moderators:moderators'))
 

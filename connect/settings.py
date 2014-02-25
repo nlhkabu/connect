@@ -17,8 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'afyy22l20jsyd8w=zwvdzsv#ht&(+n%6whol2titnaj06+y-6b'
-#SECRET_KEY = os.environ['CONNECT_SECRET_KEY'] TODO
+SECRET_KEY = os.environ['CONNECT_SECRET_KEY'] # TODO: Reset for production
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,13 +91,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#~# Additional locations of static files
-#~STATICFILES_DIRS = (
-    #~# Put strings here, like "/home/html/static" or "C:/www/django/static".
-    #~# Always use forward slashes, even on Windows.
-    #~# Don't forget to use absolute paths, not relative paths.
-    #~os.path.join(BASE_DIR, 'static'),
-#~)
+# Additional locations of static files
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    #os.path.join(BASE_DIR, 'static'),
+)
 
 # Media files (user uploaded)
 
@@ -124,6 +123,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 BROWSERID_CREATE_USER = False
 
-SITE_URL = 'http://localhost:8000' #TODO: change for launch
+SITE_URL = 'http://localhost:8000' #TODO: change for production
 
 LOGIN_REDIRECT_URL = '/'
+
+
+# EMAIL
+EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
+EMAIL_PORT = os.environ['CONNECT_EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
