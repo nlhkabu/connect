@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django_browserid',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -104,10 +105,25 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# Authentication
-
-LOGIN_REDIRECT_URL = '/'
-
 # Gravatar Settings
 
 GRAVATAR_DEFAULT_IMAGE = 'retro'
+
+
+# Authentication (BrowserID)
+
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+   'django_browserid.auth.BrowserIDBackend',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django_browserid.context_processors.browserid',
+    'django.contrib.auth.context_processors.auth',
+)
+
+BROWSERID_CREATE_USER = False
+
+SITE_URL = 'http://localhost:8000' #TODO: change for launch
+
+LOGIN_REDIRECT_URL = '/'

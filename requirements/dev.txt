@@ -10,3 +10,4 @@ requests==2.1.0
 selenium==2.39.0
 six==1.5.2
 sqlparse==0.1.11
+git+https://github.com/mozilla/django-browserid/commit/5a0eee5c3e315daf603c821a90ccc5fa7d43a0c5
