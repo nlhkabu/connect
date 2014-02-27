@@ -13,6 +13,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     photo = models.ImageField(upload_to='homepage/image_links', blank=True)
     connect_preferences = models.ManyToManyField('ConnectPreference')
+    is_moderator = models.BooleanField(default=False)
 
     def get_skills(self):
         skills = self.user.skill_set.all()
@@ -23,12 +24,6 @@ class Profile(models.Model):
             skill.percentage = userskill.get_proficiency_percentage()
 
         return skills
-
-
-    class Meta:
-        permissions = (
-            ("access_moderators_page", "Can see the moderators page"),
-        )
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username

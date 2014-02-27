@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import UserRegistration
+
+class UserRegistrationInline(admin.StackedInline):
+    fk_name = 'user'
+    model = UserRegistration
+    can_delete = False
+    verbose_name = 'Registration Details'
+    verbose_name_plural = 'Registration Details'
+
+from django.contrib.auth.models import Permission
+admin.site.register(Permission)

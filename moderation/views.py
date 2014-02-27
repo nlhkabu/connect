@@ -3,8 +3,10 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
+from django.utils.timezone import now
 
 from .forms import InviteMemberForm
+from .models import UserRegistration
 from .utils import generate_html_email
 
 
@@ -42,12 +44,22 @@ def invite_member(request):
             username = create_username_from_email(email)
             password = 'random'
 
+            # Create unusable user
+
             user = User.objects.create_user(username, email, password)
 
             user.is_active = False
             user.set_unusable_password()
             user.save()
 
+            # Log invitation details against user
+
+            user_registration = UserRegistration.objects.create(
+                user=user,
+                method=UserRegistration.INVITED,
+                moderator=moderator,
+                approved_datetime=now()
+            )
 
             # Send invitation email to new user
 
@@ -72,10 +84,16 @@ def invite_member(request):
 
             email.send()
 
+
+
             return redirect(reverse('moderators:moderators'))
 
     else:
         form = InviteMemberForm()
+
+
+    # Show pending invitations
+
 
     context = {
         'form' : form,
