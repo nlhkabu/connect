@@ -1,3 +1,5 @@
+import random, string
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
@@ -16,16 +18,27 @@ def create_username_from_email(email):
     """
     Cleans an email address to ensure it can be used as a
     username with django.contrib.auth.models.User
+
+    To be used as a temporary username until a user
+    confirms their registration.
     """
-    allowed_chars = '_@+.-'
     cleaned = ''
+
+    # Clean email address
+    allowed_chars = '_@+.-'
 
     for char in email:
         if char in allowed_chars or char.isalnum():
             cleaned += char
 
-    if len(cleaned) > 30:
-        cleaned = cleaned[:30]
+    if len(cleaned) > 22:
+        cleaned = cleaned[:22]
+
+    # Add random characters for if two emails are very similar
+    r = random.SystemRandom()
+    length = 7
+    alphabet = string.ascii_letters + string.digits
+    cleaned = cleaned +'_'+ str().join(r.choice(alphabet) for i in range(length))
 
     return cleaned
 
