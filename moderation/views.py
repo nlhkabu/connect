@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.sites.models import get_current_site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 from django.utils.timezone import now
+
 
 from .forms import InviteMemberForm
 from .models import UserRegistration
@@ -34,6 +36,7 @@ def invite_member(request):
     Allows a moderator to invite a new member to the system.
     """
     moderator = request.user
+    site = get_current_site(request)
 
     if request.method == 'POST':
         form = InviteMemberForm(request.POST)
@@ -69,7 +72,7 @@ def invite_member(request):
 
             template_vars = {
                 'recipient': recipient,
-                'site_name': 'Connect', #TODO: Make site name
+                'site_name': site.name,
                 'activation_url': 'url here', #TODO: create key
                 'inviter': request.user,
             }
