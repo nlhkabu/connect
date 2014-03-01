@@ -26,14 +26,23 @@ def hash_time():
     for pos in [-22, -8]:
         hashed += (crypt.crypt(str(time.time()), salt)[pos:].replace('/', '0')
                                                             .replace('.', '0'))
-
     return hashed
+
+
+def create_token(user):
+    """
+    Create an authentication token for a user to activate their account.
+    """
+
+
+    return '123456'
+
 
 
 @login_required
 def invite_member(request):
     """
-    Allows a moderator to invite a new member to the system.
+    Allow a moderator to invite a new member to the system.
     """
     moderator = request.user
     site = get_current_site(request)
@@ -49,31 +58,33 @@ def invite_member(request):
 
             if email not in user_emails:
 
-                # Create user with unusable password
+                # Create inactive user with unusable password
                 user = User.objects.create_user(username, email)
-
                 user.is_active = False
+
                 user.save()
 
                 # Log invitation details against user
-
                 user_registration = UserRegistration.objects.create(
                     user=user,
                     method=UserRegistration.INVITED,
                     moderator=moderator,
-                    approved_datetime=now()
+                    approved_datetime=now(),
+                    auth_token = create_token(user) # generate auth token
                 )
 
-                # Send invitation email to new user
+                # TODO: Log invitation in moderation logs
 
-                # Render HTML email:
+
+                # Send invitation email to new user
                 subject = 'Welcome to '+ site.name
                 recipient = user
 
                 template_vars = {
                     'recipient': recipient,
                     'site_name': site.name,
-                    'activation_url': 'url here', #TODO: create key
+                    'activation_url': '{}/{}'.format(settings.SITE_URL,
+                                            user.userregistration.auth_token),
                     'inviter': request.user,
                 }
 

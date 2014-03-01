@@ -21,6 +21,10 @@ class UserRegistration(models.Model):
                 limit_choices_to={'profile__is_moderator': True},
                 help_text='Moderator who has invited or approved this user')
     approved_datetime = models.DateTimeField()
+    auth_token = models.CharField(max_length=40,
+                                  verbose_name='Authetication token')
+    auth_token_is_used = models.BooleanField(default=False,
+                                             verbose_name='Token is used')
 
     class Meta:
         permissions = (
