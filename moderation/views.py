@@ -1,8 +1,9 @@
-import random, string
+import crypt, time
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
+from django.conf import settings
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
@@ -14,33 +15,20 @@ from .models import UserRegistration
 from .utils import generate_html_email
 
 
-def create_username_from_email(email):
+def hash_time():
     """
-    Cleans an email address to ensure it can be used as a
-    username with django.contrib.auth.models.User
-
-    To be used as a temporary username until a user
-    confirms their registration.
+    Return a unique 30 character string based on the
+    current timestamp. The returned string will consist
+    of alphanumeric characters (A-Z, a-z, 0-9) only.
     """
-    cleaned = ''
+    hashed = ''
+    salt = '$1$O2xqbWD9'
 
-    # Clean email address
-    allowed_chars = '_@+.-'
+    for pos in [-22, -8]:
+        hashed += crypt.crypt(str(time.time()), salt)[pos:].replace('/', '0').replace('.', '0')
 
-    for char in email:
-        if char in allowed_chars or char.isalnum():
-            cleaned += char
+    return hashed
 
-    if len(cleaned) > 22:
-        cleaned = cleaned[:22]
-
-    # Add random characters for if two emails are very similar
-    r = random.SystemRandom()
-    length = 7
-    alphabet = string.ascii_letters + string.digits
-    cleaned = cleaned +'_'+ str().join(r.choice(alphabet) for i in range(length))
-
-    return cleaned
 
 
 @login_required
@@ -57,48 +45,49 @@ def invite_member(request):
         if form.is_valid():
 
             email = form.cleaned_data['email']
-            username = create_username_from_email(email)
-            password = 'random'
+            username = hash_time()
+            user_emails = [user.email for user in User.objects.all() if user.email]
 
-            # Create unusable user
 
-            user = User.objects.create_user(username, email, password)
+            if email not in user_emails:
 
-            user.is_active = False
-            user.set_unusable_password()
-            user.save()
+                # Create user with unusable password
+                user = User.objects.create_user(username, email)
 
-            # Log invitation details against user
+                user.is_active = False
+                user.save()
 
-            user_registration = UserRegistration.objects.create(
-                user=user,
-                method=UserRegistration.INVITED,
-                moderator=moderator,
-                approved_datetime=now()
-            )
+                # Log invitation details against user
 
-            # Send invitation email to new user
+                user_registration = UserRegistration.objects.create(
+                    user=user,
+                    method=UserRegistration.INVITED,
+                    moderator=moderator,
+                    approved_datetime=now()
+                )
 
-            # Render HTML email:
-            subject = 'Welcome to Connect' # TODO: Make site name
-            recipient = user
+                # Send invitation email to new user
 
-            template_vars = {
-                'recipient': recipient,
-                'site_name': site.name,
-                'activation_url': 'url here', #TODO: create key
-                'inviter': request.user,
-            }
+                # Render HTML email:
+                subject = 'Welcome to '+ site.name
+                recipient = user
 
-            email = generate_html_email(
-                subject,
-                'no-reply@urlnamehere.com', #TODO: Make site URL
-                [recipient.email],
-                'moderation/emails/invite_new_user.html',
-                template_vars,
-            )
+                template_vars = {
+                    'recipient': recipient,
+                    'site_name': site.name,
+                    'activation_url': 'url here', #TODO: create key
+                    'inviter': request.user,
+                }
 
-            email.send()
+                email = generate_html_email(
+                    subject,
+                    settings.EMAIL_HOST_USER,
+                    [recipient.email],
+                    'moderation/emails/invite_new_user.html',
+                    template_vars,
+                )
+
+                email.send()
 
 
 

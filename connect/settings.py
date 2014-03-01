@@ -8,16 +8,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-# SITE SETTINGS
-
-SITE_ID = 1
-SITE_URL = 'http://localhost:8000' #TODO: change for production
-
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -133,7 +126,13 @@ BROWSERID_CREATE_USER = False
 LOGIN_REDIRECT_URL = '/'
 
 
-# EMAIL
+# SITE SETTINGS
+
+SITE_ID = 1
+SITE_URL = 'http://localhost:8000' #TODO: change for production
+
+# Set 'from' email address for system emails
+
 EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
 EMAIL_PORT = os.environ['CONNECT_EMAIL_PORT']
 EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
