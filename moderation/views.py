@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 from django.utils.timezone import now
 
-
 from .forms import InviteMemberForm
 from .models import UserRegistration
 from .utils import generate_html_email
@@ -25,10 +24,10 @@ def hash_time():
     salt = '$1$O2xqbWD9'
 
     for pos in [-22, -8]:
-        hashed += crypt.crypt(str(time.time()), salt)[pos:].replace('/', '0').replace('.', '0')
+        hashed += (crypt.crypt(str(time.time()), salt)[pos:].replace('/', '0')
+                                                            .replace('.', '0'))
 
     return hashed
-
 
 
 @login_required
@@ -47,7 +46,6 @@ def invite_member(request):
             email = form.cleaned_data['email']
             username = hash_time()
             user_emails = [user.email for user in User.objects.all() if user.email]
-
 
             if email not in user_emails:
 
@@ -89,19 +87,21 @@ def invite_member(request):
 
                 email.send()
 
-
-
             return redirect(reverse('moderators:moderators'))
 
     else:
         form = InviteMemberForm()
 
-
     # Show pending invitations
+    # i.e if users are not active AND have not set their passwords
+    pending = User.objects.filter(userregistration__moderator=moderator,
+                                  is_active=False)
 
+    pending = [user for user in pending if not user.has_usable_password()]
 
     context = {
         'form' : form,
+        'pending' : pending,
     }
 
     return render(request, 'moderation/invite_member.html', context)
