@@ -1,12 +1,56 @@
 # Connect
 
-Custom app to help PyLadies connect with each other based on location, python ability and python interests.
+Connect helps individuals connect with each other based on location, skills and interests.
+Originally made for PyLadies - connect was built so that users can connect based on Python skills, interests and location.
 
-# Font Awesome
+##  Demo
 
-Integrated with Font Awesome v4.0.3
+TODO: Demo URL here
 
-## What's with functional tests?
+## Setting up connect for your group or organisation
+
+### settings.py
+
+Configure the following:
+
+-  SITE_ID
+-  SITE_URL
+-  EMAIL_HOST
+-  EMAIL_PORT
+-  EMAIL_HOST_USER
+-  EMAIL_HOST_PASSWORD
+-  EMAIL_USE_TLS
+
+### Setting up the DB / Django Admin
+
+#### Accounts: Brands
+
+#### Accounts: Preferences
+
+#### Auth: Groups
+
+#### Auth: Permissions
+
+#### Auth: Users
+
+#### Sites: Site
+
+#### Skills: Skills
+
+
+### Customising colours
+
+Connect is built with SCSS.  You can change the default pink highlight
+color by editing the $highlight variable at the top of _site_settings.scss
+
+
+## Misc.
+
+### Font Awesome
+
+Connect is currently integrated with Font Awesome v4.0.3
+
+### What's with functional tests?
 
 As a newcomer to Django, I wanted to get into the habit of writing tests before code, but couldn't quite face the prospect of learning to code tests too.
 
