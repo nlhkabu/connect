@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserRegistration
+from .models import UserRegistration, ModerationLogMsg
 
 class UserRegistrationInline(admin.StackedInline):
     fk_name = 'user'
@@ -11,3 +11,5 @@ class UserRegistrationInline(admin.StackedInline):
 
 from django.contrib.auth.models import Permission
 admin.site.register(Permission)
+
+admin.site.register(ModerationLogMsg)

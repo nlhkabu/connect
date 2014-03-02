@@ -13,28 +13,30 @@
     </form>
 
 
-    <h3>Invitations pending activation</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Email Address</th>
-                <th>Date Invited</th>
-                <th>Actions</th>
+    {% if pending %}
+        <h3>Invitations pending activation</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Email Address</th>
+                    <th>Date Invited</th>
+                    <th>Actions</th>
 
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in pending %}
-            <tr>
-                <td>{{ user.email }}</td>
-                <td>{{ user.date_joined }}</td>
-                <td>
-                    <a href="#"><i class="fa fa-envelope-o"></i> Resend Invitation</a><br/>
-                    <a href="#"><i class="fa fa-trash-o"></i> Revoke Invitation</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in pending %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.date_joined }}</td>
+                    <td>
+                        <a href="#"><i class="fa fa-envelope-o"></i> Resend Invitation</a><br/>
+                        <a href="#"><i class="fa fa-trash-o"></i> Revoke Invitation</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
 {% endblock %}

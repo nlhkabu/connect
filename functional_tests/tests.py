@@ -99,7 +99,6 @@ class MemberVisitTest(LiveServerTestCase):
 # Her skills and how proficient she is at each one
 # Her links
 
-
 # Sam updates her first name and clicks 'save preferences'
 # When the page reloads, her updated name appears.
 
@@ -175,7 +174,7 @@ class MemberVisitTest(LiveServerTestCase):
 # the link anchor text must be unique.
 
 # She changes the anchor to 'My Other Facebook Page' and the form submits as
-# expected
+# expected.
 
 # Sam wants to add her second github account.
 # She adds another link - 'My Second Github account', 'http://github.com/sam'
@@ -197,10 +196,12 @@ class MemberVisitTest(LiveServerTestCase):
 # The form submits as expected.
 
 
-
-
+## ACCOUNT SETTINGS
 # She notices a link on the left hand side for her 'account settings'
+
 # When she clicks on this she sees a page with:
 # Her Username
 # Her password (as bullets)
 # Her email address
+
+

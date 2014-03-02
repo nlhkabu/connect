@@ -10,7 +10,7 @@ from django.shortcuts import redirect, render
 from django.utils.timezone import now
 
 from .forms import InviteMemberForm
-from .models import UserRegistration
+from .models import UserRegistration, ModerationLogMsg
 from .utils import generate_html_email
 
 
@@ -52,6 +52,8 @@ def invite_member(request):
 
         if form.is_valid():
 
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             username = hash_time()
             user_emails = [user.email for user in User.objects.all() if user.email]
@@ -59,33 +61,44 @@ def invite_member(request):
             if email not in user_emails:
 
                 # Create inactive user with unusable password
-                user = User.objects.create_user(username, email)
-                user.is_active = False
+                new_user = User.objects.create_user(username, email)
 
-                user.save()
+                new_user.is_active = False
+                new_user.first_name = first_name
+                new_user.last_name = last_name
 
-                # Log invitation details against user
+                new_user.save()
+
+                # Add user registration details
                 user_registration = UserRegistration.objects.create(
-                    user=user,
+                    user=new_user,
                     method=UserRegistration.INVITED,
                     moderator=moderator,
                     approved_datetime=now(),
-                    auth_token = create_token(user) # generate auth token
+                    auth_token = create_token(new_user) # generate auth token
                 )
 
-                # TODO: Log invitation in moderation logs
-
+                # Log invitation in moderation logs
+                log = ModerationLogMsg.objects.create(
+                    msg_type=ModerationLogMsg.INVITATION,
+                    comment='{} invited by {}'.format(
+                        new_user.get_full_name(),
+                        moderator.get_full_name()
+                    ),
+                    pertains_to=new_user,
+                    logged_by=moderator
+                )
 
                 # Send invitation email to new user
                 subject = 'Welcome to '+ site.name
-                recipient = user
+                recipient = new_user
 
                 template_vars = {
                     'recipient': recipient,
                     'site_name': site.name,
                     'activation_url': '{}/{}'.format(settings.SITE_URL,
-                                            user.userregistration.auth_token),
-                    'inviter': request.user,
+                                            user_registration.auth_token),
+                    'inviter': moderator,
                 }
 
                 email = generate_html_email(
@@ -106,9 +119,8 @@ def invite_member(request):
     # Show pending invitations
     # i.e if users are not active AND have not set their passwords
     pending = User.objects.filter(userregistration__moderator=moderator,
+                                  userregistration__auth_token_is_used=False,
                                   is_active=False)
-
-    pending = [user for user in pending if not user.has_usable_password()]
 
     context = {
         'form' : form,
@@ -131,6 +143,9 @@ def review_abuse(request):
 
 
 @login_required
-def logs(request):
-    context = ''
+def view_logs(request):
+
+    logs = ModerationLogMsg.objects.all()
+
+    context = {'logs': logs }
     return render(request, 'moderation/logs.html', context)

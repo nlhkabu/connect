@@ -5,6 +5,31 @@
 
 
 {% block moderators_content %}
-    View Logs
+    <h2>View Log</h2>
+
+    {% if logs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Date / Time</th>
+                    <th>Type</th>
+                    <th>Comment</th>
+                    <th>Logged against (user)</th>
+                    <th>Logged by (moderator)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.msg_datetime }}</td>
+                        <td>{{ log.get_msg_type_display }}</td>
+                        <td>{{ log.comment }}</td>
+                        <td>{{ log.pertains_to.get_full_name }}</td>
+                        <td>{{ log.logged_by.get_full_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
 {% endblock %}

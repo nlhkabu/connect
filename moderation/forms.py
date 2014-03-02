@@ -6,6 +6,8 @@ class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member.
     """
+    first_name = forms.CharField(max_length=40)
+    last_name = forms.CharField(max_length=40)
     email = forms.EmailField()
 
     def clean(self):
