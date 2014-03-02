@@ -30,7 +30,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <a href="#"><i class="fa fa-envelope-o"></i> Resend Invitation</a><br/>
+                        <a href="{% url 'moderators:resend-invitation' user.id %}"><i class="fa fa-envelope-o"></i> Resend Invitation</a><br/>
                         <a href="#"><i class="fa fa-trash-o"></i> Revoke Invitation</a>
                     </td>
                 </tr>

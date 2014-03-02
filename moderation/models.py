@@ -43,6 +43,7 @@ class ModerationLogMsg(models.Model):
     """
 
     INVITATION = 'INVITATION'
+    REINVITATION = 'REINVITATION'
     REVOCATION = 'REVOCATION'
     APPROVAL = 'APPROVAL'
     REJECTION = 'REJECTION'
@@ -50,6 +51,7 @@ class ModerationLogMsg(models.Model):
 
     MSG_TYPE_CHOICES = (
         (INVITATION, 'Invitation'),
+        (REINVITATION, 'Reivitation'),
         (REVOCATION, 'Revocation'),
         (APPROVAL, 'Approval'),
         (REJECTION, 'Rejection'),

@@ -6,7 +6,7 @@ from django.contrib.sites.models import get_current_site
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
 from .forms import InviteMemberForm
@@ -33,10 +33,8 @@ def create_token(user):
     """
     Create an authentication token for a user to activate their account.
     """
-
-
+    #TODO: Generate token here
     return '123456'
-
 
 
 @login_required
@@ -81,23 +79,23 @@ def invite_member(request):
                 # Log invitation in moderation logs
                 log = ModerationLogMsg.objects.create(
                     msg_type=ModerationLogMsg.INVITATION,
-                    comment='{} invited by {}'.format(
-                        new_user.get_full_name(),
-                        moderator.get_full_name()
+                    comment='{} invited {}'.format(
+                        moderator.get_full_name(),
+                        new_user.get_full_name()
                     ),
                     pertains_to=new_user,
                     logged_by=moderator
                 )
 
                 # Send invitation email to new user
-                subject = 'Welcome to '+ site.name
+                subject = 'Welcome to {}'.format(site.name)
                 recipient = new_user
+                token = user_registration.auth_token
 
                 template_vars = {
                     'recipient': recipient,
                     'site_name': site.name,
-                    'activation_url': '{}/{}'.format(settings.SITE_URL,
-                                            user_registration.auth_token),
+                    'activation_url': token,
                     'inviter': moderator,
                 }
 
@@ -117,7 +115,6 @@ def invite_member(request):
         form = InviteMemberForm()
 
     # Show pending invitations
-    # i.e if users are not active AND have not set their passwords
     pending = User.objects.filter(userregistration__moderator=moderator,
                                   userregistration__auth_token_is_used=False,
                                   is_active=False)
@@ -128,6 +125,55 @@ def invite_member(request):
     }
 
     return render(request, 'moderation/invite_member.html', context)
+
+
+
+@login_required
+def resend_invitation(request, user_id):
+    """
+    Allow a moderator to resend a membership application.
+    """
+    new_user = get_object_or_404(User, pk=user_id)
+    moderator = request.user
+    site = get_current_site(request)
+    token = new_user.userregistration.auth_token
+
+    # Resend invitation email to new user
+    subject = 'Activate your {} account'.format(site.name)
+    recipient = new_user
+
+    template_vars = {
+        'recipient': recipient,
+        'site_name': site.name,
+        'activation_url': token,
+        'inviter': moderator,
+    }
+
+    email = generate_html_email(
+        subject,
+        settings.EMAIL_HOST_USER,
+        [recipient.email],
+        'moderation/emails/resend_invitation_to_new_user.html',
+        template_vars,
+    )
+
+    email.send()
+
+    # Update Approval datetime on user's registration
+    new_user.userregistration.approved_datetime = now()
+
+    # Log invitation in moderation logs
+    log = ModerationLogMsg.objects.create(
+        msg_type=ModerationLogMsg.REINVITATION,
+        comment='{} resent invitation to {}'.format(
+            moderator.get_full_name(),
+            new_user.get_full_name()
+        ),
+        pertains_to=new_user,
+        logged_by=moderator
+    )
+
+    return redirect(reverse('moderators:moderators'))
 
 
 @login_required

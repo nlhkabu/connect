@@ -21,5 +21,3 @@ class InviteMemberForm(forms.Form):
             raise forms.ValidationError("Sorry, this email address is already registered")
 
         return self.cleaned_data
-
-
