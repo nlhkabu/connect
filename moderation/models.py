@@ -64,7 +64,8 @@ class ModerationLogMsg(models.Model):
     logged_by = models.ForeignKey(User, related_name='log_messages_by')
 
     class Meta:
-        verbose_name = 'Moderation Log'
+        verbose_name = 'Log Entry'
+        verbose_name_plural = 'Log Entries'
 
     def __str__(self):
         return '{}: {}'.format(self.get_msg_type_display(),

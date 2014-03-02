@@ -33,7 +33,7 @@ def create_token(user):
     """
     Create an authentication token for a user to activate their account.
     """
-    #TODO: Generate token here
+    #TODO: Generate token/invitation URL here
     return '123456'
 
 
@@ -131,47 +131,80 @@ def invite_member(request):
 @login_required
 def resend_invitation(request, user_id):
     """
-    Allow a moderator to resend a membership application.
+    Allow a moderator to resend a membership invitation.
     """
     new_user = get_object_or_404(User, pk=user_id)
     moderator = request.user
     site = get_current_site(request)
     token = new_user.userregistration.auth_token
 
-    # Resend invitation email to new user
-    subject = 'Activate your {} account'.format(site.name)
-    recipient = new_user
+    # Reconfirm email address
 
-    template_vars = {
-        'recipient': recipient,
-        'site_name': site.name,
-        'activation_url': token,
-        'inviter': moderator,
-    }
+    if not new_user.userregistration.auth_token_is_used:
 
-    email = generate_html_email(
-        subject,
-        settings.EMAIL_HOST_USER,
-        [recipient.email],
-        'moderation/emails/resend_invitation_to_new_user.html',
-        template_vars,
-    )
+        # Resend invitation email to new user
+        subject = 'Activate your {} account'.format(site.name)
+        recipient = new_user
 
-    email.send()
+        template_vars = {
+            'recipient': recipient,
+            'site_name': site.name,
+            'activation_url': token,
+            'inviter': moderator,
+        }
 
-    # Update Approval datetime on user's registration
-    new_user.userregistration.approved_datetime = now()
+        email = generate_html_email(
+            subject,
+            settings.EMAIL_HOST_USER,
+            [recipient.email],
+            'moderation/emails/resend_invitation_to_new_user.html',
+            template_vars,
+        )
 
-    # Log invitation in moderation logs
-    log = ModerationLogMsg.objects.create(
-        msg_type=ModerationLogMsg.REINVITATION,
-        comment='{} resent invitation to {}'.format(
-            moderator.get_full_name(),
-            new_user.get_full_name()
-        ),
-        pertains_to=new_user,
-        logged_by=moderator
-    )
+        email.send()
+
+        # Update Approval datetime on user's registration
+        new_user.userregistration.approved_datetime = now()
+
+        # Log invitation in moderation logs
+        log = ModerationLogMsg.objects.create(
+            msg_type=ModerationLogMsg.REINVITATION,
+            comment='{} resent invitation to {}'.format(
+                moderator.get_full_name(),
+                new_user.get_full_name()
+            ),
+            pertains_to=new_user,
+            logged_by=moderator
+        )
+
+    return redirect(reverse('moderators:moderators'))
+
+
+@login_required
+def revoke_invitation(request, user_id):
+    """
+    Allow a moderator to revoke a membership invitation.
+    """
+    new_user = get_object_or_404(User, pk=user_id)
+    moderator = request.user
+
+    if not new_user.userregistration.auth_token_is_used:
+
+        # Remove invitation token and other information
+        new_user.userregistration.delete()
+
+        # Require moderator to comment
+
+        # Log revocation in moderation logs
+        log = ModerationLogMsg.objects.create(
+            msg_type=ModerationLogMsg.REVOCATION,
+            comment='{} revoked invitation for {}'.format(
+                moderator.get_full_name(),
+                new_user.get_full_name()
+            ),
+            pertains_to=new_user,
+            logged_by=moderator
+        )
 
     return redirect(reverse('moderators:moderators'))
 
