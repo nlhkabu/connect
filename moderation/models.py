@@ -51,10 +51,10 @@ class ModerationLogMsg(models.Model):
 
     MSG_TYPE_CHOICES = (
         (INVITATION, 'Invitation'),
-        (REINVITATION, 'Reivitation'),
-        (REVOCATION, 'Revocation'),
-        (APPROVAL, 'Approval'),
-        (REJECTION, 'Rejection'),
+        (REINVITATION, 'Invitation Resent'),
+        (REVOCATION, 'Invitation Revoked'),
+        (APPROVAL, 'Application Approved'),
+        (REJECTION, 'Application Rejected'),
     )
 
     msg_datetime = models.DateTimeField(auto_now_add=True)

@@ -8,9 +8,12 @@
     <h3>Invite a New Member</h3>
     <form action="" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ invitation_form.as_p }}
         <input type="submit" value="Invite New Member" class="button" />
     </form>
+
+    <hr/>
+
 
 
     {% if pending %}
@@ -30,8 +33,22 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <a href="{% url 'moderators:resend-invitation' user.id %}"><i class="fa fa-envelope-o"></i> Resend Invitation</a><br/>
-                        <a href="{% url 'moderators:revoke-invitation' user.id %}"><i class="fa fa-trash-o"></i> Revoke Invitation</a>
+                        <a href="#"><i class="fa fa-envelope-o"></i> Resend / Edit Invitation</a><br/>
+                        <a href="#"><i class="fa fa-trash-o"></i> Revoke Invitation</a>
+
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ user.reinvitation_form.as_p }}
+                            <input type="submit" value="Resend Invitation" class="button" />
+                        </form>
+
+                        <hr/>
+
+                         <form action="" method="post">
+                            {% csrf_token %}
+                            {{ user.revocation_form.as_p }}
+                            <input type="submit" value="Revoke Invitation" class="button" />
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

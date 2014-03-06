@@ -12,7 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'discover.views.dashboard', name='dashboard'),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-    url(r'^moderators/', include('moderation.urls', namespace='moderators')),
+    url(r'^moderators/', include('moderation.urls', namespace='moderation')),
     url(r'^dashboard/', include('discover.urls', namespace='discover')),
 
     url(r'^browserid/', include('django_browserid.urls')),

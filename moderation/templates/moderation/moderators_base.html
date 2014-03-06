@@ -7,10 +7,10 @@
         <div class="four columns alpha">
             <ul class="sidebar-menu">
 
-                <li><a href="{% url 'moderators:moderators' %}" class="{% block invite_member_active %}{% endblock %}">Invite a New Member</a></li>
-                <li><a href="{% url 'moderators:review-applications' %}" class="{% block review_member_active %}{% endblock %}">Review Membership Applications</a></li>
-                <li><a href="{% url 'moderators:review-abuse' %}" class="{% block review_abuse_active %}{% endblock %}">Review Abuse Reports</a></li>
-                <li><a href="{% url 'moderators:logs' %}" class="{% block logs_active %}{% endblock %}">View Logs</a></li>
+                <li><a href="{% url 'moderation:moderators' %}" class="{% block invite_member_active %}{% endblock %}">Invite a New Member</a></li>
+                <li><a href="{% url 'moderation:review-applications' %}" class="{% block review_member_active %}{% endblock %}">Review Membership Applications</a></li>
+                <li><a href="{% url 'moderation:review-abuse' %}" class="{% block review_abuse_active %}{% endblock %}">Review Abuse Reports</a></li>
+                <li><a href="{% url 'moderation:logs' %}" class="{% block logs_active %}{% endblock %}">View Logs</a></li>
             </ul>
         </div>
 
