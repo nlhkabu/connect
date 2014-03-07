@@ -7,4 +7,43 @@
 {% block moderators_content %}
     Review Membership Applications
 
+    {% if pending %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email Address</th>
+                    <th>Date Requested</th>
+                    <th>Application Comments</th>
+                    <th>Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in pending %}
+                <tr>
+                    <td>{{ user.get_full_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.userregistration.applied_datetime }}</td>
+                    <td>{{ user.userregistration.application_comments }}</td>
+                    <td>
+                        <a href="#"><i class="fa fa-check"></i> Approve</a><br/>
+                        <a href="#"><i class="fa fa-times"></i> Deny</a>
+
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ user.approval_form.as_p }}
+                            <input type="submit" value="Approve User Application" class="button" />
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="">
+            <h4>No pending membership applications</h4>
+        </div>
+    {% endif %}
+
 {% endblock %}

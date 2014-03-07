@@ -1,0 +1,16 @@
+{% extends 'moderation/emails/email_base.html' %}
+{% autoescape off %}
+
+{% block email_content %}
+    <p>You have been sent this email as a new account has been created for you at {{ site_name }}.</p>
+    <p>To activate this account, please click on the following link (or copy it into a web browser):</p>
+    <p>
+        <a href="{{ activation_url }}">{{ activation_url }}</a>
+    </p>
+{% endblock %}
+
+{% block email_footer %}
+    You received this email because {{ inviter.first_name }}{% if invite.last_name %} {{ inviter.last_name }}{% endif %} has approved your application for  a new {{ site_name }} account.
+{% endblock %}
+
+{% endautoescape %}

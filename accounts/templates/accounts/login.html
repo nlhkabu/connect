@@ -47,6 +47,12 @@
 {% endblock %}
 
 
+{% block content %}
+    <div class="container">
+        <a href="{% url 'moderation:request-invitation' %}">Request an account</a>
+    </div>
+{% endblock %}
+
 {% block extra_js %}
     {% browserid_js %}
 {% endblock %}

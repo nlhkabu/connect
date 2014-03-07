@@ -18,11 +18,16 @@ class UserRegistration(models.Model):
     user = models.OneToOneField(User)
     method = models.CharField(max_length=20, choices=REGISTRATION_CHOICES)
     moderator = models.ForeignKey(User,
+                blank=True,
+                null=True,
                 related_name='inviter',
                 limit_choices_to={'profile__is_moderator': True},
                 help_text='Moderator who has invited or approved this user')
-    approved_datetime = models.DateTimeField()
+    applied_datetime = models.DateTimeField(blank=True, null=True)
+    application_comments = models.TextField(blank=True)
+    approved_datetime = models.DateTimeField(blank=True, null=True)
     auth_token = models.CharField(max_length=40,
+                                  blank=True,
                                   verbose_name='Authetication token')
     auth_token_is_used = models.BooleanField(default=False,
                                              verbose_name='Token is used')

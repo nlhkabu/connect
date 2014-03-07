@@ -14,13 +14,12 @@
 
     <hr/>
 
-
-
     {% if pending %}
         <h3>Invitations pending activation</h3>
         <table>
             <thead>
                 <tr>
+                    <th>Name</th>
                     <th>Email Address</th>
                     <th>Date Invited</th>
                     <th>Actions</th>
@@ -30,6 +29,7 @@
             <tbody>
                 {% for user in pending %}
                 <tr>
+                    <td>{{ user.get_full_name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
