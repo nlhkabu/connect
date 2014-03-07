@@ -32,6 +32,14 @@
                     <td class="profile-heading"><strong>Last Name</strong></td>
                     <td>
                         {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div>
+                                <span class="form-error">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    {{ form.last_name.errors }}
+                                </span>
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
 

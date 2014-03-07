@@ -27,6 +27,14 @@
                     <td class="profile-heading"><strong>Email Address</strong></td>
                     <td>
                         {{ form.email }}
+                        {% if form.email.errors %}
+                            <div>
+                                <span class="form-error">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    {{ form.email.errors }}
+                                </span>
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>

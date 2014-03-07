@@ -2412,8 +2412,9 @@ input.account-input.inactive:hover {
   margin-left: 15px;
 }
 
-/* line 137, ../sass/pages/_profile_and_accounts.scss */
-.profile-table .form-error {
+/* line 138, ../sass/pages/_profile_and_accounts.scss */
+.profile-table .form-error,
+.account-table .form-error {
   background-color: white;
   color: #e51e41;
   border: 1px solid #e51e41;
@@ -2423,19 +2424,22 @@ input.account-input.inactive:hover {
   webkit-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 147, ../sass/pages/_profile_and_accounts.scss */
-.profile-table .form-error ul {
+/* line 148, ../sass/pages/_profile_and_accounts.scss */
+.profile-table .form-error ul,
+.account-table .form-error ul {
   display: inline-block;
   margin: 0;
   padding: 0;
 }
-/* line 152, ../sass/pages/_profile_and_accounts.scss */
-.profile-table .form-error ul li {
+/* line 153, ../sass/pages/_profile_and_accounts.scss */
+.profile-table .form-error ul li,
+.account-table .form-error ul li {
   margin: 0;
   padding: 3px 7px 3px 0;
 }
-/* line 158, ../sass/pages/_profile_and_accounts.scss */
-.profile-table .form-error .fa {
+/* line 159, ../sass/pages/_profile_and_accounts.scss */
+.profile-table .form-error .fa,
+.account-table .form-error .fa {
   margin: 0 2px 0 5px;
 }
 

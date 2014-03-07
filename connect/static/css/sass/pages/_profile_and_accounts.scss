@@ -134,7 +134,8 @@ input.account-input.inactive:hover {
 
 // Validation
 
-.profile-table .form-error {
+.profile-table .form-error,
+.account-table .form-error {
     background-color: $white;
     color: $highlight;
     border: 1px solid $highlight;

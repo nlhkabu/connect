@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.forms.formsets import BaseFormSet
 
 from .models import Profile, ConnectPreference
@@ -136,8 +137,7 @@ class ProfileForm(forms.Form):
                                         widget=forms.TextInput(attrs={
                                             'class' : 'account-input inactive',
                                             'placeholder': 'Last Name',
-                                        }),
-                                        required=False)
+                                        }))
 
         self.fields['bio'] = forms.CharField(
                                 initial = self.user.profile.bio,
@@ -178,8 +178,7 @@ class AccountSettingsForm(forms.Form):
                                         widget=forms.TextInput(attrs={
                                             'class' : 'account-input inactive',
                                             'placeholder': 'Email Address',
-                                        }),
-                                        required=False)
+                                        }))
 
         self.fields['reset_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
@@ -195,13 +194,17 @@ class AccountSettingsForm(forms.Form):
                                         }),
                                         required=False)
 
+
     def clean(self):
         """
-        Adds validation to ensure reset password and reset password confirm
-        are the same.
+        Adds validation to:
+        - Ensure reset password and reset password confirm are the same.
+        - Ensure the email address is not already registered
         """
-        password1 = self.cleaned_data['reset_password']
-        password2 = self.cleaned_data['reset_password_confirm']
+        cleaned_data = super(AccountSettingsForm, self).clean()
+
+        password1 = cleaned_data.get('reset_password')
+        password2 = cleaned_data.get('reset_password_confirm')
 
         if password1:
             if not password2:
@@ -209,4 +212,11 @@ class AccountSettingsForm(forms.Form):
             if password1 != password2:
                 raise forms.ValidationError("Your passwords do not match")
 
-        return self.cleaned_data
+        email = cleaned_data.get('email')
+        user_emails = [user.email for user in User.objects.all() if user.email]
+
+        if email in user_emails:
+            raise forms.ValidationError("Sorry, this email address is already registered")
+
+
+        return cleaned_data
