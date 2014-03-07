@@ -167,7 +167,8 @@ def invite_member(request):
                 reinvitation_form = ReInviteMemberForm(request.POST, user=user)
 
                 if reinvitation_form.is_valid():
-                    handle_reinvitation_form(user, moderator, site)
+                    email = reinvitation_form.cleaned_data['email']
+                    handle_reinvitation_form(user, email, moderator, site)
 
                     return redirect('moderation:moderators')
 
@@ -234,12 +235,16 @@ def handle_invitation_form(first_name, last_name, email, moderator, site):
     return None
 
 
-def handle_reinvitation_form(user, moderator, site):
+def handle_reinvitation_form(user, email, moderator, site):
     """
     Handles ReinviteMemberForm.
     """
     if not user.userregistration.auth_token_is_used:
-        # Set a new token, update approval datetime
+        # Reset email
+        user.email = email
+        user.save()
+
+        # Set a new token and update decision datetime
         token = create_token(user)
         user.userregistration.auth_token = token;
         user.userregistration.decision_datetime = now()
