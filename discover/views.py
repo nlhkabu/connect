@@ -21,7 +21,7 @@ def dashboard(request):
     user.gravatar_exists = has_gravatar(user.email)
 
     # Display other members
-    listed_members = User.objects.exclude(id=request.user.id)
+    listed_members = User.objects.filter(is_active=True)
 
     if request.method == 'POST':
         form = FilterMemberForm(request.POST)
