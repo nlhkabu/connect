@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
 from .forms import (ApproveApplicationForm, InviteMemberForm, ReInviteMemberForm,
-                    RevokeMemberForm, RequestInvitationForm,)
+                    RejectApplicationForm, RevokeMemberForm, RequestInvitationForm,)
 from .models import UserRegistration, ModerationLogMsg
 from .utils import generate_html_email
 
@@ -61,6 +61,11 @@ def log_moderator_event(event_type, user, moderator, comment=''):
         msg_type = ModerationLogMsg.APPROVAL
         comment = '{}'.format(comment)
 
+    elif event_type == 'rejected':
+        msg_type = ModerationLogMsg.REJECTION
+        comment = '{}'.format(comment)
+
+
     ModerationLogMsg.objects.create(
         msg_type=msg_type,
         comment=comment,
@@ -86,6 +91,10 @@ def send_moderation_email(email_type, user, moderator, site, token=''):
     if email_type == 'approved':
         subject = 'Welcome to {}'.format(site.name)
         template = 'moderation/emails/approve_user.html'
+
+    if email_type == 'rejected':
+        subject = 'Your application to {} has been rejected'.format(site.name)
+        template = 'moderation/emails/reject_user.html'
 
     template_vars = {
         'recipient': user,
@@ -118,6 +127,7 @@ def invite_member(request):
 
     # Show pending invitations
     pending = User.objects.filter(userregistration__moderator=moderator,
+                                  userregistration__method='INV',
                                   userregistration__auth_token_is_used=False,
                                   is_active=False)
 
@@ -204,7 +214,8 @@ def handle_invitation_form(first_name, last_name, email, moderator, site):
             user=new_user,
             method=UserRegistration.INVITED,
             moderator=moderator,
-            approved_datetime=now(),
+            moderator_decision=UserRegistration.PRE_APPROVED,
+            decision_datetime=now(),
             auth_token = token, # generate auth token
         )
 
@@ -231,7 +242,7 @@ def handle_reinvitation_form(user, moderator, site):
         # Set a new token, update approval datetime
         token = create_token(user)
         user.userregistration.auth_token = token;
-        user.userregistration.approved_datetime = now()
+        user.userregistration.decision_datetime = now()
         user.userregistration.save()
 
         log_moderator_event(event_type='reinvited',
@@ -318,11 +329,12 @@ def review_applications(request):
     site = get_current_site(request)
 
     pending = User.objects.filter(userregistration__method='REQ',
-                                  userregistration__approved_datetime=None,
+                                  userregistration__decision_datetime=None,
                                   is_active=False)
 
     for user in pending:
         user.approval_form = ApproveApplicationForm(user=user)
+        user.rejection_form = RejectApplicationForm(user=user)
 
     if request.method == 'POST':
         form_type = request.POST['form_type']
@@ -338,6 +350,16 @@ def review_applications(request):
             if approval_form.is_valid():
                 comments = approval_form.cleaned_data['comments']
                 handle_approval_form(user, moderator, comments, site)
+
+                return redirect('moderation:review-applications')
+
+
+        if form_type == 'reject':
+            rejection_form = RejectApplicationForm(request.POST, user=user)
+
+            if rejection_form.is_valid():
+                comments = rejection_form.cleaned_data['comments']
+                handle_rejection_form(user, moderator, comments, site)
 
                 return redirect('moderation:review-applications')
 
@@ -358,7 +380,8 @@ def handle_approval_form(user, moderator, comments, site):
         token = create_token(user)
         user.userregistration.moderator = moderator
         user.userregistration.auth_token = token
-        user.userregistration.approved_datetime = now()
+        user.userregistration.moderator_decision=UserRegistration.APPROVED
+        user.userregistration.decision_datetime = now()
         user.userregistration.save()
 
         log_moderator_event(event_type='approved',
@@ -371,6 +394,33 @@ def handle_approval_form(user, moderator, comments, site):
                              moderator=moderator,
                              site=site,
                              token=token)
+
+        return user
+
+    return None
+
+
+def handle_rejection_form(user, moderator, comments, site):
+    """
+    Handles RejectApplicationForm.
+    """
+
+    if not user.userregistration.auth_token_is_used:
+        # Add rejection moderator and datetime
+        user.userregistration.moderator = moderator
+        user.userregistration.moderator_decision=UserRegistration.REJECTED
+        user.userregistration.decision_datetime = now()
+        user.userregistration.save()
+
+        log_moderator_event(event_type='rejected',
+                            user=user,
+                            moderator=moderator,
+                            comment=comments)
+
+        send_moderation_email(email_type='rejected',
+                             user=user,
+                             moderator=moderator,
+                             site=site)
 
         return user
 

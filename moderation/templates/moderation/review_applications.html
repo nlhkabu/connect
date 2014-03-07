@@ -35,6 +35,12 @@
                             {{ user.approval_form.as_p }}
                             <input type="submit" value="Approve User Application" class="button" />
                         </form>
+                        <hr/>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ user.rejection_form.as_p }}
+                            <input type="submit" value="Reject User Application" class="button" />
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

@@ -15,6 +15,16 @@ class UserRegistration(models.Model):
         (REQUESTED, 'Requested'),
     )
 
+    PRE_APPROVED = 'PRE'
+    APPROVED = 'APP'
+    REJECTED = 'REJ'
+
+    MODERATOR_CHOICES = (
+        (PRE_APPROVED, 'Pre-approved'),
+        (APPROVED, 'Approved'),
+        (REJECTED, 'Rejected')
+    )
+
     user = models.OneToOneField(User)
     method = models.CharField(max_length=20, choices=REGISTRATION_CHOICES)
     moderator = models.ForeignKey(User,
@@ -22,15 +32,23 @@ class UserRegistration(models.Model):
                 null=True,
                 related_name='inviter',
                 limit_choices_to={'profile__is_moderator': True},
-                help_text='Moderator who has invited or approved this user')
+                help_text='Moderator who invited, approved or rejected this user')
+
     applied_datetime = models.DateTimeField(blank=True, null=True)
     application_comments = models.TextField(blank=True)
-    approved_datetime = models.DateTimeField(blank=True, null=True)
+
+    moderator_decision = models.CharField(max_length=20,
+                                          choices=MODERATOR_CHOICES,
+                                          blank=True)
+    decision_datetime = models.DateTimeField(blank=True, null=True)
+
     auth_token = models.CharField(max_length=40,
                                   blank=True,
                                   verbose_name='Authetication token')
+    activated_datetime = models.DateTimeField(blank=True, null=True)
     auth_token_is_used = models.BooleanField(default=False,
                                              verbose_name='Token is used')
+
 
     class Meta:
         permissions = (

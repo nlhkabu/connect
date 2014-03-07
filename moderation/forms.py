@@ -98,3 +98,18 @@ class ApproveApplicationForm(forms.Form):
     form_type = forms.CharField(initial='approve', widget=forms.HiddenInput)
     comments = forms.CharField(widget=forms.Textarea)
 
+
+class RejectApplicationForm(forms.Form):
+    """
+    Form for moderators to approve an account application.
+    """
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(RejectApplicationForm, self).__init__(*args, **kwargs)
+
+        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
+                                                 widget=forms.HiddenInput)
+
+    form_type = forms.CharField(initial='reject', widget=forms.HiddenInput)
+    comments = forms.CharField(widget=forms.Textarea)
+

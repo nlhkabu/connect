@@ -1,0 +1,13 @@
+{% extends 'moderation/emails/email_base.html' %}
+{% autoescape off %}
+
+{% block email_content %}
+    <p>Your application for a {{ site_name }} account has been rejected.</p>
+    <p>If you wish to appeal this decision, please email </p>
+{% endblock %}
+
+{% block email_footer %}
+    You received this email because you applied for a {{ site_name }} account.
+{% endblock %}
+
+{% endautoescape %}
