@@ -138,5 +138,24 @@
             formCssClass: 'dynamic-link-formset',
             addText: 'add link'
         });
+
+
+        // Enable fancy hover/focus CSS
+        $('.bio, .account-input').on('blur', function(){
+            $(this).addClass('inactive');
+        }).on('focus', function(){
+            $(this).removeClass('inactive');
+        });
+
+        // Set bio textarea width based on container
+        var bioContainerWidth = $('td.profile-bio').width();
+
+        $('.bio').css({
+            width: bioContainerWidth - 20 // accounts for padding
+        })
+
+        // Fancy vertical resizing
+        $('.bio').autosize();
+
     </script>
 {% endblock %}
