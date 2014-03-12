@@ -9,9 +9,10 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
-from .forms import (ApproveApplicationForm, InviteMemberForm, ReInviteMemberForm,
-                    RejectApplicationForm, RevokeMemberForm, RequestInvitationForm,)
-from .models import UserRegistration, ModerationLogMsg
+from .forms import (ApproveApplicationForm, InviteMemberForm,
+                    ReInviteMemberForm, RejectApplicationForm,
+                    ReportAbuseForm, RevokeMemberForm, RequestInvitationForm,)
+from .models import AbuseReport, UserRegistration, ModerationLogMsg
 from .utils import generate_html_email
 
 
@@ -431,9 +432,59 @@ def handle_rejection_form(user, moderator, comments, site):
 
     return None
 
+
+@login_required
+def report_abuse(request, user_id):
+
+    logged_against = get_object_or_404(User, id=user_id)
+    logged_by = request.user
+
+    if request.POST:
+        form = ReportAbuseForm(request.POST,
+                               logged_by=logged_by,
+                               logged_against=logged_against)
+
+        if form.is_valid():
+            logged_by = User.objects.get(id=form.cleaned_data['logged_by'])
+            logged_against = User.objects.get(id=form.cleaned_data['logged_against'])
+            abuse_comment = form.cleaned_data['comments']
+
+            new_report = AbuseReport.objects.create(
+                logged_by=logged_by,
+                logged_against=logged_against,
+                abuse_comment=abuse_comment,
+            )
+
+    else:
+        form = ReportAbuseForm(logged_by=logged_by,
+                               logged_against=logged_against)
+
+    context = {
+        'form' : form,
+        'logged_by' : logged_by,
+        'logged_against' : logged_against
+    }
+
+    return render(request, 'moderation/report_abuse.html', context)
+
 @login_required
 def review_abuse(request):
-    context = ''
+    """
+    Show a list of abuse reports to moderators.
+    Allow them to:
+    - Dismiss an abuse report
+    - Warn a user
+    - Remove a user
+    """
+    reports = AbuseReport.objects.filter(
+                    decision_datetime=None).exclude(
+                    logged_against=request.user).exclude(
+                    logged_by=request.user)
+
+    context = {
+        'reports' : reports,
+    }
+
     return render(request, 'moderation/review_abuse.html', context)
 
 

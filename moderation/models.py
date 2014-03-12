@@ -64,13 +64,11 @@ class ModerationLogMsg(models.Model):
     """
     Log a moderation event, e.g. when a new user is invited, approved, etc.
     """
-
     INVITATION = 'INVITATION'
     REINVITATION = 'REINVITATION'
     REVOCATION = 'REVOCATION'
     APPROVAL = 'APPROVAL'
     REJECTION = 'REJECTION'
-
 
     MSG_TYPE_CHOICES = (
         (INVITATION, 'Invitation'),
@@ -93,3 +91,38 @@ class ModerationLogMsg(models.Model):
     def __str__(self):
         return '{}: {}'.format(self.get_msg_type_display(),
                                truncatewords(self.comment, 20))
+
+
+class AbuseReport(models.Model):
+    """
+    Record an abuse report and a moderator's response.
+    """
+    DISMISS = 'DISMISS'
+    WARN = 'WARN'
+    BAN = 'BAN'
+
+    ABUSE_REPORT_CHOICES = (
+       (DISMISS, 'Dismiss Report'),
+       (WARN, 'Warn Abuser'),
+       (BAN, 'Ban Abuser'),
+    )
+
+    logged_against = models.ForeignKey(User, related_name='abuse_reports_about')
+    logged_by = models.ForeignKey(User, related_name='abuse_reports_by')
+    logged_datetime = models.DateTimeField(auto_now_add=True)
+    abuse_comment = models.TextField()
+    moderator = models.ForeignKey(User,
+                                  related_name='abuse_reports_moderatored_by',
+                                  blank=True,
+                                  null=True)
+    moderator_decision = models.CharField(max_length=20,
+                                          choices=ABUSE_REPORT_CHOICES,
+                                          blank=True)
+    moderator_comment = models.TextField(blank=True)
+    decision_datetime = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Abuse Report'
+
+    def __str__(self):
+        return 'Reported by {}'.format(self.logged_by.get_full_name())

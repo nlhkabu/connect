@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from .models import Profile, ConnectPreference, UserLink, LinkBrand
-from moderation.admin import UserRegistrationInline
+from moderation.admin import UserAbuseReportInline, UserRegistrationInline
 from skills.admin import UserSkillInline
 
 
@@ -21,7 +21,7 @@ class UserLinkInline(admin.TabularInline):
 # Define a new User admin
 class UserAdmin(UserAdmin):
     inlines = (ProfileInline, UserSkillInline,
-               UserLinkInline, UserRegistrationInline)
+               UserLinkInline, UserRegistrationInline, UserAbuseReportInline)
 
 # Re-register UserAdmin
 admin.site.unregister(User)

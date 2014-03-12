@@ -1,0 +1,17 @@
+{% extends "logged_in.html" %}
+
+{% block page_title %}Report Abuse{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <p>Logged by: {{ logged_by.get_full_name }}</p>
+        <p>Logged Against: {{ logged_against.get_full_name }}</p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Report Abuse" />
+        </form>
+    </div>
+{% endblock %}

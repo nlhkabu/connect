@@ -28,4 +28,36 @@ $(document).ready(function(){
         }
     });
 
+
+    // ---------
+    // DASHBOARD
+    // ---------
+
+    // Toggle 'close to me' form on radio select
+
+    $('input[name="locationRadios"]').on('change', function(){
+        if ($(this).val()=='all') {
+             $('.close-to-me').hide();
+        } else  {
+             $('.close-to-me').show();
+        }
+    });
+
+
+    // Expand and Collapse Member Profiles
+
+    $('.toggle-member-expand').click(function(e){
+        e.preventDefault();
+
+        $(this).closest('.member-card').find('.member-expand').slideToggle(150);
+
+        var $fullProfile = $(this).closest('.member-card').find('.full-profile');
+
+        if ($fullProfile.text() == 'View Full Profile'){
+            $fullProfile.text('Collapse')
+        } else {
+            $fullProfile.text('View Full Profile');
+        }
+    });
+
 });

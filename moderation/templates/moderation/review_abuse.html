@@ -7,4 +7,23 @@
 {% block moderators_content %}
     Review Abuse Reports
 
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.logged_against.get_full_name }}</td>
+                <td>{{ report.logged_by.get_full_name }}</td>
+                <td>{{ report.logged_datetime }}</td>
+                <td>{{ report.abuse_comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
 {% endblock %}
