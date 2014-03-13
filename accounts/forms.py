@@ -212,6 +212,12 @@ class AccountSettingsForm(forms.Form):
             if password1 != password2:
                 raise forms.ValidationError("Your passwords do not match")
 
+        username = cleaned_data.get('username')
+        user_usernames = [user.username for user in User.objects.exclude(id=self.user.id) if user.username]
+
+        if username in user_usernames:
+            raise forms.ValidationError("Sorry, this username is already registered")
+
         email = cleaned_data.get('email')
         user_emails = [user.email for user in User.objects.exclude(id=self.user.id) if user.email]
 

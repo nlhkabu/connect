@@ -113,8 +113,9 @@ def account_settings(request):
             user.username = form.cleaned_data['username']
             user.email = form.cleaned_data['email']
 
-            new_pass = make_password(form.cleaned_data['reset_password'])
-            user.password = new_pass
+            if form.cleaned_data['reset_password']:
+                new_pass = make_password(form.cleaned_data['reset_password'])
+                user.password = new_pass
 
             user.save()
 
