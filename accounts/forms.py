@@ -213,7 +213,7 @@ class AccountSettingsForm(forms.Form):
                 raise forms.ValidationError("Your passwords do not match")
 
         email = cleaned_data.get('email')
-        user_emails = [user.email for user in User.objects.all() if user.email]
+        user_emails = [user.email for user in User.objects.exclude(id=self.user.id) if user.email]
 
         if email in user_emails:
             raise forms.ValidationError("Sorry, this email address is already registered")
