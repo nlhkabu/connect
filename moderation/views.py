@@ -1,5 +1,3 @@
-import crypt, time
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
@@ -12,24 +10,9 @@ from django.utils.timezone import now
 
 from .forms import (ApproveApplicationForm, InviteMemberForm,
                     ReInviteMemberForm, RejectApplicationForm,
-                    ReportAbuseForm, RevokeMemberForm, RequestInvitationForm,)
+                    ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
-from .utils import generate_html_email
-
-
-def hash_time():
-    """
-    Return a unique 30 character string based on the
-    current timestamp. The returned string will consist
-    of alphanumeric characters (A-Z, a-z, 0-9) only.
-    """
-    hashed = ''
-    salt = '$1$O2xqbWD9'
-
-    for pos in [-22, -8]:
-        hashed += (crypt.crypt(str(time.time()), salt)[pos:].replace('/', '0')
-                                                            .replace('.', '0'))
-    return hashed
+from .utils import generate_html_email, hash_time
 
 
 def create_token(user):
@@ -173,7 +156,11 @@ def invite_member(request):
 
                 if reinvitation_form.is_valid():
                     email = reinvitation_form.cleaned_data['email']
-                    handle_reinvitation_form(user, email, moderator, site)
+                    handle_reinvitation_form(request,
+                                             user,
+                                             email,
+                                             moderator,
+                                             site)
 
                     return redirect('moderation:moderators')
 
@@ -214,9 +201,8 @@ def handle_invitation_form(request, first_name, last_name, email, moderator, sit
         new_user.save()
 
         token = create_token(new_user)
-
         token_url = request.build_absolute_uri(
-                        reverse('moderation:activate-account', args=[token]))
+                        reverse('accounts:activate-account', args=[token]))
 
         # Add user registration details
         user_registration = UserRegistration.objects.create(
@@ -225,7 +211,7 @@ def handle_invitation_form(request, first_name, last_name, email, moderator, sit
             moderator=moderator,
             moderator_decision=UserRegistration.PRE_APPROVED,
             decision_datetime=now(),
-            auth_token = token, # generate auth token
+            auth_token = token,
         )
 
         log_moderator_event(event_type='invited',
@@ -243,7 +229,7 @@ def handle_invitation_form(request, first_name, last_name, email, moderator, sit
     return None
 
 
-def handle_reinvitation_form(user, email, moderator, site):
+def handle_reinvitation_form(request, user, email, moderator, site):
     """
     Handles ReinviteMemberForm.
     """
@@ -254,6 +240,9 @@ def handle_reinvitation_form(user, email, moderator, site):
 
         # Set a new token and update decision datetime
         token = create_token(user)
+        token_url = request.build_absolute_uri(
+                        reverse('accounts:activate-account', args=[token]))
+
         user.userregistration.auth_token = token;
         user.userregistration.decision_datetime = now()
         user.userregistration.save()
@@ -266,7 +255,7 @@ def handle_reinvitation_form(user, email, moderator, site):
                              user=user,
                              moderator=moderator,
                              site=site,
-                             token=token)
+                             token=token_url)
 
         # TODO: Add a confirmation message
         return user
@@ -289,48 +278,6 @@ def handle_revocation_form(comment, user, moderator):
         return user
 
     return None
-
-
-def request_invitation(request):
-    """
-    Allow a member of the public to request an account invitation.
-    """
-    if request.method == 'POST':
-        form = RequestInvitationForm(request.POST)
-
-        if form.is_valid():
-
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data['email']
-            comments = form.cleaned_data['comments']
-            username = hash_time()
-
-            # Create inactive user
-            new_user = User.objects.create_user(username, email)
-            new_user.is_active = False
-            new_user.first_name = first_name
-            new_user.last_name = last_name
-            new_user.save()
-
-            # Add user registration details
-            user_registration = UserRegistration.objects.create(
-                user=new_user,
-                method=UserRegistration.REQUESTED,
-                applied_datetime=now(),
-                application_comments=comments,
-            )
-
-            # TODO: Add a confirmation message
-            return redirect('moderation:request-invitation')
-    else:
-        form = RequestInvitationForm()
-
-    context = {
-        'form' : form,
-    }
-
-    return render(request, 'moderation/request_invitation.html', context)
 
 
 @login_required
@@ -362,7 +309,7 @@ def review_applications(request):
 
             if approval_form.is_valid():
                 comments = approval_form.cleaned_data['comments']
-                handle_approval_form(user, moderator, comments, site)
+                handle_approval_form(request, user, moderator, comments, site)
 
                 return redirect('moderation:review-applications')
 
@@ -383,13 +330,16 @@ def review_applications(request):
     return render(request, 'moderation/review_applications.html', context)
 
 
-def handle_approval_form(user, moderator, comments, site):
+def handle_approval_form(request, user, moderator, comments, site):
     """
     Handles ApproveApplicationForm.
     """
     if not user.userregistration.auth_token_is_used:
         # Set a new token, add approval moderator and datetime
         token = create_token(user)
+        token_url = request.build_absolute_uri(
+                reverse('accounts:activate-account', args=[token]))
+
         user.userregistration.moderator = moderator
         user.userregistration.auth_token = token
         user.userregistration.moderator_decision=UserRegistration.APPROVED
@@ -405,7 +355,7 @@ def handle_approval_form(user, moderator, comments, site):
                              user=user,
                              moderator=moderator,
                              site=site,
-                             token=token)
+                             token=token_url)
 
         return user
 

@@ -6,12 +6,57 @@ from django.db.models import Q
 from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
+from django.utils.timezone import now
 
 from .forms import (AccountSettingsForm, ActivateAccountForm,
-                    BaseLinkFormSet, BaseSkillFormSet,
-                    LinkForm, ProfileForm, SkillForm)
+                    BaseLinkFormSet, BaseSkillFormSet, LinkForm,
+                    ProfileForm, RequestInvitationForm, SkillForm)
 from .models import UserLink
+from moderation.models import UserRegistration
+from moderation.utils import hash_time
 from skills.models import UserSkill
+
+
+def request_invitation(request):
+    """
+    Allow a member of the public to request an account invitation.
+    """
+    if request.method == 'POST':
+        form = RequestInvitationForm(request.POST)
+
+        if form.is_valid():
+
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            comments = form.cleaned_data['comments']
+            username = hash_time()
+
+            # Create inactive user
+            new_user = User.objects.create_user(username, email)
+            new_user.is_active = False
+            new_user.first_name = first_name
+            new_user.last_name = last_name
+            new_user.save()
+
+            # Add user registration details
+            user_registration = UserRegistration.objects.create(
+                user=new_user,
+                method=UserRegistration.REQUESTED,
+                applied_datetime=now(),
+                application_comments=comments,
+            )
+
+            # TODO: Add a confirmation message
+            return redirect('accounts:request-invitation')
+    else:
+        form = RequestInvitationForm()
+
+    context = {
+        'form' : form,
+    }
+
+    return render(request, 'accounts/request_invitation.html', context)
 
 
 def activate_account(request, token):

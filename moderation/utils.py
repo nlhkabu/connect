@@ -1,8 +1,22 @@
-import re
+import crypt, re, time
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+def hash_time():
+    """
+    Return a unique 30 character string based on the
+    current timestamp. The returned string will consist
+    of alphanumeric characters (A-Z, a-z, 0-9) only.
+    """
+    hashed = ''
+    salt = '$1$O2xqbWD9'
+
+    for pos in [-22, -8]:
+        hashed += (crypt.crypt(str(time.time()), salt)[pos:].replace('/', '0')
+                                                            .replace('.', '0'))
+    return hashed
 
 
 def generate_html_email(subject, from_address, recipients,
