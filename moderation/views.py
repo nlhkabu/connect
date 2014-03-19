@@ -6,6 +6,7 @@ from django.contrib.sites.models import get_current_site
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
@@ -37,7 +38,9 @@ def create_token(user):
     """
     #TODO: Generate token/invitation URL here
     # Needs to be unique (based on datetime?)
-    return '123456'
+    token = '123456'
+
+    return token
 
 
 def log_moderator_event(event_type, user, moderator, comment=''):
@@ -148,7 +151,8 @@ def invite_member(request):
                 last_name = invitation_form.cleaned_data['last_name']
                 email = invitation_form.cleaned_data['email']
 
-                handle_invitation_form(first_name,
+                handle_invitation_form(request,
+                                       first_name,
                                        last_name,
                                        email,
                                        moderator,
@@ -193,7 +197,7 @@ def invite_member(request):
     return render(request, 'moderation/invite_member.html', context)
 
 
-def handle_invitation_form(first_name, last_name, email, moderator, site):
+def handle_invitation_form(request, first_name, last_name, email, moderator, site):
     """
     Handles InviteMemberForm.
     """
@@ -202,7 +206,7 @@ def handle_invitation_form(first_name, last_name, email, moderator, site):
 
     if email not in user_emails:
 
-        # Create inactive user with unusable password
+        # Create inactive user
         new_user = User.objects.create_user(username, email)
         new_user.is_active = False
         new_user.first_name = first_name
@@ -210,6 +214,9 @@ def handle_invitation_form(first_name, last_name, email, moderator, site):
         new_user.save()
 
         token = create_token(new_user)
+
+        token_url = request.build_absolute_uri(
+                        reverse('moderation:activate-account', args=[token]))
 
         # Add user registration details
         user_registration = UserRegistration.objects.create(
@@ -230,7 +237,7 @@ def handle_invitation_form(first_name, last_name, email, moderator, site):
                              user=new_user,
                              moderator=moderator,
                              site=site,
-                             token=token)
+                             token=token_url)
         return new_user
 
     return None
@@ -299,7 +306,7 @@ def request_invitation(request):
             comments = form.cleaned_data['comments']
             username = hash_time()
 
-            # Create inactive user with unusable password
+            # Create inactive user
             new_user = User.objects.create_user(username, email)
             new_user.is_active = False
             new_user.first_name = first_name
@@ -380,7 +387,6 @@ def handle_approval_form(user, moderator, comments, site):
     """
     Handles ApproveApplicationForm.
     """
-
     if not user.userregistration.auth_token_is_used:
         # Set a new token, add approval moderator and datetime
         token = create_token(user)
@@ -466,6 +472,7 @@ def report_abuse(request, user_id):
     }
 
     return render(request, 'moderation/report_abuse.html', context)
+
 
 @login_required
 def review_abuse(request):
