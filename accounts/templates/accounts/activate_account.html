@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>Activate Account</h2>
+        {{ user.get_full_name }}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Activate Account" />
+        </form>
+    </div>
+{% endblock %}

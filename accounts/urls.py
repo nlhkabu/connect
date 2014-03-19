@@ -18,7 +18,7 @@ urlpatterns = patterns('',
         },
         name='logout'
     ),
-
+    url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
     # Account settings
     url(r'^settings/$', 'accounts.views.account_settings', name='account-settings'),
     url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),

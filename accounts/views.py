@@ -1,17 +1,61 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.forms.formsets import formset_factory
-from django.shortcuts import redirect, render
-
+from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
-from .forms import (AccountSettingsForm ,BaseLinkFormSet, BaseSkillFormSet,
+from .forms import (AccountSettingsForm, ActivateAccountForm,
+                    BaseLinkFormSet, BaseSkillFormSet,
                     LinkForm, ProfileForm, SkillForm)
 from .models import UserLink
 from skills.models import UserSkill
 
+
+def activate_account(request, token):
+    """
+    Allow a user to activate their account with the token sent to them
+    by email.
+    """
+    user = get_object_or_404(User, userregistration__auth_token=token)
+
+    if not user.userregistration.auth_token_is_used:
+        if request.POST:
+            form = ActivateAccountForm(request.POST, user=user)
+
+            if form.is_valid():
+
+                # Activate the user's account
+                user = get_object_or_404(User, id=form.cleaned_data['user_id'])
+                user.username = form.cleaned_data['username']
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.password = make_password(form.cleaned_data['password'])
+                user.is_active = True
+                user.save()
+
+                user.userregistration.activated_datetime = now()
+                user.userregistration.auth_token_is_used = True
+                user.userregistration.save()
+
+        else:
+            form = ActivateAccountForm(user=user)
+
+        context = {
+            'user' : user,
+            'form' : form,
+        }
+
+    else:
+        is_used = True
+
+        context = {
+            'is_used' : is_used,
+        }
+
+    return render(request, 'accounts/activate_account.html', context)
 
 @login_required
 def profile_settings(request):

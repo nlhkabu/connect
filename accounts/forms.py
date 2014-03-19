@@ -6,6 +6,47 @@ from .models import Profile, ConnectPreference
 from skills.models import Skill, UserSkill
 
 
+class ActivateAccountForm(forms.Form):
+    """
+    Form for a user to activate their account
+    (after clicking on invitation link)
+    """
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(ActivateAccountForm, self).__init__(*args, **kwargs)
+
+        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
+                                                    widget=forms.HiddenInput)
+        self.fields['first_name'] = forms.CharField(initial=self.user.first_name)
+        self.fields['last_name'] = forms.CharField(initial=self.user.last_name)
+
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        """
+        Adds validation to:
+        - Ensure password and reset confirm password are the same.
+        - Ensure the username is not already registered
+        """
+        cleaned_data = super(ActivateAccountForm, self).clean()
+
+        password1 = cleaned_data.get('password')
+        password2 = cleaned_data.get('confirm_password')
+
+        if password1 != password2:
+            raise forms.ValidationError("Your passwords do not match. Please try again.")
+
+        username = cleaned_data.get('username')
+        user_usernames = [user.username for user in User.objects.exclude(id=self.user.id) if user.username]
+
+        if username in user_usernames:
+            raise forms.ValidationError("Sorry, this username is already registered")
+
+        return cleaned_data
+
+
 class BaseSkillFormSet(BaseFormSet):
     def clean(self):
         """
@@ -199,7 +240,8 @@ class AccountSettingsForm(forms.Form):
         """
         Adds validation to:
         - Ensure reset password and reset password confirm are the same.
-        - Ensure the email address is not already registered
+        - Ensure the username is not already registered.
+        - Ensure the email address is not already registered.
         """
         cleaned_data = super(AccountSettingsForm, self).clean()
 
@@ -210,7 +252,7 @@ class AccountSettingsForm(forms.Form):
             if not password2:
                 raise forms.ValidationError("Please confirm your password")
             if password1 != password2:
-                raise forms.ValidationError("Your passwords do not match")
+                raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         username = cleaned_data.get('username')
         user_usernames = [user.username for user in User.objects.exclude(id=self.user.id) if user.username]
