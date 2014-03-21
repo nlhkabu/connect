@@ -40,8 +40,6 @@ class ActivateAccountForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(ActivateAccountForm, self).__init__(*args, **kwargs)
 
-        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
-                                                    widget=forms.HiddenInput)
         self.fields['first_name'] = forms.CharField(initial=self.user.first_name)
         self.fields['last_name'] = forms.CharField(initial=self.user.last_name)
 

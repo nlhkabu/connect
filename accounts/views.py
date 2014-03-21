@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
@@ -68,12 +69,13 @@ def activate_account(request, token):
 
     if not user.userregistration.auth_token_is_used:
         if request.POST:
+            # TODO: Check url token = user's token
+
             form = ActivateAccountForm(request.POST, user=user)
 
             if form.is_valid():
 
                 # Activate the user's account
-                user = get_object_or_404(User, id=form.cleaned_data['user_id'])
                 user.username = form.cleaned_data['username']
                 user.first_name = form.cleaned_data['first_name']
                 user.last_name = form.cleaned_data['last_name']
@@ -85,6 +87,13 @@ def activate_account(request, token):
                 user.userregistration.auth_token_is_used = True
                 user.userregistration.save()
 
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                # TODO redirect to welcome page instead of standard dashboard
+                return redirect(reverse('dashboard'))
+
         else:
             form = ActivateAccountForm(user=user)
 
@@ -94,6 +103,7 @@ def activate_account(request, token):
         }
 
     else:
+        # Redirect to another view
         is_used = True
 
         context = {
