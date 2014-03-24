@@ -63,12 +63,17 @@ class UserRegistration(models.Model):
 class ModerationLogMsg(models.Model):
     """
     Log a moderation event, e.g. when a new user is invited, approved, etc.
+    Or when an abuse report is dealt with
     """
     INVITATION = 'INVITATION'
     REINVITATION = 'REINVITATION'
     REVOCATION = 'REVOCATION'
     APPROVAL = 'APPROVAL'
     REJECTION = 'REJECTION'
+    DISMISSAL = 'DISMISSAL'
+    WARNING = 'WARNING'
+    BANNING = 'BANNING'
+
 
     MSG_TYPE_CHOICES = (
         (INVITATION, 'Invitation'),
@@ -76,6 +81,10 @@ class ModerationLogMsg(models.Model):
         (REVOCATION, 'Invitation Revoked'),
         (APPROVAL, 'Application Approved'),
         (REJECTION, 'Application Rejected'),
+        (DISMISSAL, 'Abuse Report Dismissed'),
+        (WARNING, 'Official Warning'),
+        (BANNING, 'Ban User'),
+
     )
 
     msg_datetime = models.DateTimeField(auto_now_add=True)
@@ -126,3 +135,17 @@ class AbuseReport(models.Model):
 
     def __str__(self):
         return 'Reported by {}'.format(self.logged_by.get_full_name())
+
+
+#~class AbuseWarning(models.Model):
+    #~"""
+    #~Record a warning against a user.
+    #~"""
+    #~report = models.ForeignKey(AbuseReport)
+#~
+    #~class Meta:
+        #~verbose_name = 'Abuse Warning'
+#~
+    #~def __str__(self):
+        #~return 'Warned by {} on {}'.format(self.report.moderator,
+                                           #~self.report.decision_datetime)

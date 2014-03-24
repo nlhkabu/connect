@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import AbuseReport
 
 
 class InviteMemberForm(forms.Form):
@@ -106,4 +107,22 @@ class ReportAbuseForm(forms.Form):
                                                 initial=self.logged_against.id,
                                                 widget=forms.HiddenInput)
 
+    comments = forms.CharField(widget=forms.Textarea)
+
+
+class ModerateAbuseForm(forms.Form):
+    """
+    Form for a moderator to:
+    - Dismiss an abuse report
+    - Issue a warning
+    - Remove abuser
+    """
+    def __init__(self, *args, **kwargs):
+        self.abuse_report = kwargs.pop('abuse_report', None)
+        super(ModerateAbuseForm, self).__init__(*args, **kwargs)
+
+        self.fields['report_id'] = forms.IntegerField(initial=self.abuse_report.id,
+                                                    widget=forms.HiddenInput)
+
+    decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES)
     comments = forms.CharField(widget=forms.Textarea)

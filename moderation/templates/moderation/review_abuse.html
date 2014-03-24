@@ -5,25 +5,29 @@
 
 
 {% block moderators_content %}
-    Review Abuse Reports
+    <h2>Review Abuse Reports</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for report in reports %}
-            <tr>
-                <td>{{ report.logged_against.get_full_name }}</td>
-                <td>{{ report.logged_by.get_full_name }}</td>
-                <td>{{ report.logged_datetime }}</td>
-                <td>{{ report.abuse_comment }}</td>
-            </tr>
+    {% for report in reports %}
+        <div class="">
+            <p>{{ report.logged_against.get_full_name }}</p>
+            <p>{{ report.logged_by.get_full_name }}</p>
+            <p>{{ report.logged_datetime }}</p>
+            <p>{{ report.abuse_comment }}</p>
+            <p><strong>Prior Warnings: {{ report.prior_warnings|length }}</strong></p>
+            {% for warning in report.prior_warnings %}
+                <p>Abuse Report Details: {{ warning.abuse_comment }}</p>
+                <p>Moderator Comment:{{ warning.moderator_comment }}</p>
+                <p>Warning issued on: {{ warning.decision_datetime }}</p>
+
             {% endfor %}
-        </tbody>
-    </table>
+
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ report.moderation_form.as_p }}
+                <input type="submit" value="Moderate Abuse Report" class="button" />
+            </form>
+        </div>
+    {% endfor %}
 
 
 {% endblock %}

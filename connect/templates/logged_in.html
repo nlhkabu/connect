@@ -3,7 +3,7 @@
 {% block nav_content %}
     <nav>
         <a href="{% url 'dashboard' %}" class="{% block dashboard_active %}{% endblock %}"><i class="fa fa-home"></i></a>
-        {% if perms.accounts.access_moderators_page %}
+        {% if perms.moderation.access_moderators_page %}
             <a href="{% url 'moderation:moderators' %}" class="{% block moderators_active %}{% endblock %}">Moderators</a>
         {% endif %}
         <a href="{% url 'accounts:profile-settings' %}" class="{% block myaccount_active %}{% endblock %}">My Account</a>

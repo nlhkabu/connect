@@ -91,7 +91,8 @@ def activate_account(request, token):
                 password = request.POST['password']
                 user = authenticate(username=username, password=password)
                 login(request, user)
-                # TODO redirect to welcome page instead of standard dashboard
+
+                # TODO: redirect to welcome page instead of standard dashboard
                 return redirect(reverse('dashboard'))
 
         else:
@@ -103,7 +104,7 @@ def activate_account(request, token):
         }
 
     else:
-        # Redirect to another view
+        # TODO: Redirect to another view
         is_used = True
 
         context = {
@@ -111,6 +112,7 @@ def activate_account(request, token):
         }
 
     return render(request, 'accounts/activate_account.html', context)
+
 
 @login_required
 def profile_settings(request):

@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
 from .forms import (ApproveApplicationForm, InviteMemberForm,
-                    ReInviteMemberForm, RejectApplicationForm,
+                    ModerateAbuseForm, ReInviteMemberForm, RejectApplicationForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
 from .utils import generate_html_email, hash_time
@@ -50,6 +50,18 @@ def log_moderator_event(event_type, user, moderator, comment=''):
 
     elif event_type == 'rejected':
         msg_type = ModerationLogMsg.REJECTION
+        comment = '{}'.format(comment)
+
+    elif event_type == 'DISMISS':
+        msg_type = ModerationLogMsg.DISMISSAL
+        comment = '{}'.format(comment)
+
+    elif event_type == 'WARN':
+        msg_type = ModerationLogMsg.WARNING
+        comment = '{}'.format(comment)
+
+    elif event_type == 'BAN':
+        msg_type = ModerationLogMsg.BANNING
         comment = '{}'.format(comment)
 
 
@@ -433,13 +445,69 @@ def review_abuse(request):
     - Warn a user
     - Remove a user
     """
-    reports = AbuseReport.objects.filter(
-                    decision_datetime=None).exclude(
-                    logged_against=request.user).exclude(
-                    logged_by=request.user)
+    site = get_current_site(request)
+
+    # Exclude reports where:
+    # - the user is not active
+    # - the accused is the logged in user
+    # - the accusor is the logged in user
+    undecided_reports = (AbuseReport.objects.filter(decision_datetime=None)
+                                        .exclude(logged_against__is_active=False)
+                                        .exclude(logged_against=request.user)
+                                        .exclude(logged_by=request.user)
+                                        .select_related())
+
+    reported_users = set([report.logged_against
+                          for report in undecided_reports])
+
+    warnings = AbuseReport.objects.filter(logged_against__in=reported_users,
+                                          moderator_decision='WARN')
+
+    for report in undecided_reports:
+        report.moderation_form = ModerateAbuseForm(abuse_report=report)
+        accused_user = report.logged_against
+        report.prior_warnings = [warning for warning in warnings
+                                 if warning.logged_against == accused_user]
+
+    if request.POST:
+        try:
+            abuse_report = AbuseReport.objects.get(id=request.POST['report_id'])
+        except AbuseReport.DoesNotExist:
+            raise PermissionDenied
+
+        form = ModerateAbuseForm(request.POST, abuse_report=report)
+
+        if form.is_valid():
+            decision = form.cleaned_data['decision']
+            comments = form.cleaned_data['comments']
+            moderator = request.user
+            user = abuse_report.logged_against
+
+            abuse_report.moderator = moderator
+            abuse_report.moderator_decision = decision
+            abuse_report.moderator_comment = comments
+            abuse_report.decision_datetime = now()
+            abuse_report.save()
+
+            if decision == 'BAN':
+                user.is_active = False
+                user.save()
+
+            log_moderator_event(event_type=decision,
+                                user=user,
+                                moderator=moderator,
+                                comment=comments)
+
+            #TODO: Send emails
+            #~send_moderation_email(email_type=decision,
+                                  #~user=recipient,
+                                  #~moderator=moderator,
+                                  #~site=site)
+
+            return redirect('moderation:review-abuse')
 
     context = {
-        'reports' : reports,
+        'reports' : undecided_reports,
     }
 
     return render(request, 'moderation/review_abuse.html', context)
@@ -448,7 +516,8 @@ def review_abuse(request):
 @login_required
 def view_logs(request):
 
-    logs = ModerationLogMsg.objects.all()
+    # Exclude logs about the logged in user (moderator)
+    logs = ModerationLogMsg.objects.exclude(pertains_to=request.user)
 
     context = {'logs': logs }
     return render(request, 'moderation/logs.html', context)

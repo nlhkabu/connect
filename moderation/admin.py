@@ -12,7 +12,7 @@ class UserRegistrationInline(admin.StackedInline):
 class UserAbuseReportInline(admin.StackedInline):
     fk_name = 'logged_against'
     model = AbuseReport
-    can_delete = False
+    #can_delete = False
     extra = 0
     verbose_name = 'Abuse Report'
     verbose_name_plural = 'Abuse Reports'
