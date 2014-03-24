@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import AbuseReport
+from .models import AbuseReport, UserRegistration
 
 
 class InviteMemberForm(forms.Form):
@@ -60,33 +60,18 @@ class RevokeMemberForm(forms.Form):
     comments = forms.CharField(widget=forms.Textarea)
 
 
-class ApproveApplicationForm(forms.Form):
+class ModerateApplicationForm(forms.Form):
     """
-    Form for moderators to approve an account application.
+    Form for moderators to approve or reject an account application.
     """
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
-        super(ApproveApplicationForm, self).__init__(*args, **kwargs)
+        super(ModerateApplicationForm, self).__init__(*args, **kwargs)
 
         self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
                                                     widget=forms.HiddenInput)
 
-    form_type = forms.CharField(initial='approve', widget=forms.HiddenInput)
-    comments = forms.CharField(widget=forms.Textarea)
-
-
-class RejectApplicationForm(forms.Form):
-    """
-    Form for moderators to approve an account application.
-    """
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(RejectApplicationForm, self).__init__(*args, **kwargs)
-
-        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
-                                                    widget=forms.HiddenInput)
-
-    form_type = forms.CharField(initial='reject', widget=forms.HiddenInput)
+    decision = forms.ChoiceField(choices=UserRegistration.MODERATOR_CHOICES[1:])
     comments = forms.CharField(widget=forms.Textarea)
 
 

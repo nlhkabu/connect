@@ -30,6 +30,7 @@
                         <a href="#"><i class="fa fa-check"></i> Approve</a><br/>
                         <a href="#"><i class="fa fa-times"></i> Deny</a>
 
+<!--
                         <form action="" method="post">
                             {% csrf_token %}
                             {{ user.approval_form.as_p }}
@@ -40,6 +41,12 @@
                             {% csrf_token %}
                             {{ user.rejection_form.as_p }}
                             <input type="submit" value="Reject User Application" class="button" />
+                        </form>
+-->
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ user.moderation_form.as_p }}
+                            <input type="submit" value="Moderate User Application" class="button" />
                         </form>
                     </td>
                 </tr>

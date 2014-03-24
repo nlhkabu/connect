@@ -8,8 +8,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
-from .forms import (ApproveApplicationForm, InviteMemberForm,
-                    ModerateAbuseForm, ReInviteMemberForm, RejectApplicationForm,
+from .forms import (InviteMemberForm, ModerateApplicationForm,
+                    ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
 from .utils import generate_html_email, hash_time
@@ -305,35 +305,28 @@ def review_applications(request):
                                   is_active=False)
 
     for user in pending:
-        user.approval_form = ApproveApplicationForm(user=user)
-        user.rejection_form = RejectApplicationForm(user=user)
+        user.moderation_form = ModerateApplicationForm(user=user)
 
     if request.method == 'POST':
-        form_type = request.POST['form_type']
+        moderation_form = ModerateApplicationForm(request.POST, user=user)
 
         try:
             user = pending.get(id=request.POST['user_id'])
         except User.DoesNotExist:
             raise PermissionDenied
 
-        if form_type == 'approve':
-            approval_form = ApproveApplicationForm(request.POST, user=user)
+        if moderation_form.is_valid():
+            decision = moderation_form.cleaned_data['decision']
+            comments = moderation_form.cleaned_data['comments']
 
-            if approval_form.is_valid():
-                comments = approval_form.cleaned_data['comments']
-                handle_approval_form(request, user, moderator, comments, site)
+            if decision == 'APP':
+                handle_approval(request, user, moderator, comments, site)
 
-                return redirect('moderation:review-applications')
+            elif decision == 'REJ':
+                handle_rejection(user, moderator, comments, site)
 
+            return redirect('moderation:review-applications')
 
-        if form_type == 'reject':
-            rejection_form = RejectApplicationForm(request.POST, user=user)
-
-            if rejection_form.is_valid():
-                comments = rejection_form.cleaned_data['comments']
-                handle_rejection_form(user, moderator, comments, site)
-
-                return redirect('moderation:review-applications')
 
     context = {
         'pending' : pending,
@@ -342,9 +335,9 @@ def review_applications(request):
     return render(request, 'moderation/review_applications.html', context)
 
 
-def handle_approval_form(request, user, moderator, comments, site):
+def handle_approval(request, user, moderator, comments, site):
     """
-    Handles ApproveApplicationForm.
+    Approve membership application.
     """
     if not user.userregistration.auth_token_is_used:
         # Set a new token, add approval moderator and datetime
@@ -374,9 +367,9 @@ def handle_approval_form(request, user, moderator, comments, site):
     return None
 
 
-def handle_rejection_form(user, moderator, comments, site):
+def handle_rejection(user, moderator, comments, site):
     """
-    Handles RejectApplicationForm.
+    Reject membership application.
     """
 
     if not user.userregistration.auth_token_is_used:
