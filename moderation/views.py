@@ -26,45 +26,10 @@ def create_token(user):
     return token
 
 
-def log_moderator_event(event_type, user, moderator, comment=''):
+def log_moderator_event(msg_type, user, moderator, comment=''):
     """
     Log a moderation event.
     """
-    if event_type == 'invited':
-        msg_type = ModerationLogMsg.INVITATION
-        comment = '{} invited {}'.format(moderator.get_full_name(),
-                                         user.get_full_name())
-
-    elif event_type == 'reinvited':
-        msg_type = ModerationLogMsg.REINVITATION
-        comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
-                                                      user.get_full_name())
-
-    elif event_type == 'revoked':
-        msg_type = ModerationLogMsg.REVOCATION
-        comment = '{}'.format(comment)
-
-    elif event_type == 'approved':
-        msg_type = ModerationLogMsg.APPROVAL
-        comment = '{}'.format(comment)
-
-    elif event_type == 'rejected':
-        msg_type = ModerationLogMsg.REJECTION
-        comment = '{}'.format(comment)
-
-    elif event_type == 'DISMISS':
-        msg_type = ModerationLogMsg.DISMISSAL
-        comment = '{}'.format(comment)
-
-    elif event_type == 'WARN':
-        msg_type = ModerationLogMsg.WARNING
-        comment = '{}'.format(comment)
-
-    elif event_type == 'BAN':
-        msg_type = ModerationLogMsg.BANNING
-        comment = '{}'.format(comment)
-
-
     ModerationLogMsg.objects.create(
         msg_type=msg_type,
         comment=comment,
@@ -87,11 +52,11 @@ def send_moderation_email(email_type, user, moderator, site, token=''):
         subject = 'Activate your {} account'.format(site.name)
         template = 'moderation/emails/reinvite_user.html'
 
-    if email_type == 'approved':
+    if email_type == 'APP':
         subject = 'Welcome to {}'.format(site.name)
         template = 'moderation/emails/approve_user.html'
 
-    if email_type == 'rejected':
+    if email_type == 'REJ':
         subject = 'Your application to {} has been rejected'.format(site.name)
         template = 'moderation/emails/reject_user.html'
 
@@ -146,12 +111,8 @@ def invite_member(request):
                 last_name = invitation_form.cleaned_data['last_name']
                 email = invitation_form.cleaned_data['email']
 
-                handle_invitation_form(request,
-                                       first_name,
-                                       last_name,
-                                       email,
-                                       moderator,
-                                       site)
+                handle_invitation(request, first_name, last_name,
+                                  email, moderator, site)
 
                 return redirect('moderation:moderators')
 
@@ -168,11 +129,8 @@ def invite_member(request):
 
                 if reinvitation_form.is_valid():
                     email = reinvitation_form.cleaned_data['email']
-                    handle_reinvitation_form(request,
-                                             user,
-                                             email,
-                                             moderator,
-                                             site)
+
+                    handle_reinvitation(request, user, email, moderator, site)
 
                     return redirect('moderation:moderators')
 
@@ -181,7 +139,7 @@ def invite_member(request):
 
                 if revoke_form.is_valid():
                     comment = revoke_form.cleaned_data['comments']
-                    handle_revocation_form(comment, user, moderator)
+                    handle_revocation(comment, user, moderator)
 
                     return redirect('moderation:moderators')
 
@@ -196,9 +154,9 @@ def invite_member(request):
     return render(request, 'moderation/invite_member.html', context)
 
 
-def handle_invitation_form(request, first_name, last_name, email, moderator, site):
+def handle_invitation(request, first_name, last_name, email, moderator, site):
     """
-    Handles InviteMemberForm.
+    Invite a new member
     """
     username = hash_time()
     user_emails = [user.email for user in User.objects.all() if user.email]
@@ -226,11 +184,16 @@ def handle_invitation_form(request, first_name, last_name, email, moderator, sit
             auth_token = token,
         )
 
-        log_moderator_event(event_type='invited',
+        # Log moderation event
+        msg_type = ModerationLogMsg.INVITATION
+        log_comment = '{} invited {}'.format(moderator.get_full_name(),
+                                             new_user.get_full_name())
+        log_moderator_event(msg_type=msg_type,
                             user=new_user,
-                            moderator=moderator)
+                            moderator=moderator,
+                            comment=log_comment)
 
-
+        # Send email
         send_moderation_email(email_type='invited',
                              user=new_user,
                              moderator=moderator,
@@ -241,9 +204,9 @@ def handle_invitation_form(request, first_name, last_name, email, moderator, sit
     return None
 
 
-def handle_reinvitation_form(request, user, email, moderator, site):
+def handle_reinvitation(request, user, email, moderator, site):
     """
-    Handles ReinviteMemberForm.
+    Reinvite a member.
     """
     if not user.userregistration.auth_token_is_used:
         # Reset email
@@ -259,10 +222,16 @@ def handle_reinvitation_form(request, user, email, moderator, site):
         user.userregistration.decision_datetime = now()
         user.userregistration.save()
 
-        log_moderator_event(event_type='reinvited',
+        # Log moderation event
+        msg_type = ModerationLogMsg.REINVITATION
+        log_comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
+                                                          user.get_full_name())
+        log_moderator_event(msg_type=msg_type,
                             user=user,
-                            moderator=moderator)
+                            moderator=moderator,
+                            comment=log_comment)
 
+        # Send email
         send_moderation_email(email_type='reinvited',
                              user=user,
                              moderator=moderator,
@@ -275,18 +244,23 @@ def handle_reinvitation_form(request, user, email, moderator, site):
     return None
 
 
-def handle_revocation_form(comment, user, moderator):
+def handle_revocation(comment, user, moderator):
     """
-    Handles RevokeMemberForm.
+    Revoke a membership invitation.
     """
     if not user.userregistration.auth_token_is_used:
         # Remove invitation token and other registration information
         user.userregistration.delete()
 
-        log_moderator_event(event_type='revoked',
+        # Log moderation event
+        msg_type = ModerationLogMsg.REVOCATION
+        log_comment = '{}'.format(comment)
+
+        log_moderator_event(msg_type=msg_type,
                             user=user,
                             moderator=moderator,
-                            comment=comment)
+                            comment=log_comment)
+
         return user
 
     return None
@@ -295,7 +269,7 @@ def handle_revocation_form(comment, user, moderator):
 @login_required
 def review_applications(request):
     """
-    Review all pending applications
+    Review all pending applications.
     """
     moderator = request.user
     site = get_current_site(request)
@@ -320,10 +294,39 @@ def review_applications(request):
             comments = moderation_form.cleaned_data['comments']
 
             if decision == 'APP':
-                handle_approval(request, user, moderator, comments, site)
+                # Create token and token URL
+                token = create_token(user)
+                token_url = request.build_absolute_uri(
+                        reverse('accounts:activate-account', args=[token]))
+                user.userregistration.auth_token = token
+
+                user.userregistration.moderator_decision=UserRegistration.APPROVED
+                msg_type = ModerationLogMsg.APPROVAL
 
             elif decision == 'REJ':
-                handle_rejection(user, moderator, comments, site)
+                token_url = ''
+                user.userregistration.moderator_decision=UserRegistration.REJECTED
+                msg_type = ModerationLogMsg.REJECTION
+
+            # Log decision against user
+            user.userregistration.moderator = moderator
+            user.userregistration.decision_datetime = now()
+            user.userregistration.save()
+
+
+            # Log moderation event
+            log_comment = '{}'.format(comments)
+            log_moderator_event(msg_type=msg_type,
+                                user=user,
+                                moderator=moderator,
+                                comment=log_comment)
+
+            # Send moderation email
+            send_moderation_email(email_type=decision,
+                                 user=user,
+                                 moderator=moderator,
+                                 site=site,
+                                 token=token_url)
 
             return redirect('moderation:review-applications')
 
@@ -335,67 +338,11 @@ def review_applications(request):
     return render(request, 'moderation/review_applications.html', context)
 
 
-def handle_approval(request, user, moderator, comments, site):
-    """
-    Approve membership application.
-    """
-    if not user.userregistration.auth_token_is_used:
-        # Set a new token, add approval moderator and datetime
-        token = create_token(user)
-        token_url = request.build_absolute_uri(
-                reverse('accounts:activate-account', args=[token]))
-
-        user.userregistration.moderator = moderator
-        user.userregistration.auth_token = token
-        user.userregistration.moderator_decision=UserRegistration.APPROVED
-        user.userregistration.decision_datetime = now()
-        user.userregistration.save()
-
-        log_moderator_event(event_type='approved',
-                            user=user,
-                            moderator=moderator,
-                            comment=comments)
-
-        send_moderation_email(email_type='approved',
-                             user=user,
-                             moderator=moderator,
-                             site=site,
-                             token=token_url)
-
-        return user
-
-    return None
-
-
-def handle_rejection(user, moderator, comments, site):
-    """
-    Reject membership application.
-    """
-
-    if not user.userregistration.auth_token_is_used:
-        # Add rejection moderator and datetime
-        user.userregistration.moderator = moderator
-        user.userregistration.moderator_decision=UserRegistration.REJECTED
-        user.userregistration.decision_datetime = now()
-        user.userregistration.save()
-
-        log_moderator_event(event_type='rejected',
-                            user=user,
-                            moderator=moderator,
-                            comment=comments)
-
-        send_moderation_email(email_type='rejected',
-                             user=user,
-                             moderator=moderator,
-                             site=site)
-
-        return user
-
-    return None
-
-
 @login_required
 def report_abuse(request, user_id):
+    """
+    Allow any user to report another user for abusive behaviour.
+    """
 
     logged_against = get_object_or_404(User, id=user_id)
     logged_by = request.user
@@ -482,14 +429,26 @@ def review_abuse(request):
             abuse_report.decision_datetime = now()
             abuse_report.save()
 
+
+            if decision == 'DISMISS':
+                msg_type = ModerationLogMsg.DISMISSAL
+
+            elif decision == 'WARN':
+                msg_type = ModerationLogMsg.WARNING
+
             if decision == 'BAN':
+                msg_type = ModerationLogMsg.BANNING
+
                 user.is_active = False
                 user.save()
 
-            log_moderator_event(event_type=decision,
+
+            # Log moderation event
+            log_comment = '{}'.format(comments)
+            log_moderator_event(msg_type=msg_type,
                                 user=user,
                                 moderator=moderator,
-                                comment=comments)
+                                comment=log_comment)
 
             #TODO: Send emails
             #~send_moderation_email(email_type=decision,
