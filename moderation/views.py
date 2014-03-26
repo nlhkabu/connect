@@ -12,18 +12,7 @@ from .forms import (InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
-from .utils import generate_html_email, hash_time
-
-
-def create_token(user):
-    """
-    Create an authentication token for a user to activate their account.
-    """
-    #TODO: Generate token/invitation URL here
-    # Needs to be unique (based on datetime?)
-    token = '123456'
-
-    return token
+from .utils import generate_html_email, hash_time, generate_salt
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):
@@ -170,7 +159,7 @@ def handle_invitation(request, first_name, last_name, email, moderator, site):
         new_user.last_name = last_name
         new_user.save()
 
-        token = create_token(new_user)
+        token = hash_time(generate_salt())
         token_url = request.build_absolute_uri(
                         reverse('accounts:activate-account', args=[token]))
 
@@ -214,7 +203,7 @@ def handle_reinvitation(request, user, email, moderator, site):
         user.save()
 
         # Set a new token and update decision datetime
-        token = create_token(user)
+        token = hash_time(generate_salt())
         token_url = request.build_absolute_uri(
                         reverse('accounts:activate-account', args=[token]))
 
@@ -295,7 +284,7 @@ def review_applications(request):
 
             if decision == 'APP':
                 # Create token and token URL
-                token = create_token(user)
+                token = hash_time(generate_salt())
                 token_url = request.build_absolute_uri(
                         reverse('accounts:activate-account', args=[token]))
                 user.userregistration.auth_token = token
