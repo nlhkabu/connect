@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, url
 from accounts import views
 
@@ -18,8 +19,51 @@ urlpatterns = patterns('',
         },
         name='logout'
     ),
+
+    # page where user can request to reset their password
+    url(r'^password/reset/$',
+        'django.contrib.auth.views.password_reset',
+        {
+            'template_name': 'accounts/password_reset.html',
+            'post_reset_redirect': '/accounts/password/reset/done/',
+            'from_email': settings.EMAIL_HOST_USER,
+            'current_app' : 'accounts',
+            'email_template_name': 'accounts/emails/password_reset_email.html',
+        },
+        name="password_reset"
+    ),
+
+    # page to confirm that email has been sent
+    url(r'^password/reset/done/$',
+        'django.contrib.auth.views.password_reset_done',
+        {
+            'template_name': 'accounts/password_reset_done.html',
+            'current_app' : 'accounts',
+        },
+        name="password_reset_done"
+    ),
+
+
+    # page for user to change password (uses token sent in email)
+    url(r'^password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+        'django.contrib.auth.views.password_reset_confirm',
+        {
+            'post_reset_redirect': '/accounts/password/done/',
+            'current_app' : 'accounts',
+        },
+        name="password_reset_confirm"
+    ),
+
+    # page confirming password has been reset
+    url(r'^password/done/$',
+        'django.contrib.auth.views.password_reset_complete',
+        name="pasword_reset_complete"
+    ),
+
+    # Request and activate account
     url(r'^request-invitation$', 'accounts.views.request_invitation', name='request-invitation'),
     url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
+
     # Account settings
     url(r'^settings/$', 'accounts.views.account_settings', name='account-settings'),
     url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
