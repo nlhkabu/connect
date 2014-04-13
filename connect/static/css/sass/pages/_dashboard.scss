@@ -208,13 +208,7 @@ ul.dash-tabs {
 }
 
 .member-card-footer {
-    ul, li {
-        margin: 0;
-        padding: 0;
-    }
-
     a {
-        display: inline-block;
         padding: 10px 15px;
         border-left: 1px solid #ddd;
         text-decoration: none;
@@ -225,6 +219,11 @@ ul.dash-tabs {
             background-color: $lighter-grey;
             color: $black;
         }
+    }
+
+    a.report-abuse {
+        border-left: 0;
+        border-right: 1px solid #ddd;
     }
 
 }

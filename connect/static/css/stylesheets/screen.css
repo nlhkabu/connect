@@ -2643,26 +2643,25 @@ ul.dash-tabs li.active a i {
 }
 
 /* line 211, ../sass/pages/_dashboard.scss */
-.member-card-footer ul, .member-card-footer li {
-  margin: 0;
-  padding: 0;
-}
-/* line 216, ../sass/pages/_dashboard.scss */
 .member-card-footer a {
-  display: inline-block;
   padding: 10px 15px;
   border-left: 1px solid #ddd;
   text-decoration: none;
   font-size: 13px;
   color: #333333;
 }
-/* line 224, ../sass/pages/_dashboard.scss */
+/* line 218, ../sass/pages/_dashboard.scss */
 .member-card-footer a:hover {
   background-color: #f4f4f4;
   color: black;
 }
+/* line 224, ../sass/pages/_dashboard.scss */
+.member-card-footer a.report-abuse {
+  border-left: 0;
+  border-right: 1px solid #ddd;
+}
 
-/* line 235, ../sass/pages/_dashboard.scss */
+/* line 234, ../sass/pages/_dashboard.scss */
 #map-canvas {
   width: 100%;
   height: 700px;
@@ -2670,18 +2669,18 @@ ul.dash-tabs li.active a i {
   padding: 0px;
 }
 
-/* line 242, ../sass/pages/_dashboard.scss */
+/* line 241, ../sass/pages/_dashboard.scss */
 .map-content {
   min-width: 300px;
 }
 
-/* line 246, ../sass/pages/_dashboard.scss */
+/* line 245, ../sass/pages/_dashboard.scss */
 .map-heading {
   width: 200px;
   margin-left: 15px;
 }
 
-/* line 252, ../sass/pages/_dashboard.scss */
+/* line 251, ../sass/pages/_dashboard.scss */
 .map-name,
 .map-name a {
   font-size: 25px !important;
@@ -2690,11 +2689,11 @@ ul.dash-tabs li.active a i {
   margin-top: 5px;
 }
 
-/* line 259, ../sass/pages/_dashboard.scss */
+/* line 258, ../sass/pages/_dashboard.scss */
 .map-skills {
   margin-bottom: 0;
 }
-/* line 262, ../sass/pages/_dashboard.scss */
+/* line 261, ../sass/pages/_dashboard.scss */
 .map-skills li {
   display: inline-block;
   margin: 0 5px 10px 0;

@@ -122,14 +122,20 @@
                     </div>
                     <div class="member-card-footer">
                         {% if member != user %}
-                            <a href="{% url 'moderation:report-abuse' member.id %}">{% trans "Report Abuse" %}</a>
+                            <a href="{% url 'moderation:report-abuse' member.id %}" class="report-abuse pull-left">
+                                {% trans "Report Abuse" %}
+                            </a>
                         {% endif %}
-                        <ul class="">
-                            <li><a href="#" class="pull-right toggle-member-expand full-profile">{% trans "View Full Profile" %}</a></li>
+                        <nav class="pull-right">
+                            <a href="#" class="pull-right toggle-member-expand full-profile">
+                                {% trans "View Full Profile" %}
+                            </a>
                             {% if member != user %}
-                                <li><a href="#" class="pull-right">{% trans "Connect" %}</a></li>
+                                <a href="#" class="pull-right">
+                                    {% trans "Connect" %}
+                                </a>
                             {% endif %}
-                        </ul>
+                        </nav>
                         <div class="clearfix"></div>
                     </div>
                 </div>
