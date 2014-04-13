@@ -247,7 +247,7 @@ class AccountSettingsForm(forms.Form):
         self.fields['reset_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
                                             'class' : 'account-input inactive pw',
-                                            'placeholder' : 'Password'
+                                            'placeholder' : 'New Password'
                                         }),
                                         required=False)
 

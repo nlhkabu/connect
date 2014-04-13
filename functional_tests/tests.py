@@ -1,4 +1,5 @@
-from django.test import LiveServerTestCase
+#from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -7,7 +8,7 @@ from django.contrib.auth.models import User
 # test what happens from the users' points of view
 # ================================================
 
-class MemberVisitTest(LiveServerTestCase):
+class MemberVisitTest(StaticLiveServerCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -15,6 +16,16 @@ class MemberVisitTest(LiveServerTestCase):
 
     def tearDown(self):
         self.browser.quit()
+
+
+    def test_layout_and_styling(self):
+        # Sam goes to the home page
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # TODO: Test layout here
+        pass
+
 
     def test_can_login_via_login_page(self):
 
