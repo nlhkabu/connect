@@ -40,6 +40,7 @@ def dashboard(request):
         form = FilterMemberForm()
 
     extra_context = {
+        'user' : user,
         'listed_members': listed_members,
         'form': form,
     }
