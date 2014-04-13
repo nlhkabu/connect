@@ -36,6 +36,7 @@
             <input type="hidden" name="next" value="{{ next }}" />
         </div>
         <div class="clearfix"></div>
+        <a href="{% url 'accounts:password_reset' %}">Forgotten your login details?</a>
     </form>
 
     {% if form.errors %}
