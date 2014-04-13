@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% block page_title %}Activate Account{% endblock %}
+{% load i18n %}
+
+
+{% block page_title %}{% trans "Activate Account" %}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -8,7 +11,7 @@
         <form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Activate Account" />
+            <input type="submit" value="{% trans 'Activate Account' %}" />
         </form>
     </div>
 {% endblock %}

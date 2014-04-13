@@ -1,13 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
+
 
 {% block nav_content %}
     <nav>
         <a href="{% url 'dashboard' %}" class="{% block dashboard_active %}{% endblock %}"><i class="fa fa-home"></i></a>
         {% if perms.moderation.access_moderators_page %}
-            <a href="{% url 'moderation:moderators' %}" class="{% block moderators_active %}{% endblock %}">Moderators</a>
+            <a href="{% url 'moderation:moderators' %}" class="{% block moderators_active %}{% endblock %}">{% trans "Moderators" %}</a>
         {% endif %}
-        <a href="{% url 'accounts:profile-settings' %}" class="{% block myaccount_active %}{% endblock %}">My Account</a>
-        <a href="{% url 'accounts:logout' %}">Logout</a>
+        <a href="{% url 'accounts:profile-settings' %}" class="{% block myaccount_active %}{% endblock %}">{% trans "My Account" %}</a>
+        <a href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a>
     </nav>
     <div class="clearfix"></div>
 {% endblock %}
@@ -16,7 +18,7 @@
     <div class="connect-banner">
         <div class="container">
             <div>
-                <h1>Connect</h1>
+                <h1>Connect</h1> <!-- TODO: replace these lines with content from admin-->
                 <h2>Connect with PyLadies from around the globe!</h2>
             </div>
             {% block tabs %}{% endblock %}
@@ -26,9 +28,4 @@
     <div class="page-content">
         {% block page_content %}{% endblock %}
     </div>
-
-{% endblock %}
-
-{% block abuse %}
-    <a href="">Report Abuse</a>
 {% endblock %}

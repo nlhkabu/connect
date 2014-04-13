@@ -1,6 +1,8 @@
 {% extends "moderation/moderators_base.html" %}
+{% load i18n %}
 
-{% block page_title %}Invite a New Member{% endblock %}
+
+{% block page_title %}{% trans "Invite a New Member" %}{% endblock %}
 {% block invite_member_active %}active{% endblock %}
 
 
@@ -9,20 +11,20 @@
     <form action="" method="post">
         {% csrf_token %}
         {{ invitation_form.as_p }}
-        <input type="submit" value="Invite New Member" class="button" />
+        <input type="submit" value="{% trans 'Invite New Member' %}" class="button" />
     </form>
 
     <hr/>
 
     {% if pending %}
-        <h3>Invitations pending activation</h3>
+        <h3>{% trans "Invitations pending activation" %}</h3>
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email Address</th>
-                    <th>Date Invited</th>
-                    <th>Actions</th>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Email Address" %}</th>
+                    <th>{% trans "Date Invited" %}</th>
+                    <th>{% trans "Actions" %}</th>
 
                 </tr>
             </thead>
@@ -33,13 +35,10 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <a href="#"><i class="fa fa-envelope-o"></i> Resend / Edit Invitation</a><br/>
-                        <a href="#"><i class="fa fa-trash-o"></i> Revoke Invitation</a>
-
                         <form action="" method="post">
                             {% csrf_token %}
                             {{ user.reinvitation_form.as_p }}
-                            <input type="submit" value="Resend Invitation" class="button" />
+                            <input type="submit" value="{% trans 'Resend Invitation' %}" class="button" />
                         </form>
 
                         <hr/>
@@ -47,7 +46,7 @@
                          <form action="" method="post">
                             {% csrf_token %}
                             {{ user.revocation_form.as_p }}
-                            <input type="submit" value="Revoke Invitation" class="button" />
+                            <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
                         </form>
                     </td>
                 </tr>
@@ -55,5 +54,4 @@
             </tbody>
         </table>
     {% endif %}
-
 {% endblock %}

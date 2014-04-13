@@ -1,6 +1,8 @@
 {% extends "accounts/settings_base.html" %}
+{% load i18n %}
 
-{% block page_title %}Account Settings{% endblock %}
+
+{% block page_title %}{% trans "Account Settings" %}{% endblock %}
 {% block settings_active %}active{% endblock %}
 
 {% block settings_content %}
@@ -10,7 +12,11 @@
         <table class="account-table">
             <tbody>
                 <tr>
-                    <td class="profile-heading"><strong>Username</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "Username" %}
+                        </strong>
+                    </td>
                     <td>
                         {{ form.username }}
                         {% if form.username.errors %}
@@ -24,7 +30,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="profile-heading"><strong>Email Address</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                             {% trans "Email Address" %}
+                        </strong>
+                    </td>
                     <td>
                         {{ form.email }}
                         {% if form.email.errors %}
@@ -38,7 +48,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="profile-heading"><strong>Change Password</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                             {% trans "Change Password" %}
+                        </strong>
+                    </td>
                     <td>
                         {{ form.reset_password }}
                         {{ form.reset_password_confirm }}
@@ -56,7 +70,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type="submit" value="Update Account Settings" class="button"/>
+                        <input type="submit" value="{% trans 'Update Account Settings' %}" class="button"/>
                     </td>
                     <td></td>
                 </tr>

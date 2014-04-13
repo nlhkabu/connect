@@ -1,13 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block page_title %}Request Account Invitation{% endblock %}
+
+{% block page_title %}{% trans "Request Account Invitation" %}{% endblock %}
 
 {% block content %}
     <div class="container">
         <form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Request Invitation" />
+            <input type="submit" value="{% trans 'Request Invitation' %}" />
         </form>
     </div>
 {% endblock %}

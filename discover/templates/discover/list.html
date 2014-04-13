@@ -1,9 +1,9 @@
 {% extends "discover/dashboard.html" %}
-
+{% load i18n %}
 {% load staticfiles %}
 {% load gravatar %}
 
-{% block page_title %}Dashboard{% endblock %}
+{% block page_title %}{% trans "Dashboard" %}{% endblock %}
 
 {% block list_active %}active{% endblock %}
 
@@ -11,14 +11,14 @@
     <div class="container">
         <div class="four columns alpha filter">
             <h3>
-                Refine Search
-                <a href="" class="clear-filters">Clear All</a>
+                {% trans "Refine Search" %}
+                <a href="" class="clear-filters">{% trans "Clear All" %}</a>
             </h3>
 
             <form action="" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" class="button" value="Submit" />
+                <input type="submit" class="button" value="{% trans 'Submit' %}" />
             </form>
 
             <form action="" method="post">
@@ -26,21 +26,21 @@
                     <label for="">Location</label>
                     <label for="all">
                         <input type="radio" name="locationRadios" id="all" value="all" checked />
-                        <span>All Members</span>
+                        <span>{% trans "All Members" %}</span>
                     </label>
                     <label for="close">
                         <input type="radio" name="locationRadios" id="close" value="close" />
-                        <span>Close to me</span>
+                        <span>{% trans "Close to me" %}</span>
                     </label>
 
                     <div class="close-to-me">
-                        <label class="within">Within</label>
+                        <label class="within">{% trans "Within" %}</label>
                         <input type="number" name="" value="" id="" class="tiny"/>
                         <select class="tiny">
                             <option>km</option>
                             <option>mi</option>
                         </select>
-                        <button type="">apply</button>
+                        <button type="">{% trans "apply" %}</button>
                     </div>
                 </fieldset>
             </form>
@@ -121,10 +121,10 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="member-card-footer">
-                        <a href="{% url 'moderation:report-abuse' member.id %}">Report Abuse</a>
+                        <a href="{% url 'moderation:report-abuse' member.id %}">{% trans "Report Abuse" %}</a>
                         <ul class="">
-                            <li><a href="#" class="pull-right toggle-member-expand full-profile">View Full Profile</a></li>
-                            <li><a href="#" class="pull-right">Connect</a></li>
+                            <li><a href="#" class="pull-right toggle-member-expand full-profile">{% trans "View Full Profile" %}</a></li>
+                            <li><a href="#" class="pull-right">{% trans "Connect" %}</a></li>
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -133,8 +133,8 @@
                 {% endfor %}
             {% else %}
                 <div class="no-results member-card">
-                    <h4>Sorry!</h4>
-                    <p>There are no members matching your selected search.  Please try again.</p>
+                    <h4>{% trans "Sorry!" %}</h4>
+                    <p>{% trans "There are no members matching your selected search.  Please try again." %}</p>
                 </div>
             {% endif %}
 

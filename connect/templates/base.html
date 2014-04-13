@@ -1,5 +1,7 @@
+{% load i18n %}
 {% load staticfiles %}
 {% load browserid %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -8,7 +10,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block page_title %}{% endblock %} | Connect</title>
+        <title>{% block page_title %}{% endblock %} | Connect</title><!-- TODO: replace this with content from admin-->
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -22,13 +24,17 @@
     <body>
         {% browserid_info %}
         <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+            {% blocktrans %}
+                <p>
+                    You are using an <strong>outdated</strong> browser. Please <a href='http://browsehappy.com/'>upgrade your browser to improve your experience.
+                </p>
+            {% endblocktrans %}
         <![endif]-->
 
         <div class="wrapper">
             <header>
                 <div class="container">
-                    <a href="/" class="pull-left app-title">Connect</a>
+                    <a href="/" class="pull-left app-title">Connect</a><!-- TODO: replace this with content from admin-->
                     <div class="pull-right">
                         {% block nav_content %}
                         {% endblock %}
@@ -45,13 +51,14 @@
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">
-                    <span>Made with <i class="fa fa-heart"></i> by <a href="http://twitter.com/nlhkabu">nlh</a>, other names here.</span>
-                    <a href="">Fork me on Github.</a>
+                    {% blocktrans %}
+                        <span>Made with <i class="fa fa-heart"></i> by <a href="http://twitter.com/nlhkabu">nlh</a>, other names here.</span>
+                        <a href="">Fork me on Github.</a>
+                    {% endblocktrans %}
                 </p>
                 <p class="pull-right">
-                    <a href="">Privacy Policy</a>
-                    <a href="">Code of Conduct</a>
-                    {% block abuse %}{% endblock %}
+                    <a href="">{% trans "Privacy Policy" %}</a>
+                    <a href="">{% trans "Code of Conduct" %}</a>
                 </p>
                 <div class="clearfix"></div>
             </div>

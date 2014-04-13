@@ -1,17 +1,19 @@
 {% extends "logged_in.html" %}
+{% load i18n %}
 
-{% block page_title %}Report Abuse{% endblock %}
+
+{% block page_title %}{% trans "Report Abuse" %}{% endblock %}
 
 {% block content %}
     <div class="container">
 
-        <p>Logged by: {{ logged_by.get_full_name }}</p>
-        <p>Logged Against: {{ logged_against.get_full_name }}</p>
+        <p>{% trans "Logged by" %}: {{ logged_by.get_full_name }}</p>
+        <p>{% trans "Logged Against" %}: {{ logged_against.get_full_name }}</p>
 
         <form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Report Abuse" />
+            <input type="submit" value="{% trans 'Report Abuse' %}" />
         </form>
     </div>
 {% endblock %}

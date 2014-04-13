@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load i18n %}
+
 
 {% load browserid %}
 
-{% block page_title %}Login{% endblock %}
+{% block page_title %}{% trans "Login" %}{% endblock %}
 
 {% block extra_css %}
     {% browserid_css %}
@@ -22,26 +24,26 @@
         {% csrf_token %}
 
         <div class="pull-left field">
-            <label>Username</label>
+            <label>{% trans "Username" %}</label>
             {{ form.username }}
         </div>
 
         <div class="pull-left field">
-            <label>Password</label>
+            <label>{% trans "Password" %}</label>
             {{ form.password }}
         </div>
 
         <div class="pull-left">
-            <input type="submit" value="Login" class="button"/>
+            <input type="submit" value="{% trans 'Login' %}" class="button"/>
             <input type="hidden" name="next" value="{{ next }}" />
         </div>
         <div class="clearfix"></div>
-        <a href="{% url 'accounts:password_reset' %}">Forgotten your login details?</a>
+        <a href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your login details?" %}</a>
     </form>
 
     {% if form.errors %}
         <div id="login-error">
-            Your username and password didn't match. Please try again.
+            {% trans "Your username and password didn't match. Please try again." %}
         </div>
     {% endif %}
 
@@ -50,7 +52,7 @@
 
 {% block content %}
     <div class="container">
-        <a href="{% url 'accounts:request-invitation' %}">Request an account</a>
+        <a href="{% url 'accounts:request-invitation' %}">{% trans "Request an Account" %}</a>
     </div>
 {% endblock %}
 

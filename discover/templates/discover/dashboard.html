@@ -1,12 +1,24 @@
 {% extends "logged_in.html" %}
 {% load gravatar %}
+{% load i18n %}
+
 
 {% block dashboard_active %}active{% endblock %}
 
 {% block tabs %}
     <ul class="dash-tabs">
-        <li class="{% block list_active %}{% endblock %}"><a href="{% url 'dashboard' %}"><i class="fa fa-bars"></i>List View</a></li>
-        <li class="{% block map_active %}{% endblock %}"><a href="{% url 'discover:map' %}"><i class="fa fa-map-marker"></i>Map View</a></li>
+        <li class="{% block list_active %}{% endblock %}">
+            <a href="{% url 'dashboard' %}">
+                <i class="fa fa-bars"></i>
+                {% trans "List View" %}
+            </a>
+        </li>
+        <li class="{% block map_active %}{% endblock %}">
+            <a href="{% url 'discover:map' %}">
+                <i class="fa fa-map-marker"></i>
+                {% trans "Map View" %}
+            </a>
+        </li>
     </ul>
 {% endblock %}
 

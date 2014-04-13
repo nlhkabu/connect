@@ -1,11 +1,12 @@
 {% extends "moderation/moderators_base.html" %}
+{% load i18n %}
 
-{% block page_title %}Review Abuse Reports{% endblock %}
+
+{% block page_title %}{% trans "Review Abuse Reports" %}{% endblock %}
 {% block review_abuse_active %}active{% endblock %}
 
-
 {% block moderators_content %}
-    <h2>Review Abuse Reports</h2>
+    <h2>{% trans "Review Abuse Reports" %}</h2>
 
     {% for report in reports %}
         <div class="">
@@ -13,21 +14,19 @@
             <p>{{ report.logged_by.get_full_name }}</p>
             <p>{{ report.logged_datetime }}</p>
             <p>{{ report.abuse_comment }}</p>
-            <p><strong>Prior Warnings: {{ report.prior_warnings|length }}</strong></p>
-            {% for warning in report.prior_warnings %}
-                <p>Abuse Report Details: {{ warning.abuse_comment }}</p>
-                <p>Moderator Comment:{{ warning.moderator_comment }}</p>
-                <p>Warning issued on: {{ warning.decision_datetime }}</p>
 
+            <p><strong>{% trans "Prior Warnings" %}: {{ report.prior_warnings|length }}</strong></p>
+            {% for warning in report.prior_warnings %}
+                <p>{% trans "Abuse Report Details" %}: {{ warning.abuse_comment }}</p>
+                <p>{% trans "Moderator Comment" %}:{{ warning.moderator_comment }}</p>
+                <p>{% trans "Warning issued on" %}: {{ warning.decision_datetime }}</p>
             {% endfor %}
 
             <form action="" method="post">
                 {% csrf_token %}
                 {{ report.moderation_form.as_p }}
-                <input type="submit" value="Moderate Abuse Report" class="button" />
+                <input type="submit" value="{% trans 'Moderate Abuse Report' %}" class="button" />
             </form>
         </div>
     {% endfor %}
-
-
 {% endblock %}

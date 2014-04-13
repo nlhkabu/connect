@@ -1,12 +1,13 @@
 {% extends "accounts/settings_base.html" %}
-
+{% load i18n %}
 {% load staticfiles %}
 
-{% block page_title %}Profile Settings{% endblock %}
+
+{% block page_title %}{% trans "Profile Settings" %}{% endblock %}
+
 {% block profile_active %}active{% endblock %}
 
 {% block settings_content %}
-
 <div class="account-wrapper">
     <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -14,7 +15,11 @@
         <table class="profile-table">
             <tbody>
                 <tr>
-                    <td class="profile-heading"><strong>First Name</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "First Name" %}
+                        </strong>
+                    </td>
                     <td>
                         {{ form.first_name }}
                         {% if form.first_name.errors %}
@@ -29,7 +34,11 @@
                 </tr>
 
                 <tr>
-                    <td class="profile-heading"><strong>Last Name</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "Last Name" %}
+                        </strong>
+                    </td>
                     <td>
                         {{ form.last_name }}
                         {% if form.last_name.errors %}
@@ -44,14 +53,22 @@
                 </tr>
 
                 <tr>
-                    <td class="profile-heading"><strong>Biography</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "Biography" %}
+                        </strong>
+                    </td>
                     <td class="profile-bio">
                         {{ form.bio }}
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="profile-heading"><strong>Connect Preferences</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "Connect Preferences" %}
+                        </strong>
+                    </td>
                     <td class="profile-preferences">
                         {{ form.preferences }}
                         {% if form.preferences.errors %}
@@ -66,7 +83,11 @@
                 </tr>
 
                 <tr>
-                    <td class="profile-heading"><strong>Skills</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "Skills" %}
+                        </strong>
+                    </td>
                     <td class="profile-skills">
                         {{ skill_formset.management_form }}
                         {% for form in skill_formset %}
@@ -92,7 +113,11 @@
                 </tr>
 
                 <tr>
-                    <td class="profile-heading"><strong>Links</strong></td>
+                    <td class="profile-heading">
+                        <strong>
+                            {% trans "Links" %}
+                        </strong>
+                    </td>
                     <td class="profile-links">
                         {{ link_formset.management_form }}
                         {% for form in link_formset %}
@@ -118,7 +143,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type="submit" value="Update Profile Settings" class="button"/>
+                        <input type="submit" value="{% trans 'Update Profile Settings' %}" class="button"/>
                     </td>
                     <td></td>
                 </tr>
@@ -138,13 +163,15 @@
         $('.skill-formset').formset({
             prefix: '{{ skill_formset.prefix }}',
             formCssClass: 'dynamic-skill-formset',
-            addText: 'add skill'
+            addText: '{% trans "add skill" %}',
+            deleteText: '{% trans "remove" %}'
         });
 
         $('.link-formset').formset({
             prefix: '{{ link_formset.prefix }}',
             formCssClass: 'dynamic-link-formset',
-            addText: 'add link'
+            addText: '{% trans "add link" %}',
+            deleteText: '{% trans "remove" %}'
         });
 
 

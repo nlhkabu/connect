@@ -1,21 +1,23 @@
 {% extends "moderation/moderators_base.html" %}
+{% load i18n %}
 
-{% block page_title %}View Logs{% endblock %}
+
+{% block page_title %}{% trans "View Logs" %}{% endblock %}
 {% block logs_active %}active{% endblock %}
 
 
 {% block moderators_content %}
-    <h2>View Log</h2>
+    <h2>{% trans "View Log" %}</h2>
 
     {% if logs %}
         <table>
             <thead>
                 <tr>
-                    <th>Date / Time</th>
-                    <th>Type</th>
-                    <th>Comment</th>
-                    <th>Logged against (user)</th>
-                    <th>Logged by (moderator)</th>
+                    <th>{% trans "Date/Time" %}</th>
+                    <th>{% trans "Type" %}</th>
+                    <th>{% trans "Comment" %}</th>
+                    <th>{% trans "Logged against (user)" %}</th>
+                    <th>{% trans "Logged by (moderator)" %}</th>
                 </tr>
             </thead>
             <tbody>
