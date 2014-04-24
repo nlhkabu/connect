@@ -123,13 +123,15 @@ def profile_settings(request):
 
     SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None,
                                                        formset=BaseSkillFormSet)
-    user_skills = UserSkill.objects.filter(user=user)
+
+    user_skills = UserSkill.objects.filter(user=user).order_by('skill__name')
     skill_data = [{'skill': s.skill, 'proficiency': s.proficiency}
                     for s in user_skills]
 
     LinkFormSet = formset_factory(LinkForm, extra=1, max_num=None,
                                                      formset=BaseLinkFormSet)
-    user_links = UserLink.objects.filter(user=user)
+
+    user_links = UserLink.objects.filter(user=user).order_by('anchor')
     link_data = [{'anchor': l.anchor, 'url': l.url}
                     for l in user_links]
 
