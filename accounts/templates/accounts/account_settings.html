@@ -79,3 +79,16 @@
     </form>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready(function(){
+            // Enable fancy hover/focus CSS
+            $('.account-input').on('blur', function(){
+                $(this).addClass('inactive');
+            }).on('focus', function(){
+                $(this).removeClass('inactive');
+            });
+        });
+    </script>
+{% endblock %}
