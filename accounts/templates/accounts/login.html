@@ -1,25 +1,10 @@
 {% extends "base.html" %}
+
 {% load i18n %}
-
-
-{% load browserid %}
 
 {% block page_title %}{% trans "Login" %}{% endblock %}
 
-{% block extra_css %}
-    {% browserid_css %}
-{% endblock %}
-
 {% block nav_content %}
-
-    <div class="authentication">
-        {% if user.is_authenticated %}
-            {% browserid_logout text='Logout' %}
-        {% else %}
-            {% browserid_login text='Login' color='dark' %}
-        {% endif %}
-    </div>
-
     <form method="post" action="{% url 'accounts:login' %}" class="login-form">
         {% csrf_token %}
 
@@ -54,8 +39,4 @@
     <div class="container">
         <a href="{% url 'accounts:request-invitation' %}">{% trans "Request an Account" %}</a>
     </div>
-{% endblock %}
-
-{% block extra_js %}
-    {% browserid_js %}
 {% endblock %}
