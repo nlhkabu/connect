@@ -12,7 +12,7 @@ from .forms import (InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
-from .utils import generate_html_email, hash_time, generate_salt
+from connect.utils import generate_html_email, hash_time, generate_salt
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):
@@ -27,28 +27,11 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
     )
 
 
-def send_moderation_email(email_type, user, moderator, site, token=''):
+def send_moderation_email(subject, template, user, moderator, site, token=''):
     """
     Sends an email to the user from the moderation dashboard.
     e.g. Invitation, reminder to activate their account, etc.
     """
-
-    if email_type == 'invited':
-        subject = 'Welcome to {}'.format(site.name)
-        template = 'moderation/emails/invite_new_user.html'
-
-    if email_type == 'reinvited':
-        subject = 'Activate your {} account'.format(site.name)
-        template = 'moderation/emails/reinvite_user.html'
-
-    if email_type == 'APP':
-        subject = 'Welcome to {}'.format(site.name)
-        template = 'moderation/emails/approve_user.html'
-
-    if email_type == 'REJ':
-        subject = 'Your application to {} has been rejected'.format(site.name)
-        template = 'moderation/emails/reject_user.html'
-
     template_vars = {
         'recipient': user,
         'site_name': site.name,
@@ -183,11 +166,15 @@ def handle_invitation(request, first_name, last_name, email, moderator, site):
                             comment=log_comment)
 
         # Send email
-        send_moderation_email(email_type='invited',
-                             user=new_user,
-                             moderator=moderator,
-                             site=site,
-                             token=token_url)
+        subject = 'Welcome to {}'.format(site.name)
+        template = 'moderation/emails/invite_new_user.html'
+
+        send_moderation_email(subject=subject,
+                              template=template,
+                              user=new_user,
+                              moderator=moderator,
+                              site=site,
+                              token=token_url)
         return new_user
 
     return None
@@ -221,11 +208,15 @@ def handle_reinvitation(request, user, email, moderator, site):
                             comment=log_comment)
 
         # Send email
-        send_moderation_email(email_type='reinvited',
-                             user=user,
-                             moderator=moderator,
-                             site=site,
-                             token=token_url)
+        subject = 'Activate your {} account'.format(site.name)
+        template = 'moderation/emails/reinvite_user.html'
+
+        send_moderation_email(subject=subject,
+                              template=template,
+                              user=user,
+                              moderator=moderator,
+                              site=site,
+                              token=token_url)
 
         # TODO: Add a confirmation message
         return user
@@ -292,10 +283,18 @@ def review_applications(request):
                 user.userregistration.moderator_decision=UserRegistration.APPROVED
                 msg_type = ModerationLogMsg.APPROVAL
 
+                # Set email settings
+                subject = 'Welcome to {}'.format(site.name)
+                template = 'moderation/emails/approve_user.html'
+
             elif decision == 'REJ':
                 token_url = ''
                 user.userregistration.moderator_decision=UserRegistration.REJECTED
                 msg_type = ModerationLogMsg.REJECTION
+
+                # Set email settings
+                subject = 'Your application to {} has been rejected'.format(site.name)
+                template = 'moderation/emails/reject_user.html'
 
             # Log decision against user
             user.userregistration.moderator = moderator
@@ -311,11 +310,12 @@ def review_applications(request):
                                 comment=log_comment)
 
             # Send moderation email
-            send_moderation_email(email_type=decision,
-                                 user=user,
-                                 moderator=moderator,
-                                 site=site,
-                                 token=token_url)
+            send_moderation_email(subject=subject,
+                                  template=template,
+                                  user=user,
+                                  moderator=moderator,
+                                  site=site,
+                                  token=token_url)
 
             return redirect('moderation:review-applications')
 

@@ -14,7 +14,7 @@ from .forms import (AccountSettingsForm, ActivateAccountForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
 from .models import UserLink
 from moderation.models import UserRegistration
-from moderation.utils import hash_time
+from connect.utils import hash_time
 from skills.models import UserSkill
 
 
