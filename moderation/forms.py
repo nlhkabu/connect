@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import AbuseReport, UserRegistration
+from .models import AbuseReport, ModerationLogMsg, UserRegistration
 
 
 class InviteMemberForm(forms.Form):
@@ -111,3 +111,19 @@ class ModerateAbuseForm(forms.Form):
 
     decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES)
     comments = forms.CharField(widget=forms.Textarea)
+
+
+class FilterLogsForm(forms.Form):
+    """
+    Form for a moderator to filter moderation logs by date, type and
+    who the report has been logged against and logged by.
+    """
+
+    msg_type = forms.ChoiceField(choices=ModerationLogMsg.MSG_TYPE_CHOICES,
+                                 required=False)
+#~
+    #~preferences = ConnectPreference.objects.all()
+    #~selected_preferences = forms.ModelMultipleChoiceField(
+                            #~queryset=preferences,
+                            #~widget=forms.CheckboxSelectMultiple(),
+                            #~required=False)

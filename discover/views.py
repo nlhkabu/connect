@@ -43,13 +43,13 @@ def dashboard(request):
     else:
         form = FilterMemberForm()
 
-    extra_context = {
+    context = {
         'user' : user,
         'listed_members': listed_members,
         'form': form,
     }
 
-    return render(request, 'discover/list.html', extra_context)
+    return render(request, 'discover/list.html', context)
 
 
 @login_required

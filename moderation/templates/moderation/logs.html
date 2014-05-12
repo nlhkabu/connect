@@ -9,7 +9,16 @@
 {% block moderators_content %}
     <h2>{% trans "View Log" %}</h2>
 
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="button" value="{% trans 'Filter Logs' %}" />
+    </form>
     {% if logs %}
+
+
+
         <table>
             <thead>
                 <tr>
@@ -32,6 +41,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+        <p>There are no moderation events of this type logged in the system.</p>
     {% endif %}
 
 {% endblock %}

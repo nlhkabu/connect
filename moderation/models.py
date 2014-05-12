@@ -84,7 +84,6 @@ class ModerationLogMsg(models.Model):
         (DISMISSAL, 'Abuse Report Dismissed'),
         (WARNING, 'Official Warning'),
         (BANNING, 'Ban User'),
-
     )
 
     msg_datetime = models.DateTimeField(auto_now_add=True)

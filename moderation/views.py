@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
-from .forms import (InviteMemberForm, ModerateApplicationForm,
+from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
@@ -460,5 +460,23 @@ def view_logs(request):
     # Exclude logs about the logged in user (moderator)
     logs = ModerationLogMsg.objects.exclude(pertains_to=request.user)
 
-    context = {'logs': logs }
+    if request.method == 'POST':
+        form = FilterLogsForm(request.POST)
+
+        if form.is_valid():
+
+            msg_type = form.cleaned_data['msg_type']
+
+            logs = (ModerationLogMsg.objects.filter(msg_type=msg_type)
+                                            .exclude(pertains_to=request.user))
+
+
+    else:
+        form = FilterLogsForm()
+
+    context = {
+        'form' : form,
+        'logs': logs
+    }
+
     return render(request, 'moderation/logs.html', context)
