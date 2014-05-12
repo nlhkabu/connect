@@ -18,10 +18,15 @@ def dashboard(request):
     """
     # Get additional profile data
     user = request.user
-    user.gravatar_exists = has_gravatar(user.email)
 
-    # Display other members
-    listed_members = User.objects.filter(is_active=True)
+    #~working_offline = False
+    working_offline = True
+
+    if not working_offline:
+        user.gravatar_exists = has_gravatar(user.email)
+
+    # Display members
+    listed_members = User.objects.filter(is_active=True).order_by('first_name')
 
     if request.method == 'POST':
         form = FilterMemberForm(request.POST)
@@ -35,7 +40,6 @@ def dashboard(request):
             if preferences:
                 listed_members = listed_members.filter(
                     profile__connect_preferences__in=preferences).distinct()
-
     else:
         form = FilterMemberForm()
 
