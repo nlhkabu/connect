@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.forms.formsets import formset_factory
@@ -9,13 +10,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from django.utils.timezone import now
 
+from moderation.models import UserRegistration
+from moderation.views import send_moderation_email
+from connect.utils import generate_html_email, hash_time
+from skills.models import UserSkill
+
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
 from .models import UserLink
-from moderation.models import UserRegistration
-from connect.utils import hash_time
-from skills.models import UserSkill
 
 
 def request_invitation(request):
@@ -47,6 +50,20 @@ def request_invitation(request):
                 applied_datetime=now(),
                 application_comments=comments,
             )
+
+            # Send email(s) to moderator(s) alerting them of new account application
+            active_moderators = User.objects.filter(is_moderator=True,
+                                                    is_active=True)
+
+            site = get_current_site(request)
+            subject = 'New account request at {}'.format(site.name)
+            template = 'moderation/emails/notify_moderators_of_new_application.html'
+
+            # Send moderation email
+            send_moderation_email(subject=subject,
+                                  template=template,
+                                  recipient=active_moderators,
+                                  site=site)
 
             # TODO: Add a confirmation message
             return redirect('accounts:request-invitation')

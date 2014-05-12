@@ -8,11 +8,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
+from connect.utils import generate_html_email, hash_time, generate_salt
 from .forms import (InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
-from connect.utils import generate_html_email, hash_time, generate_salt
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):
@@ -27,16 +27,17 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
     )
 
 
-def send_moderation_email(subject, template, user, moderator, site, token=''):
+def send_moderation_email(subject, template, recipient, site,
+                          sender='', token='', fail_silently=True):
     """
     Sends an email to the user from the moderation dashboard.
     e.g. Invitation, reminder to activate their account, etc.
     """
     template_vars = {
-        'recipient': user,
+        'recipient': recipient,
         'site_name': site.name,
         'activation_url': token,
-        'inviter': moderator,
+        'sender': sender,
     }
 
     email = generate_html_email(
@@ -172,7 +173,7 @@ def handle_invitation(request, first_name, last_name, email, moderator, site):
         send_moderation_email(subject=subject,
                               template=template,
                               user=new_user,
-                              moderator=moderator,
+                              sender=moderator,
                               site=site,
                               token=token_url)
         return new_user
@@ -213,8 +214,8 @@ def handle_reinvitation(request, user, email, moderator, site):
 
         send_moderation_email(subject=subject,
                               template=template,
-                              user=user,
-                              moderator=moderator,
+                              recipient=user,
+                              sender=moderator,
                               site=site,
                               token=token_url)
 
@@ -312,8 +313,8 @@ def review_applications(request):
             # Send moderation email
             send_moderation_email(subject=subject,
                                   template=template,
-                                  user=user,
-                                  moderator=moderator,
+                                  recipient=user,
+                                  sender=moderator,
                                   site=site,
                                   token=token_url)
 
@@ -351,6 +352,22 @@ def report_abuse(request, user_id):
                 logged_against=logged_against,
                 abuse_comment=abuse_comment,
             )
+
+            # Send email(s) to moderator(s) alerting them of new report.
+            # Do not nofity the moderator the report is logged
+            # against (if this is the case).
+            active_moderators = (User.objects.filter(is_moderator=True,
+                                                     is_active=True)
+                                             .exclude(id=logged_against.id))
+
+            site = get_current_site(request)
+            subject = 'New abuse report at {}'.format(site.name)
+            template = 'moderation/emails/notify_moderators_of_abuse_report.html'
+
+            send_moderation_email(subject=subject,
+                                  template=template,
+                                  recipient=active_moderators,
+                                  site=site)
 
     else:
         form = ReportAbuseForm(logged_by=logged_by,
@@ -435,14 +452,14 @@ def review_abuse(request):
             # Log moderation event
             log_comment = '{}'.format(comments)
             log_moderator_event(msg_type=msg_type,
-                                user=user,
+                                recipient=user,
                                 moderator=moderator,
                                 comment=log_comment)
 
             #TODO: Send emails
             #~send_moderation_email(email_type=decision,
-                                  #~user=recipient,
-                                  #~moderator=moderator,
+                                  #~recipient=user,
+                                  #~sender=moderator,
                                   #~site=site)
 
             return redirect('moderation:review-abuse')
