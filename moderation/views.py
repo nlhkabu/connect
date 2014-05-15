@@ -172,8 +172,8 @@ def handle_invitation(request, first_name, last_name, email, moderator, site):
 
         send_moderation_email(subject=subject,
                               template=template,
-                              user=new_user,
-                              sender=moderator,
+                              recipient=new_user,
+                              moderator=moderator,
                               site=site,
                               token=token_url)
         return new_user
@@ -214,7 +214,7 @@ def handle_reinvitation(request, user, email, moderator, site):
 
         send_moderation_email(subject=subject,
                               template=template,
-                              user=user,
+                              recipient=user,
                               moderator=moderator,
                               site=site,
                               token=token_url)
@@ -356,18 +356,22 @@ def report_abuse(request, user_id):
             # Send email(s) to moderator(s) alerting them of new report.
             # Do not nofity the moderator the report is logged
             # against (if this is the case).
-            active_moderators = (User.objects.filter(is_moderator=True,
-                                                     is_active=True)
-                                             .exclude(id=logged_against.id))
+            moderators = (User.objects.filter(profile__is_moderator=True,
+                                              is_active=True)
+                                      .exclude(id=logged_against.id))
 
             site = get_current_site(request)
             subject = 'New abuse report at {}'.format(site.name)
             template = 'moderation/emails/notify_moderators_of_abuse_report.html'
 
-            send_moderation_email(subject=subject,
-                                  template=template,
-                                  recipient=active_moderators,
-                                  site=site)
+            for moderator in moderators:
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=moderator,
+                                      site=site)
+
+            # TODO: Add confirmation message telling user that their
+            # report has been logged.
 
     else:
         form = ReportAbuseForm(logged_by=logged_by,
