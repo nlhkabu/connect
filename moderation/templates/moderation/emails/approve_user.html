@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block email_footer %}
-    You received this email because {{ inviter.first_name }}{% if invite.last_name %} {{ inviter.last_name }}{% endif %} has approved your application for  a new {{ site_name }} account.
+    You received this email because {{ sender.first_name }}{% if sender.last_name %} {{ sender.last_name }}{% endif %} has approved your application for  a new {{ site_name }} account.
 {% endblock %}
 
 {% endautoescape %}

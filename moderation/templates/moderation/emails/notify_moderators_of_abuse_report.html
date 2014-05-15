@@ -1,0 +1,13 @@
+{% extends 'moderation/emails/email_base.html' %}
+{% autoescape off %}
+
+{% block email_content %}
+    <p>You have been sent this email as a new abuse report has been registered at {{ site_name }}.</p>
+    <p>To review this report, please log into your moderation dashboard.</p>
+{% endblock %}
+
+{% block email_footer %}
+    You received this email because you are a moderator at {{ site_name }}.
+{% endblock %}
+
+{% endautoescape %}

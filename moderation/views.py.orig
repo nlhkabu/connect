@@ -8,11 +8,15 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
+<<<<<<< HEAD
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
+=======
+from connect.utils import generate_html_email, hash_time, generate_salt
+from .forms import (InviteMemberForm, ModerateApplicationForm,
+>>>>>>> moderation_emails
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
-from connect.utils import generate_html_email, hash_time, generate_salt
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):
@@ -28,7 +32,11 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
 
 
 def send_moderation_email(subject, template, recipient, site,
+<<<<<<< HEAD
                           moderator='', token=''):
+=======
+                          sender='', token='', fail_silently=True):
+>>>>>>> moderation_emails
     """
     Sends an email to the user from the moderation dashboard.
     e.g. Invitation, reminder to activate their account, etc.
@@ -37,7 +45,7 @@ def send_moderation_email(subject, template, recipient, site,
         'recipient': recipient,
         'site_name': site.name,
         'activation_url': token,
-        'inviter': moderator,
+        'sender': sender,
     }
 
     email = generate_html_email(
@@ -214,8 +222,8 @@ def handle_reinvitation(request, user, email, moderator, site):
 
         send_moderation_email(subject=subject,
                               template=template,
-                              user=user,
-                              moderator=moderator,
+                              recipient=user,
+                              sender=moderator,
                               site=site,
                               token=token_url)
 
@@ -313,8 +321,8 @@ def review_applications(request):
             # Send moderation email
             send_moderation_email(subject=subject,
                                   template=template,
-                                  user=user,
-                                  moderator=moderator,
+                                  recipient=user,
+                                  sender=moderator,
                                   site=site,
                                   token=token_url)
 
@@ -452,14 +460,14 @@ def review_abuse(request):
             # Log moderation event
             log_comment = '{}'.format(comments)
             log_moderator_event(msg_type=msg_type,
-                                user=user,
+                                recipient=user,
                                 moderator=moderator,
                                 comment=log_comment)
 
             #TODO: Send emails
             #~send_moderation_email(email_type=decision,
-                                  #~user=recipient,
-                                  #~moderator=moderator,
+                                  #~recipient=user,
+                                  #~sender=moderator,
                                   #~site=site)
 
             return redirect('moderation:review-abuse')
