@@ -27,13 +27,14 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
     )
 
 
-def send_moderation_email(subject, template, user, moderator, site, token=''):
+def send_moderation_email(subject, template, recipient, site,
+                          moderator='', token=''):
     """
     Sends an email to the user from the moderation dashboard.
     e.g. Invitation, reminder to activate their account, etc.
     """
     template_vars = {
-        'recipient': user,
+        'recipient': recipient,
         'site_name': site.name,
         'activation_url': token,
         'inviter': moderator,
@@ -42,7 +43,7 @@ def send_moderation_email(subject, template, user, moderator, site, token=''):
     email = generate_html_email(
         subject,
         settings.EMAIL_HOST_USER,
-        [user.email],
+        [recipient.email],
         template,
         template_vars,
     )
