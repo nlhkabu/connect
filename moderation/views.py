@@ -27,8 +27,8 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
     )
 
 
-def send_moderation_email(subject, template, recipient, site,
-                          moderator='', token=''):
+def send_moderation_email(subject, template, recipient, site, moderator='',
+                          token='', comments='', logged_against=''):
     """
     Sends an email to the user from the moderation dashboard.
     e.g. Invitation, reminder to activate their account, etc.
@@ -38,6 +38,8 @@ def send_moderation_email(subject, template, recipient, site,
         'site_name': site.name,
         'activation_url': token,
         'inviter': moderator,
+        'comments': comments,
+        'logged_against': logged_against,
     }
 
     email = generate_html_email(
@@ -313,9 +315,9 @@ def review_applications(request):
             # Send moderation email
             send_moderation_email(subject=subject,
                                   template=template,
-                                  user=user,
-                                  moderator=moderator,
+                                  recipient=user,
                                   site=site,
+                                  moderator=moderator,
                                   token=token_url)
 
             return redirect('moderation:review-applications')
@@ -354,8 +356,7 @@ def report_abuse(request, user_id):
             )
 
             # Send email(s) to moderator(s) alerting them of new report.
-            # Do not nofity the moderator the report is logged
-            # against (if this is the case).
+            # Do not nofity the moderator the report is logged against
             moderators = (User.objects.filter(profile__is_moderator=True,
                                               is_active=True)
                                       .exclude(id=logged_against.id))
@@ -443,11 +444,26 @@ def review_abuse(request):
             if decision == 'DISMISS':
                 msg_type = ModerationLogMsg.DISMISSAL
 
+                # Send email to the user who made the report
+                subject = 'Your {} Abuse Report has been dismissed'.format(site.name)
+                template = 'moderation/emails/abuse_report_dismissed.html'
+                logged_by = abuse_report.logged_by
+                logged_against = abuse_report.logged_against
+
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=logged_by,
+                                      logged_against=logged_against,
+                                      site=site,
+                                      comments=comments)
+
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
+                # send email to reporter and reported
 
             if decision == 'BAN':
                 msg_type = ModerationLogMsg.BANNING
+                # send email to reporter and reported
 
                 user.is_active = False
                 user.save()
@@ -459,12 +475,6 @@ def review_abuse(request):
                                 user=user,
                                 moderator=moderator,
                                 comment=log_comment)
-
-            #TODO: Send emails
-            #~send_moderation_email(email_type=decision,
-                                  #~user=recipient,
-                                  #~moderator=moderator,
-                                  #~site=site)
 
             return redirect('moderation:review-abuse')
 
