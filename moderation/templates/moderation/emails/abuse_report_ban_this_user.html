@@ -1,0 +1,19 @@
+{% extends 'moderation/emails/email_base.html' %}
+{% autoescape off %}
+
+{% block email_content %}
+    <p>You have been sent this email as an abuse report has been logged against you at {{ site_name }}.</p>
+    <p>This report has been reviewed by a {{ site_name }} moderator, and in this instance, they have made the decision to ban you from future use of {{ site_name }}.</p>
+    <p><strong>Subsequently, your account has been deactivated.</strong></p>
+    <p>Please find the moderator's comments below:</p>
+    <blockquote>
+        {{ comments }}
+    </blockquote>
+    <p>If you wish to appeal this decision, please email x.</p>
+{% endblock %}
+
+{% block email_footer %}
+    You received this email because an abuse report has been logged against you at {{ site_name }}.
+{% endblock %}
+
+{% endautoescape %}

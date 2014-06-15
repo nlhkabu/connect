@@ -1,0 +1,19 @@
+{% extends 'moderation/emails/email_base.html' %}
+{% autoescape off %}
+
+{% block email_content %}
+    <p>You have been sent this email as you logged an abuse report against {{ logged_against.get_full_name }} at {{ site_name }}.</p>
+    <p>Your report has been reviewed by a {{ site_name }} moderator, and in this instance, they have made the decision to warn {{ logged_against.get_full_name }}.</p>
+    <p>This warning is stored against {{ logged_against.get_full_name }}'s profile and will be flagged in the event of another abuse report.</p>
+    <p>Please find the moderator's comments below:</p>
+    <blockquote>
+        {{ comments }}
+    </blockquote>
+
+{% endblock %}
+
+{% block email_footer %}
+    You received this email because you logged an abuse report at {{ site_name }}.
+{% endblock %}
+
+{% endautoescape %}
