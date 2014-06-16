@@ -86,8 +86,6 @@ def activate_account(request, token):
 
     if not user.userregistration.auth_token_is_used:
         if request.POST:
-            # TODO: Check url token = user's token
-
             form = ActivateAccountForm(request.POST, user=user)
 
             if form.is_valid():
@@ -124,11 +122,10 @@ def activate_account(request, token):
         }
 
     else:
-        # TODO: Redirect to another view
-        is_used = True
+        token_is_used = True
 
         context = {
-            'is_used' : is_used,
+            'token_is_used' : token_is_used,
         }
 
     return render(request, 'accounts/activate_account.html', context)
