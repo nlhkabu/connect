@@ -104,6 +104,8 @@ def activate_account(request, token):
                 user.userregistration.auth_token_is_used = True
                 user.userregistration.save()
 
+                # TODO: create user.profile
+
                 username = request.POST['username']
                 password = request.POST['password']
                 user = authenticate(username=username, password=password)

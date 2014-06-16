@@ -459,12 +459,65 @@ def review_abuse(request):
 
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
-                # send email to reporter and reported
+                logged_by = abuse_report.logged_by
+                logged_against = abuse_report.logged_against
+
+                # send email to the user the report was logged by
+                subject = ('{} {} has been issued a formal '
+                          'warning from {} ').format(logged_against.first_name,
+                                                    logged_against.last_name,
+                                                    site.name)
+                template = 'moderation/emails/abuse_report_warn_other_user.html'
+
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=logged_by,
+                                      logged_against=logged_against,
+                                      site=site,
+                                      comments=comments)
+
+                # send email to the user the report is logged against
+                subject = 'A formal warning from {}'.format(site.name)
+                template = 'moderation/emails/abuse_report_warn_this_user.html'
+
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=logged_against,
+                                      logged_against=logged_against,
+                                      site=site,
+                                      comments=comments)
+
 
             if decision == 'BAN':
                 msg_type = ModerationLogMsg.BANNING
-                # send email to reporter and reported
+                logged_by = abuse_report.logged_by
+                logged_against = abuse_report.logged_against
 
+                # send email to the user the report was logged by
+                subject = ('{} {} has been '
+                           'banned from {}').format(logged_against.first_name,
+                                                    logged_against.last_name,
+                                                    site.name)
+                template = 'moderation/emails/abuse_report_ban_other_user.html'
+
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=logged_by,
+                                      logged_against=logged_against,
+                                      site=site,
+                                      comments=comments)
+
+                # send email to the user the report is logged against
+                subject = 'Your {} account has been terminated'.format(site.name)
+                template = 'moderation/emails/abuse_report_ban_this_user.html'
+
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=logged_against,
+                                      logged_against=logged_against,
+                                      site=site,
+                                      comments=comments)
+                # deactivate account
                 user.is_active = False
                 user.save()
 
