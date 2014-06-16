@@ -11,8 +11,9 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User)
     bio = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='homepage/image_links', blank=True)
-    connect_preferences = models.ManyToManyField('ConnectPreference')
+    connect_preferences = models.ManyToManyField('ConnectPreference',
+                                                  null=True,
+                                                  blank=True)
     is_moderator = models.BooleanField(default=False)
 
     def get_skills(self):

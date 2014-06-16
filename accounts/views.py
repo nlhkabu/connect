@@ -18,7 +18,7 @@ from skills.models import UserSkill
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
-from .models import UserLink
+from .models import Profile, UserLink
 
 
 def request_invitation(request):
@@ -104,7 +104,8 @@ def activate_account(request, token):
                 user.userregistration.auth_token_is_used = True
                 user.userregistration.save()
 
-                # TODO: create user.profile
+                # Create an empty profile
+                profile = Profile.objects.create(user=user)
 
                 username = request.POST['username']
                 password = request.POST['password']
