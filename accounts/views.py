@@ -65,8 +65,7 @@ def request_invitation(request):
                                       recipient=moderator,
                                       site=site)
 
-            # TODO: Add a confirmation message
-            return redirect('accounts:request-invitation')
+            return redirect('accounts:request-invitation-done')
     else:
         form = RequestInvitationForm()
 
@@ -75,6 +74,13 @@ def request_invitation(request):
     }
 
     return render(request, 'accounts/request_invitation.html', context)
+
+
+def request_invitation_done(request):
+    """
+    Show confirmation message for a successful account request.
+    """
+    return render(request, 'accounts/request_invitation_done.html')
 
 
 def activate_account(request, token):

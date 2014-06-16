@@ -64,6 +64,7 @@ urlpatterns = patterns('',
 
     # Request and activate account
     url(r'^request-invitation$', 'accounts.views.request_invitation', name='request-invitation'),
+    url(r'^request-invitation/done$', 'accounts.views.request_invitation_done', name='request-invitation-done'),
     url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
 
     # Account settings
