@@ -371,8 +371,7 @@ def report_abuse(request, user_id):
                                       recipient=moderator,
                                       site=site)
 
-            # TODO: Add confirmation message telling user that their
-            # report has been logged.
+            return redirect('moderation:abuse-report-lodged')
 
     else:
         form = ReportAbuseForm(logged_by=logged_by,
@@ -385,6 +384,14 @@ def report_abuse(request, user_id):
     }
 
     return render(request, 'moderation/report_abuse.html', context)
+
+
+@login_required
+def abuse_report_lodged(request):
+    """
+    Show confirmation message for a when an abuse report has been lodged.
+    """
+    return render(request, 'moderation/abuse_report_lodged.html')
 
 
 @login_required
