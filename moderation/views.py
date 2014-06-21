@@ -1,5 +1,5 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
@@ -13,6 +13,9 @@ from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ReportAbuseForm, RevokeMemberForm)
 from .models import AbuseReport, UserRegistration, ModerationLogMsg
 from connect.utils import generate_html_email, hash_time, generate_salt
+
+
+User = get_user_model()
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):

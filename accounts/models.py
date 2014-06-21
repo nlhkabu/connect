@@ -1,9 +1,13 @@
 from urllib.parse import urlsplit
 
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 from skills.models import UserSkill
+
+
+User = settings.AUTH_USER_MODEL
+
 
 class Profile(models.Model):
     """

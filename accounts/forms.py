@@ -1,9 +1,12 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
 
 from .models import Profile, ConnectPreference
 from skills.models import Skill, UserSkill
+
+
+User = get_user_model()
 
 
 class RequestInvitationForm(forms.Form):

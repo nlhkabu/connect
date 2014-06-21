@@ -1,10 +1,13 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 
 from .models import Profile, ConnectPreference, UserLink, LinkBrand
 from moderation.admin import UserAbuseReportInline, UserRegistrationInline
 from skills.admin import UserSkillInline
+
+
+User = get_user_model()
 
 
 # Add Profile, Links and Skills to user page in admin

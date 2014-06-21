@@ -1,7 +1,6 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -21,10 +20,14 @@ from .forms import (AccountSettingsForm, ActivateAccountForm,
 from .models import Profile, UserLink
 
 
+User = get_user_model()
+
+
 def request_invitation(request):
     """
     Allow a member of the public to request an account invitation.
     """
+
     if request.method == 'POST':
         form = RequestInvitationForm(request.POST)
 

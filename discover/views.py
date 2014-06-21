@@ -1,6 +1,5 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.shortcuts import render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
@@ -8,6 +7,9 @@ from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from .forms import FilterMemberForm
 from accounts.models import Profile
 from skills.models import UserSkill
+
+
+User = get_user_model()
 
 
 @login_required
