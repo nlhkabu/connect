@@ -77,7 +77,6 @@ class ActivateAccountForm(forms.Form):
         self.fields['first_name'] = forms.CharField(initial=self.user.first_name)
         self.fields['last_name'] = forms.CharField(initial=self.user.last_name)
 
-    username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
@@ -85,7 +84,6 @@ class ActivateAccountForm(forms.Form):
         """
         Adds validation to:
         - Ensure password and reset confirm password are the same.
-        - Ensure the username is not already registered
         """
         cleaned_data = super(ActivateAccountForm, self).clean()
 
@@ -94,12 +92,6 @@ class ActivateAccountForm(forms.Form):
 
         if password1 != password2:
             raise forms.ValidationError("Your passwords do not match. Please try again.")
-
-        username = cleaned_data.get('username')
-        user_usernames = [user.username for user in User.objects.exclude(id=self.user.id) if user.username]
-
-        if username in user_usernames:
-            raise forms.ValidationError("Sorry, this username is already registered")
 
         return cleaned_data
 
@@ -262,15 +254,6 @@ class AccountSettingsForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(AccountSettingsForm, self).__init__(*args, **kwargs)
 
-
-        self.fields['username'] = forms.CharField(
-                                        max_length=30,
-                                        initial = self.user.username,
-                                        widget=forms.TextInput(attrs={
-                                            'class' : 'account-input inactive',
-                                            'placeholder': 'Username',
-                                        }))
-
         self.fields['email'] = forms.EmailField(
                                         initial = self.user.email,
                                         widget=forms.TextInput(attrs={
@@ -297,8 +280,6 @@ class AccountSettingsForm(forms.Form):
         """
         Adds validation to:
         - Ensure reset password and reset password confirm are the same.
-        - Ensure the username is not already registered.
-        - Ensure the email address is not already registered.
         """
         cleaned_data = super(AccountSettingsForm, self).clean()
 
@@ -311,17 +292,10 @@ class AccountSettingsForm(forms.Form):
             if password1 != password2:
                 raise forms.ValidationError("Your passwords do not match. Please try again.")
 
-        username = cleaned_data.get('username')
-        user_usernames = [user.username for user in User.objects.exclude(id=self.user.id) if user.username]
-
-        if username in user_usernames:
-            raise forms.ValidationError("Sorry, this username is already registered")
-
         email = cleaned_data.get('email')
         user_emails = [user.email for user in User.objects.exclude(id=self.user.id) if user.email]
 
         if email in user_emails:
             raise forms.ValidationError("Sorry, this email address is already registered")
-
 
         return cleaned_data

@@ -37,10 +37,9 @@ def request_invitation(request):
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             comments = form.cleaned_data['comments']
-            username = hash_time()
 
             # Create inactive user
-            new_user = User.objects.create_user(username, email)
+            new_user = User.objects.create_user(email)
             new_user.is_active = False
             new_user.first_name = first_name
             new_user.last_name = last_name
@@ -100,7 +99,6 @@ def activate_account(request, token):
             if form.is_valid():
 
                 # Activate the user's account
-                user.username = form.cleaned_data['username']
                 user.first_name = form.cleaned_data['first_name']
                 user.last_name = form.cleaned_data['last_name']
                 user.password = make_password(form.cleaned_data['password'])
@@ -114,9 +112,9 @@ def activate_account(request, token):
                 # Create an empty profile
                 profile = Profile.objects.create(user=user)
 
-                username = request.POST['username']
+                email = user.email
                 password = request.POST['password']
-                user = authenticate(username=username, password=password)
+                user = authenticate(username=email, password=password)
                 login(request, user)
 
                 # TODO: redirect to welcome page instead of standard dashboard
@@ -239,7 +237,6 @@ def account_settings(request):
         form = AccountSettingsForm(request.POST, user=user)
 
         if form.is_valid():
-            user.username = form.cleaned_data['username']
             user.email = form.cleaned_data['email']
 
             if form.cleaned_data['reset_password']:

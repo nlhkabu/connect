@@ -136,13 +136,12 @@ def handle_invitation(request, first_name, last_name, email, moderator, site):
     """
     Invite a new member
     """
-    username = hash_time()
     user_emails = [user.email for user in User.objects.all() if user.email]
 
     if email not in user_emails:
 
         # Create inactive user
-        new_user = User.objects.create_user(username, email)
+        new_user = User.objects.create_user(email)
         new_user.is_active = False
         new_user.first_name = first_name
         new_user.last_name = last_name

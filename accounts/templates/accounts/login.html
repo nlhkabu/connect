@@ -9,7 +9,7 @@
         {% csrf_token %}
 
         <div class="pull-left field">
-            <label>{% trans "Username" %}</label>
+            <label>{% trans "Email" %}</label>
             {{ form.username }}
         </div>
 
@@ -28,7 +28,7 @@
 
     {% if form.errors %}
         <div id="login-error">
-            {% trans "Your username and password didn't match. Please try again." %}
+            {% trans "Your email and password didn't match. Please try again." %}
         </div>
     {% endif %}
 

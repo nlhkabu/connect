@@ -60,7 +60,7 @@ class UserRegistration(models.Model):
         )
 
     def __str__(self):
-        return self.user.get_full_name() or self.user.username
+        return self.user.get_full_name()
 
 
 class ModerationLogMsg(models.Model):

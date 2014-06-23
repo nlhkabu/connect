@@ -127,18 +127,8 @@ User = get_user_model()
 # Greg notices a link on the left hand side for his 'account settings'
 
 # When he clicks on this he sees a page with:
-# His Username
 # His email address
 # Two fields to change his password
-
-# Greg decides to change his username from 'greggy' to just 'greg'
-# but when he does so, he is told that there is already a user with the username
-# 'greg' registered.
-
-# He decides instead to delete his username altogether.
-# but an error (telling him that a username is required) prevents him from doing so.
-
-# Finally, he successfully changes his username to 'greggo'
 
 # Greg tries to remove his email address.  But is told that this is a required field.
 # So he decides instead to change it to his partner's email - sam@gmail.com
