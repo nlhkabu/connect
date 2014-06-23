@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import CustomUser, Profile, ConnectPreference
+from .models import CustomUser, ConnectPreference
 from skills.models import Skill, UserSkill
 
 
@@ -230,7 +230,7 @@ class ProfileForm(forms.Form):
                                         }))
 
         self.fields['bio'] = forms.CharField(
-                                initial = self.user.profile.bio,
+                                initial = self.user.bio,
                                 widget=forms.Textarea(attrs={
                                     'class': 'bio inactive',
                                     'placeholder': 'Add some details about yourself...',
@@ -240,7 +240,7 @@ class ProfileForm(forms.Form):
 
         preferences = ConnectPreference.objects.all()
         self.fields['preferences'] = forms.ModelMultipleChoiceField(
-                                initial = self.user.profile.connect_preferences.all(),
+                                initial = self.user.connect_preferences.all(),
                                 queryset=preferences,
                                 widget=forms.CheckboxSelectMultiple(),
                                 required=False)

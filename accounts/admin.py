@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, Profile, ConnectPreference, UserLink, LinkBrand
+from .models import CustomUser, ConnectPreference, UserLink, LinkBrand
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from moderation.admin import UserAbuseReportInline, UserRegistrationInline
 from skills.admin import UserSkillInline
@@ -10,12 +10,6 @@ from skills.admin import UserSkillInline
 
 User = get_user_model()
 
-
-class ProfileInline(admin.StackedInline):
-    model = Profile
-    can_delete = False
-    verbose_name = 'Profile'
-    verbose_name_plural = 'Profile'
 
 class UserLinkInline(admin.TabularInline):
     model = UserLink
@@ -45,11 +39,10 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
-    inlines = (ProfileInline, UserSkillInline,
-               UserLinkInline, UserRegistrationInline, UserAbuseReportInline)
+    inlines = (UserSkillInline, UserLinkInline,
+               UserRegistrationInline, UserAbuseReportInline)
 
 admin.site.register(CustomUser, CustomUserAdmin)
-
 
 # Register Preferences and Brands
 admin.site.register(ConnectPreference)

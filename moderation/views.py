@@ -359,7 +359,7 @@ def report_abuse(request, user_id):
 
             # Send email(s) to moderator(s) alerting them of new report.
             # Do not nofity the moderator the report is logged against
-            moderators = (User.objects.filter(profile__is_moderator=True,
+            moderators = (User.objects.filter(is_moderator=True,
                                               is_active=True)
                                       .exclude(id=logged_against.id))
 

@@ -34,7 +34,7 @@ class UserRegistration(models.Model):
                 blank=True,
                 null=True,
                 related_name='inviter',
-                limit_choices_to={'profile__is_moderator': True},
+                limit_choices_to={'is_moderator': True},
                 help_text='Moderator who invited, approved or rejected this user')
 
     applied_datetime = models.DateTimeField(blank=True, null=True)

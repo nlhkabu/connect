@@ -17,7 +17,7 @@ from skills.models import UserSkill
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
-from .models import Profile, UserLink
+from .models import UserLink
 
 
 User = get_user_model()
@@ -54,7 +54,7 @@ def request_invitation(request):
             )
 
             # Send email(s) to moderator(s) alerting them of new account application
-            moderators = User.objects.filter(profile__is_moderator=True,
+            moderators = User.objects.filter(is_moderator=True,
                                                     is_active=True)
 
             site = get_current_site(request)
@@ -108,9 +108,6 @@ def activate_account(request, token):
                 user.userregistration.activated_datetime = now()
                 user.userregistration.auth_token_is_used = True
                 user.userregistration.save()
-
-                # Create an empty profile
-                profile = Profile.objects.create(user=user)
 
                 email = user.email
                 password = request.POST['password']
@@ -168,11 +165,10 @@ def profile_settings(request):
             # Save user info
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
-            user.profile.bio = form.cleaned_data['bio']
-            user.profile.connect_preferences = form.cleaned_data['preferences']
+            user.bio = form.cleaned_data['bio']
+            user.connect_preferences = form.cleaned_data['preferences']
 
             user.save()
-            user.profile.save()
 
             #Handle skills formset
             user_skills = []

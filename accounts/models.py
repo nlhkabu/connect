@@ -59,6 +59,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                     'active. Unselect this instead of deleting accounts.')
     date_joined = models.DateTimeField('date joined', default=timezone.now)
 
+    # Custom connect fields
+    bio = models.TextField(blank=True)
+    connect_preferences = models.ManyToManyField('ConnectPreference',
+                                                  null=True,
+                                                  blank=True)
+    is_moderator = models.BooleanField(default=False)
+
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
@@ -88,20 +96,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         send_mail(subject, message, from_email, [self.email])
 
-
-class Profile(models.Model):
-    """
-    Member profile.
-    """
-    user = models.OneToOneField(User)
-    bio = models.TextField(blank=True)
-    connect_preferences = models.ManyToManyField('ConnectPreference',
-                                                  null=True,
-                                                  blank=True)
-    is_moderator = models.BooleanField(default=False)
-
     def get_skills(self):
-        skills = self.user.skill_set.all()
+        skills = self.skill_set.all()
 
         for skill in skills:
             userskill = UserSkill.objects.get(user=self.user, skill=skill)
@@ -109,10 +105,6 @@ class Profile(models.Model):
             skill.percentage = userskill.get_proficiency_percentage()
 
         return skills
-
-    def __str__(self):
-        return self.user.get_full_name()
-
 
 
 class ConnectPreference(models.Model):

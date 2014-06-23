@@ -67,17 +67,17 @@
                             </a></h3>
                             <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
 
-                            {% if member.profile.connect_preferences.all %}
+                            {% if member.connect_preferences.all %}
                                 <ul class="connect-preferences">
-                                {% for preference in member.profile.connect_preferences.all %}
+                                {% for preference in member.connect_preferences.all %}
                                     <li class="badge">{{ preference }}</li>
                                 {% endfor %}
                                 </ul>
                             {% endif %}
 
-                            {% if member.profile.get_skills %}
+                            {% if member.get_skills %}
                                 <ul class="member-skills">
-                                    {% for skill in member.profile.get_skills %}
+                                    {% for skill in member.get_skills %}
                                         <li class="badge badge-grey">{{ skill.name }}</li>
                                     {% endfor %}
                                 </ul>
@@ -87,14 +87,14 @@
                             <div class="member-expand">
                                 <div class="padding">
                                     <blockquote>
-                                        {{ member.profile.bio|linebreaks }}
+                                        {{ member.bio|linebreaks }}
                                     </blockquote>
 
-                                    {% if member.profile.get_skills %}
+                                    {% if member.get_skills %}
                                         <div class="skills-container">
                                             <table class="skills">
                                                 <tbody>
-                                            {% for skill in member.profile.get_skills %}
+                                            {% for skill in member.get_skills %}
                                                 <tr>
                                                     <td class="skill-name">{{ skill.name }}</td>
                                                     <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>

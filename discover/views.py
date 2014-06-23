@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
 from .forms import FilterMemberForm
-from accounts.models import Profile
 from skills.models import UserSkill
 
 
@@ -41,7 +40,7 @@ def dashboard(request):
                                                 skill__in=skills).distinct()
             if preferences:
                 listed_members = listed_members.filter(
-                    profile__connect_preferences__in=preferences).distinct()
+                    connect_preferences__in=preferences).distinct()
     else:
         form = FilterMemberForm()
 
