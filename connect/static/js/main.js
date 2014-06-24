@@ -30,6 +30,16 @@ $(document).ready(function(){
 
 
     // ---------
+    // LOGGED IN
+    // ---------
+
+    // Toggle mobile menu
+    $( '.mobile-icon' ).click(function() {
+        $('nav.main').slideToggle();
+    });
+
+
+    // ---------
     // DASHBOARD
     // ---------
 

@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load staticfiles %}
+{% load static %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -30,10 +30,20 @@
         <![endif]-->
 
         <div class="wrapper">
-            <header>
+            <div class="messages">
                 <div class="container">
-                    <a href="/" class="pull-left app-title">Connect</a><!-- TODO: replace this with content from admin-->
+                    {% block messages %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <header>
+                <div class="container header-container">
+                    <a href="/" class="pull-left app-title">
+                        <img src="{% static 'img/logo.png' %}" alt="Connect" title="Connect" /><!-- TODO: replace this with uploadable logo from admin-->
+                    </a>
                     <div class="pull-right">
+                        {% block mobile_nav_btn %}{% endblock %}
                         {% block nav_content %}
                         {% endblock %}
                     </div>
@@ -69,9 +79,9 @@
 
         <script src="{% static 'js/vendor/jquery-ui-1.10.4.custom.min.js' %}"></script>
 
-        {% block extra_js %}{% endblock %}
-
         <script src="{% static 'js/main.js' %}"></script>
+
+        {% block extra_js %}{% endblock %}
 
         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

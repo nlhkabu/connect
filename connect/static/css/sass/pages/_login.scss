@@ -8,7 +8,7 @@
 }
 
 .login-form {
-    padding: 10px 0;
+    padding: 12px 0 0 0;
     margin-bottom: 0;
 
     .field {
@@ -25,8 +25,37 @@
         width: 170px;
     }
 
-    .login {
-        //margin-top: 21px;
+    .button {
+        margin-top: 21px;
         margin-bottom: 0;
+    }
+
+    .forgotton {
+        display: block;
+        font-size: 12px;
+        margin: 6px 10px 0 0;
+    }
+}
+
+@media only screen and (max-width: 620px) {
+
+    .login-form {
+        padding: 0 5% 0 5%;
+        margin-bottom: 15px;
+
+        .field {
+            display: block;
+            float: none;
+            padding: 7px 0 2px 0;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        .button {
+            margin: 10px 0 5px 0;
+            float: none;
+        }
     }
 }

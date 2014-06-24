@@ -57,37 +57,133 @@ $white: #fff;
     background-color: $dark-grey;
 }
 
+// Validation
+
+.form-error {
+    background-color: $white;
+    color: $highlight;
+    border: 1px solid $highlight;
+    font-size: 13px;
+    margin-top: 5px;
+    display: inline-block;
+    webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding-right: 5px;
+
+    ul {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin: 0;
+            padding: 3px 7px 3px 0;
+        }
+    }
+
+    .fa {
+        margin: 0 2px 0 5px;
+    }
+}
+
 
 // PAGE STRUCTURE
+
+.messages {
+    text-align: center;
+    background-color: $highlight;
+    color: $white;
+    font-weight: bold;
+
+    p  {
+        padding: 10px 0;
+        margin: 0;
+        font-size: 13px;
+    }
+}
 
 header {
     background-color: #fdfdfd;
     border-bottom: 1px solid #ccc;
+    height: 100px;
 
     a {
         text-decoration: none;
     }
 
-    nav a,
-    nav a:visited {
-        display: inline-block;
-        padding: 15px;
-        margin: 0;
-        border-left: 1px solid #ddd;
-        float: left;
-        color: $dark-grey;
+    a.mobile-icon {
+        display: none;
+    }
 
-        &:hover {
-            color: $black;
-            background-color: #fafafa;
-            text-decoration: none;
+    nav {
+        display: inline-block;
+
+        a,
+        a:visited {
+            display: inline-block;
+            height: 60px;
+            padding: 40px 15px 0 15px;
+            margin: 0;
+            border-left: 1px solid #ddd;
+            float: left;
+            color: $dark-grey;
+
+            &:hover {
+                color: $black;
+                background-color: #fafafa;
+                text-decoration: none;
+            }
         }
     }
 
     .app-title {
-        padding-top:14px;
+        padding:10px 0;
         font-size: 20px;
         font-family: georgia, sans-serif;
+    }
+}
+
+@media only screen and (max-width: 620px) {
+    header {
+        height: auto;
+
+        .header-container {
+            width: 100%;
+        }
+
+        .app-title {
+            float: none;
+            display: inline-block;
+            margin-left: 5%;
+        }
+
+        .pull-right {
+            float: none;
+        }
+
+        a.mobile-icon {
+            display: block;
+            position: absolute;
+            top: 42px;
+            right: 0px;
+            margin-right: 5%;
+        }
+
+        nav {
+            display: none;
+            float: none;
+            width: 100%;
+
+            a,
+            a:visited {
+                float: none;
+                display: block;
+                border: 0;
+                border-top: 1px solid #ddd;
+                height: auto;
+                padding: 15px 5%;
+            }
+        }
     }
 }
 
@@ -151,6 +247,13 @@ header {
             top: -3px;
         }
     }
+}
+
+
+// CONTENT
+
+.content-container {
+    padding: 20px 0;
 }
 
 

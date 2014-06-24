@@ -4,10 +4,15 @@
 
 {% block page_title %}{% trans "Login" %}{% endblock %}
 
+{% block messages %}
+    {% if form.errors %}
+        <p>{% trans "Your email and password didn't match. Please try again." %}</p>
+    {% endif %}
+{% endblock %}
+
 {% block nav_content %}
     <form method="post" action="{% url 'accounts:login' %}" class="login-form">
         {% csrf_token %}
-
         <div class="pull-left field">
             <label>{% trans "Email" %}</label>
             {{ form.username }}
@@ -23,20 +28,16 @@
             <input type="hidden" name="next" value="{{ next }}" />
         </div>
         <div class="clearfix"></div>
-        <a href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your password?" %}</a>
+        <a class="forgotton" href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your password?" %}</a>
     </form>
-
-    {% if form.errors %}
-        <div id="login-error">
-            {% trans "Your email and password didn't match. Please try again." %}
-        </div>
-    {% endif %}
 
 {% endblock %}
 
 
 {% block content %}
     <div class="container">
-        <a href="{% url 'accounts:request-invitation' %}">{% trans "Request an Account" %}</a>
+        <div class="content-container">
+            <a href="{% url 'accounts:request-invitation' %}">{% trans "Request an Account" %}</a>
+        </div>
     </div>
 {% endblock %}

@@ -2,8 +2,12 @@
 {% load i18n %}
 
 
+{% block mobile_nav_btn %}
+    <a href="#" class="mobile-icon pull-right">Mobile Menu</a>
+{% endblock %}
+
 {% block nav_content %}
-    <nav>
+    <nav class="main">
         <a href="{% url 'dashboard' %}" class="{% block dashboard_active %}{% endblock %}"><i class="fa fa-home"></i></a>
         {% if perms.moderation.access_moderators_page %}
             <a href="{% url 'moderation:moderators' %}" class="{% block moderators_active %}{% endblock %}">{% trans "Moderators" %}</a>
@@ -13,6 +17,7 @@
     </nav>
     <div class="clearfix"></div>
 {% endblock %}
+
 
 {% block content %}
     <div class="connect-banner">
@@ -26,6 +31,8 @@
     </div>
 
     <div class="page-content">
-        {% block page_content %}{% endblock %}
+        <div class="content-container">
+            {% block page_content %}{% endblock %}
+        </div>
     </div>
 {% endblock %}
