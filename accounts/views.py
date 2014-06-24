@@ -27,7 +27,6 @@ def request_invitation(request):
     """
     Allow a member of the public to request an account invitation.
     """
-
     if request.method == 'POST':
         form = RequestInvitationForm(request.POST)
 

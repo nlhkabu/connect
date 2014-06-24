@@ -45,7 +45,7 @@ urlpatterns = patterns('',
 
 
     # page for user to change password (uses token sent in email)
-    url(r'^password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    url(r'^password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
         'django.contrib.auth.views.password_reset_confirm',
         {
             'template_name': 'accounts/password_reset_confirm.html',

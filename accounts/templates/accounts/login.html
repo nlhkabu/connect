@@ -23,7 +23,7 @@
             <input type="hidden" name="next" value="{{ next }}" />
         </div>
         <div class="clearfix"></div>
-        <a href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your login details?" %}</a>
+        <a href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your password?" %}</a>
     </form>
 
     {% if form.errors %}
