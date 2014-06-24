@@ -2057,14 +2057,24 @@ header .app-title {
     top: 42px;
     right: 0px;
     margin-right: 5%;
+    font-size: 16px;
+    text-transform: uppercase;
   }
-  /* line 172, ../sass/_site_structure.scss */
+  /* line 174, ../sass/_site_structure.scss */
+  header a.mobile-icon i {
+    color: #e51e41;
+  }
+  /* line 178, ../sass/_site_structure.scss */
+  header a.mobile-icon:hover {
+    text-decoration: none;
+  }
+  /* line 183, ../sass/_site_structure.scss */
   header nav {
     display: none;
     float: none;
     width: 100%;
   }
-  /* line 178, ../sass/_site_structure.scss */
+  /* line 189, ../sass/_site_structure.scss */
   header nav a,
   header nav a:visited {
     float: none;
@@ -2075,19 +2085,19 @@ header .app-title {
     padding: 15px 5%;
   }
 }
-/* line 193, ../sass/_site_structure.scss */
+/* line 204, ../sass/_site_structure.scss */
 .connect-banner {
   padding: 35px 0;
   background-color: #f9f9f9;
   -webkit-box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
   box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
 }
-/* line 199, ../sass/_site_structure.scss */
+/* line 210, ../sass/_site_structure.scss */
 .connect-banner h1 {
   font-size: 40px;
   line-height: 1.2;
 }
-/* line 204, ../sass/_site_structure.scss */
+/* line 215, ../sass/_site_structure.scss */
 .connect-banner h2 {
   font-size: 18px;
   color: #e51e41;
@@ -2095,24 +2105,24 @@ header .app-title {
   margin-top: -10px;
 }
 
-/* line 215, ../sass/_site_structure.scss */
+/* line 226, ../sass/_site_structure.scss */
 .sidebar-menu {
   margin: 10px 0;
   border-top: 1px solid #ddd;
 }
-/* line 219, ../sass/_site_structure.scss */
+/* line 230, ../sass/_site_structure.scss */
 .sidebar-menu li {
   margin: 0;
 }
-/* line 223, ../sass/_site_structure.scss */
+/* line 234, ../sass/_site_structure.scss */
 .sidebar-menu .ui-state-active a {
   background-color: #f4f4f4;
 }
-/* line 227, ../sass/_site_structure.scss */
+/* line 238, ../sass/_site_structure.scss */
 .sidebar-menu .ui-state-hover a {
   background-color: #fafafa;
 }
-/* line 232, ../sass/_site_structure.scss */
+/* line 243, ../sass/_site_structure.scss */
 .sidebar-menu a,
 .sidebar-menu a:visited {
   display: block;
@@ -2121,13 +2131,13 @@ header .app-title {
   border-bottom: 1px solid #ddd;
   color: #333333;
 }
-/* line 239, ../sass/_site_structure.scss */
+/* line 250, ../sass/_site_structure.scss */
 .sidebar-menu a:hover,
 .sidebar-menu a:visited:hover {
   color: black;
   text-decoration: none;
 }
-/* line 244, ../sass/_site_structure.scss */
+/* line 255, ../sass/_site_structure.scss */
 .sidebar-menu a .badge,
 .sidebar-menu a:visited .badge {
   float: right;
@@ -2135,57 +2145,57 @@ header .app-title {
   top: -3px;
 }
 
-/* line 255, ../sass/_site_structure.scss */
+/* line 266, ../sass/_site_structure.scss */
 .content-container {
   padding: 20px 0;
 }
 
-/* line 262, ../sass/_site_structure.scss */
+/* line 273, ../sass/_site_structure.scss */
 footer {
   background: #f9f9f9 url(../../img/shadow-top.png) repeat-x 0 0;
   border-top: 1px solid #ddd;
   font-size: 12px;
 }
-/* line 267, ../sass/_site_structure.scss */
+/* line 278, ../sass/_site_structure.scss */
 footer .container {
   padding: 20px 0 0 0;
 }
-/* line 272, ../sass/_site_structure.scss */
+/* line 283, ../sass/_site_structure.scss */
 footer a,
 footer a:visited {
   text-decoration: none;
   color: #333333;
 }
-/* line 276, ../sass/_site_structure.scss */
+/* line 287, ../sass/_site_structure.scss */
 footer a:hover,
 footer a:visited:hover {
   color: #d91c3d;
   text-decoration: none;
 }
-/* line 282, ../sass/_site_structure.scss */
+/* line 293, ../sass/_site_structure.scss */
 footer .pull-right a {
   margin-left: 10px;
 }
-/* line 286, ../sass/_site_structure.scss */
+/* line 297, ../sass/_site_structure.scss */
 footer .pull-left span {
   margin-right: 10px;
 }
-/* line 289, ../sass/_site_structure.scss */
+/* line 300, ../sass/_site_structure.scss */
 footer .pull-left span i {
   margin: 0 3px;
 }
 
-/* line 299, ../sass/_site_structure.scss */
+/* line 310, ../sass/_site_structure.scss */
 * {
   margin: 0;
 }
 
-/* line 303, ../sass/_site_structure.scss */
+/* line 314, ../sass/_site_structure.scss */
 html, body {
   height: 100%;
 }
 
-/* line 307, ../sass/_site_structure.scss */
+/* line 318, ../sass/_site_structure.scss */
 .wrapper {
   min-height: 100%;
   height: auto !important;
@@ -2194,48 +2204,48 @@ html, body {
   /* the bottom margin is the negative value of the footer's height */
 }
 
-/* line 314, ../sass/_site_structure.scss */
+/* line 325, ../sass/_site_structure.scss */
 .footer, .push {
   height: 61px;
   /* .push must be the same height as .footer */
 }
 
-/* line 323, ../sass/_site_structure.scss */
+/* line 334, ../sass/_site_structure.scss */
 a,
 a:visited {
   text-decoration: none;
   color: #e51e41;
 }
-/* line 327, ../sass/_site_structure.scss */
+/* line 338, ../sass/_site_structure.scss */
 a:hover,
 a:visited:hover {
   text-decoration: underline;
   color: #d91c3d;
 }
-/* line 332, ../sass/_site_structure.scss */
+/* line 343, ../sass/_site_structure.scss */
 a i,
 a:visited i {
   color: #333333;
 }
 
-/* line 337, ../sass/_site_structure.scss */
+/* line 348, ../sass/_site_structure.scss */
 .container .twelve {
   width: 793px;
 }
 
-/* line 341, ../sass/_site_structure.scss */
+/* line 352, ../sass/_site_structure.scss */
 fieldset {
   border: 0;
   margin-left: 0;
   margin-bottom: 0;
   padding: 10px 0;
 }
-/* line 347, ../sass/_site_structure.scss */
+/* line 358, ../sass/_site_structure.scss */
 fieldset label {
   margin-bottom: 5px;
 }
 
-/* line 353, ../sass/_site_structure.scss */
+/* line 364, ../sass/_site_structure.scss */
 input[type='checkbox'],
 input[type='radio'] {
   position: relative;
@@ -2243,7 +2253,7 @@ input[type='radio'] {
   margin-right: 2px;
 }
 
-/* line 364, ../sass/_site_structure.scss */
+/* line 375, ../sass/_site_structure.scss */
 button,
 .button,
 button:hover,
@@ -2262,61 +2272,61 @@ input.button:hover {
   top: -1px;
 }
 
-/* line 378, ../sass/_site_structure.scss */
+/* line 389, ../sass/_site_structure.scss */
 button:hover,
 .button:hover {
   background-color: #d91c3d;
   text-decoration: none;
 }
 
-/* line 383, ../sass/_site_structure.scss */
+/* line 394, ../sass/_site_structure.scss */
 .active {
   background-color: #f4f4f4;
 }
 
-/* line 387, ../sass/_site_structure.scss */
+/* line 398, ../sass/_site_structure.scss */
 label {
   font-weight: normal;
 }
 
-/* line 391, ../sass/_site_structure.scss */
+/* line 402, ../sass/_site_structure.scss */
 p label {
   font-weight: bold;
 }
 
-/* line 399, ../sass/_site_structure.scss */
+/* line 410, ../sass/_site_structure.scss */
 .button.mini,
 .button.mini:hover {
   padding: 5px 7px;
 }
 
-/* line 403, ../sass/_site_structure.scss */
+/* line 414, ../sass/_site_structure.scss */
 .button.grey {
   background-color: #333333;
   color: white;
 }
 
-/* line 408, ../sass/_site_structure.scss */
+/* line 419, ../sass/_site_structure.scss */
 table .button {
   margin-bottom: 0;
 }
 
-/* line 413, ../sass/_site_structure.scss */
+/* line 424, ../sass/_site_structure.scss */
 .skills {
   margin: 15px 0 0 0;
   background-color: transparent;
 }
-/* line 417, ../sass/_site_structure.scss */
+/* line 428, ../sass/_site_structure.scss */
 .skills td {
   padding: 5px 0;
   border: 0;
   vertical-align: middle;
 }
-/* line 423, ../sass/_site_structure.scss */
+/* line 434, ../sass/_site_structure.scss */
 .skills td.skill-ability {
   width: 70%;
 }
-/* line 427, ../sass/_site_structure.scss */
+/* line 438, ../sass/_site_structure.scss */
 .skills .ability {
   height: 20px;
   width: 85%;
@@ -2324,7 +2334,7 @@ table .button {
   border: 1px solid #ddd;
   background-color: white;
 }
-/* line 434, ../sass/_site_structure.scss */
+/* line 445, ../sass/_site_structure.scss */
 .skills .ability .ui-progressbar-value {
   background-color: #e51e41;
   background-image: none;

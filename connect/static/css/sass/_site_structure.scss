@@ -167,6 +167,17 @@ header {
             top: 42px;
             right: 0px;
             margin-right: 5%;
+            font-size: 16px;
+            text-transform: uppercase;
+
+
+            i {
+                color: $highlight;
+            }
+
+            &:hover{
+                text-decoration: none;
+            }
         }
 
         nav {
