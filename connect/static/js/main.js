@@ -38,6 +38,14 @@ $(document).ready(function(){
         $('nav.main').slideToggle();
     });
 
+    // Reset when window switches to desktop view
+    $(window).resize(function() {
+        if ($(window).width() > 620) {
+            $('nav.main').show();
+
+        }
+    });
+
 
     // ---------
     // DASHBOARD
