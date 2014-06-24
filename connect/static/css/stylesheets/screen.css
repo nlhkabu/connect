@@ -2812,7 +2812,7 @@ ul.dash-tabs li.active a i {
 }
 /* line 33, ../sass/pages/_login.scss */
 .login-form .forgotton {
-  display: block;
+  display: inline-block;
   font-size: 12px;
   margin: 6px 10px 0 0;
 }
