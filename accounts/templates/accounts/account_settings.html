@@ -6,60 +6,49 @@
 {% block settings_active %}active{% endblock %}
 
 {% block settings_content %}
-<div class="account-wrapper">
-    <form action="" method="post">
+    <form action="" method="post" class="horizontal-form">
         {% csrf_token %}
-        <table class="account-table">
-            <tbody>
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                             {% trans "Email Address" %}
-                        </strong>
-                    </td>
-                    <td>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ form.email.errors }}
-                                </span>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                             {% trans "Change Password" %}
-                        </strong>
-                    </td>
-                    <td>
-                        {{ form.reset_password }}
-                        {{ form.reset_password_confirm }}
+        <fieldset>
+            <legend>Account Settings</legend>
+            <p class="intro">Update your login details here.  This email address is also used when another user sends you a message.  This information is not displayed on your profile.</p>
+            <dl>
+                <dt>{% trans "Email Address" %}</dt>
+                <dd>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {{ form.email.errors }}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
 
-                        {% if form.non_field_errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ form.non_field_errors }}
-                                </span>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="submit" value="{% trans 'Update Account Settings' %}" class="button"/>
-                    </td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+            <dl>
+                <dt>{% trans "New Password" %}</dt>
+                <dd>
+                    {{ form.reset_password }}
+                    {{ form.reset_password_confirm }}
+
+                    {% if form.non_field_errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {{ form.non_field_errors }}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="{% trans 'Update Account Settings' %}" class="button"/>
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
     </form>
-</div>
 {% endblock %}
 
 {% block extra_js %}

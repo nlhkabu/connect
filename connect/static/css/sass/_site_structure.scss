@@ -143,6 +143,7 @@ header {
     }
 }
 
+
 @media only screen and (max-width: 620px) {
     header {
         height: auto;
@@ -303,6 +304,29 @@ footer {
     }
 }
 
+@media only screen and (max-width: 610px) {
+    .footer {
+        padding-bottom: 80px;
+
+        .container p {
+            float: none;
+            margin: 0;
+            padding: 0;
+
+            span {
+                margin: 0;
+                display: block;
+                text-align: center;
+                padding: 2px 0;
+            }
+
+            a {
+                margin: 0;
+            }
+        }
+    }
+}
+
 
 
 // STICKY FOOTER
@@ -356,11 +380,21 @@ a:visited {
 fieldset {
     border: 0;
     margin-left: 0;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     padding: 10px 0;
 
     label {
         margin-bottom: 5px;
+    }
+
+    legend {
+        display: block;
+        width: 100%;
+        font-weight: normal;
+        border-bottom: 1px solid $light-grey;
+        text-transform: uppercase;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
     }
 }
 

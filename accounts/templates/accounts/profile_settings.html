@@ -8,117 +8,54 @@
 {% block profile_active %}active{% endblock %}
 
 {% block settings_content %}
-<div class="account-wrapper">
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form">
     {% csrf_token %}
 
-        <table class="profile-table">
-            <tbody>
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                            {% trans "First Name" %}
-                        </strong>
-                    </td>
-                    <td>
-                        {{ form.first_name }}
-                        {% if form.first_name.errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ form.first_name.errors }}
-                                </span>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
+        <fieldset>
+            <legend>Your Biography</legend>
+            <p class="intro">Tell us about yourself!  Include as much information as you feel is relevant.  This information will be viewable to other users.</p>
 
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                            {% trans "Last Name" %}
-                        </strong>
-                    </td>
-                    <td>
-                        {{ form.last_name }}
-                        {% if form.last_name.errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ form.last_name.errors }}
-                                </span>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
+            <dl>
+                <dt>{% trans "First Name" %}</dt>
+                <dd>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.first_name.errors }}
+                            </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt>{% trans "Last Name" %}</dt>
+                <dd>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.last_name.errors }}
+                            </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt>{% trans "Bio" %}</dt>
+                <dd>
+                    {{ form.bio }}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
 
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                            {% trans "Biography" %}
-                        </strong>
-                    </td>
-                    <td class="profile-bio">
-                        {{ form.bio }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                            {% trans "Connect Preferences" %}
-                        </strong>
-                    </td>
-                    <td class="profile-preferences">
-                        {{ form.preferences }}
-                        {% if form.preferences.errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ form.preferences.errors }}
-                                </span>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                            {% trans "Skills" %}
-                        </strong>
-                    </td>
-                    <td class="profile-skills">
-                        {{ skill_formset.management_form }}
-                        {% for form in skill_formset %}
-                            <div class="skill-formset">
-                                {{ form.skill }}
-                                <span class="divider">
-                                    <i class="fa fa-arrows-h"></i>
-                                </span>
-                                {{ form.proficiency }}
-                            </div>
-                        {% endfor %}
-
-                        {% if skill_formset.non_form_errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ skill_formset.non_form_errors }}
-                                </span>
-                            </div>
-                        {% endif %}
-
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="profile-heading">
-                        <strong>
-                            {% trans "Links" %}
-                        </strong>
-                    </td>
-                    <td class="profile-links">
+        <fieldset>
+            <legend>Your Links</legend>
+            <p class="intro">List any links that you wish to display on your profile.  For example, you could include your personal website, twitter account or links to your projects.</p>
+            <dl>
+                <dt>{% trans "Links" %}</dt>
+                <dd>
                         {{ link_formset.management_form }}
                         {% for form in link_formset %}
                             <div class="link-formset">
@@ -138,19 +75,70 @@
                                 </span>
                             </div>
                         {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="submit" value="{% trans 'Update Profile Settings' %}" class="button"/>
-                    </td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+                </dd>
+            </dl>
+        </fieldset>
+
+        <fieldset>
+            <legend>Your Preferences</legend>
+            <p class="intro">How would you like other members to interact with you?  Please select all that apply.</p>
+            <dl>
+                <dt>{% trans "Preferences" %}</dt>
+                <dd>
+                    {% for field in form.preferences %}
+                        {{ field }}
+                    {% endfor %}
+                    {% if form.preferences.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.preferences.errors }}
+                            </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
+
+        <fieldset>
+            <legend>Your Skills &amp; Interests</legend>
+            <p class="intro">
+                Please list all of your relevant skills and interests.
+                If you'd like to include something here that is not already on the list, please email us at <a href="">email@email.com</a>.
+                <!-- TODO: update email address
+                -->
+            </p>
+            <dl>
+                <dt>{% trans "Skills" %}</dt>
+                <dd>
+                    {{ skill_formset.management_form }}
+                    {% for form in skill_formset %}
+                        <div class="skill-formset">
+                            {{ form.skill }}
+                            <span class="divider">
+                                <i class="fa fa-arrows-h"></i>
+                            </span>
+                            {{ form.proficiency }}
+                        </div>
+                    {% endfor %}
+
+                    {% if skill_formset.non_form_errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {{ skill_formset.non_form_errors }}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="{% trans 'Update Profile Settings' %}" class="button"/>
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
     </form>
-</div>
 {% endblock %}
 
 
@@ -183,11 +171,11 @@
         });
 
         // Set bio textarea width based on container
-        var bioContainerWidth = $('td.profile-bio').width();
-
-        $('.bio').css({
-            width: bioContainerWidth - 20 // accounts for padding
-        })
+        //~var bioContainerWidth = $('td.profile-bio').width();
+//~
+        //~$('.bio').css({
+            //~width: bioContainerWidth - 20 // accounts for padding
+        //~})
 
         // Fancy vertical resizing
         $('.bio').autosize();

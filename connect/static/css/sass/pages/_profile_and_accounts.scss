@@ -1,27 +1,69 @@
 // MY ACCOUNT
 
-.account-wrapper {
-   margin: 10px 0px 30px 30px;
-}
 
-.profile-table,
-.account-table {
+.horizontal-form {
+    margin-top: 10px;
 
-    td {
-        padding: 15px 0;
-        border-top: 1px solid $light-grey * .95;
+    .intro {
+        font-style: italic;
+        color: #777;
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+
+    dl {
+        display: block;
+
+        dt {
+            font-weight: bold;
+            float: left;
+            text-align: right;
+            width: 130px;
+            margin: 0 25px 15px 0;
+            line-height: 30px;
+        }
+
+        dd {
+            float: left;
+            width: 600px;
+            line-height: 25px;
+            margin:0 0 15px 0;
+        }
+    }
+
+    dl.submit {
+        padding-top: 10px;
     }
 }
 
-td.profile-heading {
-    width: 25%;
-    text-align: right;
 
-    strong {
-        padding-right: 25px;
-        position: relative;
-        top: 6px;
+@media only screen and (max-width: 1060px) {
+.horizontal-form {
+    margin-top: 5px;
+
+    dl {
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+
+        dt {
+            font-weight: bold;
+            float: none;
+            text-align: left;
+            width: 100%;
+            margin: 0;
+        }
+
+        dd {
+            float: none;
+            width: 100%;
+        }
     }
+
+    dl.submit {
+        padding-top: 0px;
+    }
+}
 }
 
 
@@ -30,7 +72,7 @@ td.profile-heading {
 input.account-input {
     padding: 7px;
     margin: 0;
-    border:  1px solid $white;
+    border:  1px solid #ccc;
 }
 
 input.pw {
@@ -44,14 +86,20 @@ input.account-input.inactive:hover {
     box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
 }
 
+@media only screen and (max-width: 610px) {
+    input.account-input {
+        padding: 2%;
+        width: 96%;
+    }
+}
 
 // BIO
 
 .bio {
-    padding: 7px;
+    padding: 2%;
     margin: 0;
-    border:  1px solid $white;
-    width: 95%; //default
+    border:  1px solid #ccc;
+    width: 96%;
 
     p:last-child {
         margin-bottom: 10px;
@@ -99,34 +147,59 @@ input.account-input.inactive:hover {
 
 // SKILLS & LINKS
 
-.profile-skills,
-.profile-links {
+.skill-formset,
+.link-formset {
+    border-bottom: 1px dotted $light-grey * .9;
+    margin-bottom: 10px;
 
+    select,
+    input {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+
+    .divider {
+        margin: 0 10px;
+        color: $light-grey * .7;
+    }
+}
+
+a.add-row,
+a.delete-row {
+    display: inline-block;
+    font-size: 12px;
+}
+
+a.delete-row {
+    margin-left: 15px;
+}
+
+@media only screen and (max-width: 610px) {
     .skill-formset,
     .link-formset {
         border-bottom: 1px dotted $light-grey * .9;
-        margin-bottom: 10px;
+        margin: 5px 0 20px 0;
 
-        select,
         input {
-            display: inline-block;
+            display: block;
+            padding: 2%;
+            width: 96%;
+            margin-bottom: 10px
+        }
+
+        select {
+            width: 100%;
+            padding: 2%;
             margin-bottom: 10px;
-            padding: 5px;
         }
 
         .divider {
-            margin: 0 10px;
-            color: $light-grey * .7;
+            display: none;
         }
-    }
 
-    a.add-row,
-    a.delete-row {
-        display: inline-block;
-        font-size: 12px;
-    }
-
-    a.delete-row {
-        margin-left: 15px;
+        a.delete-row {
+            margin: 0 0 10px 0;
+        }
     }
 }
