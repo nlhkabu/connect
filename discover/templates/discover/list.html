@@ -10,6 +10,22 @@
 {% block page_content %}
     <div class="container">
         <div class="four columns alpha filter">
+
+            <ul class="sidebar-menu mobile-tab-menu">
+                <li class="active">
+                    <a href="{% url 'dashboard' %}">
+                        <i class="fa fa-bars"></i>
+                        {% trans "List View" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'discover:map' %}">
+                        <i class="fa fa-map-marker"></i>
+                        {% trans "Map View" %}
+                    </a>
+                </li>
+            </ul>
+
             <h3>
                 {% trans "Refine Search" %}
                 <a href="" class="clear-filters">{% trans "Clear All" %}</a>

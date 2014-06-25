@@ -53,6 +53,22 @@ ul.dash-tabs {
     }
 }
 
+.mobile-tab-menu {
+    display: none;
+}
+
+
+@media screen and (max-width:768px) {
+
+    ul.dash-tabs {
+        display: none;
+    }
+
+    .mobile-tab-menu {
+        display: block;
+    }
+}
+
 .page-content {
     border-top: 1px solid #ddd;
 }
@@ -107,7 +123,7 @@ ul.dash-tabs {
 }
 
 .member-card {
-    margin: 10px 0px 30px 30px;
+    margin: 10px 0px 30px 0px;
     border: 1px solid #ddd;
     webkit-box-shadow: 2px 2px 2px 0px rgba(0,0,0,.1);
     box-shadow: 2px 2px 2px 0px rgba(0,0,0,.1);

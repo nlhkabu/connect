@@ -224,7 +224,7 @@ header {
 // SIDEBAR MENU
 
 .sidebar-menu  {
-    margin: 10px 0;
+    margin: 10px 0 30px 0;
     border-top: 1px solid #ddd;
 
     li {
@@ -330,6 +330,14 @@ html, body {
 
 // CUSTOMISE RIBS
 
+.container .twelve {
+    padding-left: 20px;
+
+    @media screen and (max-width:768px) {
+        padding-left: 0;
+    }
+}
+
 a,
 a:visited {
   text-decoration: none;
@@ -343,10 +351,6 @@ a:visited {
   i {
     color: $dark-grey;
   }
-}
-
-.container .twelve {
-    width: 793px;
 }
 
 fieldset {

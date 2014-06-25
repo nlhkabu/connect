@@ -1,10 +1,27 @@
 {% extends "discover/dashboard.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block map_active %}active{% endblock %}
 
 {% block page_content %}
     <div class="container">
+
+        <ul class="sidebar-menu mobile-tab-menu">
+            <li>
+                <a href="{% url 'dashboard' %}">
+                    <i class="fa fa-bars"></i>
+                    {% trans "List View" %}
+                </a>
+            </li>
+            <li class="active">
+                <a href="{% url 'discover:map' %}">
+                    <i class="fa fa-map-marker"></i>
+                    {% trans "Map View" %}
+                </a>
+            </li>
+        </ul>
+
         <div id="map-canvas"></div>
     </div>
 {% endblock %}
