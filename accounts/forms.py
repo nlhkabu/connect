@@ -1,7 +1,9 @@
 from django import forms
+
 from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.utils.safestring import mark_safe
 
 from .models import CustomUser, ConnectPreference
 from skills.models import Skill, UserSkill
@@ -203,6 +205,11 @@ class LinkForm(forms.Form):
                     required=False)
 
 
+class PreferenceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        label = "<strong>{}</strong> ({})".format(obj.name, obj.description)
+        return mark_safe(label)
+
 class ProfileForm(forms.Form):
     """
     Form for user to update their own profile details
@@ -239,7 +246,7 @@ class ProfileForm(forms.Form):
                                 required=False)
 
         preferences = ConnectPreference.objects.all()
-        self.fields['preferences'] = forms.ModelMultipleChoiceField(
+        self.fields['preferences'] = PreferenceModelMultipleChoiceField(
                                 initial = self.user.connect_preferences.all(),
                                 queryset=preferences,
                                 widget=forms.CheckboxSelectMultiple(),

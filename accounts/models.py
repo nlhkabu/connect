@@ -100,7 +100,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         skills = self.skill_set.all()
 
         for skill in skills:
-            userskill = UserSkill.objects.get(user=self.user, skill=skill)
+            userskill = UserSkill.objects.get(user=self, skill=skill)
             skill.proficiency = userskill.get_proficiency_display()
             skill.percentage = userskill.get_proficiency_percentage()
 
