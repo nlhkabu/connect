@@ -495,7 +495,7 @@ table {
 /* line 17, ../sass/ribs/_ribs.scss */
 body {
   background: #fff;
-  font: 14px/21px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 14px/21px "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #444;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -1222,60 +1222,60 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 
 /* line 7, ../sass/ribs/_typography.scss */
 h1 {
-  color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
+  color: #555555;
+  font-family: "Bree Serif", sans-serif;
   font-weight: normal;
-  font-size: 46px;
-  line-height: 69px;
+  font-size: 35px;
+  line-height: 52.5px;
   margin: 0 0 14px 0;
 }
 
 /* line 16, ../sass/ribs/_typography.scss */
 h2 {
-  color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
+  color: #555555;
+  font-family: "Bree Serif", sans-serif;
   font-weight: normal;
-  font-size: 35px;
-  line-height: 52.5px;
+  font-size: 28px;
+  line-height: 42px;
   margin: 0 0 10px 0;
 }
 
 /* line 25, ../sass/ribs/_typography.scss */
 h3 {
-  color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
+  color: #555555;
+  font-family: "Bree Serif", sans-serif;
   font-weight: normal;
-  font-size: 28px;
-  line-height: 42px;
+  font-size: 21px;
+  line-height: 31.5px;
   margin: 0 0 8px 0;
 }
 
 /* line 34, ../sass/ribs/_typography.scss */
 h4 {
-  color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
+  color: #555555;
+  font-family: "Bree Serif", sans-serif;
   font-weight: normal;
-  font-size: 21px;
-  line-height: 31.5px;
+  font-size: 17px;
+  line-height: 25.5px;
   margin: 0 0 4px 0;
 }
 
 /* line 43, ../sass/ribs/_typography.scss */
 h5 {
-  color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
+  color: #555555;
+  font-family: "Bree Serif", sans-serif;
   font-weight: normal;
-  font-size: 17px;
-  line-height: 25.5px;
+  font-size: 14px;
+  line-height: 21px;
 }
 
 /* line 51, ../sass/ribs/_typography.scss */
 h6 {
-  color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
+  color: #555555;
+  font-family: "Bree Serif", sans-serif;
   font-weight: normal;
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 13px;
+  line-height: 19.5px;
 }
 
 /* line 59, ../sass/ribs/_typography.scss */
@@ -1455,7 +1455,7 @@ input[type="button"] {
   margin: 0 0 20px 0;
   line-height: normal;
   padding: 6px 10px;
-  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* line 29, ../sass/ribs/_forms.scss */
@@ -1558,7 +1558,7 @@ select {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  font: 13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 13px "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #777777;
   width: 210px;
   max-width: 100%;
@@ -2278,13 +2278,14 @@ fieldset legend {
   display: block;
   width: 100%;
   font-weight: normal;
+  font-size: 16px;
   border-bottom: 1px solid #ececec;
-  text-transform: uppercase;
   padding-bottom: 10px;
   margin-bottom: 10px;
+  font-family: 'Bree Serif', sans-serif;
 }
 
-/* line 402, ../sass/_site_structure.scss */
+/* line 403, ../sass/_site_structure.scss */
 input[type='checkbox'],
 input[type='radio'] {
   position: relative;
@@ -2292,7 +2293,7 @@ input[type='radio'] {
   margin-right: 2px;
 }
 
-/* line 413, ../sass/_site_structure.scss */
+/* line 414, ../sass/_site_structure.scss */
 button,
 .button,
 button:hover,
@@ -2311,61 +2312,61 @@ input.button:hover {
   top: -1px;
 }
 
-/* line 427, ../sass/_site_structure.scss */
+/* line 428, ../sass/_site_structure.scss */
 button:hover,
 .button:hover {
   background-color: #d91c3d;
   text-decoration: none;
 }
 
-/* line 432, ../sass/_site_structure.scss */
+/* line 433, ../sass/_site_structure.scss */
 .active {
   background-color: #f4f4f4;
 }
 
-/* line 436, ../sass/_site_structure.scss */
+/* line 437, ../sass/_site_structure.scss */
 label {
   font-weight: normal;
 }
 
-/* line 440, ../sass/_site_structure.scss */
+/* line 441, ../sass/_site_structure.scss */
 p label {
   font-weight: bold;
 }
 
-/* line 448, ../sass/_site_structure.scss */
+/* line 449, ../sass/_site_structure.scss */
 .button.mini,
 .button.mini:hover {
   padding: 5px 7px;
 }
 
-/* line 452, ../sass/_site_structure.scss */
+/* line 453, ../sass/_site_structure.scss */
 .button.grey {
   background-color: #333333;
   color: white;
 }
 
-/* line 457, ../sass/_site_structure.scss */
+/* line 458, ../sass/_site_structure.scss */
 table .button {
   margin-bottom: 0;
 }
 
-/* line 462, ../sass/_site_structure.scss */
+/* line 463, ../sass/_site_structure.scss */
 .skills {
   margin: 15px 0 0 0;
   background-color: transparent;
 }
-/* line 466, ../sass/_site_structure.scss */
+/* line 467, ../sass/_site_structure.scss */
 .skills td {
   padding: 5px 0;
   border: 0;
   vertical-align: middle;
 }
-/* line 472, ../sass/_site_structure.scss */
+/* line 473, ../sass/_site_structure.scss */
 .skills td.skill-ability {
   width: 70%;
 }
-/* line 476, ../sass/_site_structure.scss */
+/* line 477, ../sass/_site_structure.scss */
 .skills .ability {
   height: 20px;
   width: 85%;
@@ -2373,7 +2374,7 @@ table .button {
   border: 1px solid #ddd;
   background-color: white;
 }
-/* line 483, ../sass/_site_structure.scss */
+/* line 484, ../sass/_site_structure.scss */
 .skills .ability .ui-progressbar-value {
   background-color: #e51e41;
   background-image: none;
