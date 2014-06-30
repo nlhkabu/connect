@@ -7,15 +7,59 @@
 
 
 {% block moderators_content %}
-    <h3>Invite a New Member</h3>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ invitation_form.as_p }}
-        <input type="submit" value="{% trans 'Invite New Member' %}" class="button" />
+    <form action="" method="post" class="horizontal-form">
+        <fieldset>
+            <legend>Invite a New Member</legend>
+            <p class="intro">Please provide the details of the member you wish to invite.  Once they have accepted your invitatation, they will be able to edit the details provided here.</p>
+            {% csrf_token %}
+            <dl>
+                <dt>{% trans "First Name" %}</dt>
+                <dd>
+                    {{ invitation_form.first_name }}
+                    {% if invitation_form.first_name.errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {{ invitation_form.first_name.errors }}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt>{% trans "Last Name" %}</dt>
+                <dd>
+                    {{ invitation_form.last_name }}
+                    {% if invitation_form.last_name.errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {{ invitation_form.last_name.errors }}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt>{% trans "Email" %}</dt>
+                <dd>
+                    {{ invitation_form.email }}
+                    {% if invitation_form.email.errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {{ invitation_form.email.errors }}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="{% trans 'Invite New Member' %}" class="button"/>
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
     </form>
-
-    <hr/>
-
     {% if pending %}
         <h3>{% trans "Invitations pending activation" %}</h3>
         <table>
@@ -35,23 +79,29 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            {{ user.reinvitation_form.as_p }}
-                            <input type="submit" value="{% trans 'Resend Invitation' %}" class="button" />
-                        </form>
-
-                        <hr/>
-
-                         <form action="" method="post">
-                            {% csrf_token %}
-                            {{ user.revocation_form.as_p }}
-                            <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
-                        </form>
+                        <a href="">Resend Invitation</a><br/>
+                        <a href="">Revoke Invitation</a><br/>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        {% for user in pending %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ user.reinvitation_form.as_p }}
+                <input type="submit" value="{% trans 'Resend Invitation' %}" class="button" />
+            </form>
+
+             <form action="" method="post">
+                {% csrf_token %}
+                {{ user.revocation_form.as_p }}
+                <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
+            </form>
+        {% endfor %}
+
+
+
     {% endif %}
 {% endblock %}

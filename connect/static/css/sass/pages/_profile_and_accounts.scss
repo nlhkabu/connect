@@ -28,6 +28,45 @@
             width: 600px;
             line-height: 25px;
             margin:0 0 15px 0;
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"] {
+                padding: 7px;
+                margin: 0;
+            }
+
+            textarea {
+                padding: 2%;
+                margin: 0;
+                width: 96%;
+
+                p:last-child {
+                    margin-bottom: 10px;
+                }
+            }
+
+            input.pw {
+                margin-bottom: 10px;
+            }
+
+            input.inactive:hover {
+                border: 1px solid $light-grey * .9;
+                cursor: pointer;
+                -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+                box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+            }
+
+            @media only screen and (max-width: 610px) {
+                input[type="text"],
+                input[type="email"],
+                input[type="password"],
+                textarea {
+                    padding: 2%;
+                    width: 96%;
+                }
+
+            }
         }
     }
 
@@ -54,66 +93,15 @@
             margin: 0;
         }
 
-        dd {
-            float: none;
-            width: 100%;
+            dd {
+                float: none;
+                width: 100%;
+            }
         }
-    }
 
-    dl.submit {
-        padding-top: 0px;
-    }
-}
-}
-
-
-// TEXTINPUT FIELDS
-
-input.account-input {
-    padding: 7px;
-    margin: 0;
-    border:  1px solid #ccc;
-}
-
-input.pw {
-    margin-bottom: 10px;
-}
-
-input.account-input.inactive:hover {
-    border: 1px solid $light-grey * .9;
-    cursor: pointer;
-    -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
-    box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
-}
-
-@media only screen and (max-width: 610px) {
-    input.account-input {
-        padding: 2%;
-        width: 96%;
-    }
-}
-
-// BIO
-
-.bio {
-    padding: 2%;
-    margin: 0;
-    border:  1px solid #ccc;
-    width: 96%;
-
-    p:last-child {
-        margin-bottom: 10px;
-    }
-}
-
-.bio.inactive {
-    resize: none;
-
-    &:hover {
-        border: 1px solid $light-grey * .9;
-        cursor: pointer;
-        -webkit-box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
-        box-shadow:inset 0px 0px 1px 1px rgba(0,0,0,.06);
+        dl.submit {
+            padding-top: 0px;
+        }
     }
 }
 

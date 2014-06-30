@@ -6,10 +6,68 @@
 
 {% block content %}
     <div class="container">
-        <form action="" method="post">
+        <form action="" method="post" class="horizontal-form">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="{% trans 'Request Invitation' %}" />
+            <fieldset>
+                <legend>{% trans "Request an Invitation" %}</legend>
+                <p class="intro"></p>
+                <dl>
+                    <dt>{% trans "First Name" %}</dt>
+                    <dd>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.first_name.errors }}
+                            </span>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+                <dl>
+                    <dt>{% trans "Last Name" %}</dt>
+                    <dd>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.last_name.errors }}
+                            </span>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+                <dl>
+                    <dt>{% trans "Email" %}</dt>
+                    <dd>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.email.errors }}
+                            </span>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+                <dl>
+                    <dt>{% trans "Comments" %}</dt>
+                    <dd>
+                        {{ form.comments }}
+                        {% if form.comments.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.comments.errors }}
+                            </span>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+                <dl>
+                    <dt></dt>
+                    <dd><input type="submit" value="{% trans 'Request Invitation' %}" class="button" /></dd>
+                </dl>
+            </fieldset>
         </form>
     </div>
 {% endblock %}

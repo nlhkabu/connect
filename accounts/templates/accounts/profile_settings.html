@@ -13,7 +13,7 @@
 
         <fieldset>
             <legend>Your Biography</legend>
-            <p class="intro">Tell us about yourself!  Include as much information as you feel is relevant.  This information will be viewable to other users.</p>
+            <p class="intro">Tell us about yourself!  Include as much information as you feel is relevant.  This information will be visible to other users.</p>
 
             <dl>
                 <dt>{% trans "First Name" %}</dt>
@@ -161,21 +161,6 @@
             addText: '{% trans "add link" %}',
             deleteText: '{% trans "remove" %}'
         });
-
-
-        // Enable fancy hover/focus CSS
-        $('.bio, .account-input').on('blur', function(){
-            $(this).addClass('inactive');
-        }).on('focus', function(){
-            $(this).removeClass('inactive');
-        });
-
-        // Set bio textarea width based on container
-        //~var bioContainerWidth = $('td.profile-bio').width();
-//~
-        //~$('.bio').css({
-            //~width: bioContainerWidth - 20 // accounts for padding
-        //~})
 
         // Fancy vertical resizing
         $('.bio').autosize();

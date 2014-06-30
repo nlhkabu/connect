@@ -2461,22 +2461,60 @@ table .button {
   margin: 0 0 15px 0;
 }
 /* line 34, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd input[type="text"],
+.horizontal-form dl dd input[type="email"],
+.horizontal-form dl dd input[type="password"] {
+  padding: 7px;
+  margin: 0;
+}
+/* line 39, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd textarea {
+  padding: 2%;
+  margin: 0;
+  width: 96%;
+}
+/* line 44, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd textarea p:last-child {
+  margin-bottom: 10px;
+}
+/* line 49, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd input.pw {
+  margin-bottom: 10px;
+}
+/* line 53, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd input.inactive:hover {
+  border: 1px solid #d4d4d4;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
+}
+@media only screen and (max-width: 610px) {
+  /* line 64, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd input[type="text"],
+  .horizontal-form dl dd input[type="email"],
+  .horizontal-form dl dd input[type="password"],
+  .horizontal-form dl dd textarea {
+    padding: 2%;
+    width: 96%;
+  }
+}
+/* line 73, ../sass/pages/_profile_and_accounts.scss */
 .horizontal-form dl.submit {
   padding-top: 10px;
 }
 
 @media only screen and (max-width: 1060px) {
-  /* line 41, ../sass/pages/_profile_and_accounts.scss */
+  /* line 80, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form {
     margin-top: 5px;
   }
-  /* line 44, ../sass/pages/_profile_and_accounts.scss */
+  /* line 83, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl {
     display: block;
     width: 100%;
     margin-top: 5px;
   }
-  /* line 49, ../sass/pages/_profile_and_accounts.scss */
+  /* line 88, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dt {
     font-weight: bold;
     float: none;
@@ -2484,97 +2522,46 @@ table .button {
     width: 100%;
     margin: 0;
   }
-  /* line 57, ../sass/pages/_profile_and_accounts.scss */
+  /* line 96, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd {
     float: none;
     width: 100%;
   }
-  /* line 63, ../sass/pages/_profile_and_accounts.scss */
+  /* line 102, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl.submit {
     padding-top: 0px;
   }
 }
-/* line 72, ../sass/pages/_profile_and_accounts.scss */
-input.account-input {
-  padding: 7px;
-  margin: 0;
-  border: 1px solid #ccc;
-}
-
-/* line 78, ../sass/pages/_profile_and_accounts.scss */
-input.pw {
-  margin-bottom: 10px;
-}
-
-/* line 82, ../sass/pages/_profile_and_accounts.scss */
-input.account-input.inactive:hover {
-  border: 1px solid #d4d4d4;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
-  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
-}
-
-@media only screen and (max-width: 610px) {
-  /* line 90, ../sass/pages/_profile_and_accounts.scss */
-  input.account-input {
-    padding: 2%;
-    width: 96%;
-  }
-}
-/* line 98, ../sass/pages/_profile_and_accounts.scss */
-.bio {
-  padding: 2%;
-  margin: 0;
-  border: 1px solid #ccc;
-  width: 96%;
-}
-/* line 104, ../sass/pages/_profile_and_accounts.scss */
-.bio p:last-child {
-  margin-bottom: 10px;
-}
-
-/* line 109, ../sass/pages/_profile_and_accounts.scss */
-.bio.inactive {
-  resize: none;
-}
 /* line 112, ../sass/pages/_profile_and_accounts.scss */
-.bio.inactive:hover {
-  border: 1px solid #d4d4d4;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
-  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
-}
-
-/* line 124, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences ul {
   margin: 0;
 }
-/* line 127, ../sass/pages/_profile_and_accounts.scss */
+/* line 115, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences ul li {
   margin: 0;
   padding: 0;
 }
-/* line 133, ../sass/pages/_profile_and_accounts.scss */
+/* line 121, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label {
   padding: 7px 10px;
 }
-/* line 136, ../sass/pages/_profile_and_accounts.scss */
+/* line 124, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label span {
   color: #767676;
   padding-left: 5px;
 }
-/* line 141, ../sass/pages/_profile_and_accounts.scss */
+/* line 129, ../sass/pages/_profile_and_accounts.scss */
 .profile-preferences label:hover {
   background-color: #f4f4f4;
 }
 
-/* line 151, ../sass/pages/_profile_and_accounts.scss */
+/* line 139, ../sass/pages/_profile_and_accounts.scss */
 .skill-formset,
 .link-formset {
   border-bottom: 1px dotted #d4d4d4;
   margin-bottom: 10px;
 }
-/* line 156, ../sass/pages/_profile_and_accounts.scss */
+/* line 144, ../sass/pages/_profile_and_accounts.scss */
 .skill-formset select,
 .skill-formset input,
 .link-formset select,
@@ -2583,33 +2570,33 @@ input.account-input.inactive:hover {
   margin-bottom: 10px;
   padding: 5px;
 }
-/* line 162, ../sass/pages/_profile_and_accounts.scss */
+/* line 150, ../sass/pages/_profile_and_accounts.scss */
 .skill-formset .divider,
 .link-formset .divider {
   margin: 0 10px;
   color: #a5a5a5;
 }
 
-/* line 169, ../sass/pages/_profile_and_accounts.scss */
+/* line 157, ../sass/pages/_profile_and_accounts.scss */
 a.add-row,
 a.delete-row {
   display: inline-block;
   font-size: 12px;
 }
 
-/* line 174, ../sass/pages/_profile_and_accounts.scss */
+/* line 162, ../sass/pages/_profile_and_accounts.scss */
 a.delete-row {
   margin-left: 15px;
 }
 
 @media only screen and (max-width: 610px) {
-  /* line 180, ../sass/pages/_profile_and_accounts.scss */
+  /* line 168, ../sass/pages/_profile_and_accounts.scss */
   .skill-formset,
   .link-formset {
     border-bottom: 1px dotted #d4d4d4;
     margin: 5px 0 20px 0;
   }
-  /* line 184, ../sass/pages/_profile_and_accounts.scss */
+  /* line 172, ../sass/pages/_profile_and_accounts.scss */
   .skill-formset input,
   .link-formset input {
     display: block;
@@ -2617,19 +2604,19 @@ a.delete-row {
     width: 96%;
     margin-bottom: 10px;
   }
-  /* line 191, ../sass/pages/_profile_and_accounts.scss */
+  /* line 179, ../sass/pages/_profile_and_accounts.scss */
   .skill-formset select,
   .link-formset select {
     width: 100%;
     padding: 2%;
     margin-bottom: 10px;
   }
-  /* line 197, ../sass/pages/_profile_and_accounts.scss */
+  /* line 185, ../sass/pages/_profile_and_accounts.scss */
   .skill-formset .divider,
   .link-formset .divider {
     display: none;
   }
-  /* line 201, ../sass/pages/_profile_and_accounts.scss */
+  /* line 189, ../sass/pages/_profile_and_accounts.scss */
   .skill-formset a.delete-row,
   .link-formset a.delete-row {
     margin: 0 0 10px 0;

@@ -224,7 +224,6 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.first_name,
                                         widget=forms.TextInput(attrs={
-                                            'class' : 'account-input inactive',
                                             'placeholder': 'First Name',
                                         }))
 
@@ -232,14 +231,13 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.last_name,
                                         widget=forms.TextInput(attrs={
-                                            'class' : 'account-input inactive',
                                             'placeholder': 'Last Name',
                                         }))
 
         self.fields['bio'] = forms.CharField(
                                 initial = self.user.bio,
                                 widget=forms.Textarea(attrs={
-                                    'class': 'bio inactive',
+                                    'class': 'bio',
                                     'placeholder': 'Add some details about yourself...',
                                     'rows': 'auto',
                                 }),
@@ -264,20 +262,18 @@ class AccountSettingsForm(forms.Form):
         self.fields['email'] = forms.EmailField(
                                         initial = self.user.email,
                                         widget=forms.TextInput(attrs={
-                                            'class' : 'account-input inactive',
                                             'placeholder': 'Email Address',
                                         }))
 
         self.fields['reset_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'class' : 'account-input inactive pw',
+                                            'class' : 'pw',
                                             'placeholder' : 'New Password'
                                         }),
                                         required=False)
 
         self.fields['reset_password_confirm'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'class' : 'account-input inactive',
                                             'placeholder' : 'Confirm Password'
                                         }),
                                         required=False)
