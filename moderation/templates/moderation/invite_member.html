@@ -12,6 +12,7 @@
             <legend>Invite a New Member</legend>
             <p class="intro">Please provide the details of the member you wish to invite.  Once they have accepted your invitatation, they will be able to edit the details provided here.</p>
             {% csrf_token %}
+            {{ invitation_form.form_type }}
             <dl>
                 <dt>{% trans "First Name" %}</dt>
                 <dd>
