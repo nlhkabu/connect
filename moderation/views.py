@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.models import get_current_site
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
@@ -57,6 +57,7 @@ def send_moderation_email(subject, template, recipient, site, moderator='',
 
 
 @login_required
+@permission_required('moderation.access_moderators_page')
 def invite_member(request):
     """
     Allow a moderator to:
@@ -64,7 +65,9 @@ def invite_member(request):
      - Resend a membership invitation
      - Revoke a membership invitation
     """
+
     moderator = request.user
+
     site = get_current_site(request)
 
     # Show pending invitations
