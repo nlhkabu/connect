@@ -116,6 +116,9 @@ GRAVATAR_DEFAULT_IMAGE = 'retro'
 
 SITE_ID = 1
 SITE_URL = 'http://localhost:8000' #TODO: change for production
+# Primary site email address.  Is used as a generic contact point in
+# email correspondence
+SITE_EMAIL = 'info@connect.test' # TODO: change for production
 
 # Set 'from' email address for system emails
 

@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Group, Permission
 from django.contrib.sites.models import get_current_site
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
@@ -18,6 +19,70 @@ from connect.utils import generate_html_email, hash_time, generate_salt
 User = get_user_model()
 
 
+def invite_standard_user(email, first_name, last_name, moderator):
+    """
+    Invite an inactive user (who needs to activate their account)
+    """
+    # Check if user already exists
+    existing_user_emails = [user.email for user in User.objects.all() if user.email]
+
+    if email not in existing_user_emails:
+        user = User.objects.create_user(email)
+        user.is_active = False
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+
+        token = hash_time(generate_salt())
+
+        # Add user registration details
+        user_registration = UserRegistration.objects.create(
+            user=user,
+            method=UserRegistration.INVITED,
+            moderator=moderator,
+            moderator_decision=UserRegistration.PRE_APPROVED,
+            decision_datetime=now(),
+            auth_token = token,
+        )
+
+        return user
+
+
+def invite_moderator(email, first_name, last_name, moderator):
+    """
+    Invite an inactive moderator (who needs to activate their account)
+    """
+    user = invite_standard_user(email, first_name, last_name, moderator)
+
+    # Check if group already exists
+    existing_groups = [group.name for name in Group.objects.all()]
+
+    if 'moderators' in existing_groups:
+        #Add this user to that group
+        moderators_group = Group.objects.filter(name='moderators')
+        user.is_moderator = True
+        user.groups.add(moderators_group)
+
+        return user
+
+    else:
+        #Create moderator group and add this user to it
+        codenames = ['add_abusereport',
+                     'access_moderators_page',
+                     'add_userregistration',
+                     'change_userregistration',
+                     'delete_userregistration',
+                     'invite_user']
+
+        moderator_permissions = Permission.objects.filter(codename__in=codenames)
+        moderators_group = Group.objects.create(name='moderators')
+        moderators_group.permissions = moderator_permissions
+        user.is_moderator = True
+        user.groups.add(moderators_group)
+
+        return user
+
+
 def log_moderator_event(msg_type, user, moderator, comment=''):
     """
     Log a moderation event.
@@ -30,19 +95,21 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
     )
 
 
-def send_moderation_email(subject, template, recipient, site, moderator='',
+def send_moderation_email(subject, template, recipient, site, sender='',
                           token='', comments='', logged_against=''):
     """
     Sends an email to the user from the moderation dashboard.
     e.g. Invitation, reminder to activate their account, etc.
     """
+
     template_vars = {
         'recipient': recipient,
         'site_name': site.name,
         'activation_url': token,
-        'inviter': moderator,
+        'sender': sender,
         'comments': comments,
         'logged_against': logged_against,
+        'email_contact':  settings.SITE_EMAIL,
     }
 
     email = generate_html_email(
@@ -58,6 +125,7 @@ def send_moderation_email(subject, template, recipient, site, moderator='',
 
 @login_required
 @permission_required('moderation.access_moderators_page')
+@permission_required('moderation.invite_user')
 def invite_member(request):
     """
     Allow a moderator to:
@@ -72,7 +140,7 @@ def invite_member(request):
 
     # Show pending invitations
     pending = User.objects.filter(userregistration__moderator=moderator,
-                                  userregistration__method='INV',
+                                  userregistration__method=UserRegistration.INVITED,
                                   userregistration__auth_token_is_used=False,
                                   is_active=False)
 
@@ -88,12 +156,35 @@ def invite_member(request):
             invitation_form = InviteMemberForm(request.POST)
 
             if invitation_form.is_valid():
+
                 first_name = invitation_form.cleaned_data['first_name']
                 last_name = invitation_form.cleaned_data['last_name']
                 email = invitation_form.cleaned_data['email']
 
-                handle_invitation(request, first_name, last_name,
-                                  email, moderator, site)
+                new_user = invite_standard_user(email, first_name,
+                                                last_name, moderator)
+
+                # Log moderation event
+                msg_type = ModerationLogMsg.INVITATION
+                log_comment = '{} invited {}'.format(moderator.get_full_name(),
+                                                     new_user.get_full_name())
+                log_moderator_event(msg_type=msg_type,
+                                    user=new_user,
+                                    moderator=moderator,
+                                    comment=log_comment)
+
+                # Send email
+                subject = 'Welcome to {}'.format(site.name)
+                template = 'moderation/emails/invite_new_user.html'
+                token = new_user.userregistration.auth_token
+                token_url = request.build_absolute_uri(
+                            reverse('accounts:activate-account', args=[token]))
+                send_moderation_email(subject=subject,
+                                      template=template,
+                                      recipient=new_user,
+                                      sender=moderator,
+                                      site=site,
+                                      token=token_url)
 
                 return redirect('moderation:moderators')
 
@@ -135,59 +226,6 @@ def invite_member(request):
     return render(request, 'moderation/invite_member.html', context)
 
 
-def handle_invitation(request, first_name, last_name, email, moderator, site):
-    """
-    Invite a new member
-    """
-    user_emails = [user.email for user in User.objects.all() if user.email]
-
-    if email not in user_emails:
-
-        # Create inactive user
-        new_user = User.objects.create_user(email)
-        new_user.is_active = False
-        new_user.first_name = first_name
-        new_user.last_name = last_name
-        new_user.save()
-
-        token = hash_time(generate_salt())
-        token_url = request.build_absolute_uri(
-                        reverse('accounts:activate-account', args=[token]))
-
-        # Add user registration details
-        user_registration = UserRegistration.objects.create(
-            user=new_user,
-            method=UserRegistration.INVITED,
-            moderator=moderator,
-            moderator_decision=UserRegistration.PRE_APPROVED,
-            decision_datetime=now(),
-            auth_token = token,
-        )
-
-        # Log moderation event
-        msg_type = ModerationLogMsg.INVITATION
-        log_comment = '{} invited {}'.format(moderator.get_full_name(),
-                                             new_user.get_full_name())
-        log_moderator_event(msg_type=msg_type,
-                            user=new_user,
-                            moderator=moderator,
-                            comment=log_comment)
-
-        # Send email
-        subject = 'Welcome to {}'.format(site.name)
-        template = 'moderation/emails/invite_new_user.html'
-
-        send_moderation_email(subject=subject,
-                              template=template,
-                              recipient=new_user,
-                              moderator=moderator,
-                              site=site,
-                              token=token_url)
-        return new_user
-
-    return None
-
-
 def handle_reinvitation(request, user, email, moderator, site):
     """
     Reinvite a member.
@@ -222,7 +260,7 @@ def handle_reinvitation(request, user, email, moderator, site):
         send_moderation_email(subject=subject,
                               template=template,
                               recipient=user,
-                              moderator=moderator,
+                              sender=moderator,
                               site=site,
                               token=token_url)
 
@@ -322,7 +360,6 @@ def review_applications(request):
                                   template=template,
                                   recipient=user,
                                   site=site,
-                                  moderator=moderator,
                                   token=token_url)
 
             return redirect('moderation:review-applications')

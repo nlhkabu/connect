@@ -1,7 +1,7 @@
 # Connect
 
 Connect helps individuals connect with each other based on location, skills and interests.
-Originally made for PyLadies - connect was built so that users can connect based on Python skills, interests and location.
+Originally made for PyLadies - Connect was built so that users can connect based on skills, interests and location.
 
 ##  Demo
 
@@ -15,6 +15,7 @@ Configure the following:
 
 -  SITE_ID
 -  SITE_URL
+-  SITE_EMAIL
 -  EMAIL_HOST
 -  EMAIL_PORT
 -  EMAIL_HOST_USER
