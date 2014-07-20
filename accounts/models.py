@@ -1,16 +1,17 @@
 from urllib.parse import urlsplit
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        Group, Permission, PermissionsMixin)
+from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.http import urlquote
-from django.core.mail import send_mail
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+from connect.utils import generate_salt, hash_time
+from moderation.models import UserRegistration
 from skills.models import UserSkill
-
-
-User = settings.AUTH_USER_MODEL
 
 
 class CustomUserManager(BaseUserManager):
@@ -75,6 +76,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
+        permissions = (
+            ("access_moderators_section", "Can see the moderators section"),
+            ("invite_user", "Can issue or reissue an invitation"),
+            ("uninvite_user", "Can revoke a user invitation"),
+            ("approve_user_application", "Can approve a user's application"),
+            ("reject_user_application", "Can reject a user's application"),
+            ("dismiss_abuse_report", "Can dismiss an abuse report"),
+            ("warn_user", "Can warn a user in response to an abuse report"),
+            ("ban_user", "Can ban a user in response to an abuse report"),
+        )
 
     def get_absolute_url(self):
         return "/users/%s/" % urlquote(self.email)
@@ -97,6 +108,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email])
 
     def get_skills(self):
+        """
+        Gets the user's skills
+        """
         skills = self.skill_set.all()
 
         for skill in skills:
@@ -105,6 +119,49 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             skill.percentage = userskill.get_proficiency_percentage()
 
         return skills
+
+
+    def promote_to_moderator(self):
+        """
+        Promotes a user to a moderator
+        """
+        moderators_group = Group.objects.filter(name='moderators')
+        self.groups.add(moderators_group)
+
+        self.is_moderator = True
+
+        return None
+
+
+    def invite_new_user(self, email, first_name, last_name):
+        """
+        Invite an inactive user (who needs to activate their account)
+        """
+        User = get_user_model()
+
+        # Check if new user already exists in database
+        existing_user_emails = [user.email for user in User.objects.all() if user.email]
+
+        if email not in existing_user_emails:
+            new_user = User.objects.create_user(email)
+            new_user.is_active = False
+            new_user.first_name = first_name
+            new_user.last_name = last_name
+            new_user.save()
+
+            token = hash_time(generate_salt())
+
+            # Add user registration details
+            user_registration = UserRegistration.objects.create(
+                user=new_user,
+                method=UserRegistration.INVITED,
+                moderator=self,
+                moderator_decision=UserRegistration.PRE_APPROVED,
+                decision_datetime=timezone.now(),
+                auth_token = token,
+            )
+
+        return new_user
 
 
 class ConnectPreference(models.Model):
@@ -128,7 +185,7 @@ class UserLink(models.Model):
     twitter account, etc.
     """
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
     url = models.URLField()
 

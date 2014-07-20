@@ -54,10 +54,7 @@ class UserRegistration(models.Model):
 
 
     class Meta:
-        permissions = (
-            ("invite_user", "Can invite a new user"),
-            ("access_moderators_page", "Can see the moderators page"),
-        )
+        verbose_name = 'User Registration'
 
     def __str__(self):
         return self.user.get_full_name()

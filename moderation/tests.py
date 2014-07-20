@@ -3,53 +3,11 @@ from django.core.urlresolvers import resolve, reverse
 from django.test import TestCase
 from django.utils.timezone import now
 
-from .models import UserRegistration
-from .views import invite_standard_user, invite_moderator
+from accounts.tests import (create_active_moderator, create_superuser,
+                            create_active_standard_user)
+from .views import invite_member
 
 User = get_user_model()
-
-def create_active_standard_user(moderator,
-                                email='standard@test.test',
-                                first_name='standard',
-                                last_name='user'):
-    """
-    For testing purposes only.
-    Create a standard user with an already activated account.
-    """
-    user = invite_standard_user(email, first_name, last_name, moderator)
-    user.is_active = True
-    user.userregistration.activated_datetime = now()
-    user.userregistration.auth_token_is_used = True
-
-    return user
-
-
-def create_active_moderator(moderator,
-                           email='moderator@test.test',
-                           first_name='moderator',
-                           last_name='user'):
-    """
-    For testing purposes only.
-    Create a moderator with an already activated account.
-    """
-    user = invite_moderator(email, first_name, last_name, moderator)
-    user.is_active = True
-    user.userregistration.activated_datetime = now()
-    user.userregistration.auth_token_is_used = True
-
-    return user
-
-
-class CreateUserTest(TestCase):
-
-    def can_create_standard_user(self):
-
-
-        pass
-
-    def can_create_another_moderator(self):
-        pass
-
 
 class InviteMemberPageTest(TestCase):
 
@@ -64,7 +22,8 @@ class InviteMemberPageTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertEqual(response.status_code, 302)
 
-        user = create_active_standard_user()
+        superuser = create_superuser()
+        user = create_active_standard_user(superuser)
         c.login(email=user.email, password='default')
 
         response = c.get(reverse('moderation:moderators'))
@@ -72,7 +31,7 @@ class InviteMemberPageTest(TestCase):
         self.assertEqual(response.status_code, 302)
         c.logout()
 
-        moderator = create_active_moderator()
+        moderator = create_active_moderator(superuser)
         c.login(email=moderator.email, password='default')
 
         response = c.get(reverse('moderation:moderators'))
@@ -87,7 +46,7 @@ class InviteMemberPageTest(TestCase):
         #~c.login(email=moderator.email, password='default')
 #~
         #~# Setup a new user who was invited by logged in moderator
-        #~invited_user = invite_standard_user(moderator=moderator)
+        #~invited_user = invite_new_user(moderator=moderator)
 #~
         #~# Check that invited user is in 'pending users' list
         #~response = c.get(reverse('moderation:moderators'))

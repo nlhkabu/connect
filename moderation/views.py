@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import Group, Permission
 from django.contrib.sites.models import get_current_site
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
@@ -17,70 +16,6 @@ from connect.utils import generate_html_email, hash_time, generate_salt
 
 
 User = get_user_model()
-
-
-def invite_standard_user(email, first_name, last_name, moderator):
-    """
-    Invite an inactive user (who needs to activate their account)
-    """
-    # Check if user already exists
-    existing_user_emails = [user.email for user in User.objects.all() if user.email]
-
-    if email not in existing_user_emails:
-        user = User.objects.create_user(email)
-        user.is_active = False
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
-
-        token = hash_time(generate_salt())
-
-        # Add user registration details
-        user_registration = UserRegistration.objects.create(
-            user=user,
-            method=UserRegistration.INVITED,
-            moderator=moderator,
-            moderator_decision=UserRegistration.PRE_APPROVED,
-            decision_datetime=now(),
-            auth_token = token,
-        )
-
-        return user
-
-
-def invite_moderator(email, first_name, last_name, moderator):
-    """
-    Invite an inactive moderator (who needs to activate their account)
-    """
-    user = invite_standard_user(email, first_name, last_name, moderator)
-
-    # Check if group already exists
-    existing_groups = [group.name for name in Group.objects.all()]
-
-    if 'moderators' in existing_groups:
-        #Add this user to that group
-        moderators_group = Group.objects.filter(name='moderators')
-        user.is_moderator = True
-        user.groups.add(moderators_group)
-
-        return user
-
-    else:
-        #Create moderator group and add this user to it
-        codenames = ['add_abusereport',
-                     'access_moderators_page',
-                     'add_userregistration',
-                     'change_userregistration',
-                     'delete_userregistration',
-                     'invite_user']
-
-        moderator_permissions = Permission.objects.filter(codename__in=codenames)
-        moderators_group = Group.objects.create(name='moderators')
-        moderators_group.permissions = moderator_permissions
-        user.is_moderator = True
-        user.groups.add(moderators_group)
-
-        return user
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):
@@ -157,12 +92,12 @@ def invite_member(request):
 
             if invitation_form.is_valid():
 
+                # Invite user
                 first_name = invitation_form.cleaned_data['first_name']
                 last_name = invitation_form.cleaned_data['last_name']
                 email = invitation_form.cleaned_data['email']
 
-                new_user = invite_standard_user(email, first_name,
-                                                last_name, moderator)
+                new_user = moderator.invite_new_user(email, first_name, last_name)
 
                 # Log moderation event
                 msg_type = ModerationLogMsg.INVITATION
@@ -187,6 +122,7 @@ def invite_member(request):
                                       token=token_url)
 
                 return redirect('moderation:moderators')
+
 
         elif form_type == 'reinvite' or form_type == 'revoke':
             invitation_form = InviteMemberForm()

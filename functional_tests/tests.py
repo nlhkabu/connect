@@ -31,36 +31,36 @@ class MemberVisitTest(StaticLiveServerCase):
         pass
 
 
-    def test_can_login_via_login_page(self):
-
-        sam = User.objects.create_user(email="sam@example.com",
-                                       password="pass")
-
-        # Sam visits the connect homepage and sees that she needs to login
-        self.browser.get(self.live_server_url)
-        self.assertIn('Login', self.browser.title)
-
-        # There she sees a login form with email address (username) and password fields
-        input_email = self.browser.find_element_by_id('id_username')
-        input_password = self.browser.find_element_by_id('id_password')
-
-        # Sam enters her email address and an incorrect password
-        input_email.send_keys('sam@example.com')
-        input_password.send_keys('wrongpass')
-        input_password.send_keys(Keys.ENTER)
-
-        # But is told that the email address and password do not match
-        header_content = self.browser.find_element_by_tag_name('header').text
-        self.assertIn("Your email and password didn't match", header_content)
-
-        # She tries again, this time with the correct password
-        input_password = self.browser.find_element_by_id('id_password')
-
-        input_password.send_keys('pass')
-        input_password.send_keys(Keys.ENTER)
-
-        # Success! She is redirected to the connect dashboard
-        self.assertIn('Dashboard', self.browser.title)
+    #~def test_can_login_via_login_page(self):
+#~
+        #~sam = User.objects.create_user(email="sam@example.com",
+                                       #~password="pass")
+#~
+        #~# Sam visits the connect homepage and sees that she needs to login
+        #~self.browser.get(self.live_server_url)
+        #~self.assertIn('Login', self.browser.title)
+#~
+        #~# There she sees a login form with email address (username) and password fields
+        #~input_email = self.browser.find_element_by_id('id_username')
+        #~input_password = self.browser.find_element_by_id('id_password')
+#~
+        #~# Sam enters her email address and an incorrect password
+        #~input_email.send_keys('sam@example.com')
+        #~input_password.send_keys('wrongpass')
+        #~input_password.send_keys(Keys.ENTER)
+#~
+        #~# But is told that the email address and password do not match
+        #~header_content = self.browser.find_element_by_tag_name('header').text
+        #~self.assertIn("Your email and password didn't match", header_content)
+#~
+        #~# She tries again, this time with the correct password
+        #~input_password = self.browser.find_element_by_id('id_password')
+#~
+        #~input_password.send_keys('pass')
+        #~input_password.send_keys(Keys.ENTER)
+#~
+        #~# Success! She is redirected to the connect dashboard
+        #~self.assertIn('Dashboard', self.browser.title)
 
 
 # There she sees:
