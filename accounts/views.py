@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
@@ -140,6 +141,8 @@ def profile_settings(request):
     Allows a user to update their own profile.
     """
     user = request.user
+    contact_email = settings.SITE_EMAIL
+
 
     SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None,
                                                        formset=BaseSkillFormSet)
@@ -216,6 +219,7 @@ def profile_settings(request):
         'form' : form,
         'skill_formset' : skill_formset,
         'link_formset' : link_formset,
+        'contact_email' : contact_email,
     }
 
     return render(request, 'accounts/profile_settings.html', context)
