@@ -8,11 +8,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
+from accounts.models import AbuseReport, UserRegistration
+from connect.utils import generate_html_email, hash_time, generate_salt
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
-from .models import AbuseReport, UserRegistration, ModerationLogMsg
-from connect.utils import generate_html_email, hash_time, generate_salt
+from .models import ModerationLogMsg
 
 
 User = get_user_model()

@@ -1,7 +1,6 @@
 from django import forms
 
-from skills.models import Skill
-from accounts.models import ConnectPreference
+from accounts.models import ConnectPreference, Skill
 
 
 class FilterMemberForm(forms.Form):

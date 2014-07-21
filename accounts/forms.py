@@ -5,8 +5,7 @@ from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.safestring import mark_safe
 
-from .models import CustomUser, ConnectPreference
-from skills.models import Skill, UserSkill
+from .models import CustomUser, ConnectPreference, Skill, UserSkill
 
 
 User = get_user_model()

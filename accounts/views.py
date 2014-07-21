@@ -10,15 +10,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from django.utils.timezone import now
 
-from moderation.models import UserRegistration
 from moderation.views import send_moderation_email
 from connect.utils import generate_html_email, hash_time
-from skills.models import UserSkill
 
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
-from .models import UserLink
+from .models import UserLink, UserSkill
 
 
 User = get_user_model()

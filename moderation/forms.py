@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import AbuseReport, ModerationLogMsg, UserRegistration
-
+from .models import ModerationLogMsg
+from accounts.models import AbuseReport, UserRegistration
 
 User = get_user_model()
 

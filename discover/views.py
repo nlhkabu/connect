@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
 from .forms import FilterMemberForm
-from skills.models import UserSkill
+from accounts.models import UserSkill
 
 
 User = get_user_model()

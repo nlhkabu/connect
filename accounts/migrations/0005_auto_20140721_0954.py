@@ -9,13 +9,14 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('accounts', '0004_abusereport'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Skill',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('name', models.CharField(max_length=100, unique=True)),
             ],
             options={
@@ -25,8 +26,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserSkill',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
-                ('proficiency', models.IntegerField(max_length=2, choices=[('', '---------'), (10, 'Beginner'), (20, 'Intermediate'), (30, 'Advanced'), (40, 'Expert')], default=10)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('proficiency', models.IntegerField(max_length=2, default=10, choices=[('', '---------'), (10, 'Beginner'), (20, 'Intermediate'), (30, 'Advanced'), (40, 'Expert')])),
             ],
             options={
             },
@@ -35,13 +36,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='skill',
             name='owner',
-            field=models.ManyToManyField(through='skills.UserSkill', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(to=settings.AUTH_USER_MODEL, through='accounts.UserSkill'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='userskill',
             name='skill',
-            field=models.ForeignKey(to='skills.Skill'),
+            field=models.ForeignKey(to='accounts.Skill'),
             preserve_default=True,
         ),
         migrations.AddField(

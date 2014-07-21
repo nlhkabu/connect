@@ -10,8 +10,6 @@ from django.utils import timezone
 from django.utils.http import urlquote
 
 from connect.utils import generate_salt, hash_time
-from moderation.models import UserRegistration
-from skills.models import UserSkill
 
 
 class CustomUserManager(BaseUserManager):
@@ -162,6 +160,153 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             )
 
         return new_user
+
+
+class UserRegistration(models.Model):
+    """
+    Log the method and details of the user's registration.
+    """
+    INVITED = 'INV'
+    REQUESTED = 'REQ'
+
+    REGISTRATION_CHOICES = (
+        (INVITED, 'Invited'),
+        (REQUESTED, 'Requested'),
+    )
+
+    PRE_APPROVED = 'PRE'
+    APPROVED = 'APP'
+    REJECTED = 'REJ'
+
+    MODERATOR_CHOICES = (
+        (PRE_APPROVED, 'Pre-approved'),
+        (APPROVED, 'Approved'),
+        (REJECTED, 'Rejected')
+    )
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    method = models.CharField(max_length=20, choices=REGISTRATION_CHOICES)
+    moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
+                blank=True,
+                null=True,
+                related_name='inviter',
+                limit_choices_to={'is_moderator': True},
+                help_text='Moderator who invited, approved or rejected this user')
+
+    applied_datetime = models.DateTimeField(blank=True, null=True)
+    application_comments = models.TextField(blank=True)
+
+    moderator_decision = models.CharField(max_length=20,
+                                          choices=MODERATOR_CHOICES,
+                                          blank=True)
+    decision_datetime = models.DateTimeField(blank=True, null=True)
+
+    auth_token = models.CharField(max_length=40,
+                                  blank=True,
+                                  verbose_name='Authetication token')
+    activated_datetime = models.DateTimeField(blank=True, null=True)
+    auth_token_is_used = models.BooleanField(default=False,
+                                             verbose_name='Token is used')
+
+
+    class Meta:
+        verbose_name = 'User Registration'
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+
+class AbuseReport(models.Model):
+    """
+    Record an abuse report and a moderator's response.
+    """
+    DISMISS = 'DISMISS'
+    WARN = 'WARN'
+    BAN = 'BAN'
+
+    ABUSE_REPORT_CHOICES = (
+       (DISMISS, 'Dismiss Report'),
+       (WARN, 'Warn Abuser'),
+       (BAN, 'Ban Abuser'),
+    )
+
+    logged_against = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                       related_name='abuse_reports_about')
+    logged_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                  related_name='abuse_reports_by')
+    logged_datetime = models.DateTimeField(auto_now_add=True)
+    abuse_comment = models.TextField()
+    moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                  related_name='abuse_reports_moderatored_by',
+                                  blank=True,
+                                  null=True)
+    moderator_decision = models.CharField(max_length=20,
+                                          choices=ABUSE_REPORT_CHOICES,
+                                          blank=True)
+    moderator_comment = models.TextField(blank=True)
+    decision_datetime = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Abuse Report'
+
+    def __str__(self):
+        return 'Reported by {}'.format(self.logged_by.get_full_name())
+
+
+class Skill(models.Model):
+    """
+    Represents a skill in the community.
+    """
+    name = models.CharField(max_length=100, unique=True)
+    owner = models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserSkill')
+
+    def __str__(self):
+        return self.name
+
+
+class UserSkill(models.Model):
+    """
+    How proficient an individual user is at a particular skill.
+    This model joins User and Skill ('through' table).
+    """
+    BEGINNER = 10
+    INTERMEDIATE = 20
+    ADVANCED = 30
+    EXPERT = 40
+
+    PROFICIENCY_CHOICES = (
+        ('', '---------'),
+        (BEGINNER, 'Beginner'),
+        (INTERMEDIATE, 'Intermediate'),
+        (ADVANCED, 'Advanced'),
+        (EXPERT, 'Expert'),
+    )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    skill = models.ForeignKey(Skill)
+    proficiency = models.IntegerField(max_length=2,
+                                      choices=PROFICIENCY_CHOICES,
+                                      default=BEGINNER)
+
+
+    def get_proficiency_percentage(self):
+        choice_values = [choice[0] for choice in self.PROFICIENCY_CHOICES]
+        if '' in choice_values:
+            choice_values.remove('') # Remove the empty proficiency choice
+        choice_values.sort() # Ensure values are in the correct order
+
+        value = choice_values.index(self.proficiency) + 1
+        factor = 100 / len(choice_values)
+        percentage = round(value * factor)
+
+        return percentage
+
+
+    class Meta:
+        unique_together = ('user', 'skill')
+
+    def __str__(self):
+        return '{} - {}'.format(self.user, self.skill)
 
 
 class ConnectPreference(models.Model):

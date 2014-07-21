@@ -2,10 +2,9 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, ConnectPreference, UserLink, LinkBrand
+from .models import (AbuseReport, CustomUser, ConnectPreference, LinkBrand,
+                     Skill, UserLink, UserRegistration, UserSkill)
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from moderation.admin import UserAbuseReportInline, UserRegistrationInline
-from skills.admin import UserSkillInline
 
 
 User = get_user_model()
@@ -13,6 +12,25 @@ User = get_user_model()
 
 class UserLinkInline(admin.TabularInline):
     model = UserLink
+
+class UserRegistrationInline(admin.StackedInline):
+    fk_name = 'user'
+    model = UserRegistration
+    can_delete = False
+    verbose_name = 'Registration Details'
+    verbose_name_plural = 'Registration Details'
+
+class UserAbuseReportInline(admin.StackedInline):
+    fk_name = 'logged_against'
+    model = AbuseReport
+    #can_delete = False
+    extra = 0
+    verbose_name = 'Abuse Report'
+    verbose_name_plural = 'Abuse Reports'
+
+class UserSkillInline(admin.TabularInline):
+    model = UserSkill
+    extra = 1
 
 class CustomUserAdmin(UserAdmin):
     # The forms to add and change user instances
@@ -39,11 +57,12 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
-    inlines = (UserSkillInline, UserLinkInline,
-               UserRegistrationInline, UserAbuseReportInline)
+    inlines = (UserRegistrationInline, UserSkillInline, UserLinkInline,
+               UserAbuseReportInline)
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
-# Register Preferences and Brands
+# Register Preferences brands and skills
 admin.site.register(ConnectPreference)
 admin.site.register(LinkBrand)
+admin.site.register(Skill)
