@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'accounts',
     'moderation',
     'discover',
-    'skills',
 )
 
 MIDDLEWARE_CLASSES = (

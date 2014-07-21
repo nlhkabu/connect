@@ -32,6 +32,7 @@ class UserSkillInline(admin.TabularInline):
     model = UserSkill
     extra = 1
 
+
 class CustomUserAdmin(UserAdmin):
     # The forms to add and change user instances
 
@@ -43,7 +44,8 @@ class CustomUserAdmin(UserAdmin):
         ('Personal info', {'fields': ('first_name', 'last_name')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
                                     'is_moderator', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Important dates', {'fields': ('last_login',)}),
+        ('Connect Preferences', {'fields': ('connect_preferences',)}),
     )
     add_fieldsets = (
         (None, {
@@ -57,8 +59,8 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
-    inlines = (UserRegistrationInline, UserSkillInline, UserLinkInline,
-               UserAbuseReportInline)
+    inlines = (UserRegistrationInline, UserSkillInline,
+               UserLinkInline, UserAbuseReportInline)
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
