@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import login
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
@@ -6,7 +7,7 @@ from django.test import TestCase
 from django.utils.six import StringIO
 from django.utils.timezone import now
 
-from moderation.models import UserRegistration
+from .models import UserRegistration
 
 User = get_user_model()
 
@@ -26,8 +27,6 @@ def create_superuser():
 
     superuser = User.objects.get(email="superuser@test.test")
     superuser.is_moderator = True
-
-    #TODO: test that is is actually a superuser
 
     return superuser
 
@@ -66,6 +65,42 @@ def create_active_moderator(moderator,
     #TODO: test that is is actually a moderator
 
     return user
+
+
+class TestTestingUsers(TestCase):
+    """
+    Test that the mock users are what they should be.
+    """
+
+    def test_that_test_superuser_is_superuser(self):
+        superuser = create_superuser()
+        self.assertTrue(superuser.is_superuser)
+        self.assertTrue(superuser.is_moderator)
+
+    def test_that_test_moderator_is_moderator(self):
+        superuser = create_superuser()
+        moderator = create_active_moderator(superuser)
+        self.assertTrue(moderator.is_moderator)
+
+        moderators = Group.objects.get(name='moderators')
+        groups = moderator.groups.all()
+        self.assertIn(moderators, groups)
+
+    def test_that_test_standard_user_is_standard_user(self):
+        superuser = create_superuser()
+        standard_user = create_active_standard_user(superuser)
+        self.assertFalse(standard_user.is_moderator)
+
+        moderators = Group.objects.get(name='moderators')
+        groups = standard_user.groups.all()
+        self.assertNotIn(standard_user, groups)
+
+
+class UserModelTest(TestCase):
+
+    def test_standard_user_can_be_promoted_to_moderator(self):
+        pass
+
 
 
 class CreateUserTest(TestCase):

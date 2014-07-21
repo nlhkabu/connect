@@ -123,7 +123,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         Promotes a user to a moderator
         """
-        moderators_group = Group.objects.filter(name='moderators')
+        moderators_group = Group.objects.get(name='moderators')
         self.groups.add(moderators_group)
 
         self.is_moderator = True
@@ -207,7 +207,6 @@ class UserRegistration(models.Model):
     activated_datetime = models.DateTimeField(blank=True, null=True)
     auth_token_is_used = models.BooleanField(default=False,
                                              verbose_name='Token is used')
-
 
     class Meta:
         verbose_name = 'User Registration'

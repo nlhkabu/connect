@@ -9,7 +9,7 @@
 {% block nav_content %}
     <nav class="main">
         <a href="{% url 'dashboard' %}" class="{% block dashboard_active %}{% endblock %}"><i class="fa fa-home"></i></a>
-        {% if perms.moderation.access_moderators_page %}
+        {% if perms.accounts.access_moderators_section %}
             <a href="{% url 'moderation:moderators' %}" class="{% block moderators_active %}{% endblock %}">{% trans "Moderators" %}</a>
         {% endif %}
         <a href="{% url 'accounts:profile-settings' %}" class="{% block myaccount_active %}{% endblock %}">{% trans "My Account" %}</a>

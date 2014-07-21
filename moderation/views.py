@@ -60,8 +60,8 @@ def send_moderation_email(subject, template, recipient, site, sender='',
 
 
 @login_required
-@permission_required('moderation.access_moderators_page')
-@permission_required('moderation.invite_user')
+@permission_required('accounts.access_moderators_section')
+@permission_required('accounts.invite_user')
 def invite_member(request):
     """
     Allow a moderator to:
@@ -230,6 +230,7 @@ def handle_revocation(comment, user, moderator):
 
 
 @login_required
+@permission_required('accounts.access_moderators_section')
 def review_applications(request):
     """
     Review all pending applications.
@@ -374,6 +375,7 @@ def abuse_report_lodged(request):
 
 
 @login_required
+@permission_required('accounts.access_moderators_section')
 def review_abuse(request):
     """
     Show a list of abuse reports to moderators.
@@ -525,6 +527,7 @@ def review_abuse(request):
 
 
 @login_required
+@permission_required('accounts.access_moderators_section')
 def view_logs(request):
 
     # Exclude logs about the logged in user (moderator)
