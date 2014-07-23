@@ -22,17 +22,16 @@ class InviteMemberPageTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertEqual(response.status_code, 302)
 
-        superuser = create_superuser()
-        user = create_active_standard_user(superuser)
-        c.login(email=user.email, password='default')
+        user = create_active_standard_user()
+        c.login(username=user.email, password='default')
 
         response = c.get(reverse('moderation:moderators'))
         # User lacking relevant permissions is redirected to login page
         self.assertEqual(response.status_code, 302)
         c.logout()
 
-        moderator = create_active_moderator(superuser)
-        c.login(email=moderator.email, password='default')
+        moderator = create_active_moderator()
+        c.login(username=moderator.email, password='default')
 
         response = c.get(reverse('moderation:moderators'))
         # User in moderation group can view the page

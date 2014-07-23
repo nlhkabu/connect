@@ -34,16 +34,16 @@ def create_superuser():
 def create_active_standard_user(moderator,
                                 email='standard@test.test',
                                 first_name='standard',
-                                last_name='user'):
+                                last_name='user',
+                                password='default'):
     """
     Create a standard user with an already activated account.
     """
     user = moderator.invite_new_user(email, first_name, last_name)
+    user.password = password
     user.is_active = True
     user.userregistration.activated_datetime = now()
     user.userregistration.auth_token_is_used = True
-
-    #TODO: test that is is actually a standard user
 
     return user
 
@@ -51,18 +51,18 @@ def create_active_standard_user(moderator,
 def create_active_moderator(moderator,
                            email='moderator@test.test',
                            first_name='moderator',
-                           last_name='user'):
+                           last_name='user',
+                           password='default'):
     """
     Create a moderator with an already activated account.
     """
     user = moderator.invite_new_user(email, first_name, last_name)
+    user.password = password
     user.promote_to_moderator()
 
     user.is_active = True
     user.userregistration.activated_datetime = now()
     user.userregistration.auth_token_is_used = True
-
-    #TODO: test that is is actually a moderator
 
     return user
 
@@ -99,6 +99,8 @@ class TestTestingUsers(TestCase):
 class UserModelTest(TestCase):
 
     def test_standard_user_can_be_promoted_to_moderator(self):
+
+
         pass
 
 
