@@ -16,7 +16,7 @@ from connect.utils import generate_html_email, hash_time
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
-from .models import UserLink, UserSkill
+from .models import CustomUser, UserLink, UserSkill
 
 
 User = get_user_model()
@@ -41,15 +41,10 @@ def request_invitation(request):
             new_user.is_active = False
             new_user.first_name = first_name
             new_user.last_name = last_name
+            new_user.registration_method = new_user.REQUESTED
+            new_user.applied_datetime = now()
+            new_user.application_comments = comments
             new_user.save()
-
-            # Add user registration details
-            user_registration = UserRegistration.objects.create(
-                user=new_user,
-                method=UserRegistration.REQUESTED,
-                applied_datetime=now(),
-                application_comments=comments,
-            )
 
             # Send email(s) to moderator(s) alerting them of new account application
             moderators = User.objects.filter(is_moderator=True,
@@ -88,9 +83,9 @@ def activate_account(request, token):
     Allow a user to activate their account with the token sent to them
     by email.
     """
-    user = get_object_or_404(User, userregistration__auth_token=token)
+    user = get_object_or_404(User, auth_token=token)
 
-    if not user.userregistration.auth_token_is_used:
+    if not user.auth_token_is_used:
         if request.POST:
             form = ActivateAccountForm(request.POST, user=user)
 
@@ -101,11 +96,10 @@ def activate_account(request, token):
                 user.last_name = form.cleaned_data['last_name']
                 user.password = make_password(form.cleaned_data['password'])
                 user.is_active = True
-                user.save()
 
-                user.userregistration.activated_datetime = now()
-                user.userregistration.auth_token_is_used = True
-                user.userregistration.save()
+                user.activated_datetime = now()
+                user.auth_token_is_used = True
+                user.save()
 
                 email = user.email
                 password = request.POST['password']

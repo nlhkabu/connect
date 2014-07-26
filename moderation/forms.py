@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import ModerationLogMsg
-from accounts.models import AbuseReport, UserRegistration
+from accounts.models import AbuseReport
 
 User = get_user_model()
 
@@ -74,7 +74,7 @@ class ModerateApplicationForm(forms.Form):
         self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
                                                     widget=forms.HiddenInput)
 
-    decision = forms.ChoiceField(choices=UserRegistration.MODERATOR_CHOICES[1:])
+    decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:])
     comments = forms.CharField(widget=forms.Textarea)
 
 

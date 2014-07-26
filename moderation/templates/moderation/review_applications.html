@@ -25,8 +25,8 @@
                 <tr>
                     <td>{{ user.get_full_name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.userregistration.applied_datetime }}</td>
-                    <td>{{ user.userregistration.application_comments }}</td>
+                    <td>{{ user.applied_datetime }}</td>
+                    <td>{{ user.application_comments }}</td>
                     <td>
                         <form action="" method="post">
                             {% csrf_token %}

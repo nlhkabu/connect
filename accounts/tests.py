@@ -7,8 +7,6 @@ from django.test import TestCase
 from django.utils.six import StringIO
 from django.utils.timezone import now
 
-from .models import UserRegistration
-
 User = get_user_model()
 
 
@@ -42,8 +40,8 @@ def create_active_standard_user(moderator,
     user = moderator.invite_new_user(email, first_name, last_name)
     user.password = password
     user.is_active = True
-    user.userregistration.activated_datetime = now()
-    user.userregistration.auth_token_is_used = True
+    user.activated_datetime = now()
+    user.auth_token_is_used = True
 
     return user
 
@@ -61,8 +59,8 @@ def create_active_moderator(moderator,
     user.promote_to_moderator()
 
     user.is_active = True
-    user.userregistration.activated_datetime = now()
-    user.userregistration.auth_token_is_used = True
+    user.activated_datetime = now()
+    user.auth_token_is_used = True
 
     return user
 

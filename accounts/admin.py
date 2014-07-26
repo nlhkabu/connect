@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
 from .models import (AbuseReport, CustomUser, ConnectPreference, LinkBrand,
-                     Skill, UserLink, UserRegistration, UserSkill)
+                     Skill, UserLink, UserSkill)
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
 
@@ -12,13 +12,6 @@ User = get_user_model()
 
 class UserLinkInline(admin.TabularInline):
     model = UserLink
-
-class UserRegistrationInline(admin.StackedInline):
-    fk_name = 'user'
-    model = UserRegistration
-    can_delete = False
-    verbose_name = 'Registration Details'
-    verbose_name_plural = 'Registration Details'
 
 class UserAbuseReportInline(admin.StackedInline):
     fk_name = 'logged_against'
@@ -42,10 +35,20 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
+        ('Registration info', {'fields': ('registration_method',
+                                          'application_comments',
+                                          'moderator',
+                                          'moderator_decision',
+                                          'auth_token',
+                                          'auth_token_is_used')}),
+        ('Important dates', {'fields': ('applied_datetime',
+                                        'decision_datetime',
+                                        'activated_datetime',
+                                        'last_login',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
                                     'is_moderator', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login',)}),
         ('Connect Preferences', {'fields': ('connect_preferences',)}),
+
     )
     add_fieldsets = (
         (None, {
@@ -59,8 +62,7 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
-    inlines = (UserRegistrationInline, UserSkillInline,
-               UserLinkInline, UserAbuseReportInline)
+    inlines = (UserSkillInline, UserLinkInline, UserAbuseReportInline)
 
 admin.site.register(CustomUser, CustomUserAdmin)
 

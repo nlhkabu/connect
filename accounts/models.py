@@ -47,24 +47,82 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     Email and password are required. Other fields are optional.
     """
+    INVITED = 'INV'
+    REQUESTED = 'REQ'
+
+    REGISTRATION_CHOICES = (
+        (INVITED, 'Invited'),
+        (REQUESTED, 'Requested'),
+    )
+
+    PRE_APPROVED = 'PRE'
+    APPROVED = 'APP'
+    REJECTED = 'REJ'
+
+    MODERATOR_CHOICES = (
+        (PRE_APPROVED, 'Pre-approved'),
+        (APPROVED, 'Approved'),
+        (REJECTED, 'Rejected')
+    )
+
     email = models.EmailField('email address', max_length=254, unique=True)
+
     first_name = models.CharField('first name', max_length=30, blank=True)
+
     last_name = models.CharField('last name', max_length=30, blank=True)
+
     is_staff = models.BooleanField('staff status', default=False,
-        help_text='Designates whether the user can log into this admin '
-                    'site.')
+                        help_text='Designates whether the user can log '
+                                  'into this admin site.')
+
     is_active = models.BooleanField('active', default=True,
-        help_text='Designates whether this user should be treated as '
-                    'active. Unselect this instead of deleting accounts.')
-    date_joined = models.DateTimeField('date joined', default=timezone.now)
+                        help_text='Designates whether this user should be '
+                                  'treated as active. Unselect this instead '
+                                  'of deleting accounts.')
 
     # Custom connect fields
     bio = models.TextField(blank=True)
+
     connect_preferences = models.ManyToManyField('ConnectPreference',
                                                   null=True,
                                                   blank=True)
+
     is_moderator = models.BooleanField(default=False)
 
+    # Registration details
+    registration_method = models.CharField(max_length=20,
+                                           choices=REGISTRATION_CHOICES)
+
+    applied_datetime = models.DateTimeField(blank=True, null=True,
+                       help_text='When user applied for an account (if applicable)')
+
+    application_comments = models.TextField(blank=True,
+                           help_text='Information user supplied when applying '
+                                     'for an account (if applicable)')
+
+    moderator = models.ForeignKey('self',
+                blank=True,
+                null=True,
+                limit_choices_to={'is_moderator': True},
+                help_text='Moderator who invited, approved or rejected this user')
+
+    moderator_decision = models.CharField(max_length=20,
+                                          choices=MODERATOR_CHOICES,
+                                          blank=True)
+
+    decision_datetime = models.DateTimeField(blank=True, null=True,
+                        help_text='When moderator made decision to invite, '
+                                  'approve or reject this user')
+
+    auth_token = models.CharField(max_length=40,
+                                  blank=True,
+                                  verbose_name='Authentication token')
+
+    auth_token_is_used = models.BooleanField(default=False,
+                                             verbose_name='Token is used')
+
+    activated_datetime = models.DateTimeField(blank=True, null=True,
+                         help_text='When user activated their account')
 
     objects = CustomUserManager()
 
@@ -138,81 +196,26 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         User = get_user_model()
 
         # Check if new user already exists in database
-        existing_user_emails = [user.email for user in User.objects.all() if user.email]
+        user, created = User.objects.get_or_create(email=email)
 
-        if email not in existing_user_emails:
+        try:
+            existing_user = User.objects.get(email=email)
+        except User.DoesNotExist:
             new_user = User.objects.create_user(email)
             new_user.is_active = False
             new_user.first_name = first_name
             new_user.last_name = last_name
+            new_user.registration_method = new_user.INVITED
+            new_user.moderator = self,
+            new_user.moderator_decision = new_user.PRE_APPROVED
+            new_user.decision_datetime = timezone.now()
+            new_user.auth_token = hash_time(generate_salt())
             new_user.save()
 
-            token = hash_time(generate_salt())
+            return new_user
 
-            # Add user registration details
-            user_registration = UserRegistration.objects.create(
-                user=new_user,
-                method=UserRegistration.INVITED,
-                moderator=self,
-                moderator_decision=UserRegistration.PRE_APPROVED,
-                decision_datetime=timezone.now(),
-                auth_token = token,
-            )
-
-        return new_user
-
-
-class UserRegistration(models.Model):
-    """
-    Log the method and details of the user's registration.
-    """
-    INVITED = 'INV'
-    REQUESTED = 'REQ'
-
-    REGISTRATION_CHOICES = (
-        (INVITED, 'Invited'),
-        (REQUESTED, 'Requested'),
-    )
-
-    PRE_APPROVED = 'PRE'
-    APPROVED = 'APP'
-    REJECTED = 'REJ'
-
-    MODERATOR_CHOICES = (
-        (PRE_APPROVED, 'Pre-approved'),
-        (APPROVED, 'Approved'),
-        (REJECTED, 'Rejected')
-    )
-
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
-    method = models.CharField(max_length=20, choices=REGISTRATION_CHOICES)
-    moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
-                blank=True,
-                null=True,
-                related_name='inviter',
-                limit_choices_to={'is_moderator': True},
-                help_text='Moderator who invited, approved or rejected this user')
-
-    applied_datetime = models.DateTimeField(blank=True, null=True)
-    application_comments = models.TextField(blank=True)
-
-    moderator_decision = models.CharField(max_length=20,
-                                          choices=MODERATOR_CHOICES,
-                                          blank=True)
-    decision_datetime = models.DateTimeField(blank=True, null=True)
-
-    auth_token = models.CharField(max_length=40,
-                                  blank=True,
-                                  verbose_name='Authetication token')
-    activated_datetime = models.DateTimeField(blank=True, null=True)
-    auth_token_is_used = models.BooleanField(default=False,
-                                             verbose_name='Token is used')
-
-    class Meta:
-        verbose_name = 'User Registration'
-
-    def __str__(self):
-        return self.user.get_full_name()
+        #~else:
+            #~TODO: do something here
 
 
 class AbuseReport(models.Model):

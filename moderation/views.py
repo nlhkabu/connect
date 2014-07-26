@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
-from accounts.models import AbuseReport, UserRegistration
+from accounts.models import AbuseReport
 from connect.utils import generate_html_email, hash_time, generate_salt
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
@@ -75,9 +75,9 @@ def invite_member(request):
     site = get_current_site(request)
 
     # Show pending invitations
-    pending = User.objects.filter(userregistration__moderator=moderator,
-                                  userregistration__method=UserRegistration.INVITED,
-                                  userregistration__auth_token_is_used=False,
+    pending = User.objects.filter(moderator=moderator,
+                                  registration_method=User.INVITED,
+                                  auth_token_is_used=False,
                                   is_active=False)
 
     # Attach forms to each pending user
@@ -112,7 +112,7 @@ def invite_member(request):
                 # Send email
                 subject = 'Welcome to {}'.format(site.name)
                 template = 'moderation/emails/invite_new_user.html'
-                token = new_user.userregistration.auth_token
+                token = new_user.auth_token
                 token_url = request.build_absolute_uri(
                             reverse('accounts:activate-account', args=[token]))
                 send_moderation_email(subject=subject,
@@ -167,19 +167,18 @@ def handle_reinvitation(request, user, email, moderator, site):
     """
     Reinvite a member.
     """
-    if not user.userregistration.auth_token_is_used:
+    if not user.auth_token_is_used:
         # Reset email
         user.email = email
-        user.save()
 
         # Set a new token and update decision datetime
         token = hash_time(generate_salt())
         token_url = request.build_absolute_uri(
                         reverse('accounts:activate-account', args=[token]))
 
-        user.userregistration.auth_token = token;
-        user.userregistration.decision_datetime = now()
-        user.userregistration.save()
+        user.auth_token = token;
+        user.decision_datetime = now()
+        user.save()
 
         # Log moderation event
         msg_type = ModerationLogMsg.REINVITATION
@@ -211,9 +210,9 @@ def handle_revocation(comment, user, moderator):
     """
     Revoke a membership invitation.
     """
-    if not user.userregistration.auth_token_is_used:
+    if not user.auth_token_is_used:
         # Remove invitation token and other registration information
-        user.userregistration.delete()
+        user.delete()
 
         # Log moderation event
         msg_type = ModerationLogMsg.REVOCATION
@@ -238,8 +237,8 @@ def review_applications(request):
     moderator = request.user
     site = get_current_site(request)
 
-    pending = User.objects.filter(userregistration__method='REQ',
-                                  userregistration__decision_datetime=None,
+    pending = User.objects.filter(registration_method='REQ',
+                                  decision_datetime=None,
                                   is_active=False)
 
     for user in pending:
@@ -262,9 +261,9 @@ def review_applications(request):
                 token = hash_time(generate_salt())
                 token_url = request.build_absolute_uri(
                         reverse('accounts:activate-account', args=[token]))
-                user.userregistration.auth_token = token
+                user.auth_token = token
 
-                user.userregistration.moderator_decision=UserRegistration.APPROVED
+                user.moderator_decision=CustomUser.APPROVED
                 msg_type = ModerationLogMsg.APPROVAL
 
                 # Set email settings
@@ -273,7 +272,7 @@ def review_applications(request):
 
             elif decision == 'REJ':
                 token_url = ''
-                user.userregistration.moderator_decision=UserRegistration.REJECTED
+                user.moderator_decision=CustomUser.REJECTED
                 msg_type = ModerationLogMsg.REJECTION
 
                 # Set email settings
@@ -281,9 +280,9 @@ def review_applications(request):
                 template = 'moderation/emails/reject_user.html'
 
             # Log decision against user
-            user.userregistration.moderator = moderator
-            user.userregistration.decision_datetime = now()
-            user.userregistration.save()
+            user.moderator = moderator
+            user.decision_datetime = now()
+            user.save()
 
 
             # Log moderation event
