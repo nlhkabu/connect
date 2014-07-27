@@ -10,8 +10,8 @@
 {% block moderators_content %}
     <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form">
         <fieldset>
-            <legend>Invite a New Member</legend>
-            <p class="intro">Please provide the details of the member you wish to invite.  Once they have accepted your invitatation, they will be able to edit the details provided here.</p>
+            <legend>{% trans "Invite a New Member" %}</legend>
+            <p class="intro">{% trans "Please provide the details of the member you wish to invite.  Once they have accepted your invitatation, they will be able to edit the details provided here." %}</p>
             {% csrf_token %}
             {{ invitation_form.form_type }}
             <dl>
@@ -69,7 +69,7 @@
         </fieldset>
     </form>
     {% if pending %}
-        <h3>{% trans "Invitations pending activation" %}</h3>
+        <h2>{% trans "Invitations pending activation" %}</h2>
         <table class="invitation-table">
             <thead>
                 <tr>
@@ -87,8 +87,8 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <a href="#" class="table-link first resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">Resend Invitation</a>
-                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}">Revoke Invitation</a><br/>
+                        <a href="#" class="table-link first resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">{% trans "Resend Invitation" %}</a>
+                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}">{% trans "Revoke Invitation" %}</a><br/>
                     </td>
                 </tr>
                 {% endfor %}
