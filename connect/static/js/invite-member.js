@@ -1,5 +1,13 @@
 $(document).ready(function(){
-    //~var RevokeInvitationForm = $('.');
+
+    $('#reinvite-member-dialog').dialog({
+        autoOpen: false,
+        modal: true
+    });
+    $('#revoke-member-dialog').dialog({
+        autoOpen: false,
+        modal: true
+    });
 
     var user, email;
 
@@ -8,7 +16,7 @@ $(document).ready(function(){
 
         user = $(this).data('user');
         email = $(this).data('email');
-        $('.reinvite-member-form').show(); // TODO: change this to toggle a modal
+        $('#reinvite-member-dialog').dialog('open');
         $('.reinvite-member-form #id_user_id').val(user);
         $('.reinvite-member-form #id_email').val(email);
     });
@@ -17,7 +25,7 @@ $(document).ready(function(){
         e.preventDefault();
 
         user = $(this).data('user');
-        $('.revoke-invitation-form').show(); // TODO: change this to toggle a modal
+        $('#revoke-member-dialog').dialog('open');
         $('.revoke-invitation-form #id_user_id').val(user);
     });
 });

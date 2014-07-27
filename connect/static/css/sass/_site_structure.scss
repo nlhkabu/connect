@@ -81,8 +81,13 @@ $white: #fff;
         }
     }
 
+    span {
+        display: inline;
+    }
+
     .fa {
         margin: 0 2px 0 5px;
+        display: inline;
     }
 }
 
@@ -485,6 +490,93 @@ table .button {
             background-color: $highlight;
             background-image: none;
             border: 1px solid $highlight;
+        }
+    }
+}
+
+tr:nth-of-type(even) {
+  background: #f6f6f6;
+}
+
+a.table-link {
+    display: block;
+}
+
+@media
+only screen and (max-device-width: 1060px)  {
+    table {
+        display: block;
+    /* Force table to not be like tables anymore */
+        thead,
+        tbody,
+        tr,
+        th,
+        td {
+            display: block;
+            -ms-word-break: break-all;
+            word-break: break-all;
+            word-break: break-word;
+
+            -webkit-hyphens: auto;
+               -moz-hyphens: auto;
+                    hyphens: auto;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 35%;
+        }
+
+        td:last-child {
+            border-bottom: 0;
+        }
+
+        td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 30%;
+            padding-right: 10px;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+
+        a.table-link {
+            display: inline;
+        }
+
+        a.table-link.first {
+            padding-right: 7px;
+        }
+    }
+}
+
+
+@media
+only screen and (max-device-width: 650px)  {
+    table {
+        th, td {
+            padding: 8px;
+        }
+
+        td:before {
+            position: static;
         }
     }
 }

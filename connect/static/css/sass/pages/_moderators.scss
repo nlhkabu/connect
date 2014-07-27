@@ -41,9 +41,22 @@
 }
 
 
-// Hide forms if they are not needed
+@media
+only screen and (max-device-width: 1060px)  {
 
-.revoke-invitation-form,
-.reinvite-member-form {
-    display: none;
+    .invitation-table {
+        td:nth-of-type(1):before { content: "Name"; }
+        td:nth-of-type(2):before { content: "Email"; }
+        td:nth-of-type(3):before { content: "Date Invited"; }
+        td:nth-of-type(4):before { content: "Actions"; }
+    }
+
+    .logs-table {
+        td:nth-of-type(1):before { content: "Date/Time"; }
+        td:nth-of-type(2):before { content: "Type"; }
+        td:nth-of-type(3):before { content: "Comment"; }
+        td:nth-of-type(4):before { content: "Logged Against (User)"; }
+        td:nth-of-type(5):before { content: "Logged By (Moderator)"; }
+    }
 }
+

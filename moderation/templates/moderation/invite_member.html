@@ -50,6 +50,12 @@
                             {{ invitation_form.email.errors }}
                         </span>
                     {% endif %}
+                    {% if invitation_form.non_field_errors %}
+                        <span class="form-error">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            <span>{{ invitation_form.non_field_errors }}</span>
+                        </span>
+                    {% endif %}
                 </dd>
                 <span class="clearfix"></span>
             </dl>
@@ -64,7 +70,7 @@
     </form>
     {% if pending %}
         <h3>{% trans "Invitations pending activation" %}</h3>
-        <table>
+        <table class="invitation-table">
             <thead>
                 <tr>
                     <th>{% trans "Name" %}</th>
@@ -81,25 +87,29 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <a href="#" class="resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">Resend Invitation</a><br/>
-                        <a href="#" class="revoke-link" data-user="{{ user.id }}">Revoke Invitation</a><br/>
+                        <a href="#" class="table-link first resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">Resend Invitation</a>
+                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}">Revoke Invitation</a><br/>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form">
-            {% csrf_token %}
-            {{ reinvitation_form.as_p }}
-            <input type="submit" value="{% trans 'Resend Invitation' %}" class="button"/>
-        </form>
+        <div class="dialog" id="reinvite-member-dialog" title="Resend Invitation">
+            <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form">
+                {% csrf_token %}
+                {{ reinvitation_form.as_p }}
+                <input type="submit" value="{% trans 'Resend Invitation' %}" class="button"/>
+            </form>
+        </div>
 
-        <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form">
-            {% csrf_token %}
-            {{ revocation_form.as_p }}
-            <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
-        </form>
+        <div class="dialog" id="revoke-member-dialog" title="Revoke Invitation">
+            <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form">
+                {% csrf_token %}
+                {{ revocation_form.as_p }}
+                <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
+            </form>
+        </div>
 
 
     {% endif %}
