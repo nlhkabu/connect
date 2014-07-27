@@ -2996,3 +2996,9 @@ ul.dash-tabs li.active a i {
 .moderator-tab-content {
   margin: 30px 0 30px 30px;
 }
+
+/* line 47, ../sass/pages/_moderators.scss */
+.revoke-invitation-form,
+.reinvite-member-form {
+  display: none;
+}

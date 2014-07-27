@@ -17,6 +17,7 @@ from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
                     ProfileForm, RequestInvitationForm, SkillForm)
 from .models import CustomUser, UserLink, UserSkill
+from .utils import create_inactive_user
 
 
 User = get_user_model()

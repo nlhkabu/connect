@@ -62,144 +62,190 @@ def send_moderation_email(subject, template, recipient, site, sender='',
 @login_required
 @permission_required('accounts.access_moderators_section')
 @permission_required('accounts.invite_user')
-def invite_member(request):
+@permission_required('accounts.uninvite_user')
+def user_panel(request,
+               invitation_form=None,
+               reinvitation_form=None,
+               revocation_form=None):
     """
-    Allow a moderator to:
+    Show forms that allow  a moderator to:
      - Issue a membership invitation
      - Resend a membership invitation
      - Revoke a membership invitation
     """
-
-    moderator = request.user
-
-    site = get_current_site(request)
-
     # Show pending invitations
-    pending = User.objects.filter(moderator=moderator,
+    pending = User.objects.filter(moderator=request.user,
                                   registration_method=User.INVITED,
                                   auth_token_is_used=False,
                                   is_active=False)
 
-    # Attach forms to each pending user
-    for user in pending:
-        user.reinvitation_form = ReInviteMemberForm(user=user)
-        user.revocation_form = RevokeMemberForm(user=user)
-
-    if request.method == 'POST':
-        form_type = request.POST['form_type']
-
-        if form_type == 'invite':
-            invitation_form = InviteMemberForm(request.POST)
-
-            if invitation_form.is_valid():
-
-                # Invite user
-                first_name = invitation_form.cleaned_data['first_name']
-                last_name = invitation_form.cleaned_data['last_name']
-                email = invitation_form.cleaned_data['email']
-
-                new_user = moderator.invite_new_user(email, first_name, last_name)
-
-                # Log moderation event
-                msg_type = ModerationLogMsg.INVITATION
-                log_comment = '{} invited {}'.format(moderator.get_full_name(),
-                                                     new_user.get_full_name())
-                log_moderator_event(msg_type=msg_type,
-                                    user=new_user,
-                                    moderator=moderator,
-                                    comment=log_comment)
-
-                # Send email
-                subject = 'Welcome to {}'.format(site.name)
-                template = 'moderation/emails/invite_new_user.html'
-                token = new_user.auth_token
-                token_url = request.build_absolute_uri(
-                            reverse('accounts:activate-account', args=[token]))
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=new_user,
-                                      sender=moderator,
-                                      site=site,
-                                      token=token_url)
-
-                return redirect('moderation:moderators')
-
-
-        elif form_type == 'reinvite' or form_type == 'revoke':
-            invitation_form = InviteMemberForm()
-
-            try:
-                user = pending.get(id=request.POST['user_id'])
-            except User.DoesNotExist:
-                raise PermissionDenied
-
-            if form_type == 'reinvite':
-                reinvitation_form = ReInviteMemberForm(request.POST, user=user)
-
-                if reinvitation_form.is_valid():
-
-                    if not user.auth_token_is_used:
-
-                        email = reinvitation_form.cleaned_data['email']
-                        moderator.reinvite_user(user, email)
-
-                        # Log moderation event
-                        msg_type = ModerationLogMsg.REINVITATION
-                        log_comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
-                                                                          user.get_full_name())
-                        log_moderator_event(msg_type=msg_type,
-                                            user=user,
-                                            moderator=moderator,
-                                            comment=log_comment)
-
-                        # Send email
-                        token_url = request.build_absolute_uri(
-                                    reverse('accounts:activate-account',
-                                            args=[user.auth_token]))
-
-                        subject = 'Activate your {} account'.format(site.name)
-                        template = 'moderation/emails/reinvite_user.html'
-
-                        send_moderation_email(subject=subject,
-                                              template=template,
-                                              recipient=user,
-                                              sender=moderator,
-                                              site=site,
-                                              token=token_url)
-
-                    return redirect('moderation:moderators')
-
-
-            elif form_type == 'revoke':
-                revoke_form = RevokeMemberForm(request.POST, user=user)
-
-                if revoke_form.is_valid():
-                    comment = revoke_form.cleaned_data['comments']
-
-                    if not user.auth_token_is_used:
-
-                        moderator.revoke_user_invitation(user)
-
-                        # Log moderation event
-                        msg_type = ModerationLogMsg.REVOCATION
-                        log_comment = '{}'.format(comment)
-
-                        log_moderator_event(msg_type=msg_type,
-                                            user=user,
-                                            moderator=moderator,
-                                            comment=log_comment)
-
-                    return redirect('moderation:moderators')
-
-    else:
+    if not invitation_form:
         invitation_form = InviteMemberForm()
+
+    if not reinvitation_form:
+        reinvitation_form = ReInviteMemberForm()
+
+    if not revocation_form:
+        revocation_form = RevokeMemberForm()
 
     context = {
         'invitation_form' : invitation_form,
+        'reinvitation_form' : reinvitation_form,
+        'revocation_form' : revocation_form,
         'pending' : pending,
     }
 
     return render(request, 'moderation/invite_member.html', context)
+
+
+@login_required
+@permission_required('accounts.access_moderators_section')
+@permission_required('accounts.invite_user')
+def invite_user(request):
+    """
+    Invite a new user
+    """
+    moderator = request.user
+    site = get_current_site(request)
+
+    invitation_form = InviteMemberForm(request.POST)
+
+    if invitation_form.is_valid():
+
+        # Invite user
+        first_name = invitation_form.cleaned_data['first_name']
+        last_name = invitation_form.cleaned_data['last_name']
+        email = invitation_form.cleaned_data['email']
+        new_user = moderator.invite_new_user(email, first_name, last_name)
+
+        # Log moderation event
+        msg_type = ModerationLogMsg.INVITATION
+        log_comment = '{} invited {}'.format(moderator.get_full_name(),
+                                             new_user.get_full_name())
+        log_moderator_event(msg_type=msg_type,
+                            user=new_user,
+                            moderator=moderator,
+                            comment=log_comment)
+
+        # Send email
+        subject = 'Welcome to {}'.format(site.name)
+        template = 'moderation/emails/invite_new_user.html'
+        token = new_user.auth_token
+        token_url = request.build_absolute_uri(
+                    reverse('accounts:activate-account', args=[token]))
+        send_moderation_email(subject=subject,
+                              template=template,
+                              recipient=new_user,
+                              sender=moderator,
+                              site=site,
+                              token=token_url)
+
+        # TODO: Add confirmation message here
+        return redirect('moderation:moderators')
+
+    else:
+        return user_panel(request, invitation_form=invitation_form)
+
+
+@login_required
+@permission_required('accounts.access_moderators_section')
+@permission_required('accounts.invite_user')
+def reinvite_user(request):
+    """
+    Reinvite a user.
+    """
+    moderator = request.user
+    site = get_current_site(request)
+
+    reinvitation_form = ReInviteMemberForm(request.POST)
+
+    if reinvitation_form.is_valid():
+
+        user_id = reinvitation_form.cleaned_data['user_id']
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            raise PermissionDenied
+
+        if not user.auth_token_is_used:
+
+            email = reinvitation_form.cleaned_data['email']
+            moderator.reinvite_user(user, email)
+
+            # Log moderation event
+            msg_type = ModerationLogMsg.REINVITATION
+            log_comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
+                                                              user.get_full_name())
+            log_moderator_event(msg_type=msg_type,
+                                user=user,
+                                moderator=moderator,
+                                comment=log_comment)
+
+            # Send email
+            token_url = request.build_absolute_uri(
+                        reverse('accounts:activate-account',
+                                args=[user.auth_token]))
+
+            subject = 'Activate your {} account'.format(site.name)
+            template = 'moderation/emails/reinvite_user.html'
+
+            send_moderation_email(subject=subject,
+                                  template=template,
+                                  recipient=user,
+                                  sender=moderator,
+                                  site=site,
+                                  token=token_url)
+
+        # TODO: Add confirmation message here
+        return redirect('moderation:moderators')
+
+    else:
+        return user_panel(request, reinvitation_form=reinvitation_form)
+
+
+
+@login_required
+@permission_required('accounts.access_moderators_section')
+@permission_required('accounts.uninvite_user')
+def revoke_invitation(request):
+    """
+    Revoke a user invitation.
+    """
+    moderator = request.user
+    site = get_current_site(request)
+
+    revocation_form = RevokeMemberForm(request.POST)
+
+    if revocation_form.is_valid():
+
+        user_id = revocation_form.cleaned_data['user_id']
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            raise PermissionDenied
+
+        comment = revocation_form.cleaned_data['comments']
+
+        if not user.auth_token_is_used:
+
+            moderator.revoke_user_invitation(user)
+
+            # Log moderation event
+            msg_type = ModerationLogMsg.REVOCATION
+            log_comment = '{}'.format(comment)
+
+            log_moderator_event(msg_type=msg_type,
+                                user=user,
+                                moderator=moderator,
+                                comment=log_comment)
+
+        # TODO: Add confirmation message here
+        return redirect('moderation:moderators')
+
+    else:
+        return user_panel(request, revocation_form=revocation_form)
 
 
 @login_required

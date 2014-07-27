@@ -10,7 +10,6 @@ class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member.
     """
-    form_type = forms.CharField(initial='invite', widget=forms.HiddenInput)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField()
@@ -34,17 +33,29 @@ class ReInviteMemberForm(forms.Form):
     Form for moderators to reinvite new users.
     Asks moderator to confirm they have sent the email to the correct address.
     """
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(ReInviteMemberForm, self).__init__(*args, **kwargs)
+    email = forms.EmailField()
+    user_id = forms.IntegerField(widget=forms.HiddenInput)
 
-        self.fields['email'] = forms.CharField(max_length=30,
-                                               initial = self.user.email)
+    def clean(self):
+        """
+        If the moderator changes the email, make sure the new email is not already in the system.
+        """
+        cleaned_data = super(ReInviteMemberForm, self).clean()
+        email = cleaned_data.get('email')
+        user_id = cleaned_data.get('user_id')
+        user = User.objects.get(id=user_id)
 
-        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
-                                                 widget=forms.HiddenInput)
+        # If this email is not already registered to this user
+        if email != user.email:
 
-    form_type = forms.CharField(initial='reinvite', widget=forms.HiddenInput)
+            # get all the other emails in the system
+            user_emails = [user.email for user in User.objects.all() if user.email]
+
+            # raise an error if this is registered to another user
+            if email in user_emails:
+                raise forms.ValidationError("Sorry, this email address is already registered to another user")
+
+        return cleaned_data
 
 
 class RevokeMemberForm(forms.Form):
@@ -52,15 +63,8 @@ class RevokeMemberForm(forms.Form):
     Form for moderator to revoke membership invitation.
     Requires moderator to make a comment.
     """
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(RevokeMemberForm, self).__init__(*args, **kwargs)
-
-        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
-                                                 widget=forms.HiddenInput)
-
-    form_type = forms.CharField(initial='revoke', widget=forms.HiddenInput)
     comments = forms.CharField(widget=forms.Textarea)
+    user_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
 class ModerateApplicationForm(forms.Form):

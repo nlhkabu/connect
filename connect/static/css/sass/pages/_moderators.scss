@@ -39,3 +39,11 @@
 .moderator-tab-content {
     margin: 30px 0 30px 30px;
 }
+
+
+// Hide forms if they are not needed
+
+.revoke-invitation-form,
+.reinvite-member-form {
+    display: none;
+}

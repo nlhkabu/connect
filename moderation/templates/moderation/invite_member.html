@@ -1,5 +1,6 @@
 {% extends "moderation/moderators_base.html" %}
 {% load i18n %}
+{% load static %}
 
 
 {% block page_title %}{% trans "Invite a New Member" %}{% endblock %}
@@ -7,7 +8,7 @@
 
 
 {% block moderators_content %}
-    <form action="" method="post" class="horizontal-form">
+    <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form">
         <fieldset>
             <legend>Invite a New Member</legend>
             <p class="intro">Please provide the details of the member you wish to invite.  Once they have accepted your invitatation, they will be able to edit the details provided here.</p>
@@ -80,29 +81,30 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.date_joined }}</td>
                     <td>
-                        <a href="">Resend Invitation</a><br/>
-                        <a href="">Revoke Invitation</a><br/>
+                        <a href="#" class="resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">Resend Invitation</a><br/>
+                        <a href="#" class="revoke-link" data-user="{{ user.id }}">Revoke Invitation</a><br/>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        {% for user in pending %}
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ user.reinvitation_form.as_p }}
-                <input type="submit" value="{% trans 'Resend Invitation' %}" class="button" />
-            </form>
+        <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form">
+            {% csrf_token %}
+            {{ reinvitation_form.as_p }}
+            <input type="submit" value="{% trans 'Resend Invitation' %}" class="button"/>
+        </form>
 
-             <form action="" method="post">
-                {% csrf_token %}
-                {{ user.revocation_form.as_p }}
-                <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
-            </form>
-        {% endfor %}
-
+        <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form">
+            {% csrf_token %}
+            {{ revocation_form.as_p }}
+            <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
+        </form>
 
 
     {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/invite-member.js' %}">
 {% endblock %}
