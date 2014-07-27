@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.conf.urls import patterns, url
+from django.views.generic.base import TemplateView
+
 from accounts import views
+
 
 urlpatterns = patterns('',
     # Auth
@@ -64,7 +67,9 @@ urlpatterns = patterns('',
 
     # Request and activate account
     url(r'^request-invitation$', 'accounts.views.request_invitation', name='request-invitation'),
-    url(r'^request-invitation/done$', 'accounts.views.request_invitation_done', name='request-invitation-done'),
+    url(r'^request-invitation/done$',
+        TemplateView.as_view(template_name='accounts/request_invitation_done.html'),
+        name='request-invitation-done'),
     url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
 
     # Account settings

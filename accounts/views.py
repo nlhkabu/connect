@@ -31,16 +31,14 @@ def request_invitation(request):
 
         if form.is_valid():
 
+            # Create inactive user
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
-            comments = form.cleaned_data['comments']
+            new_user = create_inactive_user(email, first_name, last_name)
 
-            # Create inactive user
-            new_user = User.objects.create_user(email)
-            new_user.is_active = False
-            new_user.first_name = first_name
-            new_user.last_name = last_name
+            # Add additional details
+            comments = form.cleaned_data['comments']
             new_user.registration_method = new_user.REQUESTED
             new_user.applied_datetime = now()
             new_user.application_comments = comments
@@ -69,13 +67,6 @@ def request_invitation(request):
     }
 
     return render(request, 'accounts/request_invitation.html', context)
-
-
-def request_invitation_done(request):
-    """
-    Show confirmation message for a successful account request.
-    """
-    return render(request, 'accounts/request_invitation_done.html')
 
 
 def activate_account(request, token):

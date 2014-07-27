@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.utils.http import urlquote
 
 from connect.utils import generate_salt, hash_time
+from .utils import create_inactive_user
 
 
 class CustomUserManager(BaseUserManager):
@@ -207,10 +208,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return None
 
         except User.DoesNotExist:
-            new_user = User.objects.create_user(email)
-            new_user.is_active = False
-            new_user.first_name = first_name
-            new_user.last_name = last_name
+
+            new_user = create_inactive_user(email, first_name, last_name)
             new_user.registration_method = new_user.INVITED
             new_user.moderator = self
             new_user.moderator_decision = new_user.PRE_APPROVED
@@ -219,6 +218,72 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             new_user.save()
 
             return new_user
+
+
+    def reinvite_user(self, user, email):
+        """
+        Reinvite an already invited user.
+        Override some registration details (if neccessary).
+        """
+        # Reset email, set a new token and update decision datetime
+        user.email = email
+        user.auth_token = hash_time(generate_salt())
+        user.decision_datetime = timezone.now()
+        user.save()
+
+        return user
+
+
+    def revoke_user_invitation(self, user):
+        """
+        Revoke a user's invitation by removing all registration details.
+        """
+        user.registration_method = ''
+        user.moderator = None
+        user.moderator_decision = ''
+        user.decision_datetime = None
+        user.auth_token = ''
+        user.auth_token_is_used = False
+        user.save()
+
+        return user
+
+
+    def approve_user_application(self, user):
+        """
+        Approve a user's application
+        """
+        user.moderator = self
+        user.moderator_decision=user.APPROVED
+        user.decision_datetime = timezone.now()
+        user.auth_token = hash_time(generate_salt())
+        user.save()
+
+        return user
+
+
+    def reject_user_application(self, user):
+        """
+        Reject a user's application
+        """
+        user.moderator = self
+        user.moderator_decision=user.REJECTED
+        user.decision_datetime = timezone.now()
+        user.save()
+
+        return user
+
+
+    def dismiss_abuse_report(self, report):
+        pass
+
+
+    def warn_user(self, report):
+        pass
+
+
+    def ban_user(self, report):
+        pass
 
 
 class AbuseReport(models.Model):

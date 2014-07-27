@@ -137,18 +137,57 @@ def invite_member(request):
                 reinvitation_form = ReInviteMemberForm(request.POST, user=user)
 
                 if reinvitation_form.is_valid():
-                    email = reinvitation_form.cleaned_data['email']
 
-                    handle_reinvitation(request, user, email, moderator, site)
+                    if not user.auth_token_is_used:
+
+                        email = reinvitation_form.cleaned_data['email']
+                        moderator.reinvite_user(user, email)
+
+                        # Log moderation event
+                        msg_type = ModerationLogMsg.REINVITATION
+                        log_comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
+                                                                          user.get_full_name())
+                        log_moderator_event(msg_type=msg_type,
+                                            user=user,
+                                            moderator=moderator,
+                                            comment=log_comment)
+
+                        # Send email
+                        token_url = request.build_absolute_uri(
+                                    reverse('accounts:activate-account',
+                                            args=[user.auth_token]))
+
+                        subject = 'Activate your {} account'.format(site.name)
+                        template = 'moderation/emails/reinvite_user.html'
+
+                        send_moderation_email(subject=subject,
+                                              template=template,
+                                              recipient=user,
+                                              sender=moderator,
+                                              site=site,
+                                              token=token_url)
 
                     return redirect('moderation:moderators')
+
 
             elif form_type == 'revoke':
                 revoke_form = RevokeMemberForm(request.POST, user=user)
 
                 if revoke_form.is_valid():
                     comment = revoke_form.cleaned_data['comments']
-                    handle_revocation(comment, user, moderator)
+
+                    if not user.auth_token_is_used:
+
+                        moderator.revoke_user_invitation(user)
+
+                        # Log moderation event
+                        msg_type = ModerationLogMsg.REVOCATION
+                        log_comment = '{}'.format(comment)
+
+                        log_moderator_event(msg_type=msg_type,
+                                            user=user,
+                                            moderator=moderator,
+                                            comment=log_comment)
 
                     return redirect('moderation:moderators')
 
@@ -161,71 +200,6 @@ def invite_member(request):
     }
 
     return render(request, 'moderation/invite_member.html', context)
-
-
-def handle_reinvitation(request, user, email, moderator, site):
-    """
-    Reinvite a member.
-    """
-    if not user.auth_token_is_used:
-        # Reset email
-        user.email = email
-
-        # Set a new token and update decision datetime
-        token = hash_time(generate_salt())
-        token_url = request.build_absolute_uri(
-                        reverse('accounts:activate-account', args=[token]))
-
-        user.auth_token = token;
-        user.decision_datetime = now()
-        user.save()
-
-        # Log moderation event
-        msg_type = ModerationLogMsg.REINVITATION
-        log_comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
-                                                          user.get_full_name())
-        log_moderator_event(msg_type=msg_type,
-                            user=user,
-                            moderator=moderator,
-                            comment=log_comment)
-
-        # Send email
-        subject = 'Activate your {} account'.format(site.name)
-        template = 'moderation/emails/reinvite_user.html'
-
-        send_moderation_email(subject=subject,
-                              template=template,
-                              recipient=user,
-                              sender=moderator,
-                              site=site,
-                              token=token_url)
-
-        # TODO: Add a confirmation message
-        return user
-
-    return None
-
-
-def handle_revocation(comment, user, moderator):
-    """
-    Revoke a membership invitation.
-    """
-    if not user.auth_token_is_used:
-        # Remove invitation token and other registration information
-        user.delete()
-
-        # Log moderation event
-        msg_type = ModerationLogMsg.REVOCATION
-        log_comment = '{}'.format(comment)
-
-        log_moderator_event(msg_type=msg_type,
-                            user=user,
-                            moderator=moderator,
-                            comment=log_comment)
-
-        return user
-
-    return None
 
 
 @login_required
@@ -257,32 +231,24 @@ def review_applications(request):
             comments = moderation_form.cleaned_data['comments']
 
             if decision == 'APP':
-                # Create token and token URL
-                token = hash_time(generate_salt())
-                token_url = request.build_absolute_uri(
-                        reverse('accounts:activate-account', args=[token]))
-                user.auth_token = token
+                moderator.approve_user_application(user)
 
-                user.moderator_decision=CustomUser.APPROVED
+                # Set log and email settings
                 msg_type = ModerationLogMsg.APPROVAL
-
-                # Set email settings
+                token_url = request.build_absolute_uri(
+                                    reverse('accounts:activate-account',
+                                    args=[user.auth_token]))
                 subject = 'Welcome to {}'.format(site.name)
                 template = 'moderation/emails/approve_user.html'
 
             elif decision == 'REJ':
-                token_url = ''
-                user.moderator_decision=CustomUser.REJECTED
-                msg_type = ModerationLogMsg.REJECTION
+                moderator.reject_user_application(user)
 
-                # Set email settings
+                # Set log and email settings
+                msg_type = ModerationLogMsg.REJECTION
+                token_url = ''
                 subject = 'Your application to {} has been rejected'.format(site.name)
                 template = 'moderation/emails/reject_user.html'
-
-            # Log decision against user
-            user.moderator = moderator
-            user.decision_datetime = now()
-            user.save()
 
 
             # Log moderation event
