@@ -80,6 +80,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                   'treated as active. Unselect this instead '
                                   'of deleting accounts.')
 
+    date_joined = models.DateTimeField('date joined', default=timezone.now)
+
     # Custom connect fields
     bio = models.TextField(blank=True)
 
@@ -143,8 +145,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             ("ban_user", "Can ban a user in response to an abuse report"),
         )
 
+
     def get_absolute_url(self):
         return "/users/%s/" % urlquote(self.email)
+
 
     def get_full_name(self):
         """
@@ -153,15 +157,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
+
     def get_short_name(self):
         "Returns the short name for the user."
         return self.first_name
+
 
     def email_user(self, subject, message, from_email=None):
         """
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email])
+
 
     def get_skills(self):
         """
@@ -195,27 +202,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         User = get_user_model()
 
-        # Check if new user already exists in database
-        user, created = User.objects.get_or_create(email=email)
-
         try:
             existing_user = User.objects.get(email=email)
+            return None
+
         except User.DoesNotExist:
             new_user = User.objects.create_user(email)
             new_user.is_active = False
             new_user.first_name = first_name
             new_user.last_name = last_name
             new_user.registration_method = new_user.INVITED
-            new_user.moderator = self,
+            new_user.moderator = self
             new_user.moderator_decision = new_user.PRE_APPROVED
             new_user.decision_datetime = timezone.now()
             new_user.auth_token = hash_time(generate_salt())
             new_user.save()
 
             return new_user
-
-        #~else:
-            #~TODO: do something here
 
 
 class AbuseReport(models.Model):
