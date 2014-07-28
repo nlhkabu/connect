@@ -57,6 +57,24 @@ $white: #fff;
     background-color: $dark-grey;
 }
 
+h3.lined {
+    display: block;
+    width: 100%;
+    font-weight: normal;
+    font-size: 16px;
+    border-bottom: 1px solid $light-grey;
+    padding: 5px 0 10px 0;
+    margin-bottom: 20px;
+    font-family: 'Bree Serif', sans-serif;
+}
+
+p.intro {
+    font-style: italic;
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
 // Validation
 
 .form-error {
@@ -494,16 +512,14 @@ table .button {
     }
 }
 
-tr:nth-of-type(even) {
-  background: #f6f6f6;
-}
+
+// Responsive Tables
 
 a.table-link {
     display: block;
 }
 
-@media
-only screen and (max-device-width: 1060px)  {
+@media (max-device-width: 1060px) {
     table {
         display: block;
     /* Force table to not be like tables anymore */
@@ -532,6 +548,10 @@ only screen and (max-device-width: 1060px)  {
         tr {
             border: 1px solid #ccc;
             margin-bottom: 10px;
+        }
+
+        tr:nth-of-type(even) {
+          background: #f6f6f6;
         }
 
         th, td {
@@ -568,8 +588,7 @@ only screen and (max-device-width: 1060px)  {
 }
 
 
-@media
-only screen and (max-device-width: 650px)  {
+@media (max-device-width: 650px) {
     table {
         th, td {
             padding: 8px;
@@ -577,6 +596,40 @@ only screen and (max-device-width: 650px)  {
 
         td:before {
             position: static;
+        }
+    }
+}
+
+
+// Dialog forms
+
+.dialog {
+    form {
+        margin: 10px 0 15px 0;
+
+        label {
+            padding-bottom: 10px;
+        }
+
+        input[type=text],
+        input[type="password"],
+        input[type="email"],
+        input[type="search"],
+        input[type="url"],
+        input[type="number"],
+        input[type="tel"],
+        textarea,
+        select {
+            width:96%;
+            padding: 2%;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        .button {
+            margin-bottom: 0;
         }
     }
 }

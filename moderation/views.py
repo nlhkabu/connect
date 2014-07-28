@@ -261,14 +261,13 @@ def review_applications(request):
                                   decision_datetime=None,
                                   is_active=False)
 
-    for user in pending:
-        user.moderation_form = ModerateApplicationForm(user=user)
+    moderation_form = ModerateApplicationForm()
 
     if request.method == 'POST':
-        moderation_form = ModerateApplicationForm(request.POST, user=user)
+        moderation_form = ModerateApplicationForm(request.POST)
 
         try:
-            user = pending.get(id=request.POST['user_id'])
+            user = User.objects.get(id=request.POST['user_id'])
         except User.DoesNotExist:
             raise PermissionDenied
 
@@ -316,6 +315,7 @@ def review_applications(request):
 
     context = {
         'pending' : pending,
+        'moderation_form' : moderation_form,
     }
 
     return render(request, 'moderation/review_applications.html', context)
@@ -413,8 +413,9 @@ def review_abuse(request):
     warnings = AbuseReport.objects.filter(logged_against__in=reported_users,
                                           moderator_decision='WARN')
 
+    form = ModerateAbuseForm()
+
     for report in undecided_reports:
-        report.moderation_form = ModerateAbuseForm(abuse_report=report)
         accused_user = report.logged_against
         report.prior_warnings = [warning for warning in warnings
                                  if warning.logged_against == accused_user]
@@ -425,7 +426,7 @@ def review_abuse(request):
         except AbuseReport.DoesNotExist:
             raise PermissionDenied
 
-        form = ModerateAbuseForm(request.POST, abuse_report=report)
+        form = ModerateAbuseForm(request.POST)
 
         if form.is_valid():
             decision = form.cleaned_data['decision']
@@ -532,6 +533,7 @@ def review_abuse(request):
 
     context = {
         'reports' : undecided_reports,
+        'form' : form,
     }
 
     return render(request, 'moderation/review_abuse.html', context)

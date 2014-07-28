@@ -7,8 +7,7 @@
 
 
 {% block moderators_content %}
-    <h2>{% trans "View Log" %}</h2>
-
+    <h3 class="lined">{% trans "View Logs" %}</h3>
 
     <form action="" method="post">
         {% csrf_token %}
@@ -31,7 +30,7 @@
                     <tr>
                         <td>{{ log.msg_datetime }}</td>
                         <td>{{ log.get_msg_type_display }}</td>
-                        <td>{{ log.comment }}</td>
+                        <td>{{ log.comment|linebreaksbr }}</td>
                         <td>{{ log.pertains_to.get_full_name }}</td>
                         <td>{{ log.logged_by.get_full_name }}</td>
                     </tr>
@@ -39,7 +38,7 @@
             </tbody>
         </table>
     {% else %}
-        <p>There are no moderation events of this type logged in the system.</p>
+        <p class="intro">{% trans "There are no moderation events of this type logged in the system." %}</p>
     {% endif %}
 
 {% endblock %}

@@ -1,15 +1,18 @@
 {% extends "moderation/moderators_base.html" %}
 {% load i18n %}
+{% load static %}
+{% load humanize %}
 
 
 {% block page_title %}{% trans "Review Membership Applications" %}{% endblock %}
 {% block review_member_active %}active{% endblock %}
 
 {% block moderators_content %}
-    {% trans "Review Membership Applications" %}
+    <h3 class="lined">{% trans "Review Membership Applications" %}</h3>
 
     {% if pending %}
-        <table>
+        <p class="intro">There {{ pending.count|pluralize:"is,are" }} {{ pending.count|apnumber }} pending member application{{ pending.count|pluralize }}:</p>
+        <table class="review-app-table">
             <thead>
                 <tr>
                     <th>{% trans "Name" %}</th>
@@ -26,22 +29,31 @@
                     <td>{{ user.get_full_name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.applied_datetime }}</td>
-                    <td>{{ user.application_comments }}</td>
+                    <td>{{ user.application_comments|linebreaksbr }}</td>
                     <td>
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            {{ user.moderation_form.as_p }}
-                            <input type="submit" value="{% trans 'Moderate User Application' %}" class="button" />
-                        </form>
+                        <a href="#" class="table-link first decision-link" data-user="{{ user.id }}" data-decision="APP">Approve Application</a>
+                        <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="REJ">Reject Application</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <div class="dialog" id="review-application-dialog" title="Moderate User Application">
+            <form action="" method="post" class="review-application-form">
+                {% csrf_token %}
+                {{ moderation_form.as_p }}
+                <input type="submit" value="{% trans 'Moderate User Application' %}" class="button" />
+            </form>
+        </div>
     {% else %}
         <div class="">
-            <h4>{% trans "No pending membership applications" %}</h4>
+            <p class="intro">{% trans "There are currently no pending membership applications in the system." %}</p>
         </div>
     {% endif %}
 
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/review-application.js' %}">
 {% endblock %}

@@ -171,9 +171,9 @@ $fallback_hex_gradient_bg: #CCC !default;
 // #Tables
 $table_background: #FFF !default;
 $table_margin: 10px 0 !default;
-$table_td_th_padding: 8px !default;
+$table_td_th_padding: 8px 8px 8px 0 !default;
 $table_td_th_line_height: 21px !default;
-$table_border_colour: #CCC !default;
+$table_border_colour: #ececec !default;
 $table_border_radius: 3px !default;
 $table_alt_colour: #EFEFEF !default;
 $table_hover_colour: #999 !default;

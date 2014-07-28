@@ -78,4 +78,56 @@ $(document).ready(function(){
         }
     });
 
+
+    // ----------
+    // MODERATION
+    // ----------
+
+    // Show User warning on review abuse reports page
+    $('.warning-dialog').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 600
+    });
+
+    var user;
+
+    $('.show-warnings').click(function(e){
+        e.preventDefault();
+
+        user = $(this).data('user');
+        $('#dialog'+ user).dialog('open');
+    });
+
+
+    // Enable form on review abuse reports page
+
+    var report, decision, title;
+
+    $('.decision-link').click(function(e){
+        e.preventDefault();
+
+        report = $(this).data('report');
+        decision = $(this).data('decision');
+        title = $(this).data('title');
+
+        $('#review-abuse-dialog').dialog({
+            autoOpen: false,
+            modal: true,
+            title: title,
+            width: 400
+        });
+
+        $('#review-abuse-dialog').dialog('open');
+        $('.review-abuse-form #id_report_id').val(report);
+        $('.review-abuse-form #id_decision').val(decision);
+        $('.review-abuse-form .button').val(title);
+
+    });
+
+
+
+
+
+
 });

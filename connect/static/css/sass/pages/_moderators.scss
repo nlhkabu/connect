@@ -41,14 +41,21 @@
 }
 
 
-@media
-only screen and (max-device-width: 1060px)  {
+@media (max-device-width: 1060px) {
 
     .invitation-table {
         td:nth-of-type(1):before { content: "Name"; }
         td:nth-of-type(2):before { content: "Email"; }
         td:nth-of-type(3):before { content: "Date Invited"; }
         td:nth-of-type(4):before { content: "Actions"; }
+    }
+
+    .review-app-table {
+        td:nth-of-type(1):before { content: "Name"; }
+        td:nth-of-type(2):before { content: "Email"; }
+        td:nth-of-type(3):before { content: "Date Requested"; }
+        td:nth-of-type(4):before { content: "Application Comments"; }
+        td:nth-of-type(5):before { content: "Actions"; }
     }
 
     .logs-table {
@@ -60,3 +67,27 @@ only screen and (max-device-width: 1060px)  {
     }
 }
 
+
+.warning {
+    border-bottom: 1px solid $light-grey;
+    padding: 5px 0 20px 0;
+
+    h4 {
+        font-size: 14px;
+        font-family: "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        margin: 10px 0 0 0;
+    }
+
+    h4.first {
+        margin-top: 0;
+    }
+
+    p.meta {
+        margin-bottom: 0;
+    }
+}
+
+.warning.last {
+    border-bottom: 0;
+}

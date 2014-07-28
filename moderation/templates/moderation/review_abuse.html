@@ -1,32 +1,93 @@
 {% extends "moderation/moderators_base.html" %}
 {% load i18n %}
+{% load humanize %}
 
 
 {% block page_title %}{% trans "Review Abuse Reports" %}{% endblock %}
 {% block review_abuse_active %}active{% endblock %}
 
 {% block moderators_content %}
-    <h2>{% trans "Review Abuse Reports" %}</h2>
+    <h3 class="lined">{% trans "Review Abuse Reports" %}</h3>
 
-    {% for report in reports %}
-        <div class="">
-            <p>{{ report.logged_against.get_full_name }}</p>
-            <p>{{ report.logged_by.get_full_name }}</p>
-            <p>{{ report.logged_datetime }}</p>
-            <p>{{ report.abuse_comment }}</p>
+    {% if reports %}
+        <p class="intro">Review abuse reports currently logged in the system.  User's emails are provided in the event that you need to gather additional information to make an appropriate ruling - please only use them for this purpose.</p>
+        <p class="intro">To help moderators make informed decisions (especially in the context of recurring reports), previous warnings are displayed on the accused user.</p>
 
-            <p><strong>{% trans "Prior Warnings" %}: {{ report.prior_warnings|length }}</strong></p>
-            {% for warning in report.prior_warnings %}
-                <p>{% trans "Abuse Report Details" %}: {{ warning.abuse_comment }}</p>
-                <p>{% trans "Moderator Comment" %}:{{ warning.moderator_comment }}</p>
-                <p>{% trans "Warning issued on" %}: {{ warning.decision_datetime }}</p>
-            {% endfor %}
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>{% trans "Date/Time" %}</th>
+                    <th>{% trans "Complaint made against" %}</th>
+                    <th>{% trans "Complaint made by" %}</th>
+                    <th>{% trans "Comments" %}</th>
+                    <th>{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                    <tr>
+                        <td>{{ report.logged_datetime }}</td>
+                        <td>
+                            {{ report.logged_against.get_full_name }}<br/>
+                            <a href="mailto:{{ report.logged_against.email }}">{{ report.logged_against.email }}</a>
+                            {% if report.prior_warnings %}
+                                <br/>
+                                <a href="#" class="show-warnings" data-user="{{ report.logged_against.id }}">
+                                    {{ report.prior_warnings|length|apnumber|title }} prior warning{{ report.prior_warnings|length|pluralize }}
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ report.logged_by.get_full_name }}<br/>
+                            <a href="mailto:{{ report.logged_by.email }}">{{ report.logged_by.email }}</a>
+                        </td>
+                        <td>{{ report.abuse_comment|linebreaksbr }}</td>
+                        <td>
+                            <a href="#" class="table-link first decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="Dismiss Abuse Report">
+                                Dismiss Report
+                            </a>
+                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="WARN" data-title="Warn User">
+                                Warn User
+                            </a>
+                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="BAN" data-title="Ban User">
+                                Ban User
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-            <form action="" method="post">
+        <!-- Prior Warnings Modal-->
+        {% for report in reports %}
+            {% if report.prior_warnings %}
+                <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="{{ report.prior_warnings|length|apnumber|title }} prior warning{{ report.prior_warnings|length|pluralize }} for {{ report.logged_against.get_full_name }}">
+                    {% for warning in report.prior_warnings %}
+                        <div class="warning {% if forloop.last %}last{% endif %}">
+                            <h4 class="{% if forloop.first %}first{% endif %}">{% trans "Abuse Report Details" %}:</h4>
+                            {{ warning.abuse_comment|linebreaksbr }}
+                            <h4>{% trans "Moderator Comment" %}:</h4>
+                            {{ warning.moderator_comment|linebreaksbr }}<br/>
+                            <h4>Meta:</h4>
+                            <p class="meta">
+                                {% trans "Report made by" %} <em>{{ warning.logged_by.get_full_name }}</em> on <em>{{ warning.logged_datetime }}</em><br/>
+                                {% trans "Warning issued on" %} <em>{{ warning.decision_datetime }}</em> by <em>{{ warning.moderator.get_full_name }}</em>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <div id="review-abuse-dialog" class="dialog">
+            <form action="" method="post" class="review-abuse-form">
                 {% csrf_token %}
-                {{ report.moderation_form.as_p }}
+                {{ form.as_p }}
                 <input type="submit" value="{% trans 'Moderate Abuse Report' %}" class="button" />
             </form>
         </div>
-    {% endfor %}
+
+    {% else %}
+        <p class="intro">There are currently no abuse reports logged in the system.</p>
+    {% endif %}
 {% endblock %}

@@ -63,7 +63,11 @@ class RevokeMemberForm(forms.Form):
     Form for moderator to revoke membership invitation.
     Requires moderator to make a comment.
     """
-    comments = forms.CharField(widget=forms.Textarea)
+    comments = forms.CharField(widget=forms.Textarea(attrs={
+        'placeholder' : 'Please explain why you are revoking this invitation. '
+                        'This information will not be sent to the user, '
+                        'but will be recorded in the moderation logs.',
+    }))
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
@@ -71,15 +75,15 @@ class ModerateApplicationForm(forms.Form):
     """
     Form for moderators to approve or reject an account application.
     """
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(ModerateApplicationForm, self).__init__(*args, **kwargs)
 
-        self.fields['user_id'] = forms.IntegerField(initial=self.user.id,
-                                                    widget=forms.HiddenInput)
-
-    decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:])
-    comments = forms.CharField(widget=forms.Textarea)
+    user_id = forms.IntegerField(widget=forms.HiddenInput)
+    decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:],
+                                 widget=forms.HiddenInput)
+    comments = forms.CharField(widget=forms.Textarea(attrs={
+        'placeholder' : 'Please explain your decision. '
+                        'This information will not be sent to the user, '
+                        'but will be recorded in the moderation logs.',
+    }))
 
 
 class ReportAbuseForm(forms.Form):
@@ -99,7 +103,7 @@ class ReportAbuseForm(forms.Form):
                                                 initial=self.logged_against.id,
                                                 widget=forms.HiddenInput)
 
-    comments = forms.CharField(widget=forms.Textarea)
+    comments = forms.CharField(widget=forms.Textarea())
 
 
 class ModerateAbuseForm(forms.Form):
@@ -109,15 +113,14 @@ class ModerateAbuseForm(forms.Form):
     - Issue a warning
     - Remove abuser
     """
-    def __init__(self, *args, **kwargs):
-        self.abuse_report = kwargs.pop('abuse_report', None)
-        super(ModerateAbuseForm, self).__init__(*args, **kwargs)
-
-        self.fields['report_id'] = forms.IntegerField(initial=self.abuse_report.id,
-                                                    widget=forms.HiddenInput)
-
-    decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES)
-    comments = forms.CharField(widget=forms.Textarea)
+    report_id = forms.IntegerField(widget=forms.HiddenInput)
+    decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES,
+                                 widget=forms.HiddenInput)
+    comments = forms.CharField(widget=forms.Textarea(attrs={
+        'placeholder' : 'Please explain your decision. '
+                        'This information will be sent to both users '
+                        'and recorded in the moderation logs.',
+    }))
 
 
 class FilterLogsForm(forms.Form):
