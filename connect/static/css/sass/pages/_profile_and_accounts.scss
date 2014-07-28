@@ -128,21 +128,23 @@
 
 // SKILLS & LINKS
 
-.skill-formset,
-.link-formset {
-    border-bottom: 1px dotted $light-grey * .9;
-    margin-bottom: 10px;
-
-    select,
-    input {
-        display: inline-block;
+.horizontal-form dl dd {
+    .skill-formset,
+    .link-formset {
+        border-bottom: 1px dotted $light-grey * .9;
         margin-bottom: 10px;
-        padding: 5px;
-    }
 
-    .divider {
-        margin: 0 10px;
-        color: $light-grey * .7;
+        select,
+        input {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        .divider {
+            margin: 0 10px;
+            color: $light-grey * .7;
+        }
     }
 }
 
@@ -157,30 +159,34 @@ a.delete-row {
 }
 
 @media only screen and (max-width: 610px) {
-    .skill-formset,
-    .link-formset {
-        border-bottom: 1px dotted $light-grey * .9;
-        margin: 5px 0 20px 0;
+    .horizontal-form dl dd {
+        .skill-formset,
+        .link-formset {
+            border-bottom: 1px dotted $light-grey * .9;
+            margin: 5px 0 20px 0;
 
-        input {
-            display: block;
-            padding: 2%;
-            width: 96%;
-            margin-bottom: 10px
-        }
+            select {
+                width: 100%;
+                padding: 2%;
+                margin-bottom: 10px;
+            }
 
-        select {
-            width: 100%;
-            padding: 2%;
-            margin-bottom: 10px;
-        }
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="url"] {
+                padding: 2%;
+                width: 96%;
+                margin-bottom: 10px
+            }
 
-        .divider {
-            display: none;
-        }
+            .divider {
+                display: none;
+            }
 
-        a.delete-row {
-            margin: 0 0 10px 0;
+            a.delete-row {
+                margin: 0 0 10px 0;
+            }
         }
     }
 }

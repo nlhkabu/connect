@@ -2690,70 +2690,75 @@ a.table-link {
   background-color: #f4f4f4;
 }
 
-/* line 132, ../sass/pages/_profile_and_accounts.scss */
-.skill-formset,
-.link-formset {
+/* line 133, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd .skill-formset,
+.horizontal-form dl dd .link-formset {
   border-bottom: 1px dotted #d4d4d4;
   margin-bottom: 10px;
 }
-/* line 137, ../sass/pages/_profile_and_accounts.scss */
-.skill-formset select,
-.skill-formset input,
-.link-formset select,
-.link-formset input {
+/* line 138, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd .skill-formset select,
+.horizontal-form dl dd .skill-formset input,
+.horizontal-form dl dd .link-formset select,
+.horizontal-form dl dd .link-formset input {
   display: inline-block;
   margin-bottom: 10px;
   padding: 5px;
 }
-/* line 143, ../sass/pages/_profile_and_accounts.scss */
-.skill-formset .divider,
-.link-formset .divider {
+/* line 144, ../sass/pages/_profile_and_accounts.scss */
+.horizontal-form dl dd .skill-formset .divider,
+.horizontal-form dl dd .link-formset .divider {
   margin: 0 10px;
   color: #a5a5a5;
 }
 
-/* line 150, ../sass/pages/_profile_and_accounts.scss */
+/* line 152, ../sass/pages/_profile_and_accounts.scss */
 a.add-row,
 a.delete-row {
   display: inline-block;
   font-size: 12px;
 }
 
-/* line 155, ../sass/pages/_profile_and_accounts.scss */
+/* line 157, ../sass/pages/_profile_and_accounts.scss */
 a.delete-row {
   margin-left: 15px;
 }
 
 @media only screen and (max-width: 610px) {
-  /* line 161, ../sass/pages/_profile_and_accounts.scss */
-  .skill-formset,
-  .link-formset {
+  /* line 164, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd .skill-formset,
+  .horizontal-form dl dd .link-formset {
     border-bottom: 1px dotted #d4d4d4;
     margin: 5px 0 20px 0;
   }
-  /* line 165, ../sass/pages/_profile_and_accounts.scss */
-  .skill-formset input,
-  .link-formset input {
-    display: block;
-    padding: 2%;
-    width: 96%;
-    margin-bottom: 10px;
-  }
-  /* line 172, ../sass/pages/_profile_and_accounts.scss */
-  .skill-formset select,
-  .link-formset select {
+  /* line 168, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd .skill-formset select,
+  .horizontal-form dl dd .link-formset select {
     width: 100%;
     padding: 2%;
     margin-bottom: 10px;
   }
-  /* line 178, ../sass/pages/_profile_and_accounts.scss */
-  .skill-formset .divider,
-  .link-formset .divider {
+  /* line 177, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd .skill-formset input[type="text"],
+  .horizontal-form dl dd .skill-formset input[type="email"],
+  .horizontal-form dl dd .skill-formset input[type="password"],
+  .horizontal-form dl dd .skill-formset input[type="url"],
+  .horizontal-form dl dd .link-formset input[type="text"],
+  .horizontal-form dl dd .link-formset input[type="email"],
+  .horizontal-form dl dd .link-formset input[type="password"],
+  .horizontal-form dl dd .link-formset input[type="url"] {
+    padding: 2%;
+    width: 96%;
+    margin-bottom: 10px;
+  }
+  /* line 183, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd .skill-formset .divider,
+  .horizontal-form dl dd .link-formset .divider {
     display: none;
   }
-  /* line 182, ../sass/pages/_profile_and_accounts.scss */
-  .skill-formset a.delete-row,
-  .link-formset a.delete-row {
+  /* line 187, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd .skill-formset a.delete-row,
+  .horizontal-form dl dd .link-formset a.delete-row {
     margin: 0 0 10px 0;
   }
 }
