@@ -2,11 +2,13 @@ $(document).ready(function(){
 
     $('#reinvite-member-dialog').dialog({
         autoOpen: false,
-        modal: true
+        modal: true,
+        width: 400
     });
     $('#revoke-member-dialog').dialog({
         autoOpen: false,
-        modal: true
+        modal: true,
+        width: 400
     });
 
     var user, email;

@@ -39,7 +39,7 @@
             </tbody>
         </table>
 
-        <div class="dialog" id="review-application-dialog" title="Moderate User Application">
+        <div class="dialog" id="review-application-dialog">
             <form action="" method="post" class="review-application-form">
                 {% csrf_token %}
                 {{ moderation_form.as_p }}
