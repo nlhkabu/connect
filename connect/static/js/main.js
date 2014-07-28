@@ -79,9 +79,71 @@ $(document).ready(function(){
     });
 
 
-    // ----------
-    // MODERATION
-    // ----------
+    // --------------------------
+    // MODERATION - INVITE MEMBER
+    // --------------------------
+
+    $('#reinvite-member-dialog').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 'auto'
+    });
+
+    $('#revoke-member-dialog').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 'auto'
+    });
+
+    var user, email;
+
+    $('.resend-link').click(function(e){
+        e.preventDefault();
+
+        user = $(this).data('user');
+        email = $(this).data('email');
+        $('#reinvite-member-dialog').dialog('open');
+        $('.reinvite-member-form #id_user_id').val(user);
+        $('.reinvite-member-form #id_email').val(email);
+    });
+
+    $('.revoke-link').click(function(e){
+        e.preventDefault();
+
+        user = $(this).data('user');
+        $('#revoke-member-dialog').dialog('open');
+        $('.revoke-invitation-form #id_user_id').val(user);
+    });
+
+
+    // --------------------------------
+    // MODERATION - REVIEW APPLICATIONS
+    // --------------------------------
+
+    $('.decision-link').click(function(e){
+        e.preventDefault();
+
+        user = $(this).data('user');
+        decision = $(this).data('decision');
+        title = $(this).html();
+
+        $('#review-application-dialog').dialog({
+            autoOpen: false,
+            modal: true,
+            title: title,
+            width: 400
+        });
+
+        $('#review-application-dialog').dialog('open');
+        $('.review-application-form #id_user_id').val(user);
+        $('.review-application-form #id_decision').val(decision);
+        $('.review-application-form .button').val(title);
+    });
+
+
+    // ---------------------------------
+    // MODERATION - REVIEW ABUSE REPORTS
+    // ---------------------------------
 
     // Show User warning on review abuse reports page
     $('.warning-dialog').dialog({
@@ -89,8 +151,6 @@ $(document).ready(function(){
         modal: true,
         width: 600
     });
-
-    var user;
 
     $('.show-warnings').click(function(e){
         e.preventDefault();
@@ -124,10 +184,5 @@ $(document).ready(function(){
         $('.review-abuse-form .button').val(title);
 
     });
-
-
-
-
-
 
 });
