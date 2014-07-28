@@ -58,6 +58,14 @@
         td:nth-of-type(5):before { content: "Actions"; }
     }
 
+    .abuse-table {
+        td:nth-of-type(1):before { content: "Date/Time"; }
+        td:nth-of-type(2):before { content: "Complaint made against"; }
+        td:nth-of-type(3):before { content: "Complaint made by"; }
+        td:nth-of-type(4):before { content: "Comments"; }
+        td:nth-of-type(5):before { content: "Actions"; }
+    }
+
     .logs-table {
         td:nth-of-type(1):before { content: "Date/Time"; }
         td:nth-of-type(2):before { content: "Type"; }

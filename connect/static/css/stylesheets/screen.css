@@ -3172,48 +3172,69 @@ ul.dash-tabs li.active a i {
   }
 
   /* line 62, ../sass/pages/_moderators.scss */
-  .logs-table td:nth-of-type(1):before {
+  .abuse-table td:nth-of-type(1):before {
     content: "Date/Time";
   }
   /* line 63, ../sass/pages/_moderators.scss */
+  .abuse-table td:nth-of-type(2):before {
+    content: "Complaint made against";
+  }
+  /* line 64, ../sass/pages/_moderators.scss */
+  .abuse-table td:nth-of-type(3):before {
+    content: "Complaint made by";
+  }
+  /* line 65, ../sass/pages/_moderators.scss */
+  .abuse-table td:nth-of-type(4):before {
+    content: "Comments";
+  }
+  /* line 66, ../sass/pages/_moderators.scss */
+  .abuse-table td:nth-of-type(5):before {
+    content: "Actions";
+  }
+
+  /* line 70, ../sass/pages/_moderators.scss */
+  .logs-table td:nth-of-type(1):before {
+    content: "Date/Time";
+  }
+  /* line 71, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(2):before {
     content: "Type";
   }
-  /* line 64, ../sass/pages/_moderators.scss */
+  /* line 72, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(3):before {
     content: "Comment";
   }
-  /* line 65, ../sass/pages/_moderators.scss */
+  /* line 73, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(4):before {
     content: "Logged Against (User)";
   }
-  /* line 66, ../sass/pages/_moderators.scss */
+  /* line 74, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(5):before {
     content: "Logged By (Moderator)";
   }
 }
-/* line 71, ../sass/pages/_moderators.scss */
+/* line 79, ../sass/pages/_moderators.scss */
 .warning {
   border-bottom: 1px solid #ececec;
   padding: 5px 0 20px 0;
 }
-/* line 75, ../sass/pages/_moderators.scss */
+/* line 83, ../sass/pages/_moderators.scss */
 .warning h4 {
   font-size: 14px;
   font-family: "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   margin: 10px 0 0 0;
 }
-/* line 82, ../sass/pages/_moderators.scss */
+/* line 90, ../sass/pages/_moderators.scss */
 .warning h4.first {
   margin-top: 0;
 }
-/* line 86, ../sass/pages/_moderators.scss */
+/* line 94, ../sass/pages/_moderators.scss */
 .warning p.meta {
   margin-bottom: 0;
 }
 
-/* line 91, ../sass/pages/_moderators.scss */
+/* line 99, ../sass/pages/_moderators.scss */
 .warning.last {
   border-bottom: 0;
 }
