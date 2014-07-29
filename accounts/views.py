@@ -156,41 +156,10 @@ def profile_settings(request):
 
             user.save()
 
-            #Handle skills formset
-            user_skills = []
+            save_skills(user, skill_formset)
+            save_links(user, link_formset)
 
-            for form in skill_formset:
-                skill = form.cleaned_data.get('skill', None)
-                proficiency = form.cleaned_data.get('proficiency', None)
-
-                if skill and proficiency:
-                    user_skills.append(UserSkill(user=user,
-                                                 skill=skill,
-                                                 proficiency=proficiency))
-
-
-            # Replace old skills with new
-            UserSkill.objects.filter(user=user).delete()
-            UserSkill.objects.bulk_create(user_skills)
-
-
-            # Handle links formset
-            user_links = []
-
-            for form in link_formset:
-                anchor = form.cleaned_data.get('anchor', None)
-                url = form.cleaned_data.get('url', None)
-
-                if (anchor and url):
-                    user_links.append(UserLink(user=user,
-                                                 anchor=anchor,
-                                                 url=url))
-
-            # Replace old skills with new
-            UserLink.objects.filter(user=user).delete()
-            UserLink.objects.bulk_create(user_links)
-
-
+            #TODO: add confirmation message here
             return redirect(reverse('accounts:profile-settings'))
 
     else:
@@ -207,6 +176,37 @@ def profile_settings(request):
     }
 
     return render(request, 'accounts/profile_settings.html', context)
+
+
+def save_paired_items(user, formset, Model, item_name, counterpart_name):
+    """
+    Handle saving skills or links to the database.
+    """
+    paired_items = []
+
+    for form in formset:
+        item = form.cleaned_data.get(item_name, None)
+        counterpart = form.cleaned_data.get(counterpart_name, None)
+
+        if item and counterpart:
+            model_instance = Model(user=user)
+            setattr(model_instance, item_name, item)
+            setattr(model_instance, counterpart_name, counterpart)
+            paired_items.append(model_instance)
+
+    # Replace old skills with new
+    Model.objects.filter(user=user).delete()
+    Model.objects.bulk_create(paired_items)
+
+
+def save_skills(user, formset):
+    """Wrapper function to save paired skills and proficiencies."""
+    save_paired_items(user, formset, UserSkill, 'skill', 'proficiency')
+
+
+def save_links(user, formset):
+    """Wrapper function to save paired link anchors and URLs."""
+    save_paired_items(user, formset, UserLink, 'anchor', 'url')
 
 
 @login_required
@@ -228,6 +228,7 @@ def account_settings(request):
 
             user.save()
 
+            #TODO: add confirmation message here
             return redirect(reverse('accounts:account-settings'))
 
     else:
