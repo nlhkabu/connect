@@ -10,8 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from django.utils.timezone import now
 
-from moderation.views import send_moderation_email
-from connect.utils import generate_html_email, hash_time
+from connect.utils import generate_html_email, hash_time, send_connect_email
 
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, LinkForm,
@@ -54,10 +53,10 @@ def request_invitation(request):
             template = 'moderation/emails/notify_moderators_of_new_application.html'
 
             for moderator in moderators:
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=moderator,
-                                      site=site)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=moderator,
+                                   site=site)
 
             return redirect('accounts:request-invitation-done')
     else:

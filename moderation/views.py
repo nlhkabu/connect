@@ -9,7 +9,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 
 from accounts.models import AbuseReport
-from connect.utils import generate_html_email, hash_time, generate_salt
+from connect.utils import (generate_html_email, generate_salt,
+                           hash_time, send_connect_email)
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
@@ -29,34 +30,6 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
         pertains_to=user,
         logged_by=moderator,
     )
-
-
-def send_moderation_email(subject, template, recipient, site, sender='',
-                          token='', comments='', logged_against=''):
-    """
-    Sends an email to the user from the moderation dashboard.
-    e.g. Invitation, reminder to activate their account, etc.
-    """
-
-    template_vars = {
-        'recipient': recipient,
-        'site_name': site.name,
-        'activation_url': token,
-        'sender': sender,
-        'comments': comments,
-        'logged_against': logged_against,
-        'email_contact':  settings.SITE_EMAIL,
-    }
-
-    email = generate_html_email(
-        subject,
-        settings.EMAIL_HOST_USER,
-        [recipient.email],
-        template,
-        template_vars,
-    )
-
-    email.send()
 
 
 @login_required
@@ -133,12 +106,12 @@ def invite_user(request):
         token = new_user.auth_token
         token_url = request.build_absolute_uri(
                     reverse('accounts:activate-account', args=[token]))
-        send_moderation_email(subject=subject,
-                              template=template,
-                              recipient=new_user,
-                              sender=moderator,
-                              site=site,
-                              token=token_url)
+        send_connect_email(subject=subject,
+                           template=template,
+                           recipient=new_user,
+                           sender=moderator,
+                           site=site,
+                           token=token_url)
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')
@@ -190,12 +163,12 @@ def reinvite_user(request):
             subject = 'Activate your {} account'.format(site.name)
             template = 'moderation/emails/reinvite_user.html'
 
-            send_moderation_email(subject=subject,
-                                  template=template,
-                                  recipient=user,
-                                  sender=moderator,
-                                  site=site,
-                                  token=token_url)
+            send_connect_email(subject=subject,
+                               template=template,
+                               recipient=user,
+                               sender=moderator,
+                               site=site,
+                               token=token_url)
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')
@@ -304,11 +277,11 @@ def review_applications(request):
                                 comment=log_comment)
 
             # Send moderation email
-            send_moderation_email(subject=subject,
-                                  template=template,
-                                  recipient=user,
-                                  site=site,
-                                  token=token_url)
+            send_connect_email(subject=subject,
+                               template=template,
+                               recipient=user,
+                               site=site,
+                               token=token_url)
 
             return redirect('moderation:review-applications')
 
@@ -357,10 +330,10 @@ def report_abuse(request, user_id):
             template = 'moderation/emails/notify_moderators_of_abuse_report.html'
 
             for moderator in moderators:
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=moderator,
-                                      site=site)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=moderator,
+                                   site=site)
 
             return redirect('moderation:abuse-report-lodged')
 
@@ -450,12 +423,12 @@ def review_abuse(request):
                 logged_by = abuse_report.logged_by
                 logged_against = abuse_report.logged_against
 
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=logged_by,
-                                      logged_against=logged_against,
-                                      site=site,
-                                      comments=comments)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_by,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
 
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
@@ -469,23 +442,23 @@ def review_abuse(request):
                                                     site.name)
                 template = 'moderation/emails/abuse_report_warn_other_user.html'
 
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=logged_by,
-                                      logged_against=logged_against,
-                                      site=site,
-                                      comments=comments)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_by,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
 
                 # send email to the user the report is logged against
                 subject = 'A formal warning from {}'.format(site.name)
                 template = 'moderation/emails/abuse_report_warn_this_user.html'
 
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=logged_against,
-                                      logged_against=logged_against,
-                                      site=site,
-                                      comments=comments)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_against,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
 
 
             if decision == 'BAN':
@@ -500,23 +473,23 @@ def review_abuse(request):
                                                     site.name)
                 template = 'moderation/emails/abuse_report_ban_other_user.html'
 
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=logged_by,
-                                      logged_against=logged_against,
-                                      site=site,
-                                      comments=comments)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_by,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
 
                 # send email to the user the report is logged against
                 subject = 'Your {} account has been terminated'.format(site.name)
                 template = 'moderation/emails/abuse_report_ban_this_user.html'
 
-                send_moderation_email(subject=subject,
-                                      template=template,
-                                      recipient=logged_against,
-                                      logged_against=logged_against,
-                                      site=site,
-                                      comments=comments)
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_against,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
                 # deactivate account
                 user.is_active = False
                 user.save()
