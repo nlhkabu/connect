@@ -58,12 +58,13 @@ class RequestInvitationForm(forms.Form):
         """
         cleaned_data = super(RequestInvitationForm, self).clean()
         email = cleaned_data.get('email')
-        user_emails = [user.email for user in User.objects.all() if user.email]
 
-        if email in user_emails:
+        try:
+            User.objects.get(email=email)
             raise forms.ValidationError("Sorry, this email address is already registered")
 
-        return cleaned_data
+        except User.DoesNotExist:
+            return cleaned_data
 
 
 class ActivateAccountForm(forms.Form):
