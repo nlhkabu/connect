@@ -58,13 +58,21 @@ class RequestInvitationForm(forms.Form):
         """
         cleaned_data = super(RequestInvitationForm, self).clean()
         email = cleaned_data.get('email')
+        validate_email_availability(email)
 
-        try:
-            User.objects.get(email=email)
-            raise forms.ValidationError("Sorry, this email address is already registered")
+        return cleaned_data
 
-        except User.DoesNotExist:
-            return cleaned_data
+
+def validate_email_availability(email):
+    """
+    Check that the email address is not registered to an existing user.
+    """
+    try:
+        User.objects.get(email=email)
+        raise forms.ValidationError("Sorry, this email address is already registered")
+
+    except User.DoesNotExist:
+        pass
 
 
 class ActivateAccountForm(forms.Form):
@@ -210,6 +218,7 @@ class PreferenceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         label = "<strong>{}</strong> ({})".format(obj.name, obj.description)
         return mark_safe(label)
 
+
 class ProfileForm(forms.Form):
     """
     Form for user to update their own profile details
@@ -296,9 +305,6 @@ class AccountSettingsForm(forms.Form):
                 raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         email = cleaned_data.get('email')
-        user_emails = [user.email for user in User.objects.exclude(id=self.user.id) if user.email]
-
-        if email in user_emails:
-            raise forms.ValidationError("Sorry, this email address is already registered")
+        validate_email_availability(email)
 
         return cleaned_data
