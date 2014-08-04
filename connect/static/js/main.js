@@ -107,12 +107,19 @@ $(document).ready(function(){
         $('.reinvite-member-form #id_email').val(email);
     });
 
+    var name;
+
     $('.revoke-link').click(function(e){
         e.preventDefault();
 
         user = $(this).data('user');
+        name = $(this).data('name');
+        email = $(this).data('email');
+
         $('#revoke-member-dialog').dialog('open');
         $('.revoke-invitation-form #id_user_id').val(user);
+        $('.revoke-invitation-form .name').html(name);
+        $('.revoke-invitation-form .email').html(email);
     });
 
 

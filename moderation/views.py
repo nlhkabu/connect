@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.models import get_current_site
-from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -199,20 +198,15 @@ def revoke_invitation(request):
         except User.DoesNotExist:
             raise PermissionDenied
 
-        comment = revocation_form.cleaned_data['comments']
-
         if not user.auth_token_is_used:
 
-            moderator.revoke_user_invitation(user)
-
-            # Log moderation event
-            msg_type = ModerationLogMsg.REVOCATION
-            log_comment = '{}'.format(comment)
-
-            log_moderator_event(msg_type=msg_type,
-                                user=user,
-                                moderator=moderator,
-                                comment=log_comment)
+            # Delete the user rather than deactivate it.
+            # Removing the email address from the system altogether means
+            # that the same email can later be used to create a new account
+            # (e.g. if the user applies or is invited by another moderator).
+            # Logs related to this user are also removed,
+            # resulting in less junk to filter in that view.
+            user.delete()
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')

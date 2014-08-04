@@ -90,7 +90,7 @@
                     <td>{{ user.date_joined }}</td>
                     <td>
                         <a href="#" class="table-link first resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">{% trans "Resend Invitation" %}</a>
-                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}">{% trans "Revoke Invitation" %}</a>
+                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}" data-name="{{ user.get_full_name }}" data-email="{{ user.email }}">{% trans "Revoke Invitation" %}</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -108,7 +108,13 @@
         <div class="dialog" id="revoke-member-dialog" title="Revoke Invitation">
             <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form">
                 {% csrf_token %}
-                {{ revocation_form.as_p }}
+                <p>
+                    <label class="revoke-label">
+                        {{ revocation_form.confirm }}
+                        Revoke my invitation to <span class="name">this user</span> at <span class="email">this email address</span>
+                    </label>
+                </p>
+                {{ revocation_form.user_id }}
                 <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
             </form>
         </div>

@@ -61,13 +61,9 @@ class ReInviteMemberForm(forms.Form):
 class RevokeMemberForm(forms.Form):
     """
     Form for moderator to revoke membership invitation.
-    Requires moderator to make a comment.
+    Requires moderator to confirm their action.
     """
-    comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder' : 'Please explain why you are revoking this invitation. '
-                        'This information will not be sent to the user, '
-                        'but will be recorded in the moderation logs.',
-    }))
+    confirm = forms.BooleanField()
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
 

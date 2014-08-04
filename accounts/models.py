@@ -232,19 +232,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return user
 
 
-    def revoke_user_invitation(self, user):
-        """
-        Revoke a user's invitation by removing all registration details.
-        """
-        user.registration_method = ''
-        user.moderator = None
-        user.moderator_decision = ''
-        user.decision_datetime = None
-        user.auth_token = ''
-        user.auth_token_is_used = False
-        user.save()
-
-        return user
+    #~def revoke_user_invitation(self, user):
+        #~"""
+        #~Revoke a user's invitation by removing all registration details.
+        #~"""
+        #~user.registration_method = ''
+        #~user.moderator = None
+        #~user.moderator_decision = ''
+        #~user.decision_datetime = None
+        #~user.auth_token = ''
+        #~user.auth_token_is_used = False
+        #~user.save()
+#~
+        #~return user
 
 
     def approve_user_application(self, user):

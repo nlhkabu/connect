@@ -3243,3 +3243,12 @@ ul.dash-tabs li.active a i {
 .warning.last {
   border-bottom: 0;
 }
+
+/* line 103, ../sass/pages/_moderators.scss */
+.revoke-label {
+  font-weight: normal;
+}
+/* line 106, ../sass/pages/_moderators.scss */
+.revoke-label span {
+  font-weight: bold;
+}
