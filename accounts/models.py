@@ -93,10 +93,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_moderator = models.BooleanField(default=False)
 
     # Registration details
-    registration_method = models.CharField(max_length=20,
+    registration_method = models.CharField(max_length=3,
                                            choices=REGISTRATION_CHOICES)
 
-    applied_datetime = models.DateTimeField(blank=True, null=True,
+    applied_datetime = models.DateTimeField(blank=True,
                        help_text='When user applied for an account (if applicable)')
 
     application_comments = models.TextField(blank=True,
@@ -109,11 +109,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                 limit_choices_to={'is_moderator': True},
                 help_text='Moderator who invited, approved or rejected this user')
 
-    moderator_decision = models.CharField(max_length=20,
+    moderator_decision = models.CharField(max_length=3,
                                           choices=MODERATOR_CHOICES,
                                           blank=True)
 
-    decision_datetime = models.DateTimeField(blank=True, null=True,
+    decision_datetime = models.DateTimeField(blank=True,
                         help_text='When moderator made decision to invite, '
                                   'approve or reject this user')
 
@@ -124,7 +124,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     auth_token_is_used = models.BooleanField(default=False,
                                              verbose_name='Token is used')
 
-    activated_datetime = models.DateTimeField(blank=True, null=True,
+    activated_datetime = models.DateTimeField(blank=True,
                          help_text='When user activated their account')
 
     objects = CustomUserManager()
@@ -199,7 +199,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def invite_new_user(self, email, first_name, last_name):
         """
-        Invite an inactive user (who needs to activate their account)
+        Invite an inactive user (who needs to activate their account).
+        Returns none if user already exists.
         """
         User = get_user_model()
 
@@ -223,7 +224,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def reinvite_user(self, user, email):
         """
         Reinvite an already invited user.
-        Override some registration details (if neccessary).
         """
         # Reset email, set a new token and update decision datetime
         user.email = email
@@ -296,31 +296,40 @@ class AbuseReport(models.Model):
 
     ABUSE_REPORT_CHOICES = (
        (DISMISS, 'Dismiss Report'),
-       (WARN, 'Warn Abuser'),
-       (BAN, 'Ban Abuser'),
+       (WARN, 'Warn User'),
+       (BAN, 'Ban User'),
     )
 
     logged_against = models.ForeignKey(settings.AUTH_USER_MODEL,
                                        related_name='abuse_reports_about')
+
     logged_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   related_name='abuse_reports_by')
+
     logged_datetime = models.DateTimeField(auto_now_add=True)
+
     abuse_comment = models.TextField()
+
     moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                  related_name='abuse_reports_moderatored_by',
+                                  related_name='abuse_reports_moderated_by',
                                   blank=True,
                                   null=True)
+
     moderator_decision = models.CharField(max_length=20,
                                           choices=ABUSE_REPORT_CHOICES,
                                           blank=True)
+
     moderator_comment = models.TextField(blank=True)
-    decision_datetime = models.DateTimeField(blank=True, null=True)
+
+    decision_datetime = models.DateTimeField(blank=True)
 
     class Meta:
         verbose_name = 'Abuse Report'
 
     def __str__(self):
-        return 'Reported by {}'.format(self.logged_by.get_full_name())
+        return 'Reported by {} against {}'.format(
+                                            self.logged_by.get_full_name(),
+                                            self.logged_against.get_full_name())
 
 
 class Skill(models.Model):
@@ -358,8 +367,11 @@ class UserSkill(models.Model):
                                       choices=PROFICIENCY_CHOICES,
                                       default=BEGINNER)
 
-
     def get_proficiency_percentage(self):
+        """
+        Return a user's profiency in a particular skill as a percentage,
+        based on the position of the proficiency in PROFICIENCY_CHOICES.
+        """
         choice_values = [choice[0] for choice in self.PROFICIENCY_CHOICES]
         if '' in choice_values:
             choice_values.remove('') # Remove the empty proficiency choice
@@ -399,7 +411,6 @@ class UserLink(models.Model):
     Link attached to a user's profile, e.g. github account,
     twitter account, etc.
     """
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
     url = models.URLField()
@@ -420,7 +431,6 @@ class UserLink(models.Model):
 
         return icon
 
-
     class Meta:
         verbose_name = 'Link'
         unique_together = (('user', 'anchor'), ('user', 'url'))
@@ -434,7 +444,11 @@ class LinkBrand(models.Model):
     Recognised third-party services.
     """
     name = models.CharField(max_length=100, unique=True)
-    domain = models.CharField(max_length=100, unique=True)
+    domain = models.CharField(max_length=100, unique=True,
+                              help_text='Do not include scheme '
+                              '(e.g. http://, https://)  or subdomain (e.g. www.) '
+                              'e.g github.com, facebook.com, etc.')
+
     fa_icon = models.CharField(
         max_length=100,
         verbose_name='Font Awesome Icon',

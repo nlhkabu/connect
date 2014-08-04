@@ -6,7 +6,7 @@
 {% block settings_active %}active{% endblock %}
 
 {% block settings_content %}
-    <form action="" method="post" class="horizontal-form">
+    <form action="" method="post" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>
             <legend>Account Settings</legend>

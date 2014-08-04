@@ -8,7 +8,7 @@
 {% block profile_active %}active{% endblock %}
 
 {% block settings_content %}
-    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form">
+    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form" novalidate>
     {% csrf_token %}
 
         <fieldset>
