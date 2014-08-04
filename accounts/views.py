@@ -151,7 +151,7 @@ def profile_settings(request):
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
             user.bio = form.cleaned_data['bio']
-            user.connect_preferences = form.cleaned_data['preferences']
+            user.roles = form.cleaned_data['roles']
 
             user.save()
 

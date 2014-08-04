@@ -1,11 +1,11 @@
 from django import forms
 
-from accounts.models import ConnectPreference, Skill
+from accounts.models import Role, Skill
 
 
 class FilterMemberForm(forms.Form):
     """
-    Form for searching for members by their skills and connect preferences.
+    Form for searching for members by their skills and roles.
     """
     skills = Skill.objects.all()
     selected_skills = forms.ModelMultipleChoiceField(
@@ -13,11 +13,11 @@ class FilterMemberForm(forms.Form):
                         widget=forms.CheckboxSelectMultiple(),
                         required=False)
 
-    preferences = ConnectPreference.objects.all()
-    selected_preferences = forms.ModelMultipleChoiceField(
-                            queryset=preferences,
-                            widget=forms.CheckboxSelectMultiple(),
-                            required=False)
+    roles = Role.objects.all()
+    selected_roles = forms.ModelMultipleChoiceField(
+                        queryset=roles,
+                        widget=forms.CheckboxSelectMultiple(),
+                        required=False)
 
 
 

@@ -2668,25 +2668,25 @@ a.table-link {
   }
 }
 /* line 105, ../sass/pages/_profile_and_accounts.scss */
-.profile-preferences ul {
+.roles ul {
   margin: 0;
 }
 /* line 108, ../sass/pages/_profile_and_accounts.scss */
-.profile-preferences ul li {
+.roles ul li {
   margin: 0;
   padding: 0;
 }
 /* line 114, ../sass/pages/_profile_and_accounts.scss */
-.profile-preferences label {
+.roles label {
   padding: 7px 10px;
 }
 /* line 117, ../sass/pages/_profile_and_accounts.scss */
-.profile-preferences label span {
+.roles label span {
   color: #767676;
   padding-left: 5px;
 }
 /* line 122, ../sass/pages/_profile_and_accounts.scss */
-.profile-preferences label:hover {
+.roles label:hover {
   background-color: #f4f4f4;
 }
 
@@ -2921,7 +2921,7 @@ ul.dash-tabs li.active a i {
   margin-bottom: 15px;
 }
 /* line 170, ../sass/pages/_dashboard.scss */
-.member-card-content .member-details .connect-preferences {
+.member-card-content .member-details .roles {
   display: block;
   width: 100%;
   padding-bottom: 7px;
@@ -2965,12 +2965,12 @@ ul.dash-tabs li.active a i {
 }
 
 /* line 216, ../sass/pages/_dashboard.scss */
-.connect-preferences,
+.roles,
 .member-skills {
   margin: 0;
 }
 /* line 219, ../sass/pages/_dashboard.scss */
-.connect-preferences li.badge,
+.roles li.badge,
 .member-skills li.badge {
   margin: 0 0 5px 0;
   display: inline-block;

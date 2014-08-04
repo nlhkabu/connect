@@ -5,7 +5,7 @@ from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.safestring import mark_safe
 
-from .models import CustomUser, ConnectPreference, Skill, UserSkill
+from .models import CustomUser, Role, Skill, UserSkill
 
 
 User = get_user_model()
@@ -213,7 +213,7 @@ class LinkForm(forms.Form):
                     required=False)
 
 
-class PreferenceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+class RoleModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         label = "<strong>{}</strong> ({})".format(obj.name, obj.description)
         return mark_safe(label)
@@ -252,12 +252,12 @@ class ProfileForm(forms.Form):
                                 }),
                                 required=False)
 
-        preferences = ConnectPreference.objects.all()
-        self.fields['preferences'] = PreferenceModelMultipleChoiceField(
-                                initial = self.user.connect_preferences.all(),
-                                queryset=preferences,
-                                widget=forms.CheckboxSelectMultiple(),
-                                required=False)
+        roles = Role.objects.all()
+        self.fields['roles'] = RoleModelMultipleChoiceField(
+                                   initial = self.user.roles.all(),
+                                   queryset=roles,
+                                   widget=forms.CheckboxSelectMultiple(),
+                                   required=False)
 
 
 class AccountSettingsForm(forms.Form):

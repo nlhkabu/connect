@@ -68,7 +68,7 @@ class MemberVisitTest(StaticLiveServerCase):
 # A card for each member registered on the site, with:
 # Member name
 # Member gravatar (if they have one)
-# Member connect preferences
+# Member roles
 # Member skills (and their proficiency)
 # Member bio
 # Member links
@@ -85,15 +85,15 @@ class MemberVisitTest(StaticLiveServerCase):
 
 ## CONNECT PREFERENCES
 
-# Sam also notices that she can filter results by their connect preferences.
-# She selects 'Mentor' to see all of the members who have the preference 'mentor'.
+# Sam also notices that she can filter results by their preferred roles.
+# She selects 'Mentor' to see all of the members who have the role 'mentor'.
 # Likewise, when she selects 'Mentor' and 'Mentee' she sees all of the members
-# with the preferences 'Mentor' OR 'Game Development'
+# with the roles 'Mentor' OR 'Game Development'
 
-# Sam notices that she can filter members by BOTH skill/interest & connect preference.
+# Sam notices that she can filter members by BOTH skill/interest & preferred role.
 # She is looking for a Django mentor, so selects 'Django' and 'Mentor'
 # All of the members listed in the results have the skill 'Django' and the
-# preference 'Mentor'.
+# role 'Mentor'.
 
 # Sam is also making a Python game and is looking for members to join her.
 # She selects 'Game Development' and 'Coding Buddy', but there is nobody in

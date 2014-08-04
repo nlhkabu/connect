@@ -15,7 +15,7 @@ User = get_user_model()
 def dashboard(request):
     """
     Shows all members as a list - with the capacity to filter by
-    member skills and preferences.
+    member skills and roles.
     """
     # Get additional profile data
     user = request.user
@@ -33,14 +33,14 @@ def dashboard(request):
         form = FilterMemberForm(request.POST)
         if form.is_valid():
             skills = form.cleaned_data['selected_skills']
-            preferences = form.cleaned_data['selected_preferences']
+            roles = form.cleaned_data['selected_roles']
 
             if skills:
                 listed_members = listed_members.filter(
                                                 skill__in=skills).distinct()
-            if preferences:
+            if roles:
                 listed_members = listed_members.filter(
-                    connect_preferences__in=preferences).distinct()
+                                                roles__in=roles).distinct()
     else:
         form = FilterMemberForm()
 

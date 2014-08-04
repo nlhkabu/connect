@@ -86,9 +86,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # Custom connect fields
     bio = models.TextField(blank=True)
 
-    connect_preferences = models.ManyToManyField('ConnectPreference',
-                                                  null=True,
-                                                  blank=True)
+    roles = models.ManyToManyField('Role', null=True, blank=True)
 
     is_moderator = models.BooleanField(default=False)
 
@@ -96,7 +94,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     registration_method = models.CharField(max_length=3,
                                            choices=REGISTRATION_CHOICES)
 
-    applied_datetime = models.DateTimeField(blank=True,
+    applied_datetime = models.DateTimeField(blank=True, null=True,
                        help_text='When user applied for an account (if applicable)')
 
     application_comments = models.TextField(blank=True,
@@ -113,7 +111,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                           choices=MODERATOR_CHOICES,
                                           blank=True)
 
-    decision_datetime = models.DateTimeField(blank=True,
+    decision_datetime = models.DateTimeField(blank=True, null=True,
                         help_text='When moderator made decision to invite, '
                                   'approve or reject this user')
 
@@ -124,7 +122,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     auth_token_is_used = models.BooleanField(default=False,
                                              verbose_name='Token is used')
 
-    activated_datetime = models.DateTimeField(blank=True,
+    activated_datetime = models.DateTimeField(blank=True, null=True,
                          help_text='When user activated their account')
 
     objects = CustomUserManager()
@@ -321,7 +319,7 @@ class AbuseReport(models.Model):
 
     moderator_comment = models.TextField(blank=True)
 
-    decision_datetime = models.DateTimeField(blank=True)
+    decision_datetime = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Abuse Report'
@@ -391,16 +389,16 @@ class UserSkill(models.Model):
         return '{} - {}'.format(self.user, self.skill)
 
 
-class ConnectPreference(models.Model):
+class Role(models.Model):
     """
-    Member preferences for how they want to connect with others.
+    Roles that users can take when connecting with others.
     e.g. Mentor, Mentee, Coding Partner, etc.
     """
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
     class Meta:
-        verbose_name = "Preference"
+        verbose_name = "Role"
 
     def __str__(self):
         return self.name

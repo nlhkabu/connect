@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from .models import (AbuseReport, CustomUser, ConnectPreference, LinkBrand,
+from .models import (AbuseReport, CustomUser, Role, LinkBrand,
                      Skill, UserLink, UserSkill)
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
@@ -47,7 +47,7 @@ class CustomUserAdmin(UserAdmin):
                                         'last_login',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
                                     'is_moderator', 'groups', 'user_permissions')}),
-        ('Connect Preferences', {'fields': ('connect_preferences',)}),
+        ('Roles', {'fields': ('roles',)}),
 
     )
     add_fieldsets = (
@@ -67,6 +67,6 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 
 # Register Preferences brands and skills
-admin.site.register(ConnectPreference)
+admin.site.register(Role)
 admin.site.register(LinkBrand)
 admin.site.register(Skill)

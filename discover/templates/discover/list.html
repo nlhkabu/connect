@@ -83,10 +83,10 @@
                             </a></h3>
                             <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
 
-                            {% if member.connect_preferences.all %}
-                                <ul class="connect-preferences">
-                                {% for preference in member.connect_preferences.all %}
-                                    <li class="badge">{{ preference }}</li>
+                            {% if member.roles.all %}
+                                <ul class="roles">
+                                {% for role in member.roles.all %}
+                                    <li class="badge">{{ role }}</li>
                                 {% endfor %}
                                 </ul>
                             {% endif %}

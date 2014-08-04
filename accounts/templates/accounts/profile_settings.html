@@ -80,18 +80,18 @@
         </fieldset>
 
         <fieldset>
-            <legend>Your Preferences</legend>
+            <legend>Your Roles</legend>
             <p class="intro">How would you like other members to interact with you?  Please select all that apply.</p>
             <dl>
-                <dt>{% trans "Preferences" %}</dt>
+                <dt>{% trans "Roles" %}</dt>
                 <dd>
-                    {% for field in form.preferences %}
+                    {% for field in form.roles %}
                         {{ field }}
                     {% endfor %}
-                    {% if form.preferences.errors %}
+                    {% if form.roles.errors %}
                             <span class="form-error">
                                 <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.preferences.errors }}
+                                {{ form.roles.errors }}
                             </span>
                     {% endif %}
                 </dd>

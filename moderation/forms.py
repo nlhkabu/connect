@@ -131,9 +131,3 @@ class FilterLogsForm(forms.Form):
 
     msg_type = forms.ChoiceField(choices=ModerationLogMsg.MSG_TYPE_CHOICES,
                                  required=False)
-#~
-    #~preferences = ConnectPreference.objects.all()
-    #~selected_preferences = forms.ModelMultipleChoiceField(
-                            #~queryset=preferences,
-                            #~widget=forms.CheckboxSelectMultiple(),
-                            #~required=False)

@@ -23,14 +23,14 @@ User = get_user_model()
 # His First Name
 # His Last Name
 # His Biography
-# His connect preferences
+# His preferred roles
 # His skills and how proficient he is at each one
 # His links
 
 # Greg updates his first name and clicks 'save preferences'
 # When the page reloads, his updated name appears.
 
-# He does the same for his last name, bio and connect preferences.
+# He does the same for his last name, bio and preferred roles.
 
 # Greg decides that he doesn't want the connect community to see his biography.
 # So he makes this field empty and saves his preferences.
