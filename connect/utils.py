@@ -73,7 +73,7 @@ def generate_html_email(subject, from_address, recipients,
 
 
 def send_connect_email(subject, template, recipient, site, sender='',
-                       token='', comments='', logged_against=''):
+                       url='', comments='', logged_against=''):
     """
     Sends an email to notify users and moderators of relevant events.
     e.g. account activation, abuse decisions, new account applications, etc.
@@ -82,7 +82,7 @@ def send_connect_email(subject, template, recipient, site, sender='',
     template_vars = {
         'recipient': recipient,
         'site_name': site.name,
-        'activation_url': token,
+        'url': url,
         'sender': sender,
         'comments': comments,
         'logged_against': logged_against,
