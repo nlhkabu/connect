@@ -110,7 +110,7 @@ def invite_user(request):
                            recipient=new_user,
                            sender=moderator,
                            site=site,
-                           token=token_url)
+                           url=token_url)
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')
@@ -167,7 +167,7 @@ def reinvite_user(request):
                                recipient=user,
                                sender=moderator,
                                site=site,
-                               token=token_url)
+                               url=token_url)
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')
@@ -275,7 +275,7 @@ def review_applications(request):
                                template=template,
                                recipient=user,
                                site=site,
-                               token=token_url)
+                               url=token_url)
 
             return redirect('moderation:review-applications')
 
