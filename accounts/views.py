@@ -49,6 +49,10 @@ def request_invitation(request):
                                                     is_active=True)
 
             site = get_current_site(request)
+
+            url = request.build_absolute_uri(
+                                reverse('moderation:review-applications'))
+
             subject = 'New account request at {}'.format(site.name)
             template = 'moderation/emails/notify_moderators_of_new_application.html'
 
@@ -56,7 +60,8 @@ def request_invitation(request):
                 send_connect_email(subject=subject,
                                    template=template,
                                    recipient=moderator,
-                                   site=site)
+                                   site=site,
+                                   url=url)
 
             return redirect('accounts:request-invitation-done')
     else:

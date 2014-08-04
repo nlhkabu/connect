@@ -320,6 +320,10 @@ def report_abuse(request, user_id):
                                       .exclude(id=logged_against.id))
 
             site = get_current_site(request)
+
+            url = request.build_absolute_uri(
+                                reverse('moderation:review-abuse'))
+
             subject = 'New abuse report at {}'.format(site.name)
             template = 'moderation/emails/notify_moderators_of_abuse_report.html'
 
@@ -327,7 +331,8 @@ def report_abuse(request, user_id):
                 send_connect_email(subject=subject,
                                    template=template,
                                    recipient=moderator,
-                                   site=site)
+                                   site=site,
+                                   url=url)
 
             return redirect('moderation:abuse-report-lodged')
 
