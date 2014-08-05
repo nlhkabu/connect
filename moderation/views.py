@@ -103,14 +103,14 @@ def invite_user(request):
         subject = 'Welcome to {}'.format(site.name)
         template = 'moderation/emails/invite_new_user.html'
         token = new_user.auth_token
-        token_url = request.build_absolute_uri(
+        url = request.build_absolute_uri(
                     reverse('accounts:activate-account', args=[token]))
         send_connect_email(subject=subject,
                            template=template,
                            recipient=new_user,
                            sender=moderator,
                            site=site,
-                           url=token_url)
+                           url=url)
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')
@@ -155,7 +155,7 @@ def reinvite_user(request):
                                 comment=log_comment)
 
             # Send email
-            token_url = request.build_absolute_uri(
+            url = request.build_absolute_uri(
                         reverse('accounts:activate-account',
                                 args=[user.auth_token]))
 
@@ -167,7 +167,7 @@ def reinvite_user(request):
                                recipient=user,
                                sender=moderator,
                                site=site,
-                               url=token_url)
+                               url=url)
 
         # TODO: Add confirmation message here
         return redirect('moderation:moderators')
@@ -247,7 +247,7 @@ def review_applications(request):
 
                 # Set log and email settings
                 msg_type = ModerationLogMsg.APPROVAL
-                token_url = request.build_absolute_uri(
+                url = request.build_absolute_uri(
                                     reverse('accounts:activate-account',
                                     args=[user.auth_token]))
                 subject = 'Welcome to {}'.format(site.name)
@@ -258,7 +258,7 @@ def review_applications(request):
 
                 # Set log and email settings
                 msg_type = ModerationLogMsg.REJECTION
-                token_url = ''
+                url = ''
                 subject = 'Your application to {} has been rejected'.format(site.name)
                 template = 'moderation/emails/reject_user.html'
 
@@ -275,7 +275,7 @@ def review_applications(request):
                                template=template,
                                recipient=user,
                                site=site,
-                               url=token_url)
+                               url=url)
 
             return redirect('moderation:review-applications')
 
