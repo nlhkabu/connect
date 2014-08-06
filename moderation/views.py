@@ -217,6 +217,8 @@ def revoke_invitation(request):
 
 @login_required
 @permission_required('accounts.access_moderators_section')
+@permission_required('accounts.approve_user_application')
+@permission_required('accounts.reject_user_application')
 def review_applications(request):
     """
     Review all pending applications.
@@ -350,15 +352,10 @@ def report_abuse(request, user_id):
 
 
 @login_required
-def abuse_report_lodged(request):
-    """
-    Show confirmation message for a when an abuse report has been lodged.
-    """
-    return render(request, 'moderation/abuse_report_lodged.html')
-
-
-@login_required
 @permission_required('accounts.access_moderators_section')
+@permission_required('accounts.dismiss_abuse_report')
+@permission_required('accounts.warn_user')
+@permission_required('accounts.ban_user')
 def review_abuse(request):
     """
     Show a list of abuse reports to moderators.
@@ -412,6 +409,9 @@ def review_abuse(request):
             abuse_report.decision_datetime = now()
             abuse_report.save()
 
+            logged_by = abuse_report.logged_by
+            logged_against = abuse_report.logged_against
+
 
             if decision == 'DISMISS':
                 msg_type = ModerationLogMsg.DISMISSAL
@@ -419,76 +419,43 @@ def review_abuse(request):
                 # Send email to the user who made the report
                 subject = 'Your {} Abuse Report has been dismissed'.format(site.name)
                 template = 'moderation/emails/abuse_report_dismissed.html'
-                logged_by = abuse_report.logged_by
-                logged_against = abuse_report.logged_against
+                send_email_to_reporting_user(subject, template)
 
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_by,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
 
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
-                logged_by = abuse_report.logged_by
-                logged_against = abuse_report.logged_against
 
-                # send email to the user the report was logged by
+                # send email to the user who made the report
                 subject = ('{} {} has been issued a formal '
                           'warning from {} ').format(logged_against.first_name,
                                                     logged_against.last_name,
                                                     site.name)
                 template = 'moderation/emails/abuse_report_warn_other_user.html'
-
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_by,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
+                send_email_to_reporting_user(subject, template)
 
                 # send email to the user the report is logged against
                 subject = 'A formal warning from {}'.format(site.name)
                 template = 'moderation/emails/abuse_report_warn_this_user.html'
-
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_against,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
+                send_email_to_offending_user(subject, template)
 
 
             if decision == 'BAN':
                 msg_type = ModerationLogMsg.BANNING
-                logged_by = abuse_report.logged_by
-                logged_against = abuse_report.logged_against
 
-                # send email to the user the report was logged by
+                # send email to the user who made the report
                 subject = ('{} {} has been '
                            'banned from {}').format(logged_against.first_name,
                                                     logged_against.last_name,
                                                     site.name)
                 template = 'moderation/emails/abuse_report_ban_other_user.html'
+                send_email_to_reporting_user(subject, template)
 
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_by,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
 
                 # send email to the user the report is logged against
                 subject = 'Your {} account has been terminated'.format(site.name)
                 template = 'moderation/emails/abuse_report_ban_this_user.html'
+                send_email_to_offending_user(subject, template)
 
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_against,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
                 # deactivate account
                 user.is_active = False
                 user.save()
@@ -500,6 +467,34 @@ def review_abuse(request):
                                 user=user,
                                 moderator=moderator,
                                 comment=log_comment)
+
+
+            def send_email_to_reporting_user(subject, template):
+                """
+                Wrapper function for sending email to the user who has made
+                the abuse report.
+                """
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_by,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
+
+
+            def send_email_to_offending_user(subject, template):
+                """
+                Wrapper function for sending email to the user who the abuse
+                report has been made against.
+                """
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_against,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
+
+
 
             return redirect('moderation:review-abuse')
 
@@ -527,7 +522,6 @@ def view_logs(request):
 
             logs = (ModerationLogMsg.objects.filter(msg_type=msg_type)
                                             .exclude(pertains_to=request.user))
-
 
     else:
         form = FilterLogsForm()

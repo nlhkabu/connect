@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, url
+from django.views.generic.base import TemplateView
+
 from moderation import views
 
 urlpatterns = patterns('',
@@ -10,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^review-abuse-reports$', 'moderation.views.review_abuse', name='review-abuse'),
     url(r'^logs$', 'moderation.views.view_logs', name='logs'),
     url(r'^(?P<user_id>\d+)/report-abuse$', 'moderation.views.report_abuse', name='report-abuse'),
-    url(r'^abuse-report-lodged$', 'moderation.views.abuse_report_lodged', name='abuse-report-lodged'),
+    url(r'^abuse-report-lodged$',
+        TemplateView.as_view(template_name='moderation/abuse_report_lodged.html')),
 )
