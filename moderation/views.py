@@ -371,16 +371,18 @@ def review_abuse(request):
     # - the accused is the logged in user
     # - the accusor is the logged in user
     undecided_reports = (AbuseReport.objects.filter(decision_datetime=None)
-                                        .exclude(logged_against__is_active=False)
-                                        .exclude(logged_against=request.user)
-                                        .exclude(logged_by=request.user)
-                                        .select_related())
+                            .exclude(logged_against__is_active=False)
+                            .exclude(logged_against=request.user)
+                            .exclude(logged_by=request.user)
+                            .select_related('logged_against', 'logged_by'))
 
     reported_users = set([report.logged_against
                           for report in undecided_reports])
 
-    warnings = AbuseReport.objects.filter(logged_against__in=reported_users,
-                                          moderator_decision='WARN')
+    warnings = AbuseReport.objects.filter(
+        logged_against__in=reported_users,
+        moderator_decision='WARN'
+    ).select_related('logged_against', 'logged_by', 'moderator')
 
     form = ModerateAbuseForm()
 
