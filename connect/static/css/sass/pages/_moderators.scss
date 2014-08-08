@@ -41,6 +41,8 @@
 }
 
 
+// Tables
+
 .invitation-table,
 .review-app-table,
 .abuse-table {
@@ -154,6 +156,29 @@
     }
 }
 
+// Truncate comments in various tables
+
+td.comments .mobile {
+    display: none;
+}
+
+@media (max-device-width: 1060px) {
+    td.comments .mobile {
+        display: inline;
+    }
+
+    td.comments .desktop {
+        display: none;
+    }
+}
+
+.comments-dialog .comments {
+    padding: 5px 0 10px 0;
+}
+
+
+// Prior warnings on review abuse page
+
 .show-warnings {
     display: block;
     padding-top: 15px;
@@ -182,6 +207,9 @@
 .warning.last {
     border-bottom: 0;
 }
+
+
+// Revoke invitation form label
 
 .revoke-label {
     font-weight: normal;

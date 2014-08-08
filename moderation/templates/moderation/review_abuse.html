@@ -28,7 +28,7 @@
                     <tr>
                         <td class="date">{{ report.logged_datetime|date:"M d, y" }}</td>
                         <td class="email">
-                            {{ report.logged_against.get_full_name }}<br/>
+                            {{ report.logged_against.get_full_name|title }}<br/>
                             <a href="mailto:{{ report.logged_against.email }}" class="wrap">{{ report.logged_against.email }}</a>
                             {% if report.prior_warnings %}
                                 <a href="#" class="show-warnings" data-user="{{ report.logged_against.id }}">
@@ -37,10 +37,20 @@
                             {% endif %}
                         </td>
                         <td class="email">
-                            {{ report.logged_by.get_full_name }}<br/>
+                            {{ report.logged_by.get_full_name|title }}<br/>
                             <a href="mailto:{{ report.logged_by.email }}" class="wrap">{{ report.logged_by.email }}</a>
                         </td>
-                        <td class="comments">{{ report.abuse_comment|linebreaksbr }}</td>
+                        <td class="comments">
+                            <span class="desktop">
+                                {{ report.abuse_comment|linebreaksbr|truncatewords_html:20 }}
+                                {% if report.abuse_comment|wordcount > 21 %}
+                                    <a class="read-more" href="#" data-id="{{ report.id }}">Read More</a>
+                                {% endif %}
+                            </span>
+                            <span class="mobile">
+                                {{ report.abuse_comment|linebreaksbr }}
+                            </span>
+                        </td>
                         <td class="actions">
                             <a href="#" class="table-link first decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="Dismiss Abuse Report">
                                 Dismiss Report
@@ -57,10 +67,20 @@
             </tbody>
         </table>
 
-        <!-- Prior Warnings Modal-->
+
         {% for report in reports %}
+            <!-- Comments dialog -->
+            {% if report.abuse_comment|wordcount > 21 %}
+                <div class="comments-dialog dialog" id="dialog{{ report.id }}" title="Comments for report logged against {{ report.logged_against.get_full_name|title }}">
+                    <div class="comments">
+                        {{ report.abuse_comment|linebreaksbr }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Prior Warnings Modal-->
             {% if report.prior_warnings %}
-                <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="{{ report.prior_warnings|length|apnumber|title }} prior warning{{ report.prior_warnings|length|pluralize }} for {{ report.logged_against.get_full_name }}">
+                <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="{{ report.prior_warnings|length|apnumber|title }} prior warning{{ report.prior_warnings|length|pluralize }} for {{ report.logged_against.get_full_name|title }}">
                     {% for warning in report.prior_warnings %}
                         <div class="warning {% if forloop.last %}last{% endif %}">
                             <h4 class="{% if forloop.first %}first{% endif %}">{% trans "Abuse Report Details" %}:</h4>
@@ -69,8 +89,8 @@
                             {{ warning.moderator_comment|linebreaksbr }}<br/>
                             <h4>Meta:</h4>
                             <p class="meta">
-                                {% trans "Report made by" %} <em>{{ warning.logged_by.get_full_name }}</em> on <em>{{ warning.logged_datetime }}</em><br/>
-                                {% trans "Warning issued on" %} <em>{{ warning.decision_datetime }}</em> by <em>{{ warning.moderator.get_full_name }}</em>
+                                {% trans "Report made on" %} <em>{{ warning.logged_datetime|date:"M d, Y" }}</em> by <em>{{ warning.logged_by.get_full_name|title }}</em><br/>
+                                {% trans "Warning issued on" %} <em>{{ warning.decision_datetime|date:"M d, Y" }}</em> by <em>{{ warning.moderator.get_full_name|title }}</em>
                             </p>
                         </div>
                     {% endfor %}
@@ -78,6 +98,7 @@
             {% endif %}
         {% endfor %}
 
+        <!-- Form dialog -->
         <div id="review-abuse-dialog" class="dialog">
             <form action="" method="post" class="review-abuse-form">
                 {% csrf_token %}

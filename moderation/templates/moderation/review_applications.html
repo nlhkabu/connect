@@ -26,10 +26,20 @@
             <tbody>
                 {% for user in pending %}
                 <tr>
-                    <td>{{ user.get_full_name }}</td>
+                    <td>{{ user.get_full_name|title }}</td>
                     <td class="email"><span class="wrap">{{ user.email }}</span></td>
                     <td class="date">{{ user.applied_datetime|date:"M d, y" }}</td>
-                    <td class="comments">{{ user.application_comments|linebreaksbr }}</td>
+                    <td class="comments">
+                        <span class="desktop">
+                            {{ user.application_comments|linebreaksbr|truncatewords_html:20 }}
+                            {% if user.application_comments|wordcount > 21 %}
+                                <a class="read-more" href="#" data-id="{{ user.id }}">Read More</a>
+                            {% endif %}
+                        </span>
+                        <span class="mobile">
+                            {{ user.application_comments|linebreaksbr }}
+                        </span>
+                    </td>
                     <td class="actions">
                         <a href="#" class="table-link first decision-link" data-user="{{ user.id }}" data-decision="APP">Approve Application</a>
                         <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="REJ">Reject Application</a>
@@ -51,6 +61,17 @@
             <p class="intro">{% trans "There are currently no pending membership applications in the system." %}</p>
         </div>
     {% endif %}
+
+
+    {% for user in pending %}
+        {% if user.application_comments|wordcount > 21 %}
+            <div class="comments-dialog dialog" id="dialog{{ user.id }}" title="Application comments for {{ user.get_full_name|title }}">
+                <div class="comments">
+                    {{ user.application_comments|linebreaksbr }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
 
 {% endblock %}
 

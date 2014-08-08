@@ -85,12 +85,12 @@
             <tbody>
                 {% for user in pending %}
                 <tr>
-                    <td>{{ user.get_full_name }}</td>
+                    <td>{{ user.get_full_name|title }}</td>
                     <td class="email"><span class="wrap">{{ user.email }}</span></td>
                     <td class="date">{{ user.date_joined|date:"M d, y" }}</td>
                     <td class="actions">
                         <a href="#" class="table-link first resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">{% trans "Resend Invitation" %}</a>
-                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}" data-name="{{ user.get_full_name }}" data-email="{{ user.email }}">{% trans "Revoke Invitation" %}</a>
+                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}" data-name="{{ user.get_full_name|title }}" data-email="{{ user.email }}">{% trans "Revoke Invitation" %}</a>
                     </td>
                 </tr>
                 {% endfor %}

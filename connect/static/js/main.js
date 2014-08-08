@@ -79,6 +79,27 @@ $(document).ready(function(){
     });
 
 
+    // ----------------------
+    // MODERATION - UNIVERSAL
+    // ----------------------
+
+
+    // Show full application comments if they have been truncated
+    $('.comments-dialog').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 600,
+        maxHeight: 600
+    });
+
+    $('.read-more').click(function(e){
+        e.preventDefault();
+
+        id = $(this).data('id');
+        $('#dialog'+ id).dialog('open');
+    });
+
+
     // --------------------------
     // MODERATION - INVITE MEMBER
     // --------------------------

@@ -7,8 +7,8 @@
 {% block content %}
     <div class="container">
 
-        <p>{% trans "Logged by" %}: {{ logged_by.get_full_name }}</p>
-        <p>{% trans "Logged Against" %}: {{ logged_against.get_full_name }}</p>
+        <p>{% trans "Logged by" %}: {{ logged_by.get_full_name|title }}</p>
+        <p>{% trans "Logged Against" %}: {{ logged_against.get_full_name|title }}</p>
 
         <form action="" method="post">
             {% csrf_token %}
