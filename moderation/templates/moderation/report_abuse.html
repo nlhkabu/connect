@@ -29,8 +29,9 @@
                         {{ form.comments }}
                         {% if form.comments.errors %}
                             <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.comments.errors }}
+                                {% for error in form.comments.errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
                             </span>
                         {% endif %}
                     </dd>

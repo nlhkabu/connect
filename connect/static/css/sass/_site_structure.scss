@@ -89,7 +89,7 @@ p.intro {
     padding: 3px 5px;
 
     span {
-        display: inline;
+        display: block;
     }
 
     .fa {
@@ -619,6 +619,7 @@ a.table-link {
 
         textarea {
             height: 120px;
+            margin-bottom: 10px;
         }
 
         .button {

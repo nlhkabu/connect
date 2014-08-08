@@ -82,6 +82,7 @@ def activate_account(request, token):
     Allow a user to activate their account with the token sent to them
     by email.
     """
+    site = get_current_site(request)
     user = get_object_or_404(User, auth_token=token)
 
     if not user.auth_token_is_used:
@@ -114,6 +115,7 @@ def activate_account(request, token):
         context = {
             'user' : user,
             'form' : form,
+            'site' : site,
         }
 
     else:

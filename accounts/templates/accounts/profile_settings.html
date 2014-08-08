@@ -20,10 +20,11 @@
                 <dd>
                     {{ form.first_name }}
                     {% if form.first_name.errors %}
-                            <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.first_name.errors }}
-                            </span>
+                        <span class="form-error">
+                            {% for error in form.first_name.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
                     {% endif %}
                 </dd>
                 <span class="clearfix"></span>
@@ -33,10 +34,11 @@
                 <dd>
                     {{ form.last_name }}
                     {% if form.last_name.errors %}
-                            <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.last_name.errors }}
-                            </span>
+                        <span class="form-error">
+                            {% for error in form.last_name.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
                     {% endif %}
                 </dd>
                 <span class="clearfix"></span>
@@ -56,25 +58,26 @@
             <dl>
                 <dt>{% trans "Links" %}</dt>
                 <dd>
-                        {{ link_formset.management_form }}
-                        {% for form in link_formset %}
-                            <div class="link-formset">
-                                {{ form.anchor }}
-                                <span class="divider">
-                                    <i class="fa fa-arrows-h"></i>
-                                </span>
-                                {{ form.url }}
-                            </div>
-                        {% endfor %}
+                    {{ link_formset.management_form }}
+                    {% for form in link_formset %}
+                        <div class="link-formset">
+                            {{ form.anchor }}
+                            <span class="divider">
+                                <i class="fa fa-arrows-h"></i>
+                            </span>
+                            {{ form.url }}
+                        </div>
+                    {% endfor %}
 
-                        {% if link_formset.non_form_errors %}
-                            <div>
-                                <span class="form-error">
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    {{ link_formset.non_form_errors }}
-                                </span>
-                            </div>
-                        {% endif %}
+                    {% if link_formset.non_form_errors %}
+                        <div>
+                            <span class="form-error">
+                                {% for error in link_formset.non_form_errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
+                            </span>
+                        </div>
+                    {% endif %}
                 </dd>
             </dl>
         </fieldset>
@@ -89,10 +92,11 @@
                         {{ field }}
                     {% endfor %}
                     {% if form.roles.errors %}
-                            <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.roles.errors }}
-                            </span>
+                        <span class="form-error">
+                            {% for error in form.roles.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
                     {% endif %}
                 </dd>
                 <span class="clearfix"></span>
@@ -120,10 +124,13 @@
                     {% endfor %}
 
                     {% if skill_formset.non_form_errors %}
-                        <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ skill_formset.non_form_errors }}
-                        </span>
+                        <div>
+                            <span class="form-error">
+                                {% for error in skill_formset.non_form_errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
+                            </span>
+                        </div>
                     {% endif %}
                 </dd>
                 <span class="clearfix"></span>

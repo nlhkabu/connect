@@ -1980,7 +1980,7 @@ p.intro {
 }
 /* line 91, ../sass/_site_structure.scss */
 .form-error span {
-  display: inline;
+  display: block;
 }
 /* line 95, ../sass/_site_structure.scss */
 .form-error .fa {
@@ -2509,8 +2509,9 @@ a.table-link {
 /* line 620, ../sass/_site_structure.scss */
 .dialog form textarea {
   height: 120px;
+  margin-bottom: 10px;
 }
-/* line 624, ../sass/_site_structure.scss */
+/* line 625, ../sass/_site_structure.scss */
 .dialog form .button {
   margin-bottom: 0;
 }

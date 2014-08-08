@@ -102,7 +102,19 @@
         <div id="review-abuse-dialog" class="dialog">
             <form action="" method="post" class="review-abuse-form">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.report_id }}
+                {{ form.decision }}
+                <p>
+                    <label>Comments</label>
+                    {{ form.comments }}
+                    {% if form.comments.errors %}
+                        <span class="form-error">
+                            {% for error in form.comments.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </p>
                 <input type="submit" value="{% trans 'Moderate Abuse Report' %}" class="button" />
             </form>
         </div>

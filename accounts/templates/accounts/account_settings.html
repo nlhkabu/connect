@@ -17,8 +17,9 @@
                     {{ form.email }}
                     {% if form.email.errors %}
                         <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ form.email.errors }}
+                            {% for error in form.email.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
                         </span>
                     {% endif %}
                 </dd>
@@ -33,8 +34,9 @@
 
                     {% if form.non_field_errors %}
                         <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ form.non_field_errors }}
+                            {% for error in form.non_field_errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
                         </span>
                     {% endif %}
                 </dd>
@@ -49,17 +51,4 @@
             </dl>
         </fieldset>
     </form>
-{% endblock %}
-
-{% block extra_js %}
-    <script>
-        $(document).ready(function(){
-            // Enable fancy hover/focus CSS
-            $('.account-input').on('blur', function(){
-                $(this).addClass('inactive');
-            }).on('focus', function(){
-                $(this).removeClass('inactive');
-            });
-        });
-    </script>
 {% endblock %}

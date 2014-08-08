@@ -21,8 +21,9 @@
                     {{ invitation_form.first_name }}
                     {% if invitation_form.first_name.errors %}
                         <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ invitation_form.first_name.errors }}
+                            {% for error in invitation_form.first_name.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
                         </span>
                     {% endif %}
                 </dd>
@@ -34,8 +35,9 @@
                     {{ invitation_form.last_name }}
                     {% if invitation_form.last_name.errors %}
                         <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ invitation_form.last_name.errors }}
+                            {% for error in invitation_form.last_name.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
                         </span>
                     {% endif %}
                 </dd>
@@ -47,14 +49,16 @@
                     {{ invitation_form.email }}
                     {% if invitation_form.email.errors %}
                         <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ invitation_form.email.errors }}
+                            {% for error in invitation_form.email.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
                         </span>
                     {% endif %}
                     {% if invitation_form.non_field_errors %}
                         <span class="form-error">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            <span>{{ invitation_form.non_field_errors }}</span>
+                            {% for error in invitation_form.non_field_errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
                         </span>
                     {% endif %}
                 </dd>

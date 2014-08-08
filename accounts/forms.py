@@ -11,6 +11,18 @@ from .models import CustomUser, Role, Skill, UserSkill
 User = get_user_model()
 
 
+def validate_email_availability(email):
+    """
+    Check that the email address is not registered to another existing user.
+    """
+    try:
+        User.objects.get(email=email)
+        raise forms.ValidationError("Sorry, this email address is already registered to another user")
+
+    except User.DoesNotExist:
+        pass
+
+
 class CustomUserCreationForm(UserCreationForm):
     """
     A form that creates a user, with no privileges, from the given email and
@@ -61,18 +73,6 @@ class RequestInvitationForm(forms.Form):
         validate_email_availability(email)
 
         return cleaned_data
-
-
-def validate_email_availability(email):
-    """
-    Check that the email address is not registered to an existing user.
-    """
-    try:
-        User.objects.get(email=email)
-        raise forms.ValidationError("Sorry, this email address is already registered")
-
-    except User.DoesNotExist:
-        pass
 
 
 class ActivateAccountForm(forms.Form):
@@ -305,6 +305,8 @@ class AccountSettingsForm(forms.Form):
                 raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         email = cleaned_data.get('email')
-        validate_email_availability(email)
+
+        if email != self.user.email:
+            validate_email_availability(email)
 
         return cleaned_data

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from .models import ModerationLogMsg
 from accounts.models import AbuseReport
+from accounts.forms import validate_email_availability
 
 User = get_user_model()
 
@@ -20,10 +21,7 @@ class InviteMemberForm(forms.Form):
         """
         cleaned_data = super(InviteMemberForm, self).clean()
         email = cleaned_data.get('email')
-        user_emails = [user.email for user in User.objects.all() if user.email]
-
-        if email in user_emails:
-            raise forms.ValidationError("Sorry, this email address is already registered")
+        validate_email_availability(email)
 
         return cleaned_data
 
@@ -47,13 +45,7 @@ class ReInviteMemberForm(forms.Form):
 
         # If this email is not already registered to this user
         if email != user.email:
-
-            # get all the other emails in the system
-            user_emails = [user.email for user in User.objects.all() if user.email]
-
-            # raise an error if this is registered to another user
-            if email in user_emails:
-                raise forms.ValidationError("Sorry, this email address is already registered to another user")
+            validate_email_availability(email)
 
         return cleaned_data
 

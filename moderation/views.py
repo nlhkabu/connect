@@ -230,19 +230,19 @@ def review_applications(request):
                                   decision_datetime=None,
                                   is_active=False)
 
-    moderation_form = ModerateApplicationForm()
+    form = ModerateApplicationForm()
 
     if request.method == 'POST':
-        moderation_form = ModerateApplicationForm(request.POST)
+        form = ModerateApplicationForm(request.POST)
 
         try:
             user = User.objects.get(id=request.POST['user_id'])
         except User.DoesNotExist:
             raise PermissionDenied
 
-        if moderation_form.is_valid():
-            decision = moderation_form.cleaned_data['decision']
-            comments = moderation_form.cleaned_data['comments']
+        if form.is_valid():
+            decision = form.cleaned_data['decision']
+            comments = form.cleaned_data['comments']
 
             if decision == 'APP':
                 moderator.approve_user_application(user)
@@ -284,7 +284,7 @@ def review_applications(request):
 
     context = {
         'pending' : pending,
-        'moderation_form' : moderation_form,
+        'form' : form,
     }
 
     return render(request, 'moderation/review_applications.html', context)

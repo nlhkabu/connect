@@ -5,15 +5,91 @@
 
 {% block page_content %}
     <div class="container">
-        <h2>Activate Account</h2>
         {% if token_is_used %}
-            <p>Sorry, this token is used.</p>
+            <h3 class="lined">Token is Used</h3>
+            <p class="intro">
+                We're sorry, this activation token has already been used.<br/>
+                If you already have an account, please login <a href="/">here.</a><br/>
+                To request a new token, please visit the <a href="{% url 'request_invitation' %}">request account</a> page.
+            </p>
+
         {% else %}
-            {{ user.get_full_name }}
-            <form action="" method="post">
+            <form action="" method="post" class="horizontal-form">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="{% trans 'Activate Account' %}" />
+                <fieldset>
+                    <legend>Activate Account</legend>
+                    <p class="intro">Activate your {{ site.name }} account.  If you wish to change the email account you are registered with, you can do so once logged in.</p>
+                    <dl>
+                        <dt>{% trans "First Name" %}</dt>
+                        <dd>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <span class="form-error">
+                                    {% for error in form.first_name.errors %}
+                                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+                        </dd>
+                        <span class="clearfix"></span>
+                    </dl>
+                    <dl>
+                        <dt>{% trans "Last Name" %}</dt>
+                        <dd>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <span class="form-error">
+                                    {% for error in form.last_name.errors %}
+                                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+                        </dd>
+                        <span class="clearfix"></span>
+                    </dl>
+                    <dl>
+                        <dt>{% trans "Password" %}</dt>
+                        <dd>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <span class="form-error">
+                                    {% for error in form.password.errors %}
+                                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+                        </dd>
+                        <span class="clearfix"></span>
+                    </dl>
+                    <dl>
+                        <dt>{% trans "Confirm Password" %}</dt>
+                        <dd>
+                            {{ form.confirm_password }}
+                            {% if form.confirm_password.errors %}
+                                <span class="form-error">
+                                    {% for error in form.confirm_password.errors %}
+                                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+                            {% if form.non_field_errors %}
+                                <span class="form-error">
+                                    {% for error in form.non_field_errors %}
+                                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+                        </dd>
+                        <span class="clearfix"></span>
+                    </dl>
+                    <dl>
+                        <dt></dt>
+                        <dd>
+                            <input type="submit" value="{% trans 'Activate Account' %}" class="button"/>
+                        </dd>
+                        <span class="clearfix"></span>
+                    </dl>
+                </fieldset>
             </form>
         {% endif %}
     </div>
