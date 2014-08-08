@@ -22,17 +22,27 @@
                     <th>{% trans "Type" %}</th>
                     <th>{% trans "Comment" %}</th>
                     <th>{% trans "Logged against (user)" %}</th>
-                    <th>{% trans "Logged by (moderator)" %}</th>
+                    <th class="logged-by">{% trans "Logged by (moderator)" %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for log in logs %}
                     <tr>
-                        <td>{{ log.msg_datetime|date:"M d, y" }}</td>
-                        <td>{{ log.get_msg_type_display }}</td>
-                        <td>{{ log.comment|linebreaksbr }}</td>
-                        <td>{{ log.pertains_to.get_full_name }}</td>
-                        <td>{{ log.logged_by.get_full_name }}</td>
+                        <td class="date">{{ log.msg_datetime|date:"M d, y" }}</td>
+                        <td class="type">{{ log.get_msg_type_display }}</td>
+                        <td class="comments">
+                            <span class="desktop">
+                                {{ log.comment|linebreaksbr|truncatewords_html:20 }}
+                                {% if log.comment|wordcount > 21 %}
+                                    <a class="read-more" href="#" data-id="{{ log.id }}">Read More</a>
+                                {% endif %}
+                            </span>
+                            <span class="mobile">
+                                {{ log.comment|linebreaksbr }}
+                            </span>
+                        </td>
+                        <td>{{ log.pertains_to.get_full_name|title }}</td>
+                        <td class="logged-by">{{ log.logged_by.get_full_name|title }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -40,5 +50,16 @@
     {% else %}
         <p class="intro">{% trans "There are no moderation events of this type logged in the system." %}</p>
     {% endif %}
+
+
+    {% for log in logs %}
+        {% if log.comment|wordcount > 21 %}
+            <div class="comments-dialog dialog" id="dialog{{ log.id }}" title="Comments for {{ log.get_msg_type_display }} Log from {{ log.msg_datetime|date:'M d, Y' }}">
+                <div class="comments">
+                    {{ log.comment|linebreaksbr }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
 
 {% endblock %}

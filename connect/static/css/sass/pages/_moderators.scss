@@ -99,17 +99,41 @@
     }
 }
 
+.logs-table {
+    td.date {
+        white-space: nowrap;
+    }
+
+    td.type {
+        width: 135px;
+    }
+
+    td.comments {
+        max-width: 300px;
+    }
+
+    th.logged-by,
+    td.logged-by {
+        padding-right: 0;
+    }
+}
+
+
 @media (max-device-width: 1060px) {
 
     .invitation-table,
     .review-app-table,
-    .abuse-table {
+    .abuse-table,
+    .logs-table {
         overflow: hidden;
 
         td.email,
         th.actions,
         td.actions,
-        td.comments {
+        td.comments,
+        td.type,
+        th.logged_by,
+        td.logged_by {
             width: auto;
             max-width: 100%;
             padding: auto;

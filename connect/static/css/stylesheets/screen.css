@@ -3188,181 +3188,218 @@ ul.dash-tabs li.active a i {
   width: 100px;
 }
 
+/* line 103, ../sass/pages/_moderators.scss */
+.logs-table td.date {
+  white-space: nowrap;
+}
+/* line 107, ../sass/pages/_moderators.scss */
+.logs-table td.type {
+  width: 135px;
+}
+/* line 111, ../sass/pages/_moderators.scss */
+.logs-table td.comments {
+  max-width: 300px;
+}
+/* line 116, ../sass/pages/_moderators.scss */
+.logs-table th.logged-by,
+.logs-table td.logged-by {
+  padding-right: 0;
+}
+
 @media (max-device-width: 1060px) {
-  /* line 106, ../sass/pages/_moderators.scss */
+  /* line 127, ../sass/pages/_moderators.scss */
   .invitation-table,
   .review-app-table,
-  .abuse-table {
+  .abuse-table,
+  .logs-table {
     overflow: hidden;
   }
-  /* line 112, ../sass/pages/_moderators.scss */
+  /* line 136, ../sass/pages/_moderators.scss */
   .invitation-table td.email,
   .invitation-table th.actions,
   .invitation-table td.actions,
   .invitation-table td.comments,
+  .invitation-table td.type,
+  .invitation-table th.logged_by,
+  .invitation-table td.logged_by,
   .review-app-table td.email,
   .review-app-table th.actions,
   .review-app-table td.actions,
   .review-app-table td.comments,
+  .review-app-table td.type,
+  .review-app-table th.logged_by,
+  .review-app-table td.logged_by,
   .abuse-table td.email,
   .abuse-table th.actions,
   .abuse-table td.actions,
-  .abuse-table td.comments {
+  .abuse-table td.comments,
+  .abuse-table td.type,
+  .abuse-table th.logged_by,
+  .abuse-table td.logged_by,
+  .logs-table td.email,
+  .logs-table th.actions,
+  .logs-table td.actions,
+  .logs-table td.comments,
+  .logs-table td.type,
+  .logs-table th.logged_by,
+  .logs-table td.logged_by {
     width: auto;
     max-width: 100%;
     padding: auto;
   }
-  /* line 118, ../sass/pages/_moderators.scss */
+  /* line 142, ../sass/pages/_moderators.scss */
   .invitation-table td.date,
   .review-app-table td.date,
-  .abuse-table td.date {
+  .abuse-table td.date,
+  .logs-table td.date {
     white-space: normal;
   }
-  /* line 122, ../sass/pages/_moderators.scss */
+  /* line 146, ../sass/pages/_moderators.scss */
   .invitation-table .wrap,
   .review-app-table .wrap,
-  .abuse-table .wrap {
+  .abuse-table .wrap,
+  .logs-table .wrap {
     display: inline-block;
   }
 
-  /* line 128, ../sass/pages/_moderators.scss */
+  /* line 152, ../sass/pages/_moderators.scss */
   .invitation-table td:nth-of-type(1):before {
     content: "Name";
   }
-  /* line 129, ../sass/pages/_moderators.scss */
+  /* line 153, ../sass/pages/_moderators.scss */
   .invitation-table td:nth-of-type(2):before {
     content: "Email";
   }
-  /* line 130, ../sass/pages/_moderators.scss */
+  /* line 154, ../sass/pages/_moderators.scss */
   .invitation-table td:nth-of-type(3):before {
     content: "Date Invited";
   }
-  /* line 131, ../sass/pages/_moderators.scss */
+  /* line 155, ../sass/pages/_moderators.scss */
   .invitation-table td:nth-of-type(4):before {
     content: "Actions";
   }
 
-  /* line 135, ../sass/pages/_moderators.scss */
+  /* line 159, ../sass/pages/_moderators.scss */
   .review-app-table td:nth-of-type(1):before {
     content: "Name";
   }
-  /* line 136, ../sass/pages/_moderators.scss */
+  /* line 160, ../sass/pages/_moderators.scss */
   .review-app-table td:nth-of-type(2):before {
     content: "Email";
   }
-  /* line 137, ../sass/pages/_moderators.scss */
+  /* line 161, ../sass/pages/_moderators.scss */
   .review-app-table td:nth-of-type(3):before {
     content: "Date Requested";
   }
-  /* line 138, ../sass/pages/_moderators.scss */
+  /* line 162, ../sass/pages/_moderators.scss */
   .review-app-table td:nth-of-type(4):before {
     content: "Application Comments";
   }
-  /* line 139, ../sass/pages/_moderators.scss */
+  /* line 163, ../sass/pages/_moderators.scss */
   .review-app-table td:nth-of-type(5):before {
     content: "Actions";
   }
 
-  /* line 143, ../sass/pages/_moderators.scss */
+  /* line 167, ../sass/pages/_moderators.scss */
   .abuse-table td:nth-of-type(1):before {
     content: "Date/Time";
   }
-  /* line 144, ../sass/pages/_moderators.scss */
+  /* line 168, ../sass/pages/_moderators.scss */
   .abuse-table td:nth-of-type(2):before {
     content: "Complaint made against";
   }
-  /* line 145, ../sass/pages/_moderators.scss */
+  /* line 169, ../sass/pages/_moderators.scss */
   .abuse-table td:nth-of-type(3):before {
     content: "Complaint made by";
   }
-  /* line 146, ../sass/pages/_moderators.scss */
+  /* line 170, ../sass/pages/_moderators.scss */
   .abuse-table td:nth-of-type(4):before {
     content: "Comments";
   }
-  /* line 147, ../sass/pages/_moderators.scss */
+  /* line 171, ../sass/pages/_moderators.scss */
   .abuse-table td:nth-of-type(5):before {
     content: "Actions";
   }
 
-  /* line 151, ../sass/pages/_moderators.scss */
+  /* line 175, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(1):before {
     content: "Date/Time";
   }
-  /* line 152, ../sass/pages/_moderators.scss */
+  /* line 176, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(2):before {
     content: "Type";
   }
-  /* line 153, ../sass/pages/_moderators.scss */
+  /* line 177, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(3):before {
     content: "Comment";
   }
-  /* line 154, ../sass/pages/_moderators.scss */
+  /* line 178, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(4):before {
     content: "Logged Against (User)";
   }
-  /* line 155, ../sass/pages/_moderators.scss */
+  /* line 179, ../sass/pages/_moderators.scss */
   .logs-table td:nth-of-type(5):before {
     content: "Logged By (Moderator)";
   }
 }
-/* line 161, ../sass/pages/_moderators.scss */
+/* line 185, ../sass/pages/_moderators.scss */
 td.comments .mobile {
   display: none;
 }
 
 @media (max-device-width: 1060px) {
-  /* line 166, ../sass/pages/_moderators.scss */
+  /* line 190, ../sass/pages/_moderators.scss */
   td.comments .mobile {
     display: inline;
   }
 
-  /* line 170, ../sass/pages/_moderators.scss */
+  /* line 194, ../sass/pages/_moderators.scss */
   td.comments .desktop {
     display: none;
   }
 }
-/* line 175, ../sass/pages/_moderators.scss */
+/* line 199, ../sass/pages/_moderators.scss */
 .comments-dialog .comments {
   padding: 5px 0 10px 0;
 }
 
-/* line 182, ../sass/pages/_moderators.scss */
+/* line 206, ../sass/pages/_moderators.scss */
 .show-warnings {
   display: block;
   padding-top: 15px;
 }
 
-/* line 187, ../sass/pages/_moderators.scss */
+/* line 211, ../sass/pages/_moderators.scss */
 .warning {
   border-bottom: 1px solid #ececec;
   padding: 5px 0 20px 0;
 }
-/* line 191, ../sass/pages/_moderators.scss */
+/* line 215, ../sass/pages/_moderators.scss */
 .warning h4 {
   font-size: 14px;
   font-family: "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   margin: 10px 0 0 0;
 }
-/* line 198, ../sass/pages/_moderators.scss */
+/* line 222, ../sass/pages/_moderators.scss */
 .warning h4.first {
   margin-top: 0;
 }
-/* line 202, ../sass/pages/_moderators.scss */
+/* line 226, ../sass/pages/_moderators.scss */
 .warning p.meta {
   margin-bottom: 0;
 }
 
-/* line 207, ../sass/pages/_moderators.scss */
+/* line 231, ../sass/pages/_moderators.scss */
 .warning.last {
   border-bottom: 0;
 }
 
-/* line 214, ../sass/pages/_moderators.scss */
+/* line 238, ../sass/pages/_moderators.scss */
 .revoke-label {
   font-weight: normal;
 }
-/* line 217, ../sass/pages/_moderators.scss */
+/* line 241, ../sass/pages/_moderators.scss */
 .revoke-label span {
   font-weight: bold;
 }
