@@ -295,7 +295,7 @@ def report_abuse(request, user_id):
     """
     Allow any user to report another user for abusive behaviour.
     """
-
+    site = get_current_site(request)
     logged_against = get_object_or_404(User, id=user_id)
     logged_by = request.user
 
@@ -336,7 +336,7 @@ def report_abuse(request, user_id):
                                    site=site,
                                    url=url)
 
-            return redirect('moderation:abuse-report-lodged')
+            return redirect('moderation:abuse-report-logged')
 
     else:
         form = ReportAbuseForm(logged_by=logged_by,
@@ -344,8 +344,9 @@ def report_abuse(request, user_id):
 
     context = {
         'form' : form,
+        'logged_against' : logged_against,
         'logged_by' : logged_by,
-        'logged_against' : logged_against
+        'site' : site,
     }
 
     return render(request, 'moderation/report_abuse.html', context)

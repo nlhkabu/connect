@@ -4,16 +4,46 @@
 
 {% block page_title %}{% trans "Report Abuse" %}{% endblock %}
 
-{% block content %}
+{% block page_content %}
     <div class="container">
+        <form action="" method="post" class="horizontal-form">
+            <fieldset>
+                <legend>Log an abuse report against {{ logged_against.get_full_name|title }}</legend>
+                <p class="intro">
+                    Describe the complaint you wish to make against {{ logged_against.get_full_name|title }}, providing as much relevant information as you can.<br/>
+                    Based on the information provided, a {{ site.name }} moderator will either dismiss the report, warn the user, or ban the user from their account. <br />
+                </p>
 
-        <p>{% trans "Logged by" %}: {{ logged_by.get_full_name|title }}</p>
-        <p>{% trans "Logged Against" %}: {{ logged_against.get_full_name|title }}</p>
+                <p class="intro">
+                    If your complaint is about a {{ site.name }} moderator, they will not notified, nor will they be able to view this report.
+                </p>
+                {% csrf_token %}
 
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="{% trans 'Report Abuse' %}" />
+                <!-- Hidden Fields -->
+                {{ form.logged_by }}
+                {{ form.logged_against }}
+
+                <dl>
+                    <dt>{% trans "Comments" %}</dt>
+                    <dd>
+                        {{ form.comments }}
+                        {% if form.comments.errors %}
+                            <span class="form-error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ form.comments.errors }}
+                            </span>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+                <dl>
+                    <dt></dt>
+                    <dd>
+                        <input type="submit" value="{% trans 'Report Abuse' %}" class="button"/>
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+            </fieldset>
         </form>
     </div>
 {% endblock %}
