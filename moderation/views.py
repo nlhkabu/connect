@@ -413,6 +413,32 @@ def review_abuse(request):
             logged_against = abuse_report.logged_against
 
 
+            def send_email_to_reporting_user(subject, template):
+                """
+                Wrapper function for sending email to the user who has made
+                the abuse report.
+                """
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_by,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
+
+
+            def send_email_to_offending_user(subject, template):
+                """
+                Wrapper function for sending email to the user who the abuse
+                report has been made against.
+                """
+                send_connect_email(subject=subject,
+                                   template=template,
+                                   recipient=logged_against,
+                                   logged_against=logged_against,
+                                   site=site,
+                                   comments=comments)
+
+
             if decision == 'DISMISS':
                 msg_type = ModerationLogMsg.DISMISSAL
 
@@ -467,33 +493,6 @@ def review_abuse(request):
                                 user=user,
                                 moderator=moderator,
                                 comment=log_comment)
-
-
-            def send_email_to_reporting_user(subject, template):
-                """
-                Wrapper function for sending email to the user who has made
-                the abuse report.
-                """
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_by,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
-
-
-            def send_email_to_offending_user(subject, template):
-                """
-                Wrapper function for sending email to the user who the abuse
-                report has been made against.
-                """
-                send_connect_email(subject=subject,
-                                   template=template,
-                                   recipient=logged_against,
-                                   logged_against=logged_against,
-                                   site=site,
-                                   comments=comments)
-
 
 
             return redirect('moderation:review-abuse')

@@ -18,7 +18,7 @@
         <table class="logs-table">
             <thead>
                 <tr>
-                    <th>{% trans "Date/Time" %}</th>
+                    <th>{% trans "Date" %}</th>
                     <th>{% trans "Type" %}</th>
                     <th>{% trans "Comment" %}</th>
                     <th>{% trans "Logged against (user)" %}</th>
@@ -28,7 +28,7 @@
             <tbody>
                 {% for log in logs %}
                     <tr>
-                        <td>{{ log.msg_datetime }}</td>
+                        <td>{{ log.msg_datetime|date:"M d, y" }}</td>
                         <td>{{ log.get_msg_type_display }}</td>
                         <td>{{ log.comment|linebreaksbr }}</td>
                         <td>{{ log.pertains_to.get_full_name }}</td>

@@ -19,7 +19,7 @@
                     <th>{% trans "Email Address" %}</th>
                     <th>{% trans "Date Requested" %}</th>
                     <th>{% trans "Application Comments" %}</th>
-                    <th>{% trans "Actions" %}</th>
+                    <th class="actions">{% trans "Actions" %}</th>
 
                 </tr>
             </thead>
@@ -27,10 +27,10 @@
                 {% for user in pending %}
                 <tr>
                     <td>{{ user.get_full_name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.applied_datetime }}</td>
-                    <td>{{ user.application_comments|linebreaksbr }}</td>
-                    <td>
+                    <td class="email"><span class="wrap">{{ user.email }}</span></td>
+                    <td class="date">{{ user.applied_datetime|date:"M d, y" }}</td>
+                    <td class="comments">{{ user.application_comments|linebreaksbr }}</td>
+                    <td class="actions">
                         <a href="#" class="table-link first decision-link" data-user="{{ user.id }}" data-decision="APP">Approve Application</a>
                         <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="REJ">Reject Application</a>
                     </td>

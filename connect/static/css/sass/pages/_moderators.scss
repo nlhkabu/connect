@@ -41,7 +41,86 @@
 }
 
 
+.invitation-table,
+.review-app-table,
+.abuse-table {
+    .wrap {
+        display: block;
+        white-space: wrap;
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break: break-word;
+    }
+
+    td.date {
+        white-space: nowrap;
+    }
+
+    td.comments {
+        max-width: 300px;
+    }
+}
+
+.invitation-table {
+    td.email {
+        max-width: 300px;
+    }
+
+    th.actions,
+    td.actions {
+        padding-right: 0;
+        width: 115px;
+    }
+}
+
+.review-app-table {
+    td.email {
+        max-width: 150px;
+    }
+
+    th.actions,
+    td.actions {
+        padding-right: 0;
+        width: 135px;
+    }
+}
+
+.abuse-table {
+    td.email {
+        max-width: 180px;
+    }
+
+    th.actions,
+    td.actions {
+        padding-right: 0;
+        width: 100px;
+    }
+}
+
 @media (max-device-width: 1060px) {
+
+    .invitation-table,
+    .review-app-table,
+    .abuse-table {
+        overflow: hidden;
+
+        td.email,
+        th.actions,
+        td.actions,
+        td.comments {
+            width: auto;
+            max-width: 100%;
+            padding: auto;
+        }
+
+        td.date {
+            white-space: normal;
+        }
+
+        .wrap {
+            display: inline-block;
+        }
+    }
 
     .invitation-table {
         td:nth-of-type(1):before { content: "Name"; }
@@ -75,6 +154,10 @@
     }
 }
 
+.show-warnings {
+    display: block;
+    padding-top: 15px;
+}
 
 .warning {
     border-bottom: 1px solid $light-grey;

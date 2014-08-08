@@ -16,33 +16,32 @@
         <table class="abuse-table">
             <thead>
                 <tr>
-                    <th>{% trans "Date/Time" %}</th>
+                    <th>{% trans "Date Lodged" %}</th>
                     <th>{% trans "Complaint made against" %}</th>
                     <th>{% trans "Complaint made by" %}</th>
                     <th>{% trans "Comments" %}</th>
-                    <th>{% trans "Actions" %}</th>
+                    <th class="actions">{% trans "Actions" %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for report in reports %}
                     <tr>
-                        <td>{{ report.logged_datetime }}</td>
-                        <td>
+                        <td class="date">{{ report.logged_datetime|date:"M d, y" }}</td>
+                        <td class="email">
                             {{ report.logged_against.get_full_name }}<br/>
-                            <a href="mailto:{{ report.logged_against.email }}">{{ report.logged_against.email }}</a>
+                            <a href="mailto:{{ report.logged_against.email }}" class="wrap">{{ report.logged_against.email }}</a>
                             {% if report.prior_warnings %}
-                                <br/>
                                 <a href="#" class="show-warnings" data-user="{{ report.logged_against.id }}">
-                                    {{ report.prior_warnings|length|apnumber|title }} prior warning{{ report.prior_warnings|length|pluralize }}
+                                    {{ report.prior_warnings|length }} prior warning{{ report.prior_warnings|length|pluralize }}
                                 </a>
                             {% endif %}
                         </td>
-                        <td>
+                        <td class="email">
                             {{ report.logged_by.get_full_name }}<br/>
-                            <a href="mailto:{{ report.logged_by.email }}">{{ report.logged_by.email }}</a>
+                            <a href="mailto:{{ report.logged_by.email }}" class="wrap">{{ report.logged_by.email }}</a>
                         </td>
-                        <td>{{ report.abuse_comment|linebreaksbr }}</td>
-                        <td>
+                        <td class="comments">{{ report.abuse_comment|linebreaksbr }}</td>
+                        <td class="actions">
                             <a href="#" class="table-link first decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="Dismiss Abuse Report">
                                 Dismiss Report
                             </a>

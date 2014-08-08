@@ -156,7 +156,8 @@ $(document).ready(function(){
     $('.warning-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 600
+        width: 600,
+        maxHeight: 600
     });
 
     $('.show-warnings').click(function(e){
