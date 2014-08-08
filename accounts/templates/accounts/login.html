@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "logged_out.html" %}
 
 {% load i18n %}
 
@@ -30,14 +30,13 @@
         <div class="clearfix"></div>
         <a class="forgotton" href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your password?" %}</a>
     </form>
-
 {% endblock %}
 
 
-{% block content %}
+{% block page_content %}
     <div class="container">
         <div class="content-container">
-            <a href="{% url 'accounts:request-invitation' %}">{% trans "Request an Account" %}</a>
+            <a href="{% url 'accounts:request-invitation' %}" class="button">{% trans "Request an Account" %}</a>
         </div>
     </div>
 {% endblock %}

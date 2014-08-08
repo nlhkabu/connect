@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "logged_out.html" %}
 {% load i18n %}
 
 {% block page_title %}{% trans "Activate Account" %}{% endblock %}
 
-{% block content %}
+{% block page_content %}
     <div class="container">
         <h2>Activate Account</h2>
         {% if token_is_used %}

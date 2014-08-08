@@ -1,24 +1,29 @@
-{% extends "base.html" %}
+{% extends "logged_out.html" %}
 {% load i18n %}
 
 
 {% block page_title %}{% trans "Request Account Invitation" %}{% endblock %}
 
-{% block content %}
+{% block page_content %}
     <div class="container">
-        <form action="" method="post" class="horizontal-form">
+        <form action="" method="post" class="horizontal-form" id="request-account">
             {% csrf_token %}
             <fieldset>
                 <legend>{% trans "Request an Invitation" %}</legend>
-                <p class="intro"></p>
+                <p class="intro">
+                    Fill out the form below to request an account at {{ site.name }}.<br/>
+                    Please provide as much information you think is relevant for our moderators to decide on your case.
+                </p>
+
                 <dl>
                     <dt>{% trans "First Name" %}</dt>
                     <dd>
                         {{ form.first_name }}
                         {% if form.first_name.errors %}
                             <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.first_name.errors }}
+                                {% for error in form.first_name.errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
                             </span>
                         {% endif %}
                     </dd>
@@ -30,8 +35,9 @@
                         {{ form.last_name }}
                         {% if form.last_name.errors %}
                             <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.last_name.errors }}
+                                {% for error in form.last_name.errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
                             </span>
                         {% endif %}
                     </dd>
@@ -43,8 +49,9 @@
                         {{ form.email }}
                         {% if form.email.errors %}
                             <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.email.errors }}
+                                {% for error in form.email.errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
                             </span>
                         {% endif %}
                     </dd>
@@ -56,8 +63,9 @@
                         {{ form.comments }}
                         {% if form.comments.errors %}
                             <span class="form-error">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ form.comments.errors }}
+                                {% for error in form.comments.errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
                             </span>
                         {% endif %}
                     </dd>
@@ -65,7 +73,10 @@
                 </dl>
                 <dl>
                     <dt></dt>
-                    <dd><input type="submit" value="{% trans 'Request Invitation' %}" class="button" /></dd>
+                    <dd>
+                        <a href="/" class="button muted">Cancel</a>
+                        <input type="submit" value="{% trans 'Request Invitation' %}" class="button" />
+                    </dd>
                 </dl>
             </fieldset>
         </form>
