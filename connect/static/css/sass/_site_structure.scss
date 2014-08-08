@@ -75,6 +75,15 @@ p.intro {
     margin-bottom: 25px;
 }
 
+::selection {
+  background: $highlight;
+  color: $white;
+}
+::-moz-selection {
+  background: $highlight;
+  color: $white;
+}
+
 // Validation
 
 .form-error {
