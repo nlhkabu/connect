@@ -26,6 +26,8 @@ def request_invitation(request):
     """
     Allow a member of the public to request an account invitation.
     """
+    site = get_current_site(request)
+
     if request.method == 'POST':
         form = RequestInvitationForm(request.POST)
 
@@ -69,6 +71,7 @@ def request_invitation(request):
 
     context = {
         'form' : form,
+        'site' : site,
     }
 
     return render(request, 'accounts/request_invitation.html', context)

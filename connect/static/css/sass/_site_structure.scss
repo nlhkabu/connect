@@ -86,25 +86,14 @@ p.intro {
     display: inline-block;
     webkit-border-radius: 3px;
     border-radius: 3px;
-    padding-right: 5px;
-
-    ul {
-        display: inline-block;
-        margin: 0;
-        padding: 0;
-
-        li {
-            margin: 0;
-            padding: 3px 7px 3px 0;
-        }
-    }
+    padding: 3px 5px;
 
     span {
         display: inline;
     }
 
     .fa {
-        margin: 0 2px 0 5px;
+        margin: 0 3px 0 0;
         display: inline;
     }
 }
@@ -221,7 +210,6 @@ header {
         }
     }
 }
-
 
 // BANNER
 
@@ -452,6 +440,17 @@ button:hover,
 .button:hover {
     background-color: $highlight-dark;
     text-decoration: none;
+}
+
+button.muted,
+.button.muted {
+    background-color: $light-grey * .98;
+    color: $dark-grey !important;
+}
+
+button.muted:hover,
+.button.muted:hover {
+    background-color: $light-grey * .96;
 }
 
 .active {
