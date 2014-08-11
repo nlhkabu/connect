@@ -908,7 +908,6 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
   top: 0;
   left: 0;
   padding: .2em;
-  width: 300px;
   overflow: hidden;
   outline: 0;
   background-clip: padding-box;

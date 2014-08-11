@@ -88,8 +88,7 @@ $(document).ready(function(){
     $('.comments-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 600,
-        maxHeight: 600
+        width: 600
     });
 
     $('.read-more').click(function(e){
@@ -107,13 +106,13 @@ $(document).ready(function(){
     $('#reinvite-member-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 'auto'
+        width: 300
     });
 
     $('#revoke-member-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 'auto'
+        width: 450
     });
 
     var user, email;
@@ -158,8 +157,8 @@ $(document).ready(function(){
         $('#review-application-dialog').dialog({
             autoOpen: false,
             modal: true,
-            title: title,
-            width: 400
+            width: 400,
+            title: title
         });
 
         $('#review-application-dialog').dialog('open');
@@ -203,8 +202,8 @@ $(document).ready(function(){
         $('#review-abuse-dialog').dialog({
             autoOpen: false,
             modal: true,
-            title: title,
-            width: 400
+            width: 400,
+            title: title
         });
 
         $('#review-abuse-dialog').dialog('open');

@@ -93,8 +93,8 @@
                     <td class="email"><span class="wrap">{{ user.email }}</span></td>
                     <td class="date">{{ user.date_joined|date:"M d, y" }}</td>
                     <td class="actions">
-                        <a href="#" class="table-link first resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">{% trans "Resend Invitation" %}</a>
-                        <a href="#" class="table-link revoke-link" data-user="{{ user.id }}" data-name="{{ user.get_full_name|title }}" data-email="{{ user.email }}">{% trans "Revoke Invitation" %}</a>
+                        <a href="#" class="table-link resend-link" data-user="{{ user.id }}" data-email="{{ user.email }}">{% trans "Resend Invitation" %}</a>
+                        <a href="#" class="table-link revoke-link last" data-user="{{ user.id }}" data-name="{{ user.get_full_name|title }}" data-email="{{ user.email }}">{% trans "Revoke Invitation" %}</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -125,8 +125,4 @@
 
 
     {% endif %}
-{% endblock %}
-
-{% block extra_js %}
-    <script src="{% static 'js/invite-member.js' %}">
 {% endblock %}

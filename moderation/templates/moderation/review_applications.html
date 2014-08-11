@@ -41,8 +41,8 @@
                         </span>
                     </td>
                     <td class="actions">
-                        <a href="#" class="table-link first decision-link" data-user="{{ user.id }}" data-decision="APP">Approve Application</a>
-                        <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="REJ">Reject Application</a>
+                        <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="APP">Approve Application</a>
+                        <a href="#" class="table-link decision-link last" data-user="{{ user.id }}" data-decision="REJ">Reject Application</a>
                     </td>
                 </tr>
                 {% endfor %}

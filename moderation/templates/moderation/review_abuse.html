@@ -52,15 +52,9 @@
                             </span>
                         </td>
                         <td class="actions">
-                            <a href="#" class="table-link first decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="Dismiss Abuse Report">
-                                Dismiss Report
-                            </a>
-                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="WARN" data-title="Warn User">
-                                Warn User
-                            </a>
-                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="BAN" data-title="Ban User">
-                                Ban User
-                            </a>
+                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="Dismiss Abuse Report">Dismiss Report</a>
+                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="WARN" data-title="Warn User">Warn User</a>
+                            <a href="#" class="table-link decision-link last" data-report="{{ report.id }}" data-decision="BAN" data-title="Ban User">Ban User</a>
                         </td>
                     </tr>
                 {% endfor %}

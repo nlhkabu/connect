@@ -2481,31 +2481,32 @@ a.table-link {
   /* line 582, ../sass/_site_structure.scss */
   table a.table-link {
     display: inline;
-  }
-  /* line 586, ../sass/_site_structure.scss */
-  table a.table-link.first {
     padding-right: 7px;
+  }
+  /* line 587, ../sass/_site_structure.scss */
+  table a.table-link.last {
+    padding-right: 0;
   }
 }
 @media (max-device-width: 650px) {
-  /* line 595, ../sass/_site_structure.scss */
+  /* line 596, ../sass/_site_structure.scss */
   table th, table td {
     padding: 8px;
   }
-  /* line 599, ../sass/_site_structure.scss */
+  /* line 600, ../sass/_site_structure.scss */
   table td:before {
     position: static;
   }
 }
-/* line 609, ../sass/_site_structure.scss */
+/* line 610, ../sass/_site_structure.scss */
 .dialog form {
   margin: 10px 0 15px 0;
 }
-/* line 612, ../sass/_site_structure.scss */
+/* line 613, ../sass/_site_structure.scss */
 .dialog form label {
   padding-bottom: 10px;
 }
-/* line 624, ../sass/_site_structure.scss */
+/* line 625, ../sass/_site_structure.scss */
 .dialog form input[type=text],
 .dialog form input[type="password"],
 .dialog form input[type="email"],
@@ -2518,12 +2519,12 @@ a.table-link {
   width: 96%;
   padding: 2%;
 }
-/* line 629, ../sass/_site_structure.scss */
+/* line 630, ../sass/_site_structure.scss */
 .dialog form textarea {
   height: 120px;
   margin-bottom: 10px;
 }
-/* line 634, ../sass/_site_structure.scss */
+/* line 635, ../sass/_site_structure.scss */
 .dialog form .button {
   margin-bottom: 0;
 }

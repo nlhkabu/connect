@@ -581,10 +581,11 @@ a.table-link {
 
         a.table-link {
             display: inline;
+            padding-right: 7px;
         }
 
-        a.table-link.first {
-            padding-right: 7px;
+        a.table-link.last {
+            padding-right: 0;
         }
     }
 }
