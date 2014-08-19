@@ -1,0 +1,12 @@
+{% load url from future %}
+{% autoescape off %}
+
+{% block intro %}Hi {{ recipient.first_name }},{% endblock %}
+
+{% block email_content %}{% endblock %}
+
+{% block signoff %}Thanks,
+The {{ site_name }} team
+
+{% endautoescape %}
+{% endblock %}
