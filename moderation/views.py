@@ -23,12 +23,14 @@ def log_moderator_event(msg_type, user, moderator, comment=''):
     """
     Log a moderation event.
     """
-    ModerationLogMsg.objects.create(
+    message = ModerationLogMsg.objects.create(
         msg_type=msg_type,
         comment=comment,
         pertains_to=user,
         logged_by=moderator,
     )
+
+    return message
 
 
 @login_required
@@ -261,7 +263,8 @@ def review_applications(request):
                 # Set log and email settings
                 msg_type = ModerationLogMsg.REJECTION
                 url = ''
-                subject = 'Your application to {} has been rejected'.format(site.name)
+                subject = ('Unfortunately, your application to {} '
+                          'was not successful'.format(site.name))
                 template = 'moderation/emails/reject_user.html'
 
 

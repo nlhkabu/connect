@@ -63,7 +63,6 @@ class ModerateApplicationForm(forms.Form):
     """
     Form for moderators to approve or reject an account application.
     """
-
     user_id = forms.IntegerField(widget=forms.HiddenInput)
     decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:],
                                  widget=forms.HiddenInput)
@@ -116,6 +115,5 @@ class FilterLogsForm(forms.Form):
     Form for a moderator to filter moderation logs by date, type and
     who the report has been logged against and logged by.
     """
-
     msg_type = forms.ChoiceField(choices=ModerationLogMsg.MSG_TYPE_CHOICES,
                                  required=False)
