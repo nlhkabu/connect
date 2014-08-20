@@ -2625,7 +2625,7 @@ a.table-link {
 }
 /* line 42, ../sass/pages/_profile_and_accounts.scss */
 .horizontal-form dl dd input.pw {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 /* line 46, ../sass/pages/_profile_and_accounts.scss */
 .horizontal-form dl dd input.inactive:hover {

@@ -276,7 +276,6 @@ class AccountSettingsForm(forms.Form):
 
         self.fields['current_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'class' : 'pw',
                                             'placeholder' : 'Current Password'
                                         }),
                                         required=False)
