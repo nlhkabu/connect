@@ -25,7 +25,20 @@
                 </dd>
                 <span class="clearfix"></span>
             </dl>
-
+            <dl>
+                <dt>{% trans "Current Password" %}</dt>
+                <dd>
+                    {{ form.current_password }}
+                    {% if form.current_password.errors %}
+                        <span class="form-error">
+                            {% for error in form.current_password.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
             <dl>
                 <dt>{% trans "New Password" %}</dt>
                 <dd>
@@ -51,4 +64,10 @@
             </dl>
         </fieldset>
     </form>
+
+<!--
+    <h3 class="lined">Delete Account</h3>
+    <p class="intro">Use the link below to delete your account.  For security reasons, you will be sent an email to confirm this action.</p>
+    <a href="" class="button">Delete Account</a>
+-->
 {% endblock %}

@@ -274,6 +274,13 @@ class AccountSettingsForm(forms.Form):
                                             'placeholder': 'Email Address',
                                         }))
 
+        self.fields['current_password'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'class' : 'pw',
+                                            'placeholder' : 'Current Password'
+                                        }),
+                                        required=False)
+
         self.fields['reset_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
                                             'class' : 'pw',
@@ -287,26 +294,35 @@ class AccountSettingsForm(forms.Form):
                                         }),
                                         required=False)
 
-
     def clean(self):
         """
         Adds validation to:
+        - Check that the email address is not registerd with another user.
+        - Ensure current password matches the user's password.
         - Ensure reset password and reset password confirm are the same.
         """
         cleaned_data = super(AccountSettingsForm, self).clean()
-
-        password1 = cleaned_data.get('reset_password')
-        password2 = cleaned_data.get('reset_password_confirm')
-
-        if password1:
-            if not password2:
-                raise forms.ValidationError("Please confirm your password")
-            if password1 != password2:
-                raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         email = cleaned_data.get('email')
 
         if email != self.user.email:
             validate_email_availability(email)
+
+        currentpass = cleaned_data.get('current_password')
+        password1 = cleaned_data.get('reset_password')
+        password2 = cleaned_data.get('reset_password_confirm')
+
+        if currentpass:
+            if not self.user.check_password(currentpass):
+                raise forms.ValidationError({
+                'current_password': ['Incorrect Password.  Please try again.',]})
+
+        if password1:
+            if not currentpass:
+                raise forms.ValidationError("Please provide your current password")
+            if not password2:
+                raise forms.ValidationError("Please confirm your password")
+            if password1 != password2:
+                raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         return cleaned_data
