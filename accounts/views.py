@@ -1,8 +1,9 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.sites.models import get_current_site
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.forms.formsets import formset_factory
@@ -13,8 +14,8 @@ from django.utils.timezone import now
 from connect.utils import generate_html_email, hash_time, send_connect_email
 
 from .forms import (AccountSettingsForm, ActivateAccountForm,
-                    BaseLinkFormSet, BaseSkillFormSet, LinkForm,
-                    ProfileForm, RequestInvitationForm, SkillForm)
+                    BaseLinkFormSet, BaseSkillFormSet, CloseAccountForm,
+                    LinkForm, ProfileForm, RequestInvitationForm, SkillForm)
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user
 
@@ -219,9 +220,32 @@ def save_links(user, formset):
 
 
 @login_required
-def account_settings(request):
+def account_settings(request,
+                     form=None,
+                     close_form=None):
     """
-    Allows a user to update their own accounts settings.
+    Page for users to update their account settings and delete their account
+    """
+    user = request.user
+
+    if not form:
+        form = AccountSettingsForm(user=user)
+
+    if not close_form:
+        close_form = CloseAccountForm(user=user)
+
+    context = {
+        'form': form,
+        'close_form': close_form,
+    }
+
+    return render(request, 'accounts/account_settings.html', context)
+
+
+@login_required
+def update_account(request):
+    """
+    Update a user's account settings
     """
     user = request.user
 
@@ -240,12 +264,34 @@ def account_settings(request):
             #TODO: add confirmation message here
             return redirect(reverse('accounts:account-settings'))
 
+        else:
+            return account_settings(request, form=form)
+
     else:
-        form = AccountSettingsForm(user=user)
+        raise PermissionDenied
 
 
-    context = {
-        'form' : form,
-    }
 
-    return render(request, 'accounts/account_settings.html', context)
+@login_required
+def close_account(request):
+    """
+    Close a user's account
+    """
+    user = request.user
+
+    if request.method == 'POST':
+        form = CloseAccountForm(request.POST, user=user)
+
+        if form.is_valid():
+
+            user.is_active = False
+            user.save()
+            logout(request)
+
+            return redirect(reverse('accounts:close-account-done'))
+
+        else:
+            return account_settings(request, close_form=form)
+
+    else:
+        raise PermissionDenied

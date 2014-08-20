@@ -6,7 +6,7 @@
 {% block settings_active %}active{% endblock %}
 
 {% block settings_content %}
-    <form action="" method="post" class="horizontal-form" novalidate>
+    <form action="{% url 'accounts:update-account' %}" method="post" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>
             <legend>Account Settings</legend>
@@ -65,9 +65,33 @@
         </fieldset>
     </form>
 
-<!--
-    <h3 class="lined">Delete Account</h3>
-    <p class="intro">Use the link below to delete your account.  For security reasons, you will be sent an email to confirm this action.</p>
-    <a href="" class="button">Delete Account</a>
--->
+    <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form" novalidate>
+        {% csrf_token %}
+        <fieldset>
+            <legend>Close Account</legend>
+            <p class="intro">Please enter your password to delete your account.</p>
+            <dl>
+                <dt>{% trans "Password" %}</dt>
+                <dd>
+                    {{ close_form.password }}
+                    {% if close_form.password.errors %}
+                        <span class="form-error">
+                            {% for error in close_form.password.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="{% trans 'Close Account' %}" class="button"/>
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
+    </form>
+
 {% endblock %}

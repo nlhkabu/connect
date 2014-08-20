@@ -325,3 +325,33 @@ class AccountSettingsForm(forms.Form):
                 raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         return cleaned_data
+
+
+class CloseAccountForm(forms.Form):
+    """
+    Form for user to close their account
+    """
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(CloseAccountForm, self).__init__(*args, **kwargs)
+
+        self.fields['password'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'placeholder' : 'Password'
+                                        }))
+
+    def clean(self):
+        """
+        Adds validation to:
+        - Ensure current password matches the user's password.
+        """
+        cleaned_data = super(CloseAccountForm, self).clean()
+
+        password = cleaned_data.get('password')
+
+        if not self.user.check_password(password):
+            raise forms.ValidationError({
+            'password': ['Incorrect Password.  Please try again.',]})
+
+        return cleaned_data
+

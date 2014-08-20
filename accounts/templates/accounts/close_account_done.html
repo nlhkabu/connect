@@ -1,0 +1,14 @@
+{% extends "logged_out.html" %}
+{% load i18n %}
+
+{% block page_title %}{% trans "Account Closed" %}{% endblock %}
+
+{% block page_content %}
+    <div class="container">
+        <h3 class="lined">We're sorry to see you go!</h2>
+        <p class="intro">
+            Your account has been closed.<br/>
+            If you would like to reopen your account, please visit the <a href="{% url 'accounts:request-invitation' %}">request invitation</a> page.
+        </p>
+    </div>
+{% endblock %}
