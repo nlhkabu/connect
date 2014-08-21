@@ -45,8 +45,9 @@ class CustomUserAdmin(UserAdmin):
                                         'decision_datetime',
                                         'activated_datetime',
                                         'last_login',)}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                    'is_moderator', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_active', 'is_closed', 'is_staff',
+                                    'is_superuser', 'is_moderator',
+                                    'groups', 'user_permissions')}),
         ('Roles', {'fields': ('roles',)}),
 
     )

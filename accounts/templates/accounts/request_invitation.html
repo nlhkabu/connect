@@ -68,6 +68,13 @@
                                 {% endfor %}
                             </span>
                         {% endif %}
+                        {% if form.non_field_errors %}
+                            <span class="form-error">
+                                {% for error in form.non_field_errors %}
+                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                {% endfor %}
+                            </span>
+                        {% endif %}
                     </dd>
                     <span class="clearfix"></span>
                 </dl>

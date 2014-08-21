@@ -81,6 +81,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                   'treated as active. Unselect this instead '
                                   'of deleting accounts.')
 
+    is_closed = models.BooleanField('closed', default=False,
+                        help_text='Designates whether the user has closed '
+                                  'their own account.')
+
     date_joined = models.DateTimeField('date joined', default=timezone.now)
 
     # Custom connect fields

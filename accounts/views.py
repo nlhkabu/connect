@@ -30,7 +30,7 @@ def request_invitation(request):
     site = get_current_site(request)
 
     if request.method == 'POST':
-        form = RequestInvitationForm(request.POST)
+        form = RequestInvitationForm(request.POST, request=request)
 
         if form.is_valid():
 
@@ -51,8 +51,6 @@ def request_invitation(request):
             moderators = User.objects.filter(is_moderator=True,
                                                     is_active=True)
 
-            site = get_current_site(request)
-
             url = request.build_absolute_uri(
                                 reverse('moderation:review-applications'))
 
@@ -68,7 +66,7 @@ def request_invitation(request):
 
             return redirect('accounts:request-invitation-done')
     else:
-        form = RequestInvitationForm()
+        form = RequestInvitationForm(request=request)
 
     context = {
         'form' : form,
@@ -271,7 +269,6 @@ def update_account(request):
         raise PermissionDenied
 
 
-
 @login_required
 def close_account(request):
     """
@@ -285,6 +282,7 @@ def close_account(request):
         if form.is_valid():
 
             user.is_active = False
+            user.is_closed = True
             user.save()
             logout(request)
 
@@ -295,3 +293,4 @@ def close_account(request):
 
     else:
         raise PermissionDenied
+

@@ -1,0 +1,28 @@
+{% extends 'emails/email_base.html' %}
+
+{% load i18n %}
+
+{% load url from future %}
+{% autoescape off %}
+
+{% block email_content %}
+    <p>
+        You have been sent this email because you (or someone pretending to be you) tried to set up a new account at {{ site_name }} using this email address.
+    </p>
+
+    <p>
+        If this was not you, you may safely ignore this email.
+    </p>
+
+    <p>If you wish to reactivate your <em>closed</em> account at this email address, please visit the following page:</p>
+
+    <p>
+        {{ url }}
+    </p>
+{% endblock %}
+
+{% block email_footer %}
+    You received this email because you were previously a registered user at {{ site_name }}.
+{% endblock %}
+
+{% endautoescape %}

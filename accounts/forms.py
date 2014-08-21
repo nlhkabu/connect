@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.safestring import mark_safe
 
 from .models import CustomUser, Role, Skill, UserSkill
-
+from .utils import invite_user_to_reactivate_account
 
 User = get_user_model()
 
@@ -17,7 +17,14 @@ def validate_email_availability(email):
     """
     try:
         User.objects.get(email=email)
-        raise forms.ValidationError("Sorry, this email address is already registered to another user")
+
+        if 'email':
+            raise forms.ValidationError({
+                'email': ['Sorry, this email address is already '
+                          'registered to another user',]})
+        else:
+            raise forms.ValidationError('Sorry, this email address is already '
+                                    'registered to another user')
 
     except User.DoesNotExist:
         pass
@@ -57,6 +64,10 @@ class RequestInvitationForm(forms.Form):
     """
     Form for member of the public to request an invitation.
     """
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(RequestInvitationForm, self).__init__(*args, **kwargs)
+
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField()
@@ -66,11 +77,24 @@ class RequestInvitationForm(forms.Form):
 
     def clean(self):
         """
-        Make sure email is not already in the system.
+        Check whether the email is in the system.  If it is registered
+        to a closed account, send the user a reactivation link.
         """
         cleaned_data = super(RequestInvitationForm, self).clean()
         email = cleaned_data.get('email')
-        validate_email_availability(email)
+
+        try:
+            closed_user = User.objects.get(email=email, is_closed=True)
+            invite_user_to_reactivate_account(closed_user, request=self.request)
+
+            raise forms.ValidationError({
+                'email': ['This email address is already registered to another (closed) account. '
+                          'To reactivate this account, please check your email inbox. '
+                          'To register a new account, '
+                          'please use a different email address.',]})
+
+        except User.DoesNotExist:
+            validate_email_availability(email)
 
         return cleaned_data
 
@@ -101,7 +125,8 @@ class ActivateAccountForm(forms.Form):
         password2 = cleaned_data.get('confirm_password')
 
         if password1 != password2:
-            raise forms.ValidationError("Your passwords do not match. Please try again.")
+            raise forms.ValidationError('Your passwords do not match. '
+                                        'Please try again.')
 
         return cleaned_data
 
@@ -244,13 +269,13 @@ class ProfileForm(forms.Form):
                                         }))
 
         self.fields['bio'] = forms.CharField(
-                                initial = self.user.bio,
-                                widget=forms.Textarea(attrs={
-                                    'class': 'bio',
-                                    'placeholder': 'Add some details about yourself...',
-                                    'rows': 'auto',
-                                }),
-                                required=False)
+                        initial = self.user.bio,
+                        widget=forms.Textarea(attrs={
+                            'class': 'bio',
+                            'placeholder': 'Add some details about yourself...',
+                            'rows': 'auto',
+                        }),
+                        required=False)
 
         roles = Role.objects.all()
         self.fields['roles'] = RoleModelMultipleChoiceField(
