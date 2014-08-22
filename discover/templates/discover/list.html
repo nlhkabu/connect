@@ -31,8 +31,7 @@
                 <a href="" class="clear-filters">{% trans "Clear All" %}</a>
             </h3>
 
-            <form action="" method="post">
-                {% csrf_token %}
+            <form action="" method="get">
                 {{ form.as_p }}
                 <input type="submit" class="button" value="{% trans 'Submit' %}" />
             </form>
@@ -42,7 +41,7 @@
                     <label for="">Location</label>
                     <label for="all">
                         <input type="radio" name="locationRadios" id="all" value="all" checked />
-                        <span>{% trans "All Members" %}</span>
+                        <span>{% trans "All users" %}</span>
                     </label>
                     <label for="close">
                         <input type="radio" name="locationRadios" id="close" value="close" />
@@ -63,67 +62,67 @@
         </div>
         <div class="twelve columns omega">
 
-        {% if listed_members %}
-            {% for member in listed_members %}
+        {% if listed_users %}
+            {% for user in listed_users %}
                 <!-- start card -->
-                <div class="member-card">
-                    <div class="member-card-content">
+                <div class="user-card">
+                    <div class="user-card-content">
                         <div class="image">
-                            <a href="#" class="member-img toggle-member-expand">
-                                {% gravatar member.email 150 %}
+                            <a href="#" class="user-img toggle-user-expand">
+                                {% gravatar user.email 150 %}
                             </a>
                         </div>
 
-                        <div class="member-details">
-                            <h3><a href="#" class="toggle-member-expand">
-                                {{ member.first_name }}
-                                {% if member.last_name %}
-                                    {{ member.last_name }}
+                        <div class="user-details">
+                            <h3><a href="#" class="toggle-user-expand">
+                                {{ user.first_name }}
+                                {% if user.last_name %}
+                                    {{ user.last_name }}
                                 {% endif %}
                             </a></h3>
                             <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
 
-                            {% if member.roles.all %}
+                            {% if user.roles.all %}
                                 <ul class="roles">
-                                {% for role in member.roles.all %}
+                                {% for role in user.roles.all %}
                                     <li class="badge">{{ role }}</li>
                                 {% endfor %}
                                 </ul>
                             {% endif %}
 
-                            {% if member.get_skills %}
-                                <ul class="member-skills">
-                                    {% for skill in member.get_skills %}
-                                        <li class="badge badge-grey">{{ skill.name }}</li>
+                            {% if user.userskill_set.all %}
+                                <ul class="user-skills">
+                                    {% for user_skill in user.userskill_set.all %}
+                                        <li class="badge badge-grey">{{ user_skill.skill.name }}</li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}
 
-
-                            <div class="member-expand">
+                            <div class="user-expand">
                                 <div class="padding">
                                     <blockquote>
-                                        {{ member.bio|linebreaksbr }}
+                                        {{ user.bio|linebreaksbr }}
                                     </blockquote>
 
-                                    {% if member.get_skills %}
+                                    {% if user.userskill_set.all %}
                                         <div class="skills-container">
                                             <table class="skills">
                                                 <tbody>
-                                            {% for skill in member.get_skills %}
-                                                <tr>
-                                                    <td class="skill-name">{{ skill.name }}</td>
-                                                    <td class="skill-ability"><div class="ability" data-value="{{ skill.percentage }}" data-description="{{ skill.proficiency }}"></div></td>
-                                                </tr>
-                                            {% endfor %}
+                                                    {% for user_skill in user.userskill_set.all %}
+                                                        <tr>
+                                                            <td class="skill-name">{{ user_skill.skill.name }}</td>
+                                                            <td class="skill-ability">
+                                                            <div class="ability" data-value="{{ user_skill.get_proficiency_percentage }}" data-description="{{ user_skill.get_proficiency_display }}"></div></td>
+                                                        </tr>
+                                                    {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
                                     {% endif %}
 
-                                    {% if member.userlink_set.all %}
-                                        <ul class="member-links">
-                                            {% for link in member.userlink_set.all %}
+                                    {% if user.link.all %}
+                                        <ul class="user-links">
+                                            {% for link in user.link.all %}
                                                 <li>
                                                     <i class="fa {{ link.get_icon }}"></i>
                                                     <a href="{{ link.url }}">{{ link.anchor }}</a>
@@ -136,17 +135,15 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="member-card-footer">
-                        {% if member != user %}
-                            <a href="{% url 'moderation:report-abuse' member.id %}" class="report-abuse pull-left">
+                    <div class="user-card-footer">
+                        {% if user != user %}
+                            <a href="{% url 'moderation:report-abuse' user.id %}" class="report-abuse pull-left">
                                 {% trans "Report Abuse" %}
                             </a>
                         {% endif %}
                         <nav class="pull-right">
-                            <a href="#" class="pull-right toggle-member-expand full-profile">
-                                {% trans "View Full Profile" %}
-                            </a>
-                            {% if member != user %}
+                            <a href="#" class="pull-right toggle-user-expand full-profile">{% trans "View Full Profile" %}</a>
+                            {% if user != user %}
                                 <a href="#" class="pull-right">
                                     {% trans "Connect" %}
                                 </a>
@@ -158,9 +155,9 @@
                 <!-- end card-->
                 {% endfor %}
             {% else %}
-                <div class="no-results member-card">
+                <div class="no-results user-card">
                     <h4>{% trans "Sorry!" %}</h4>
-                    <p>{% trans "There are no members matching your selected search.  Please try again." %}</p>
+                    <p>{% trans "There are no users matching your selected search.  Please try again." %}</p>
                 </div>
             {% endif %}
 

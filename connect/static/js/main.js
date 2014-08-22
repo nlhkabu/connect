@@ -64,17 +64,17 @@ $(document).ready(function(){
 
     // Expand and Collapse Member Profiles
 
-    $('.toggle-member-expand').click(function(e){
+    $('.toggle-user-expand').click(function(e){
         e.preventDefault();
 
-        $(this).closest('.member-card').find('.member-expand').slideToggle(150);
+        $(this).closest('.user-card').find('.user-expand').slideToggle(150);
 
-        var $fullProfile = $(this).closest('.member-card').find('.full-profile');
+        var $fullProfile = $(this).closest('.user-card').find('.full-profile');
 
-        if ($fullProfile.text() == 'View Full Profile'){
-            $fullProfile.text('Collapse')
+        if ($fullProfile.html() == 'View Full Profile'){
+            $fullProfile.html('Collapse')
         } else {
-            $fullProfile.text('View Full Profile');
+            $fullProfile.html('View Full Profile');
         }
     });
 

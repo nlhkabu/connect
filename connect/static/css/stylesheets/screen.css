@@ -2884,7 +2884,7 @@ ul.dash-tabs li.active a i {
 }
 
 /* line 125, ../sass/pages/_dashboard.scss */
-.member-card {
+.user-card {
   margin: 10px 0px 30px 0px;
   border: 1px solid #ddd;
   webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
@@ -2892,19 +2892,19 @@ ul.dash-tabs li.active a i {
 }
 
 /* line 132, ../sass/pages/_dashboard.scss */
-.member-card-content {
+.user-card-content {
   padding: 15px;
   background-color: #fcfcfc;
   border-bottom: 1px solid #ececec;
 }
 /* line 137, ../sass/pages/_dashboard.scss */
-.member-card-content .member-img {
+.user-card-content .user-img {
   float: left;
   width: 20%;
   margin-right: 5%;
 }
 /* line 142, ../sass/pages/_dashboard.scss */
-.member-card-content .member-img img {
+.user-card-content .user-img img {
   border: 3px solid white;
   webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
@@ -2912,83 +2912,83 @@ ul.dash-tabs li.active a i {
   height: auto;
 }
 /* line 151, ../sass/pages/_dashboard.scss */
-.member-card-content .member-details {
+.user-card-content .user-details {
   float: right;
   width: 75%;
 }
 /* line 155, ../sass/pages/_dashboard.scss */
-.member-card-content .member-details h3 {
+.user-card-content .user-details h3 {
   margin-top: 5px;
   font-size: 25px;
   line-height: 1.2;
 }
 /* line 160, ../sass/pages/_dashboard.scss */
-.member-card-content .member-details h3 a {
+.user-card-content .user-details h3 a {
   color: #010101;
   text-decoration: none;
 }
 /* line 166, ../sass/pages/_dashboard.scss */
-.member-card-content .member-details p {
+.user-card-content .user-details p {
   margin-bottom: 15px;
 }
 /* line 170, ../sass/pages/_dashboard.scss */
-.member-card-content .member-details .roles {
+.user-card-content .user-details .roles {
   display: block;
   width: 100%;
   padding-bottom: 7px;
 }
 /* line 177, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand {
+.user-card-content .user-expand {
   display: none;
 }
 /* line 180, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .padding {
+.user-card-content .user-expand .padding {
   padding: 30px 20px 20px 0;
 }
 /* line 184, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .skills-container {
+.user-card-content .user-expand .skills-container {
   padding: 30px 0;
   margin: 30px 0;
   border-top: 1px dashed #ccc;
   border-bottom: 1px dashed #ccc;
 }
 /* line 191, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .skills {
+.user-card-content .user-expand .skills {
   max-width: 400px;
   margin: 0;
 }
 /* line 196, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .member-links {
+.user-card-content .user-expand .user-links {
   margin: 0;
 }
 /* line 199, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .member-links li {
+.user-card-content .user-expand .user-links li {
   margin: 0;
   padding: 5px 0;
 }
 /* line 203, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .member-links li a {
+.user-card-content .user-expand .user-links li a {
   text-decoration: none;
 }
 /* line 206, ../sass/pages/_dashboard.scss */
-.member-card-content .member-expand .member-links li a i {
+.user-card-content .user-expand .user-links li a i {
   margin-right: 5px;
 }
 
 /* line 216, ../sass/pages/_dashboard.scss */
 .roles,
-.member-skills {
+.user-skills {
   margin: 0;
 }
 /* line 219, ../sass/pages/_dashboard.scss */
 .roles li.badge,
-.member-skills li.badge {
+.user-skills li.badge {
   margin: 0 0 5px 0;
   display: inline-block;
 }
 
 /* line 226, ../sass/pages/_dashboard.scss */
-.member-card-footer a {
+.user-card-footer a {
   padding: 10px 15px;
   border-left: 1px solid #ddd;
   text-decoration: none;
@@ -2996,12 +2996,12 @@ ul.dash-tabs li.active a i {
   color: #333333;
 }
 /* line 233, ../sass/pages/_dashboard.scss */
-.member-card-footer a:hover {
+.user-card-footer a:hover {
   background-color: #f4f4f4;
   color: black;
 }
 /* line 239, ../sass/pages/_dashboard.scss */
-.member-card-footer a.report-abuse {
+.user-card-footer a.report-abuse {
   border-left: 0;
   border-right: 1px solid #ddd;
 }

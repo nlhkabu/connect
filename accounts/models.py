@@ -173,20 +173,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email])
 
 
-    def get_skills(self):
-        """
-        Gets the user's skills
-        """
-        skills = self.skill_set.all()
-
-        for skill in skills:
-            userskill = UserSkill.objects.get(user=self, skill=skill)
-            skill.proficiency = userskill.get_proficiency_display()
-            skill.percentage = userskill.get_proficiency_percentage()
-
-        return skills
-
-
     def promote_to_moderator(self):
         """
         Promotes a user to a moderator
@@ -386,7 +372,7 @@ class UserLink(models.Model):
     Link attached to a user's profile, e.g. github account,
     twitter account, etc.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='link')
     anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
     url = models.URLField()
 

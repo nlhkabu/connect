@@ -122,19 +122,19 @@ ul.dash-tabs {
     padding: 15px 15px 0 15px;
 }
 
-.member-card {
+.user-card {
     margin: 10px 0px 30px 0px;
     border: 1px solid #ddd;
     webkit-box-shadow: 2px 2px 2px 0px rgba(0,0,0,.1);
     box-shadow: 2px 2px 2px 0px rgba(0,0,0,.1);
 }
 
-.member-card-content {
+.user-card-content {
     padding: 15px;
     background-color: $off-white;
     border-bottom: 1px solid $light-grey;
 
-    .member-img {
+    .user-img {
         float: left;
         width: 20%;
         margin-right: 5%;
@@ -148,7 +148,7 @@ ul.dash-tabs {
         }
     }
 
-    .member-details {
+    .user-details {
         float: right;
         width: 75%;
 
@@ -174,7 +174,7 @@ ul.dash-tabs {
         }
     }
 
-    .member-expand {
+    .user-expand {
         display: none;
 
         .padding {
@@ -193,7 +193,7 @@ ul.dash-tabs {
             margin: 0;
         }
 
-        .member-links {
+        .user-links {
             margin: 0;
 
             li {
@@ -213,7 +213,7 @@ ul.dash-tabs {
 }
 
 .roles,
-.member-skills {
+.user-skills {
     margin: 0;
 
     li.badge {
@@ -222,7 +222,7 @@ ul.dash-tabs {
     }
 }
 
-.member-card-footer {
+.user-card-footer {
     a {
         padding: 10px 15px;
         border-left: 1px solid #ddd;
