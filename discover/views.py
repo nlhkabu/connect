@@ -35,7 +35,8 @@ def dashboard(request):
         'userskill_set',
         'userskill_set__skill',
         'roles',
-        'link',
+        'links',
+        'links__icon'
     )
 
     if request.method == 'GET':

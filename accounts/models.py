@@ -372,23 +372,20 @@ class UserLink(models.Model):
     Link attached to a user's profile, e.g. github account,
     twitter account, etc.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='link')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='links')
     anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
     url = models.URLField()
+    icon = models.ForeignKey('LinkBrand', blank=True, null=True,
+                             on_delete=models.SET_NULL)
 
     def get_icon(self):
         """
-        Attempt to match a user link to a recognised brand (LinkBrand).
+        If there is no icon matched - use default.
         """
-        domain = urlsplit(self.url).netloc
-        icon = 'fa-globe'
-
         try:
-            brand = LinkBrand.objects.get(domain=domain)
-            icon = brand.fa_icon
-
-        except LinkBrand.DoesNotExist:
-            pass # Keep the default icon
+            icon = self.icon.fa_icon
+        except:
+            icon = 'fa-globe'
 
         return icon
 
@@ -398,6 +395,19 @@ class UserLink(models.Model):
 
     def __str__(self):
         return self.anchor
+
+    def save(self, *args, **kwargs):
+        """
+        Attempt to match a user link to a recognised brand (LinkBrand).
+        """
+        domain = urlsplit(self.url).netloc
+
+        try:
+            self.icon = LinkBrand.objects.get(domain=domain)
+        except:
+            pass
+
+        super(UserLink, self).save(*args, **kwargs)
 
 
 class LinkBrand(models.Model):
@@ -423,3 +433,19 @@ class LinkBrand(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        """
+        Find any existing links to match to a new (or edited) brand
+        """
+        super(LinkBrand, self).save(*args, **kwargs)
+
+        existing_links = UserLink.objects.filter(url__contains=self.domain)
+
+        # Filter out any false positives
+        for link in existing_links:
+            domain = urlsplit(link.url).netloc
+
+            if domain != self.domain:
+                existing_links = existing_links.exclude(pk=link.pk)
+
+        existing_links.update(icon=self)

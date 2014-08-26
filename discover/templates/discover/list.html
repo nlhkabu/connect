@@ -120,9 +120,9 @@
                                         </div>
                                     {% endif %}
 
-                                    {% if user.link.all %}
+                                    {% if user.links.all %}
                                         <ul class="user-links">
-                                            {% for link in user.link.all %}
+                                            {% for link in user.links.all %}
                                                 <li>
                                                     <i class="fa {{ link.get_icon }}"></i>
                                                     <a href="{{ link.url }}">{{ link.anchor }}</a>

@@ -4,7 +4,6 @@ from django.core.urlresolvers import reverse
 from connect.utils import generate_salt, hash_time, send_connect_email
 
 
-
 def create_inactive_user(email, first_name, last_name):
     """
     Create inactive user with basic details
@@ -44,3 +43,4 @@ def invite_user_to_reactivate_account(user, request):
                        recipient=user,
                        site=site,
                        url=url)
+

@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit
+
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
@@ -16,7 +18,7 @@ from connect.utils import generate_html_email, hash_time, send_connect_email
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, CloseAccountForm,
                     LinkForm, ProfileForm, RequestInvitationForm, SkillForm)
-from .models import CustomUser, UserLink, UserSkill
+from .models import CustomUser, LinkBrand, UserLink, UserSkill
 from .utils import create_inactive_user
 
 
@@ -167,6 +169,9 @@ def profile_settings(request):
             save_skills(user, skill_formset)
             save_links(user, link_formset)
 
+            user_links = UserLink.objects.filter(user=user)
+            match_link_to_brand(user_links)
+
             #TODO: add confirmation message here
             return redirect(reverse('accounts:profile-settings'))
 
@@ -202,7 +207,7 @@ def save_paired_items(user, formset, Model, item_name, counterpart_name):
             setattr(model_instance, counterpart_name, counterpart)
             paired_items.append(model_instance)
 
-    # Replace old skills with new
+    # Replace old pairs with new
     Model.objects.filter(user=user).delete()
     Model.objects.bulk_create(paired_items)
 
@@ -215,6 +220,26 @@ def save_skills(user, formset):
 def save_links(user, formset):
     """Wrapper function to save paired link anchors and URLs."""
     save_paired_items(user, formset, UserLink, 'anchor', 'url')
+
+
+def match_link_to_brand(user_links):
+    """
+    Attempt to match a user's links to recognised brands (LinkBrand).
+    This functionality also exists as a custom save() method on the model.
+    -- Use this with functions that create and update in bulk.
+    """
+    for link in user_links:
+        domain = urlsplit(link.url).netloc
+
+        try:
+            brand = LinkBrand.objects.get(domain=domain)
+            link.icon = brand
+            link.save()
+
+        except:
+            pass
+
+    return user_links
 
 
 @login_required
