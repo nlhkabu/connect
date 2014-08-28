@@ -73,6 +73,9 @@ urlpatterns = patterns('',
         name='request-invitation-done'),
     url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
 
+    # Profile settings
+    url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
+
     # Account settings
     url(r'^settings/$', 'accounts.views.account_settings', name='account-settings'),
     url(r'^settings/update$', 'accounts.views.update_account', name='update-account'),
@@ -80,5 +83,4 @@ urlpatterns = patterns('',
     url(r'^close/done$',
         TemplateView.as_view(template_name='accounts/close_account_done.html'),
         name='close-account-done'),
-    url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
 )

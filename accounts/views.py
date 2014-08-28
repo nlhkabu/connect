@@ -50,8 +50,7 @@ def request_invitation(request):
             new_user.save()
 
             # Send email(s) to moderator(s) alerting them of new account application
-            moderators = User.objects.filter(is_moderator=True,
-                                                    is_active=True)
+            moderators = User.objects.filter(is_moderator=True, is_active=True)
 
             url = request.build_absolute_uri(
                                 reverse('moderation:review-applications'))
