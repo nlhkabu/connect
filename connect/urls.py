@@ -9,7 +9,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-
     url(r'^$', 'discover.views.dashboard', name='dashboard'),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^moderation/', include('moderation.urls', namespace='moderation')),

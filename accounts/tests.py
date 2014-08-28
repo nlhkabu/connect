@@ -189,6 +189,7 @@ class UserModelTest(TestCase):
 #~class ActivateAccountTest(TestCase):
     #~def test_activate_account_url_resolves_to_activate_account_view(self):
     #~def test_can_activate_account(self):
+    #~def test_notification_emails_are_sent_to_moderators(self):
     #~def test_activated_account_redirects_to_correct_view(self):
 
 
@@ -222,3 +223,6 @@ class UserModelTest(TestCase):
     #~def test_can_close_account(self):
     #~def test_closed_account_is_inactive(self):
     #~def test_closed_account_redirects_to_correct_view(self):
+
+
+# TODO - need to find out a way to test custom migration (0002)

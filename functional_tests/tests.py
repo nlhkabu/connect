@@ -12,7 +12,7 @@ User = get_user_model()
 # test what happens from the users' points of view
 # ================================================
 
-class MemberVisitTest(StaticLiveServerCase):
+class UserVisitTest(StaticLiveServerCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -65,36 +65,37 @@ class MemberVisitTest(StaticLiveServerCase):
 
 # There she sees:
 
-# A card for each member registered on the site, with:
-# Member name
-# Member gravatar (if they have one)
-# Member roles
-# Member skills (and their proficiency)
-# Member bio
-# Member links
+# A card for each user registered on the site, with:
+# User name
+# User gravatar (if they have one)
+# User roles
+# User skills (and their proficiency)
+# User bio
+# User links
+# Link to report this user for abuse
 
 # Sam notices a form on the page where she can 'Refine' her search
 
 ## SKILLS/INTERESTS
 
 # When she selects 'Django' and clicks on 'submit', she notices that
-# the members she sees all have the skill 'Django'
+# the users she sees all have the skill 'Django'
 
 # When she selects 'Django' and 'Game Development' she sees all of
-# the members with the skills 'Django' OR 'Game Development'
+# the users with the skills 'Django' OR 'Game Development'
 
 ## CONNECT PREFERENCES
 
 # Sam also notices that she can filter results by their preferred roles.
-# She selects 'Mentor' to see all of the members who have the role 'mentor'.
-# Likewise, when she selects 'Mentor' and 'Mentee' she sees all of the members
+# She selects 'Mentor' to see all of the users who have the role 'mentor'.
+# Likewise, when she selects 'Mentor' and 'Mentee' she sees all of the users
 # with the roles 'Mentor' OR 'Game Development'
 
-# Sam notices that she can filter members by BOTH skill/interest & preferred role.
+# Sam notices that she can filter users by BOTH skill/interest & preferred role.
 # She is looking for a Django mentor, so selects 'Django' and 'Mentor'
-# All of the members listed in the results have the skill 'Django' and the
+# All of the users listed in the results have the skill 'Django' and the
 # role 'Mentor'.
 
-# Sam is also making a Python game and is looking for members to join her.
+# Sam is also making a Python game and is looking for users to join her.
 # She selects 'Game Development' and 'Coding Buddy', but there is nobody in
 # the system who matches this search, so she sees a 'no results' message.

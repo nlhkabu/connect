@@ -13,31 +13,18 @@ from connect.utils import (generate_html_email, generate_salt,
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
+from .utils import log_moderator_event
+
 from .models import ModerationLogMsg
 
-
 User = get_user_model()
-
-
-def log_moderator_event(msg_type, user, moderator, comment=''):
-    """
-    Log a moderation event.
-    """
-    message = ModerationLogMsg.objects.create(
-        msg_type=msg_type,
-        comment=comment,
-        pertains_to=user,
-        logged_by=moderator,
-    )
-
-    return message
 
 
 @login_required
 @permission_required('accounts.access_moderators_section')
 @permission_required('accounts.invite_user')
 @permission_required('accounts.uninvite_user')
-def user_panel(request,
+def moderation_home(request,
                invitation_form=None,
                reinvitation_form=None,
                revocation_form=None):
@@ -118,7 +105,7 @@ def invite_user(request):
         return redirect('moderation:moderators')
 
     else:
-        return user_panel(request, invitation_form=invitation_form)
+        return moderation_home(request, invitation_form=invitation_form)
 
 
 @login_required
@@ -175,7 +162,7 @@ def reinvite_user(request):
         return redirect('moderation:moderators')
 
     else:
-        return user_panel(request, reinvitation_form=reinvitation_form)
+        return moderation_home(request, reinvitation_form=reinvitation_form)
 
 
 
@@ -214,7 +201,7 @@ def revoke_invitation(request):
         return redirect('moderation:moderators')
 
     else:
-        return user_panel(request, revocation_form=revocation_form)
+        return moderation_home(request, revocation_form=revocation_form)
 
 
 @login_required

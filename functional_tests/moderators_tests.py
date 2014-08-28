@@ -80,7 +80,7 @@ User = get_user_model()
 # User Applications
 # =================
 
-# Abby applies for a connect membership at accounts/request-invitation
+# Abby applies for a connect usership at accounts/request-invitation
 # At first she accidently tries to submit the form without any of the fields filled
 # but is met with an error message for each field telling her that she must
 # supply information for each field.
@@ -92,13 +92,13 @@ User = get_user_model()
 # to a success message
 
 
-# Chris applies for a connect membershup at accounts/request-invitation - filling
+# Chris applies for a connect usershup at accounts/request-invitation - filling
 # in all fields correctly.
 
 # He is redirected to a success message.
 
 
-# Janine logs into her connect account and navigates to /moderation/review-membership-applications
+# Janine logs into her connect account and navigates to /moderation/review-usership-applications
 
 # She notices two applications listed - one for Abby and one for Chris.
 # Each application includes:
@@ -193,6 +193,6 @@ User = get_user_model()
 # logged there.
 
 # When she navigates to the homepage of the app, Sally is no longer listed as
-# a member.
+# a user.
 
 # Satisfied, Janine logs out.

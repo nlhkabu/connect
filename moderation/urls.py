@@ -4,7 +4,7 @@ from django.views.generic.base import TemplateView
 from moderation import views
 
 urlpatterns = patterns('',
-    url(r'^$', 'moderation.views.user_panel', name='moderators'),
+    url(r'^$', 'moderation.views.moderation_home', name='moderators'),
     url(r'^invite-user$', 'moderation.views.invite_user', name='invite-user'),
     url(r'^reinvite-user$', 'moderation.views.reinvite_user', name='reinvite-user'),
     url(r'^revoke-invitation$', 'moderation.views.revoke_invitation', name='revoke-invitation'),
