@@ -270,6 +270,7 @@ def review_applications(request):
             send_connect_email(subject=subject,
                                template=template,
                                recipient=user,
+                               sender=moderator,
                                site=site,
                                url=url)
 
