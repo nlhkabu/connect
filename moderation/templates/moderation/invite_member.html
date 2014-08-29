@@ -77,7 +77,7 @@
         <h3 class="lined">{% trans "Invitations pending activation" %}</h3>
         <!-- TODO: How to translate this? -->
         <p class="intro">{{ pending.count|apnumber|title }} member{{ pending.count|pluralize }} you have invited {{ pending.count|pluralize:"has,have" }} not yet activated their account:</p>
-        <table class="invitation-table">
+        <table class="responsive invitation-table">
             <thead>
                 <tr>
                     <th>{% trans "Name" %}</th>

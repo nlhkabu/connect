@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import ModerationLogMsg
@@ -115,5 +117,67 @@ class FilterLogsForm(forms.Form):
     Form for a moderator to filter moderation logs by date, type and
     who the report has been logged against and logged by.
     """
-    msg_type = forms.ChoiceField(choices=ModerationLogMsg.MSG_TYPE_CHOICES,
+    ALL = 'ALL'
+    TODAY = 'TODAY'
+    YESTERDAY = 'YESTERDAY'
+    THIS_WEEK = 'THIS_WEEK'
+    CUSTOM = 'CUSTOM'
+
+    DATE_CHOICES = (
+        (ALL, 'All'),
+        (TODAY, 'Today'),
+        (YESTERDAY, 'Yesterday'),
+        (THIS_WEEK, 'This Week'),
+        (CUSTOM, 'Custom Date Range'),
+    )
+
+    MSG_FILTER_CHOICES = ModerationLogMsg.MSG_TYPE_CHOICES
+    MSG_FILTER_CHOICES.insert(0, (ALL, 'All'))
+
+    msg_type = forms.ChoiceField(choices=MSG_FILTER_CHOICES,
                                  required=False)
+    period = forms.ChoiceField(choices=DATE_CHOICES)
+
+    start_date = forms.DateField(required=False,
+                            initial=lambda: date.today().replace(year=date.today().year - 1),
+                            input_formats=('%d/%m/%Y',),
+                            widget=forms.DateInput(
+                                format='%d/%m/%Y',
+                                attrs={
+                                    'class': 'start-date',
+                                    'placeholder': 'Start Date',
+                                    #~# Disable by default (unless shown)
+                                    'disabled' : 'True',
+                            }))
+
+    end_date = forms.DateField(required=False,
+                        initial=date.today,
+                        input_formats=('%d/%m/%Y',),
+                        widget=forms.DateInput(
+                            format='%d/%m/%Y',
+                            attrs={
+                                'class': 'end-date',
+                                'placeholder': 'End Date',
+                                # Disable by default (unless shown)
+                                'disabled' : 'True',
+                        }))
+
+
+    def clean(self):
+        """
+        If 'CUSTOM' is selected, check that both start_date and end_date
+        have a value
+        """
+        cleaned_data = super(FilterLogsForm, self).clean()
+        period = cleaned_data.get('period')
+
+        if period == 'CUSTOM':
+
+            start_date = cleaned_data.get('start_date')
+            end_date = cleaned_data.get('end_date')
+
+            if not start_date or not end_date:
+                raise forms.ValidationError(
+                    'To filter by date, please provide a start & end date')
+
+        return cleaned_data

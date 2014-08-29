@@ -12,7 +12,7 @@
 
     {% if pending %}
         <p class="intro">There {{ pending.count|pluralize:"is,are" }} {{ pending.count|apnumber }} pending member application{{ pending.count|pluralize }}:</p>
-        <table class="review-app-table">
+        <table class="responsive review-app-table">
             <thead>
                 <tr>
                     <th>{% trans "Name" %}</th>

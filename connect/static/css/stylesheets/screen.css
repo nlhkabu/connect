@@ -2428,36 +2428,36 @@ a.table-link {
 
 @media (max-device-width: 1060px) {
   /* line 532, ../sass/_site_structure.scss */
-  table {
+  table.responsive {
     display: block;
     /* Force table to not be like tables anymore */
     /* Hide table headers (but not display: none;, for accessibility) */
   }
   /* line 539, ../sass/_site_structure.scss */
-  table thead,
-  table tbody,
-  table tr,
-  table th,
-  table td {
+  table.responsive thead,
+  table.responsive tbody,
+  table.responsive tr,
+  table.responsive th,
+  table.responsive td {
     display: block;
   }
   /* line 544, ../sass/_site_structure.scss */
-  table thead tr {
+  table.responsive thead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
   /* line 550, ../sass/_site_structure.scss */
-  table tr {
+  table.responsive tr {
     border: 1px solid #ccc;
     margin-bottom: 10px;
   }
   /* line 555, ../sass/_site_structure.scss */
-  table tr:nth-of-type(even) {
+  table.responsive tr:nth-of-type(even) {
     background: #f6f6f6;
   }
   /* line 559, ../sass/_site_structure.scss */
-  table th, table td {
+  table.responsive th, table.responsive td {
     /* Behave  like a "row" */
     border: none;
     border-bottom: 1px solid #eee;
@@ -2465,11 +2465,11 @@ a.table-link {
     padding-left: 35%;
   }
   /* line 567, ../sass/_site_structure.scss */
-  table td:last-child {
+  table.responsive td:last-child {
     border-bottom: 0;
   }
   /* line 571, ../sass/_site_structure.scss */
-  table td:before {
+  table.responsive td:before {
     position: absolute;
     top: 6px;
     left: 6px;
@@ -2479,22 +2479,22 @@ a.table-link {
     font-weight: bold;
   }
   /* line 582, ../sass/_site_structure.scss */
-  table a.table-link {
+  table.responsive a.table-link {
     display: inline;
     padding-right: 7px;
   }
   /* line 587, ../sass/_site_structure.scss */
-  table a.table-link.last {
+  table.responsive a.table-link.last {
     padding-right: 0;
   }
 }
 @media (max-device-width: 650px) {
   /* line 596, ../sass/_site_structure.scss */
-  table th, table td {
+  table.responsive th, table.responsive td {
     padding: 8px;
   }
   /* line 600, ../sass/_site_structure.scss */
-  table td:before {
+  table.responsive td:before {
     position: static;
   }
 }
@@ -3418,4 +3418,61 @@ td.comments .mobile {
 /* line 241, ../sass/pages/_moderators.scss */
 .revoke-label span {
   font-weight: bold;
+}
+
+/* line 249, ../sass/pages/_moderators.scss */
+.filter-logs {
+  padding-bottom: 25px;
+  border-bottom: 1px solid #ececec;
+}
+
+/* line 255, ../sass/pages/_moderators.scss */
+.filter-input {
+  display: inline-block;
+  margin-right: 14.5px;
+  float: left;
+}
+/* line 260, ../sass/pages/_moderators.scss */
+.filter-input label {
+  font-weight: bold;
+  padding-bottom: 3px;
+}
+/* line 265, ../sass/pages/_moderators.scss */
+.filter-input select {
+  padding: 5px;
+  max-width: 210px;
+  margin-bottom: 0;
+}
+
+/* line 272, ../sass/pages/_moderators.scss */
+.custom-date {
+  display: none;
+  float: left;
+  padding-top: 24px;
+}
+/* line 278, ../sass/pages/_moderators.scss */
+.custom-date input,
+.custom-date label {
+  float: left;
+  margin: 0;
+}
+/* line 283, ../sass/pages/_moderators.scss */
+.custom-date input {
+  max-width: 137px;
+}
+/* line 287, ../sass/pages/_moderators.scss */
+.custom-date label {
+  padding: 6px 10px 0 10px;
+  font-weight: bold;
+}
+@media (max-device-width: 1060px) {
+  /* line 272, ../sass/pages/_moderators.scss */
+  .custom-date {
+    padding-top: 15px;
+  }
+}
+
+/* line 298, ../sass/pages/_moderators.scss */
+input.filter-submit {
+  margin: 15px 0 0 0;
 }

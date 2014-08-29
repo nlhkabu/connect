@@ -529,7 +529,7 @@ a.table-link {
 }
 
 @media (max-device-width: 1060px) {
-    table {
+    table.responsive {
         display: block;
     /* Force table to not be like tables anymore */
         thead,
@@ -592,7 +592,7 @@ a.table-link {
 
 
 @media (max-device-width: 650px) {
-    table {
+    table.responsive {
         th, td {
             padding: 8px;
         }

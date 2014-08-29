@@ -242,3 +242,62 @@ td.comments .mobile {
         font-weight: bold;
     }
 }
+
+
+// Logs
+
+.filter-logs {
+    padding-bottom: 25px;
+    border-bottom: 1px solid $light-grey;
+}
+
+
+.filter-input {
+    display: inline-block;
+    margin-right: 14.5px;
+    float: left;
+
+    label {
+        font-weight: bold;
+        padding-bottom: 3px;
+    }
+
+    select {
+        padding: 5px;
+        max-width: 210px;
+        margin-bottom: 0;
+    }
+}
+
+.custom-date {
+    display: none;
+    float: left;
+    padding-top: 24px;
+
+    input,
+    label {
+        float: left;
+        margin: 0;
+    }
+
+    input {
+        max-width: 137px;
+    }
+
+    label {
+        padding: 6px 10px 0 10px;
+        font-weight: bold;
+    }
+
+    @media (max-device-width: 1060px) {
+        padding-top: 15px;
+    }
+
+}
+
+input.filter-submit {
+    margin: 15px 0 0 0;
+}
+
+
+

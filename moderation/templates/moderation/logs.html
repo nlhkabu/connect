@@ -9,13 +9,34 @@
 {% block moderators_content %}
     <h3 class="lined">{% trans "View Logs" %}</h3>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="button" value="{% trans 'Filter Logs' %}" />
+    <form action="" method="get" class="filter-logs">
+        <div class="filter-input first">
+            <label for="id_msg_type">Log Type</label>
+            {{ form.msg_type }}
+        </div>
+        <div class="filter-input">
+            <label for="id_period">Period</label>
+            {{ form.period }}
+        </div>
+        <div class="custom-date">
+            {{ form.start_date }}
+            <label><i class="fa fa-arrow-right"></i></label>
+            {{ form.end_date }}
+
+            {% if form.non_field_errors %}
+                <br />
+                <span class="form-error">
+                    {% for error in form.non_field_errors %}
+                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                    {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+        <div class="clearfix"></div>
+        <input type="submit" class="button filter-submit" value="{% trans 'Filter Logs' %}" />
     </form>
     {% if logs %}
-        <table class="logs-table">
+        <table class="responsive logs-table">
             <thead>
                 <tr>
                     <th>{% trans "Date" %}</th>
@@ -28,7 +49,7 @@
             <tbody>
                 {% for log in logs %}
                     <tr>
-                        <td class="date">{{ log.msg_datetime|date:"M d, y" }}</td>
+                        <td class="date">{{ log.msg_datetime|date:"M d, Y" }}</td>
                         <td class="type">{{ log.get_msg_type_display }}</td>
                         <td class="comments">
                             <span class="desktop">
@@ -48,7 +69,7 @@
             </tbody>
         </table>
     {% else %}
-        <p class="intro">{% trans "There are no moderation events of this type logged in the system." %}</p>
+        <p class="intro">{% trans "Sorry there are no moderation events of this type logged in the system." %}</p>
     {% endif %}
 
 

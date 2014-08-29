@@ -20,7 +20,7 @@ class ModerationLogMsg(models.Model):
     BANNING = 'BANNING'
 
 
-    MSG_TYPE_CHOICES = (
+    MSG_TYPE_CHOICES = [
         (INVITATION, 'Invitation'),
         (REINVITATION, 'Invitation Resent'),
         (APPROVAL, 'Application Approved'),
@@ -28,7 +28,7 @@ class ModerationLogMsg(models.Model):
         (DISMISSAL, 'Abuse Report Dismissed'),
         (WARNING, 'Official Warning'),
         (BANNING, 'Ban User'),
-    )
+    ]
 
     msg_datetime = models.DateTimeField(auto_now_add=True)
     msg_type = models.CharField(max_length=20, choices=MSG_TYPE_CHOICES)

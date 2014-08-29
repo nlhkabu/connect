@@ -1,3 +1,6 @@
+import datetime
+import pytz
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.models import get_current_site
@@ -5,17 +8,18 @@ from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.timezone import now
+from django.utils import timezone
 
 from accounts.models import AbuseReport
 from connect.utils import (generate_html_email, generate_salt,
                            hash_time, send_connect_email)
+from connect import settings
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeMemberForm)
-from .utils import log_moderator_event
-
 from .models import ModerationLogMsg
+from .utils import get_date_limits, log_moderator_event
+
 
 User = get_user_model()
 
@@ -251,7 +255,7 @@ def review_applications(request):
                 msg_type = ModerationLogMsg.REJECTION
                 url = ''
                 subject = ('Unfortunately, your application to {} '
-                          'was not successful'.format(site.name))
+                           'was not successful'.format(site.name))
                 template = 'moderation/emails/reject_user.html'
 
 
@@ -399,7 +403,7 @@ def review_abuse(request):
             abuse_report.moderator = moderator
             abuse_report.moderator_decision = decision
             abuse_report.moderator_comment = comments
-            abuse_report.decision_datetime = now()
+            abuse_report.decision_datetime = timezone.now()
             abuse_report.save()
 
             logged_by = abuse_report.logged_by
@@ -503,24 +507,61 @@ def review_abuse(request):
 def view_logs(request):
 
     # Exclude logs about the logged in user (moderator)
-    logs = ModerationLogMsg.objects.exclude(pertains_to=request.user)
+    logs = ModerationLogMsg.objects.exclude(
+        pertains_to=request.user
+    ).order_by(
+        '-msg_datetime'
+    ).select_related(
+        'pertains_to',
+        'logged_by',
+    )
 
-    if request.method == 'POST':
-        form = FilterLogsForm(request.POST)
+    form = FilterLogsForm()
+
+    # TODO: Get logged in user's timezone
+    # TODO: Apply activate() to logged in user's timezone
+
+    if request.method == 'GET':
+        form = FilterLogsForm(request.GET)
 
         if form.is_valid():
 
             msg_type = form.cleaned_data['msg_type']
+            period = form.cleaned_data['period']
 
-            logs = (ModerationLogMsg.objects.filter(msg_type=msg_type)
-                                            .exclude(pertains_to=request.user))
+            if period == 'TODAY':
+                today = timezone.now()
+                start, end = get_date_limits(start_date=today) # TODO: Pass in user's timezone
 
-    else:
-        form = FilterLogsForm()
+            elif period == 'YESTERDAY':
+                yesterday = timezone.now() - timezone.timedelta(days=1)
+                start, end = get_date_limits(start_date=yesterday) # TODO: Pass in user's timezone
+
+            elif period == 'THIS_WEEK':
+                now = timezone.now()
+                start_date = now - timezone.timedelta(days=7)
+                end_date = now
+
+                start, end = get_date_limits(start_date, end_date) # TODO: Pass in user's timezone
+
+            elif period == 'CUSTOM':
+
+                start_date = form.cleaned_data['start_date']
+                end_date = form.cleaned_data['end_date']
+
+                start, end = get_date_limits(start_date, end_date) # TODO: Pass in user's timezone
+
+            # Filter Logs
+            if msg_type != 'ALL':
+                logs = logs.filter(msg_type=msg_type)
+
+            if period != 'ALL':
+                logs = logs.filter(msg_datetime__gte=start,
+                                   msg_datetime__lte=end)
 
     context = {
         'form' : form,
-        'logs': logs
+        'logs': logs,
     }
 
     return render(request, 'moderation/logs.html', context)

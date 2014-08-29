@@ -213,4 +213,52 @@ $(document).ready(function(){
 
     });
 
+    // ---------------------------------
+    // MODERATION - VIEW LOGS
+    // ---------------------------------
+
+
+    var period = $('#id_period').val();
+
+    function toggleDateRange(period){
+        var custom = $('.custom-date');
+        var customInputs = $('.custom-date input');
+
+        if (period == 'CUSTOM'){
+            custom.show();
+            customInputs.attr('disabled', false);
+        } else {
+            custom.hide();
+            customInputs.attr('disabled', true);
+        }
+    }
+
+    toggleDateRange(period);
+
+    $('#id_period').change(function(){
+        period = $(this).val();
+        toggleDateRange(period);
+    });
+
+
+    // Add Datepicker to date fields
+    var minDate = $('#id_start_date').val();
+    var maxDate = $('#id_end_date').val();
+
+    $('#id_start_date').datepicker({
+        dateFormat: "d/m/yy",
+        maxDate: maxDate,
+        onClose: function( selectedDate ) {
+            $( "#id_end_date" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+
+    $('#id_end_date').datepicker({
+        minDate: minDate,
+        dateFormat: "d/m/yy",
+        onClose: function( selectedDate ) {
+            $( "#id_start_date" ).datepicker( "option", "maxDate", selectedDate );
+        }
+    });
+
 });
