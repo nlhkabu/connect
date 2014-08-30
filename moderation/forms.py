@@ -127,7 +127,7 @@ class FilterLogsForm(forms.Form):
         (ALL, 'All'),
         (TODAY, 'Today'),
         (YESTERDAY, 'Yesterday'),
-        (THIS_WEEK, 'This Week'),
+        (THIS_WEEK, 'This Week (Last 7 days)'),
         (CUSTOM, 'Custom Date Range'),
     )
 
