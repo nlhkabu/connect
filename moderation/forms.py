@@ -138,7 +138,7 @@ class FilterLogsForm(forms.Form):
                                  required=False)
     period = forms.ChoiceField(choices=DATE_CHOICES)
 
-    start_date = forms.DateField(required=False,
+    start_date = forms.DateTimeField(required=False,
                             initial=lambda: date.today().replace(year=date.today().year - 1),
                             input_formats=('%d/%m/%Y',),
                             widget=forms.DateInput(
@@ -150,7 +150,7 @@ class FilterLogsForm(forms.Form):
                                     'disabled' : 'True',
                             }))
 
-    end_date = forms.DateField(required=False,
+    end_date = forms.DateTimeField(required=False,
                         initial=date.today,
                         input_formats=('%d/%m/%Y',),
                         widget=forms.DateInput(

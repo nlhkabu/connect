@@ -522,6 +522,9 @@ def view_logs(request):
     # TODO: Get logged in user's timezone
     # TODO: Apply activate() to logged in user's timezone
 
+    local_tz = timezone.get_current_timezone() # TODO: Get user's preferred timezone
+    today = timezone.now().astimezone(local_tz)
+
     if request.method == 'GET':
         form = FilterLogsForm(request.GET)
 
@@ -531,26 +534,23 @@ def view_logs(request):
             period = form.cleaned_data['period']
 
             if period == 'TODAY':
-                today = timezone.now()
-                start, end = get_date_limits(start_date=today) # TODO: Pass in user's timezone
+                start, end = get_date_limits(start_date=today)
 
             elif period == 'YESTERDAY':
-                yesterday = timezone.now() - timezone.timedelta(days=1)
-                start, end = get_date_limits(start_date=yesterday) # TODO: Pass in user's timezone
+                yesterday = today - timezone.timedelta(days=1)
+                start, end = get_date_limits(start_date=yesterday)
 
             elif period == 'THIS_WEEK':
-                now = timezone.now()
-                start_date = now - timezone.timedelta(days=7)
-                end_date = now
+                start_date = today - timezone.timedelta(days=7)
+                end_date = today
 
-                start, end = get_date_limits(start_date, end_date) # TODO: Pass in user's timezone
+                start, end = get_date_limits(start_date, end_date)
 
             elif period == 'CUSTOM':
-
                 start_date = form.cleaned_data['start_date']
                 end_date = form.cleaned_data['end_date']
 
-                start, end = get_date_limits(start_date, end_date) # TODO: Pass in user's timezone
+                start, end = get_date_limits(start_date, end_date)
 
             # Filter Logs
             if msg_type != 'ALL':
