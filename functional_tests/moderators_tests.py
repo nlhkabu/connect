@@ -196,3 +196,39 @@ User = get_user_model()
 # a user.
 
 # Satisfied, Janine logs out.
+
+
+# Moderation Logs
+# ===============
+
+# Bill logs into connect and navigates to the moderation logs.
+# He sees a list of all moderation events, with those last added at the top of the list.
+
+# Bill filters the logs by 'invited'
+# The logs are filtered correctly.
+
+# Bill filters the logs by those recorded today
+# The logs are filtered correctly.
+
+# Bill filters the logs by those recorded yesterday
+# The logs are filtered correctly.
+
+# Bill filters the logs by those recorded in the last seven days
+# The logs are filtered correctly.
+
+# Bill filters the logs by 'custom date range' selecting those recorded between four days ago and today
+# The logs are filtered correctly.
+
+# Bill filters the logs by 'custom date range', but does not select a start date
+# Bill sees a message asking him to specify a start and end date.  The logs remain unfiltered.
+
+# Bill filters the logs by 'custom date range', but does not select an end date
+# Bill sees a message asking him to specify a start and end date.  The logs remain unfiltered.
+
+# Bill filters the logs by 'Invited' and 'today'
+# The logs are filtered correctly.
+
+# Finally, bill selects 'all' on both dropdowns
+# Again, he sees a list of all moderation events.
+
+

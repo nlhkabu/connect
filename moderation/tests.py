@@ -9,6 +9,14 @@ from .views import invite_member
 
 User = get_user_model()
 
+# Forms.py
+
+#~class TestFilterLogsFormValidation(TestCase):
+
+    #~def test_validation_fails_if_custom_is_selected_but_no_start_date_is_specified(self):
+    #~def test_validation_fails_if_custom_is_selected_but_no_end_date_is_specified(self):
+
+
 # Utils.py
 
 #~class LogMessageTest(TestCase):
@@ -125,4 +133,9 @@ class ModerationHomeTest(TestCase):
     #~def test_logs_render_on_page(self):
     #~def test_moderator_cannot_see_logs_about_themself(self):
     #~def test_can_filter_logs_by_type(self):
+    #~def test_can_filter_logs_by_type_and_date(self):
+    #~def test_can_filter_logs_by_today(self):
+    #~def test_can_filter_logs_by_yesterday(self):
+    #~def test_can_filter_logs_by_last_seven_days(self):
+    #~def test_can_filter_logs_by_custom_date_range(self):
 
