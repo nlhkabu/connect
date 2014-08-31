@@ -2,7 +2,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.views import login
 from django.test import TestCase
 
-from .factories import ModeratorFactory, UserFactory
+from .factories import (InvitedPendingFactory, ModeratorFactory,
+                        RequestedPendingFactory, UserFactory)
+from .models import CustomUser
 
 User = get_user_model()
 
@@ -14,13 +16,22 @@ class UserModelTest(TestCase):
     def setUp(self):
         self.moderator = ModeratorFactory()
         self.standard = UserFactory()
+        self.invited_pending = InvitedPendingFactory()
+        self.requested_pending = RequestedPendingFactory()
 
     def test_moderator_can_invite_new_user(self):
         user = self.moderator.invite_new_user(email='standard@test.test',
                                               first_name='standard',
                                               last_name='user')
 
-        self.assertEqual('standard@test.test', user.email)
+        self.assertEqual(user.email,'standard@test.test')
+        self.assertEqual(user.first_name, 'standard')
+        self.assertEqual(user.last_name, 'user')
+        self.assertEqual(user.registration_method, CustomUser.INVITED)
+        self.assertEqual(user.moderator, self.moderator)
+        self.assertEqual(user.moderator_decision, CustomUser.PRE_APPROVED)
+        self.assertIsNotNone(user.decision_datetime)
+        self.assertIsNotNone(user.auth_token)
 
     def test_standard_user_cannot_invite_new_user(self):
         user = self.standard.invite_new_user(email='standard@test.test',
@@ -30,23 +41,60 @@ class UserModelTest(TestCase):
         self.assertIsNone(user)
 
     def test_moderator_can_reinvite_user(self):
-        reinvited_user = UserFactory(email='original_email@test.test')
-        self.moderator.reinvite_user(user=reinvited_user,
+
+        decision_datetime = self.invited_pending.decision_datetime
+        auth_token = self.invited_pending.auth_token
+
+        self.moderator.reinvite_user(user=self.invited_pending,
                                      email='reset_email@test.test')
 
-        self.assertEqual('reset_email@test.test', reinvited_user.email)
+        self.assertEqual(self.invited_pending.email, 'reset_email@test.test')
+        self.assertNotEqual(self.invited_pending.decision_datetime, decision_datetime)
+        self.assertNotEqual(self.invited_pending.auth_token, auth_token)
 
     def test_standard_user_cannot_reinvite_user(self):
-        reinvited_user = UserFactory(email='original_email@test.test')
-        self.standard.reinvite_user(user=reinvited_user,
+
+        decision_datetime = self.invited_pending.decision_datetime
+        auth_token = self.invited_pending.auth_token
+
+        self.standard.reinvite_user(user=self.invited_pending,
                                     email='reset_email@test.test')
 
-        self.assertNotEqual('reset_email@test.test', reinvited_user.email)
+        self.assertNotEqual(self.invited_pending.email, 'reset_email@test.test')
+        self.assertEqual(self.invited_pending.decision_datetime, decision_datetime)
+        self.assertEqual(self.invited_pending.auth_token, auth_token)
 
-    #~def test_moderator_can_approve_user_application(self):
-    #~def test_standard_user_cannot_approve_user_application(self):
-    #~def test_moderator_can_reject_user_application(self):
-    #~def test_standard_user_cannot_reject_user_application(self):
+    def test_moderator_can_approve_user_application(self):
+        self.moderator.approve_user_application(self.requested_pending)
+
+        self.assertEqual(self.requested_pending.moderator, self.moderator)
+        self.assertEqual(self.requested_pending.moderator_decision, CustomUser.APPROVED)
+        self.assertIsNotNone(self.requested_pending.decision_datetime)
+        self.assertIsNotNone(self.requested_pending.auth_token)
+
+    def test_standard_user_cannot_approve_user_application(self):
+        self.standard.approve_user_application(self.requested_pending)
+
+        self.assertIsNone(self.requested_pending.moderator)
+        self.assertFalse(self.requested_pending.moderator_decision)
+        self.assertIsNone(self.requested_pending.decision_datetime)
+        self.assertFalse(self.requested_pending.auth_token)
+
+    def test_moderator_can_reject_user_application(self):
+        self.moderator.reject_user_application(self.requested_pending)
+
+        self.assertEqual(self.requested_pending.moderator, self.moderator)
+        self.assertEqual(self.requested_pending.moderator_decision, CustomUser.REJECTED)
+        self.assertIsNotNone(self.requested_pending.decision_datetime)
+        self.assertIsNotNone(self.requested_pending.auth_token)
+
+    def test_standard_user_cannot_reject_user_application(self):
+        self.standard.reject_user_application(self.requested_pending)
+
+        self.assertIsNone(self.requested_pending.moderator)
+        self.assertFalse(self.requested_pending.moderator_decision)
+        self.assertIsNone(self.requested_pending.decision_datetime)
+        self.assertFalse(self.requested_pending.auth_token)
 
 
 #~class UserSkillTest(TestCase):

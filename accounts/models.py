@@ -229,12 +229,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         Reject a user's application
         """
-        user.moderator = self
-        user.moderator_decision=user.REJECTED
-        user.decision_datetime = timezone.now()
-        user.save()
+        if self.is_moderator:
+            user.moderator = self
+            user.moderator_decision=user.REJECTED
+            user.decision_datetime = timezone.now()
+            user.save()
 
-        return user
+            return user
 
 
 class AbuseReport(models.Model):
