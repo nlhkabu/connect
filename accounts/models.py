@@ -173,18 +173,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email])
 
 
-    def promote_to_moderator(self):
-        """
-        Promotes a user to a moderator
-        """
-        moderators_group = Group.objects.get(name='moderators')
-        self.groups.add(moderators_group)
-
-        self.is_moderator = True
-
-        return None
-
-
     def invite_new_user(self, email, first_name, last_name):
         """
         Invite an inactive user (who needs to activate their account).
@@ -197,42 +185,44 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return None
 
         except User.DoesNotExist:
+            if self.is_moderator:
+                new_user = create_inactive_user(email, first_name, last_name)
+                new_user.registration_method = new_user.INVITED
+                new_user.moderator = self
+                new_user.moderator_decision = new_user.PRE_APPROVED
+                new_user.decision_datetime = timezone.now()
+                new_user.auth_token = hash_time(generate_salt())
+                new_user.save()
 
-            new_user = create_inactive_user(email, first_name, last_name)
-            new_user.registration_method = new_user.INVITED
-            new_user.moderator = self
-            new_user.moderator_decision = new_user.PRE_APPROVED
-            new_user.decision_datetime = timezone.now()
-            new_user.auth_token = hash_time(generate_salt())
-            new_user.save()
-
-            return new_user
+                return new_user
 
 
     def reinvite_user(self, user, email):
         """
         Reinvite an already invited user.
         """
-        # Reset email, set a new token and update decision datetime
-        user.email = email
-        user.auth_token = hash_time(generate_salt())
-        user.decision_datetime = timezone.now()
-        user.save()
+        if self.is_moderator:
+            # Reset email, set a new token and update decision datetime
+            user.email = email
+            user.auth_token = hash_time(generate_salt())
+            user.decision_datetime = timezone.now()
+            user.save()
 
-        return user
+            return user
 
 
     def approve_user_application(self, user):
         """
         Approve a user's application
         """
-        user.moderator = self
-        user.moderator_decision=user.APPROVED
-        user.decision_datetime = timezone.now()
-        user.auth_token = hash_time(generate_salt())
-        user.save()
+        if self.is_moderator:
+            user.moderator = self
+            user.moderator_decision=user.APPROVED
+            user.decision_datetime = timezone.now()
+            user.auth_token = hash_time(generate_salt())
+            user.save()
 
-        return user
+            return user
 
 
     def reject_user_application(self, user):
