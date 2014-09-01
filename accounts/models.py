@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         Group, Permission, PermissionsMixin)
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
@@ -180,28 +181,30 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         User = get_user_model()
 
-        try:
-            existing_user = User.objects.get(email=email)
-            return None
+        if self.is_moderator and self.has_perm('invite_user'):
+            try:
+                existing_user = User.objects.get(email=email)
+                return None
 
-        except User.DoesNotExist:
-            if self.is_moderator:
-                new_user = create_inactive_user(email, first_name, last_name)
-                new_user.registration_method = new_user.INVITED
-                new_user.moderator = self
-                new_user.moderator_decision = new_user.PRE_APPROVED
-                new_user.decision_datetime = timezone.now()
-                new_user.auth_token = hash_time(generate_salt())
-                new_user.save()
+            except User.DoesNotExist:
+                    new_user = create_inactive_user(email, first_name, last_name)
+                    new_user.registration_method = new_user.INVITED
+                    new_user.moderator = self
+                    new_user.moderator_decision = new_user.PRE_APPROVED
+                    new_user.decision_datetime = timezone.now()
+                    new_user.auth_token = hash_time(generate_salt())
+                    new_user.save()
 
-                return new_user
+                    return new_user
+        else:
+            raise PermissionDenied
 
 
     def reinvite_user(self, user, email):
         """
         Reinvite an already invited user.
         """
-        if self.is_moderator:
+        if self.is_moderator and self.has_perm('invite_user'):
             # Reset email, set a new token and update decision datetime
             user.email = email
             user.auth_token = hash_time(generate_salt())
@@ -210,12 +213,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
             return user
 
+        else:
+            raise PermissionDenied
+
 
     def approve_user_application(self, user):
         """
         Approve a user's application
         """
-        if self.is_moderator:
+        if self.is_moderator and self.has_perm('approve_user_application'):
             user.moderator = self
             user.moderator_decision=user.APPROVED
             user.decision_datetime = timezone.now()
@@ -224,18 +230,24 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
             return user
 
+        else:
+            raise PermissionDenied
+
 
     def reject_user_application(self, user):
         """
         Reject a user's application
         """
-        if self.is_moderator:
+        if self.is_moderator and self.has_perm('reject_user_application'):
             user.moderator = self
             user.moderator_decision=user.REJECTED
             user.decision_datetime = timezone.now()
             user.save()
 
             return user
+
+        else:
+            raise PermissionDenied
 
 
 class AbuseReport(models.Model):

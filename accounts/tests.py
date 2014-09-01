@@ -1,10 +1,16 @@
+import factory
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import login
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.test import TestCase
 
-from .factories import (InvitedPendingFactory, ModeratorFactory,
-                        RequestedPendingFactory, UserFactory)
-from .models import CustomUser
+from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
+                        RequestedPendingFactory, UserFactory, UserLinkFactory,
+                        UserSkillFactory)
+
+from .forms import validate_email_availability
+from .models import CustomUser, UserLink, UserSkill
 
 User = get_user_model()
 
@@ -34,11 +40,11 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(user.auth_token)
 
     def test_standard_user_cannot_invite_new_user(self):
-        user = self.standard.invite_new_user(email='standard@test.test',
-                                             first_name='standard',
-                                             last_name='user')
-
-        self.assertIsNone(user)
+        with self.assertRaises(PermissionDenied):
+            user = self.standard.invite_new_user(email='standard@test.test',
+                                                 first_name='standard',
+                                                 last_name='user')
+            self.assertIsNone(user)
 
     def test_moderator_can_reinvite_user(self):
 
@@ -57,12 +63,13 @@ class UserModelTest(TestCase):
         decision_datetime = self.invited_pending.decision_datetime
         auth_token = self.invited_pending.auth_token
 
-        self.standard.reinvite_user(user=self.invited_pending,
-                                    email='reset_email@test.test')
+        with self.assertRaises(PermissionDenied):
+            self.standard.reinvite_user(user=self.invited_pending,
+                                        email='reset_email@test.test')
 
-        self.assertNotEqual(self.invited_pending.email, 'reset_email@test.test')
-        self.assertEqual(self.invited_pending.decision_datetime, decision_datetime)
-        self.assertEqual(self.invited_pending.auth_token, auth_token)
+            self.assertNotEqual(self.invited_pending.email, 'reset_email@test.test')
+            self.assertEqual(self.invited_pending.decision_datetime, decision_datetime)
+            self.assertEqual(self.invited_pending.auth_token, auth_token)
 
     def test_moderator_can_approve_user_application(self):
         self.moderator.approve_user_application(self.requested_pending)
@@ -73,12 +80,13 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(self.requested_pending.auth_token)
 
     def test_standard_user_cannot_approve_user_application(self):
-        self.standard.approve_user_application(self.requested_pending)
+        with self.assertRaises(PermissionDenied):
+            self.standard.approve_user_application(self.requested_pending)
 
-        self.assertIsNone(self.requested_pending.moderator)
-        self.assertFalse(self.requested_pending.moderator_decision)
-        self.assertIsNone(self.requested_pending.decision_datetime)
-        self.assertFalse(self.requested_pending.auth_token)
+            self.assertIsNone(self.requested_pending.moderator)
+            self.assertFalse(self.requested_pending.moderator_decision)
+            self.assertIsNone(self.requested_pending.decision_datetime)
+            self.assertFalse(self.requested_pending.auth_token)
 
     def test_moderator_can_reject_user_application(self):
         self.moderator.reject_user_application(self.requested_pending)
@@ -89,33 +97,85 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(self.requested_pending.auth_token)
 
     def test_standard_user_cannot_reject_user_application(self):
-        self.standard.reject_user_application(self.requested_pending)
+        with self.assertRaises(PermissionDenied):
+            self.standard.reject_user_application(self.requested_pending)
 
-        self.assertIsNone(self.requested_pending.moderator)
-        self.assertFalse(self.requested_pending.moderator_decision)
-        self.assertIsNone(self.requested_pending.decision_datetime)
-        self.assertFalse(self.requested_pending.auth_token)
+            self.assertIsNone(self.requested_pending.moderator)
+            self.assertFalse(self.requested_pending.moderator_decision)
+            self.assertIsNone(self.requested_pending.decision_datetime)
+            self.assertFalse(self.requested_pending.auth_token)
 
 
-#~class UserSkillTest(TestCase):
+class UserSkillTest(TestCase):
 
-    #~def test_proficiency_percentage_calculates_correctly(self):
+    def test_proficiency_percentage_calculates_correctly(self):
+        user_skill = UserSkillFactory(proficiency=UserSkill.INTERMEDIATE)
+        percentage = user_skill.get_proficiency_percentage()
 
-#~class UserLinkTest(TestCase):
-#~
-    #~def test_custom_save_method_sets_icon(self):
-    #~def test_get_icon_method_gets_correct_icon(self):
+        self.assertEquals(percentage, 50)
 
-#~class LinkBrandTest(TestCase):
-    #~def test_custom_save_method_applies_new_brand_to_existing_userlinks(self):
+
+class UserLinkTest(TestCase):
+
+    def setUp(self):
+        self.github = BrandFactory() # Github is default brand.
+
+    def test_custom_save_method_finds_registered_brand(self):
+        user_link = UserLinkFactory(url='http://github.com/nlh-kabu')
+
+        self.assertEqual(user_link.icon, self.github)
+
+    def test_custom_save_method_cannot_find_unregistered_brand(self):
+        user_link = UserLinkFactory(url='http://blahblah.com/nlh-kabu')
+
+        self.assertIsNone(user_link.icon)
+
+    def test_get_icon_method_gets_correct_icon(self):
+        user_link = UserLinkFactory(url='http://github.com/nlh-kabu')
+        icon = user_link.get_icon()
+
+        self.assertEqual(icon, 'fa-github')
+
+    def test_get_icon_method_gets_default_icon(self):
+        user_link = UserLinkFactory(url='http://noiconurl.com')
+        icon = user_link.get_icon()
+
+        self.assertEqual(icon, 'fa-globe')
+
+
+class LinkBrandTest(TestCase):
+
+    def test_custom_save_method_applies_new_brand_to_existing_userlinks(self):
+        UserLinkFactory(url='http://facebook.com/myusername')
+
+        new_brand = BrandFactory(name='Facebook',
+                                 domain='facebook.com',
+                                 fa_icon='fa-facebook')
+
+        # Retreive the link to check that it has the new brand
+        link = UserLink.objects.get(url='http://facebook.com/myusername')
+
+        self.assertEqual(link.icon, new_brand)
 
 
 # Forms.py
 
-#~class FormValidationTest(TestCase):
-    #~def test_email_availability_validation_passes_with_new_email(self):
-    #~def test_email_availability_validation_fails_with_existing_email(self):
-#~
+class FormValidationTest(TestCase):
+    def test_email_is_unique(self):
+        users = factory.build_batch(UserFactory, 10)
+
+        validate_email_availability('unique_user@test.test')
+
+    def test_email_is_duplicate(self):
+        users = factory.build_batch(UserFactory, 10)
+
+        with self.assertRaises(ValidationError):
+            validate_email_availability('user.1@test.test')
+
+
+
+
+
 #~class RequestInvitationFormValidationTest(TestCase):
     #~def test_closed_account_promts_custom_validation_message(self):
 #~
