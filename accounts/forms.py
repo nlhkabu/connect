@@ -4,30 +4,25 @@ from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
 
 from .models import CustomUser, Role, Skill, UserSkill
-from .utils import invite_user_to_reactivate_account
+from .utils import get_user, invite_user_to_reactivate_account
 
 User = get_user_model()
 
-
 def validate_email_availability(email):
     """
-    Check that the email address is not registered to another existing user.
+    Check that the email address is not registered to an existing user.
     """
-    try:
-        User.objects.get(email=email)
+    user = get_user(email)
+    if user:
+        raise forms.ValidationError(
+            _('Sorry, this email address is already '
+                'registered to another user'),
 
-        if 'email':
-            raise forms.ValidationError({
-                'email': ['Sorry, this email address is already '
-                          'registered to another user',]})
-        else:
-            raise forms.ValidationError('Sorry, this email address is already '
-                                    'registered to another user')
-
-    except User.DoesNotExist:
-        pass
+            code='email_already_registered'
+        )
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -36,8 +31,8 @@ class CustomUserCreationForm(UserCreationForm):
     password.
     """
 
-    def __init__(self, *args, **kargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kargs)
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         del self.fields['username']
 
     class Meta:
@@ -51,8 +46,8 @@ class CustomUserChangeForm(UserChangeForm):
     password hash display field.
     """
 
-    def __init__(self, *args, **kargs):
-        super(CustomUserChangeForm, self).__init__(*args, **kargs)
+    def __init__(self, *args, **kwargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
         del self.fields['username']
 
     class Meta:
@@ -75,28 +70,36 @@ class RequestInvitationForm(forms.Form):
         'placeholder' : 'Please explain why you would like to join this site',
     }))
 
-    def clean(self):
+    def clean_email(self):
         """
         Check whether the email is in the system.  If it is registered
         to a closed account, send the user a reactivation link.
         """
-        cleaned_data = super(RequestInvitationForm, self).clean()
-        email = cleaned_data.get('email')
+        email = self.cleaned_data['email']
 
-        try:
-            closed_user = User.objects.get(email=email, is_closed=True)
-            invite_user_to_reactivate_account(closed_user, request=self.request)
+        if email != self.user.email:
+            user = get_user(email)
+            if user:
+                if user.is_closed:
+                    invite_user_to_reactivate_account(user, request=self.request)
+                    raise forms.ValidationError(
+                        _('This email address is already registered to another '
+                          '(closed) account. To reactivate this account, '
+                          'please check your email inbox. To register a new '
+                          'account, please use a different email address.'),
 
-            raise forms.ValidationError({
-                'email': ['This email address is already registered to another (closed) account. '
-                          'To reactivate this account, please check your email inbox. '
-                          'To register a new account, '
-                          'please use a different email address.',]})
+                        code='email_registered_to_closed_account'
+                    )
 
-        except User.DoesNotExist:
-            validate_email_availability(email)
+                else:
+                    raise forms.ValidationError(
+                        _('Sorry, this email address is already '
+                            'registered to another user'),
 
-        return cleaned_data
+                        code='email_already_registered'
+                    )
+
+        return email
 
 
 class ActivateAccountForm(forms.Form):
@@ -327,11 +330,6 @@ class AccountSettingsForm(forms.Form):
         """
         cleaned_data = super(AccountSettingsForm, self).clean()
 
-        email = cleaned_data.get('email')
-
-        if email != self.user.email:
-            validate_email_availability(email)
-
         currentpass = cleaned_data.get('current_password')
         password1 = cleaned_data.get('reset_password')
         password2 = cleaned_data.get('reset_password_confirm')
@@ -350,6 +348,14 @@ class AccountSettingsForm(forms.Form):
                 raise forms.ValidationError("Your passwords do not match. Please try again.")
 
         return cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        if email != self.user.email:
+            validate_email_availability(email)
+
+        return email
 
 
 class CloseAccountForm(forms.Form):
@@ -379,4 +385,3 @@ class CloseAccountForm(forms.Form):
             'password': ['Incorrect Password.  Please try again.',]})
 
         return cleaned_data
-

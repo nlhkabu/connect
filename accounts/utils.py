@@ -44,3 +44,17 @@ def invite_user_to_reactivate_account(user, request):
                        site=site,
                        url=url)
 
+
+def get_user(email):
+    """
+    Retrieve a user based on the supplied email address.
+    Return None if no user has registered this email address.
+    """
+    User = get_user_model()
+
+    try:
+        user = User.objects.get(email=email)
+        return user
+
+    except User.DoesNotExist:
+        return None
