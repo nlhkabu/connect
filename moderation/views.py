@@ -25,9 +25,9 @@ User = get_user_model()
 
 
 @login_required
-@permission_required('accounts.access_moderators_section')
-@permission_required('accounts.invite_user')
-@permission_required('accounts.uninvite_user')
+@permission_required(['accounts.access_moderators_section',
+                      'accounts.invite_user',
+                      'accounts.uninvite_user'])
 def moderation_home(request,
                invitation_form=None,
                reinvitation_form=None,
@@ -64,8 +64,8 @@ def moderation_home(request,
 
 
 @login_required
-@permission_required('accounts.access_moderators_section')
-@permission_required('accounts.invite_user')
+@permission_required(['accounts.access_moderators_section',
+                      'accounts.invite_user'])
 def invite_user(request):
     """
     Invite a new user
@@ -113,8 +113,8 @@ def invite_user(request):
 
 
 @login_required
-@permission_required('accounts.access_moderators_section')
-@permission_required('accounts.invite_user')
+@permission_required(['accounts.access_moderators_section',
+                      'accounts.invite_user'])
 def reinvite_user(request):
     """
     Reinvite a user.
@@ -171,8 +171,8 @@ def reinvite_user(request):
 
 
 @login_required
-@permission_required('accounts.access_moderators_section')
-@permission_required('accounts.uninvite_user')
+@permission_required(['accounts.access_moderators_section',
+                      'accounts.uninvite_user'])
 def revoke_invitation(request):
     """
     Revoke a user invitation.
@@ -209,9 +209,9 @@ def revoke_invitation(request):
 
 
 @login_required
-@permission_required('accounts.access_moderators_section')
-@permission_required('accounts.approve_user_application')
-@permission_required('accounts.reject_user_application')
+@permission_required(['accounts.access_moderators_section',
+                      'accounts.approve_user_application',
+                      'accounts.reject_user_application'])
 def review_applications(request):
     """
     Review all pending applications.
@@ -348,10 +348,10 @@ def report_abuse(request, user_id):
 
 
 @login_required
-@permission_required('accounts.access_moderators_section')
-@permission_required('accounts.dismiss_abuse_report')
-@permission_required('accounts.warn_user')
-@permission_required('accounts.ban_user')
+@permission_required(['accounts.access_moderators_section',
+                      'accounts.dismiss_abuse_report',
+                      'accounts.warn_user',
+                      'accounts.ban_user'])
 def review_abuse(request):
     """
     Show a list of abuse reports to moderators.
