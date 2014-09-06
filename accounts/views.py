@@ -18,7 +18,7 @@ from connect.utils import generate_html_email, hash_time, send_connect_email
 from .forms import (AccountSettingsForm, ActivateAccountForm,
                     BaseLinkFormSet, BaseSkillFormSet, CloseAccountForm,
                     LinkForm, ProfileForm, RequestInvitationForm, SkillForm)
-from .models import CustomUser, LinkBrand, UserLink, UserSkill
+from .models import CustomUser, LinkBrand, Role, Skill, UserLink, UserSkill
 from .utils import create_inactive_user
 
 
@@ -136,6 +136,8 @@ def profile_settings(request):
     user = request.user
     contact_email = settings.SITE_EMAIL
 
+    has_skills = Skill.objects.count() > 0
+    has_roles = Role.objects.count() > 0
 
     SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None,
                                                        formset=BaseSkillFormSet)
@@ -185,6 +187,8 @@ def profile_settings(request):
         'skill_formset' : skill_formset,
         'link_formset' : link_formset,
         'contact_email' : contact_email,
+        'has_skills' : has_skills,
+        'has_roles' : has_roles,
     }
 
     return render(request, 'accounts/profile_settings.html', context)

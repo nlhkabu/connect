@@ -82,59 +82,65 @@
             </dl>
         </fieldset>
 
-        <fieldset>
-            <legend>Your Roles</legend>
-            <p class="intro">How would you like other members to interact with you?  Please select all that apply.</p>
-            <dl>
-                <dt>{% trans "Roles" %}</dt>
-                <dd>
-                    {% for field in form.roles %}
-                        {{ field }}
-                    {% endfor %}
-                    {% if form.roles.errors %}
-                        <span class="form-error">
-                            {% for error in form.roles.errors %}
-                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
-                            {% endfor %}
-                        </span>
-                    {% endif %}
-                </dd>
-                <span class="clearfix"></span>
-            </dl>
-        </fieldset>
-
-        <fieldset>
-            <legend>Your Skills &amp; Interests</legend>
-            <p class="intro">
-                Please list all of your relevant skills and interests.
-                If you'd like to include something here that is not already on the list, please email us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.
-            </p>
-            <dl>
-                <dt>{% trans "Skills" %}</dt>
-                <dd>
-                    {{ skill_formset.management_form }}
-                    {% for form in skill_formset %}
-                        <div class="skill-formset">
-                            {{ form.skill }}
-                            <span class="divider">
-                                <i class="fa fa-arrows-h"></i>
-                            </span>
-                            {{ form.proficiency }}
-                        </div>
-                    {% endfor %}
-
-                    {% if skill_formset.non_form_errors %}
-                        <div>
+        {% if has_roles %}
+            <fieldset>
+                <legend>Your Roles</legend>
+                <p class="intro">How would you like other members to interact with you?  Please select all that apply.</p>
+                <dl>
+                    <dt>{% trans "Roles" %}</dt>
+                    <dd>
+                        {% for field in form.roles %}
+                            {{ field }}
+                        {% endfor %}
+                        {% if form.roles.errors %}
                             <span class="form-error">
-                                {% for error in skill_formset.non_form_errors %}
+                                {% for error in form.roles.errors %}
                                     <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
                                 {% endfor %}
                             </span>
-                        </div>
-                    {% endif %}
-                </dd>
-                <span class="clearfix"></span>
-            </dl>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+            </fieldset>
+        {% endif %}
+
+        {% if has_skills %}
+            <fieldset>
+                <legend>Your Skills &amp; Interests</legend>
+                <p class="intro">
+                    Please list all of your relevant skills and interests.
+                    If you'd like to include something here that is not already on the list, please email us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.
+                </p>
+                <dl>
+                    <dt>{% trans "Skills" %}</dt>
+                    <dd>
+                        {{ skill_formset.management_form }}
+                        {% for form in skill_formset %}
+                            <div class="skill-formset">
+                                {{ form.skill }}
+                                <span class="divider">
+                                    <i class="fa fa-arrows-h"></i>
+                                </span>
+                                {{ form.proficiency }}
+                            </div>
+                        {% endfor %}
+
+                        {% if skill_formset.non_form_errors %}
+                            <div>
+                                <span class="form-error">
+                                    {% for error in skill_formset.non_form_errors %}
+                                        <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                                    {% endfor %}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </dd>
+                    <span class="clearfix"></span>
+                </dl>
+            </fieldset>
+        {% endif %}
+        <fieldset class="submit-fieldset">
             <dl>
                 <dt></dt>
                 <dd>

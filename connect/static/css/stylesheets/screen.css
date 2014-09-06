@@ -2735,21 +2735,26 @@ a.delete-row {
   margin-left: 15px;
 }
 
+/* line 161, ../sass/pages/_profile_and_accounts.scss */
+fieldset.submit-fieldset {
+  margin-top: -30px;
+}
+
 @media only screen and (max-width: 610px) {
-  /* line 164, ../sass/pages/_profile_and_accounts.scss */
+  /* line 168, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset,
   .horizontal-form dl dd .link-formset {
     border-bottom: 1px dotted #d4d4d4;
     margin: 5px 0 20px 0;
   }
-  /* line 168, ../sass/pages/_profile_and_accounts.scss */
+  /* line 172, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset select,
   .horizontal-form dl dd .link-formset select {
     width: 100%;
     padding: 2%;
     margin-bottom: 10px;
   }
-  /* line 177, ../sass/pages/_profile_and_accounts.scss */
+  /* line 181, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset input[type="text"],
   .horizontal-form dl dd .skill-formset input[type="email"],
   .horizontal-form dl dd .skill-formset input[type="password"],
@@ -2762,12 +2767,12 @@ a.delete-row {
     width: 96%;
     margin-bottom: 10px;
   }
-  /* line 183, ../sass/pages/_profile_and_accounts.scss */
+  /* line 187, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset .divider,
   .horizontal-form dl dd .link-formset .divider {
     display: none;
   }
-  /* line 187, ../sass/pages/_profile_and_accounts.scss */
+  /* line 191, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset a.delete-row,
   .horizontal-form dl dd .link-formset a.delete-row {
     margin: 0 0 10px 0;
