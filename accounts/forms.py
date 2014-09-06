@@ -77,27 +77,26 @@ class RequestInvitationForm(forms.Form):
         """
         email = self.cleaned_data['email']
 
-        if email != self.user.email:
-            user = get_user(email)
-            if user:
-                if user.is_closed:
-                    invite_user_to_reactivate_account(user, request=self.request)
-                    raise forms.ValidationError(
-                        _('This email address is already registered to another '
-                          '(closed) account. To reactivate this account, '
-                          'please check your email inbox. To register a new '
-                          'account, please use a different email address.'),
+        user = get_user(email)
+        if user:
+            if user.is_closed:
+                invite_user_to_reactivate_account(user, request=self.request)
+                raise forms.ValidationError(
+                    _('This email address is already registered to another '
+                      '(closed) account. To reactivate this account, '
+                      'please check your email inbox. To register a new '
+                      'account, please use a different email address.'),
 
-                        code='email_registered_to_closed_account'
-                    )
+                    code='email_registered_to_closed_account'
+                )
 
-                else:
-                    raise forms.ValidationError(
-                        _('Sorry, this email address is already '
-                            'registered to another user'),
+            else:
+                raise forms.ValidationError(
+                    _('Sorry, this email address is already '
+                        'registered to another user'),
 
-                        code='email_already_registered'
-                    )
+                    code='email_already_registered'
+                )
 
         return email
 

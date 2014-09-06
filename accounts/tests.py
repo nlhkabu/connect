@@ -172,13 +172,9 @@ class FormValidationTest(TestCase):
         with self.assertRaises(ValidationError):
             validate_email_availability('user.1@test.test')
 
-
-
-
-
 #~class RequestInvitationFormValidationTest(TestCase):
-    #~def test_closed_account_promts_custom_validation_message(self):
-#~
+    #~def test_closed_account_prompts_custom_validation_message(self):
+
 #~class TestActivateAccountFormValidation(TestCase):
     #~def test_password_validation_fails_when_passwords_are_different(self):
     #~def test_password_validation_passes_when_passwords_are_same(self):
