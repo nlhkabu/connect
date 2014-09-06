@@ -26,7 +26,7 @@
             <tbody>
                 {% for report in reports %}
                     <tr>
-                        <td class="date">{{ report.logged_datetime|date:"M d, y" }}</td>
+                        <td class="date">{{ report.logged_datetime|date:"M d, Y" }}</td>
                         <td class="email">
                             {{ report.logged_against.get_full_name|title }}<br/>
                             <a href="mailto:{{ report.logged_against.email }}" class="wrap">{{ report.logged_against.email }}</a>

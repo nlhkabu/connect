@@ -28,7 +28,7 @@
                 <tr>
                     <td>{{ user.get_full_name|title }}</td>
                     <td class="email"><span class="wrap">{{ user.email }}</span></td>
-                    <td class="date">{{ user.applied_datetime|date:"M d, y" }}</td>
+                    <td class="date">{{ user.applied_datetime|date:"M d, Y" }}</td>
                     <td class="comments">
                         <span class="desktop">
                             {{ user.application_comments|linebreaksbr|truncatewords_html:20 }}
