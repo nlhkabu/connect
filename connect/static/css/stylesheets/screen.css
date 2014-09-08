@@ -2322,8 +2322,8 @@ input.button,
 input.button:hover {
   background-image: none;
   background-color: #e51e41;
-  font-size: 12px !important;
-  color: white !important;
+  font-size: 12px;
+  color: white;
   text-shadow: none;
   border: 0;
   padding: 7px 12px 8px 12px;
@@ -2343,63 +2343,64 @@ button:hover,
 button.muted,
 .button.muted {
   background-color: #e7e7e7;
-  color: #333333 !important;
+  color: #333333;
 }
 
 /* line 431, ../sass/_site_structure.scss */
 button.muted:hover,
 .button.muted:hover {
   background-color: #e2e2e2;
+  color: #333333;
 }
 
-/* line 435, ../sass/_site_structure.scss */
+/* line 436, ../sass/_site_structure.scss */
 .active {
   background-color: #f4f4f4;
 }
 
-/* line 439, ../sass/_site_structure.scss */
+/* line 440, ../sass/_site_structure.scss */
 label {
   font-weight: normal;
 }
 
-/* line 443, ../sass/_site_structure.scss */
+/* line 444, ../sass/_site_structure.scss */
 p label {
   font-weight: bold;
 }
 
-/* line 451, ../sass/_site_structure.scss */
+/* line 452, ../sass/_site_structure.scss */
 .button.mini,
 .button.mini:hover {
   padding: 5px 7px;
 }
 
-/* line 455, ../sass/_site_structure.scss */
+/* line 456, ../sass/_site_structure.scss */
 .button.grey {
   background-color: #333333;
   color: white;
 }
 
-/* line 460, ../sass/_site_structure.scss */
+/* line 461, ../sass/_site_structure.scss */
 table .button {
   margin-bottom: 0;
 }
 
-/* line 465, ../sass/_site_structure.scss */
+/* line 466, ../sass/_site_structure.scss */
 .skills {
   margin: 15px 0 0 0;
   background-color: transparent;
 }
-/* line 469, ../sass/_site_structure.scss */
+/* line 470, ../sass/_site_structure.scss */
 .skills td {
   padding: 5px 0;
   border: 0;
   vertical-align: middle;
 }
-/* line 475, ../sass/_site_structure.scss */
+/* line 476, ../sass/_site_structure.scss */
 .skills td.skill-ability {
   width: 70%;
 }
-/* line 479, ../sass/_site_structure.scss */
+/* line 480, ../sass/_site_structure.scss */
 .skills .ability {
   height: 20px;
   width: 85%;
@@ -2407,26 +2408,26 @@ table .button {
   border: 1px solid #ddd;
   background-color: white;
 }
-/* line 486, ../sass/_site_structure.scss */
+/* line 487, ../sass/_site_structure.scss */
 .skills .ability .ui-progressbar-value {
   background-color: #e51e41;
   background-image: none;
   border: 1px solid #e51e41;
 }
 
-/* line 497, ../sass/_site_structure.scss */
+/* line 498, ../sass/_site_structure.scss */
 a.table-link {
   display: block;
 }
 
 @media (max-device-width: 1060px) {
-  /* line 502, ../sass/_site_structure.scss */
+  /* line 503, ../sass/_site_structure.scss */
   table.responsive {
     display: block;
     /* Force table to not be like tables anymore */
     /* Hide table headers (but not display: none;, for accessibility) */
   }
-  /* line 509, ../sass/_site_structure.scss */
+  /* line 510, ../sass/_site_structure.scss */
   table.responsive thead,
   table.responsive tbody,
   table.responsive tr,
@@ -2434,22 +2435,22 @@ a.table-link {
   table.responsive td {
     display: block;
   }
-  /* line 514, ../sass/_site_structure.scss */
+  /* line 515, ../sass/_site_structure.scss */
   table.responsive thead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
-  /* line 520, ../sass/_site_structure.scss */
+  /* line 521, ../sass/_site_structure.scss */
   table.responsive tr {
     border: 1px solid #ccc;
     margin-bottom: 10px;
   }
-  /* line 525, ../sass/_site_structure.scss */
+  /* line 526, ../sass/_site_structure.scss */
   table.responsive tr:nth-of-type(even) {
     background: #f6f6f6;
   }
-  /* line 529, ../sass/_site_structure.scss */
+  /* line 530, ../sass/_site_structure.scss */
   table.responsive th, table.responsive td {
     /* Behave  like a "row" */
     border: none;
@@ -2457,11 +2458,11 @@ a.table-link {
     position: relative;
     padding-left: 35%;
   }
-  /* line 537, ../sass/_site_structure.scss */
+  /* line 538, ../sass/_site_structure.scss */
   table.responsive td:last-child {
     border-bottom: 0;
   }
-  /* line 541, ../sass/_site_structure.scss */
+  /* line 542, ../sass/_site_structure.scss */
   table.responsive td:before {
     position: absolute;
     top: 6px;
@@ -2471,35 +2472,35 @@ a.table-link {
     white-space: nowrap;
     font-weight: bold;
   }
-  /* line 552, ../sass/_site_structure.scss */
+  /* line 553, ../sass/_site_structure.scss */
   table.responsive a.table-link {
     display: inline;
     padding-right: 7px;
   }
-  /* line 557, ../sass/_site_structure.scss */
+  /* line 558, ../sass/_site_structure.scss */
   table.responsive a.table-link.last {
     padding-right: 0;
   }
 }
 @media (max-device-width: 650px) {
-  /* line 566, ../sass/_site_structure.scss */
+  /* line 567, ../sass/_site_structure.scss */
   table.responsive th, table.responsive td {
     padding: 8px;
   }
-  /* line 570, ../sass/_site_structure.scss */
+  /* line 571, ../sass/_site_structure.scss */
   table.responsive td:before {
     position: static;
   }
 }
-/* line 580, ../sass/_site_structure.scss */
+/* line 581, ../sass/_site_structure.scss */
 .dialog form {
   margin: 10px 0 15px 0;
 }
-/* line 583, ../sass/_site_structure.scss */
+/* line 584, ../sass/_site_structure.scss */
 .dialog form label {
   padding-bottom: 10px;
 }
-/* line 595, ../sass/_site_structure.scss */
+/* line 596, ../sass/_site_structure.scss */
 .dialog form input[type=text],
 .dialog form input[type="password"],
 .dialog form input[type="email"],
@@ -2512,12 +2513,12 @@ a.table-link {
   width: 96%;
   padding: 2%;
 }
-/* line 600, ../sass/_site_structure.scss */
+/* line 601, ../sass/_site_structure.scss */
 .dialog form textarea {
   height: 120px;
   margin-bottom: 10px;
 }
-/* line 605, ../sass/_site_structure.scss */
+/* line 606, ../sass/_site_structure.scss */
 .dialog form .button {
   margin-bottom: 0;
 }
@@ -4917,47 +4918,42 @@ ul.dash-tabs li.active a i {
   border-top: 1px solid #ddd;
 }
 
-/* line 80, ../sass/pages/_dashboard.scss */
-.filter h3 {
-  font-size: 14px;
-  text-transform: uppercase;
-  border-bottom: 1px solid #ececec;
+/* line 83, ../sass/pages/_dashboard.scss */
+.filter .filter-form fieldset {
+  margin-bottom: 10px;
 }
-/* line 85, ../sass/pages/_dashboard.scss */
-.filter h3 a {
-  float: right;
-  font-size: 12px;
-  color: #e51e41;
-  text-transform: lowercase;
+/* line 86, ../sass/pages/_dashboard.scss */
+.filter .filter-form fieldset label {
+  padding: 1px 0;
 }
-/* line 95, ../sass/pages/_dashboard.scss */
+/* line 94, ../sass/pages/_dashboard.scss */
 .filter .close-to-me {
   display: none;
 }
-/* line 99, ../sass/pages/_dashboard.scss */
+/* line 98, ../sass/pages/_dashboard.scss */
 .filter label.within {
   display: inline-block;
   font-weight: normal;
   margin-right: 5px;
 }
-/* line 105, ../sass/pages/_dashboard.scss */
+/* line 104, ../sass/pages/_dashboard.scss */
 .filter input.tiny {
   width: 40px;
   display: inline-block;
 }
-/* line 110, ../sass/pages/_dashboard.scss */
+/* line 109, ../sass/pages/_dashboard.scss */
 .filter select.tiny {
   display: inline-block;
   width: 70px;
   padding: 4px;
 }
 
-/* line 121, ../sass/pages/_dashboard.scss */
+/* line 120, ../sass/pages/_dashboard.scss */
 .no-results {
   padding: 15px 15px 0 15px;
 }
 
-/* line 125, ../sass/pages/_dashboard.scss */
+/* line 124, ../sass/pages/_dashboard.scss */
 .user-card {
   margin: 10px 0px 30px 0px;
   border: 1px solid #ddd;
@@ -4965,19 +4961,19 @@ ul.dash-tabs li.active a i {
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
-/* line 132, ../sass/pages/_dashboard.scss */
+/* line 131, ../sass/pages/_dashboard.scss */
 .user-card-content {
   padding: 15px;
   background-color: #fcfcfc;
   border-bottom: 1px solid #ececec;
 }
-/* line 137, ../sass/pages/_dashboard.scss */
+/* line 136, ../sass/pages/_dashboard.scss */
 .user-card-content .user-img {
   float: left;
   width: 20%;
   margin-right: 5%;
 }
-/* line 142, ../sass/pages/_dashboard.scss */
+/* line 141, ../sass/pages/_dashboard.scss */
 .user-card-content .user-img img {
   border: 3px solid white;
   webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
@@ -4985,83 +4981,83 @@ ul.dash-tabs li.active a i {
   max-width: 100%;
   height: auto;
 }
-/* line 151, ../sass/pages/_dashboard.scss */
+/* line 150, ../sass/pages/_dashboard.scss */
 .user-card-content .user-details {
   float: right;
   width: 75%;
 }
-/* line 155, ../sass/pages/_dashboard.scss */
+/* line 154, ../sass/pages/_dashboard.scss */
 .user-card-content .user-details h3 {
   margin-top: 5px;
   font-size: 25px;
   line-height: 1.2;
 }
-/* line 160, ../sass/pages/_dashboard.scss */
+/* line 159, ../sass/pages/_dashboard.scss */
 .user-card-content .user-details h3 a {
   color: #010101;
   text-decoration: none;
 }
-/* line 166, ../sass/pages/_dashboard.scss */
+/* line 165, ../sass/pages/_dashboard.scss */
 .user-card-content .user-details p {
   margin-bottom: 15px;
 }
-/* line 170, ../sass/pages/_dashboard.scss */
+/* line 169, ../sass/pages/_dashboard.scss */
 .user-card-content .user-details .roles {
   display: block;
   width: 100%;
   padding-bottom: 7px;
 }
-/* line 177, ../sass/pages/_dashboard.scss */
+/* line 176, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand {
   display: none;
 }
-/* line 180, ../sass/pages/_dashboard.scss */
+/* line 179, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .padding {
   padding: 30px 20px 20px 0;
 }
-/* line 184, ../sass/pages/_dashboard.scss */
+/* line 183, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .skills-container {
   padding: 30px 0;
   margin: 30px 0 0 0;
   border-top: 1px dashed #ccc;
   border-bottom: 1px dashed #ccc;
 }
-/* line 191, ../sass/pages/_dashboard.scss */
+/* line 190, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .skills {
   max-width: 400px;
   margin: 0;
 }
-/* line 196, ../sass/pages/_dashboard.scss */
+/* line 195, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .user-links {
   margin: 30px 0 0 0;
 }
-/* line 199, ../sass/pages/_dashboard.scss */
+/* line 198, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .user-links li {
   margin: 0;
   padding: 5px 0;
 }
-/* line 203, ../sass/pages/_dashboard.scss */
+/* line 202, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .user-links li a {
   text-decoration: none;
 }
-/* line 206, ../sass/pages/_dashboard.scss */
+/* line 205, ../sass/pages/_dashboard.scss */
 .user-card-content .user-expand .user-links li a i {
   margin-right: 5px;
 }
 
-/* line 216, ../sass/pages/_dashboard.scss */
+/* line 215, ../sass/pages/_dashboard.scss */
 .roles,
 .user-skills {
   margin: 0;
 }
-/* line 219, ../sass/pages/_dashboard.scss */
+/* line 218, ../sass/pages/_dashboard.scss */
 .roles li.badge,
 .user-skills li.badge {
   margin: 0 0 5px 0;
   display: inline-block;
 }
 
-/* line 226, ../sass/pages/_dashboard.scss */
+/* line 225, ../sass/pages/_dashboard.scss */
 .user-card-footer a {
   padding: 10px 15px;
   border-left: 1px solid #ddd;
@@ -5069,18 +5065,18 @@ ul.dash-tabs li.active a i {
   font-size: 13px;
   color: #333333;
 }
-/* line 233, ../sass/pages/_dashboard.scss */
+/* line 232, ../sass/pages/_dashboard.scss */
 .user-card-footer a:hover {
   background-color: #f4f4f4;
   color: black;
 }
-/* line 239, ../sass/pages/_dashboard.scss */
+/* line 238, ../sass/pages/_dashboard.scss */
 .user-card-footer a.report-abuse {
   border-left: 0;
   border-right: 1px solid #ddd;
 }
 
-/* line 249, ../sass/pages/_dashboard.scss */
+/* line 248, ../sass/pages/_dashboard.scss */
 #map-canvas {
   width: 100%;
   height: 700px;
@@ -5088,18 +5084,18 @@ ul.dash-tabs li.active a i {
   padding: 0px;
 }
 
-/* line 256, ../sass/pages/_dashboard.scss */
+/* line 255, ../sass/pages/_dashboard.scss */
 .map-content {
   min-width: 300px;
 }
 
-/* line 260, ../sass/pages/_dashboard.scss */
+/* line 259, ../sass/pages/_dashboard.scss */
 .map-heading {
   width: 200px;
   margin-left: 15px;
 }
 
-/* line 266, ../sass/pages/_dashboard.scss */
+/* line 265, ../sass/pages/_dashboard.scss */
 .map-name,
 .map-name a {
   font-size: 25px !important;
@@ -5108,11 +5104,11 @@ ul.dash-tabs li.active a i {
   margin-top: 5px;
 }
 
-/* line 273, ../sass/pages/_dashboard.scss */
+/* line 272, ../sass/pages/_dashboard.scss */
 .map-skills {
   margin-bottom: 0;
 }
-/* line 276, ../sass/pages/_dashboard.scss */
+/* line 275, ../sass/pages/_dashboard.scss */
 .map-skills li {
   display: inline-block;
   margin: 0 5px 10px 0;

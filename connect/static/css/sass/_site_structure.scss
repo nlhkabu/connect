@@ -405,8 +405,8 @@ input.button,
 input.button:hover {
     background-image: none;
     background-color: $highlight;
-    font-size: 12px !important;
-    color: $white !important;
+    font-size: 12px;
+    color: $white;
     text-shadow: none;
     border: 0;
     padding: 7px 12px 8px 12px;
@@ -424,12 +424,13 @@ button:hover,
 button.muted,
 .button.muted {
     background-color: $light-grey * .98;
-    color: $dark-grey !important;
+    color: $dark-grey ;
 }
 
 button.muted:hover,
 .button.muted:hover {
     background-color: $light-grey * .96;
+    color: $dark-grey;
 }
 
 .active {

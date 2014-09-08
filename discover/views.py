@@ -42,8 +42,8 @@ def dashboard(request):
     if request.method == 'GET':
         form = FilterMemberForm(request.GET)
         if form.is_valid():
-            skills = form.cleaned_data['selected_skills']
-            roles = form.cleaned_data['selected_roles']
+            skills = form.cleaned_data['skills']
+            roles = form.cleaned_data['roles']
 
             if skills:
                 listed_users = listed_users.filter(
@@ -57,7 +57,7 @@ def dashboard(request):
         form = FilterMemberForm()
 
     context = {
-        'user' : user,
+        'logged_in_user' : user,
         'listed_users': listed_users,
         'form': form,
     }

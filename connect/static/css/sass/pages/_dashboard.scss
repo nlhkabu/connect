@@ -77,16 +77,15 @@ ul.dash-tabs {
 // LIST VIEW
 
 .filter {
-    h3 {
-        font-size: 14px;
-        text-transform: uppercase;
-        border-bottom: 1px solid $light-grey;
 
-        a {
-            float: right;
-            font-size: 12px;
-            color: $highlight;
-            text-transform: lowercase;
+    .filter-form {
+
+        fieldset {
+            margin-bottom: 10px;
+
+            label {
+                padding: 1px 0;
+            }
         }
     }
 
