@@ -1,27 +1,3 @@
-
-// COLOURS
-
-// Main colour.  Currently set to pink.
-
-$highlight : #e51e41;
-$highlight-dark : $highlight *.95;
-$highlight-light : $highlight * 1.5;
-
-
-// Shades of Grey
-
-$black: #000;
-$dark-grey: #333;
-
-$light-grey: #ececec;
-$lighter-grey: #f4f4f4;
-$lightest-grey: #f9f9f9;
-
-$off-white: #fcfcfc;
-$white: #fff;
-
-
-
 // GENERIC STYLES
 
 .pull-left {
@@ -38,12 +14,6 @@ $white: #fff;
 
 .centered {
     text-align: center;
-}
-
-.well {
-    background-color: #fefefe;
-    border: 1px solid $light-grey;
-    padding: 20px;
 }
 
 .badge {

@@ -1,0 +1,29 @@
+// COLOURS
+
+// Main colour.  Currently set to pink.
+
+$highlight : #e51e41;
+$highlight-dark : $highlight *.95;
+$highlight-light : $highlight * 1.5;
+$highlight-lightest : $highlight * 2;
+
+
+// Error
+$error: #c43c35;
+$error-dark: #cd0a0a;
+
+
+
+// Shades of Grey
+
+$black: #000;
+$dark-grey: #333;
+
+$mid-grey: #aaa;
+
+$light-grey: #ececec;
+$lighter-grey: #f4f4f4;
+$lightest-grey: #f9f9f9;
+
+$off-white: #fcfcfc;
+$white: #fff;
