@@ -242,6 +242,39 @@ ul.dash-tabs {
 
 }
 
+// PAGINATION
+
+.pagination {
+    text-align: center;
+
+    a {
+        display: inline-block;
+        color: $dark-grey;
+        padding: 7px 12px 8px 12px;
+        border-radius: 4px;
+
+    }
+
+    a:hover {
+        text-decoration: none;
+        background-color: $light-grey;
+        color: $dark-grey;
+    }
+
+    .endless_page_current {
+        background-color: $highlight;
+        padding: 7px 12px 8px 12px;
+        border-radius: 4px;
+        display: inline-block;
+
+
+        strong {
+            font-weight: normal;
+            color: $white;
+        }
+    }
+}
+
 
 // MAP VIEW
 

@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'debug_toolbar',
     'django_gravatar',
+    'endless_pagination',
     'connect',
     'accounts',
     'moderation',
@@ -59,6 +60,16 @@ ROOT_URLCONF = 'connect.urls'
 
 WSGI_APPLICATION = 'connect.wsgi.application'
 
+
+# Pagination
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
+
+ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
+ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

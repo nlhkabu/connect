@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
@@ -55,6 +56,17 @@ def dashboard(request):
                 ).distinct()
     else:
         form = FilterMemberForm()
+
+    # Pagination
+    #~paginator = Paginator(listed_users, 2)
+    #~page = request.GET.get('page')
+#~
+    #~try:
+        #~listed_users = paginator.page(page)
+    #~except PageNotAnInteger:
+        #~listed_users = paginator.page(1)
+    #~except EmptyPage:
+        #~listed_users = paginator.page(paginator.num_pages)
 
     context = {
         'logged_in_user' : user,

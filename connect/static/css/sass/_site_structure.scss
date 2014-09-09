@@ -399,9 +399,10 @@ input[type='radio']{
 
 button,
 .button,
+a.button,
+input.button,
 button:hover,
 .button:hover,
-input.button,
 input.button:hover {
     background-image: none;
     background-color: $highlight;
@@ -413,25 +414,54 @@ input.button:hover {
     font-weight: normal;
     position: relative;
     top: -1px;
+
+    i.fa {
+        color: $white;
+    }
 }
 
 button:hover,
-.button:hover {
+input.button:hover,
+a.button:hover {
     background-color: $highlight-dark;
+    color: #fff;
     text-decoration: none;
 }
 
 button.muted,
-.button.muted {
-    background-color: $light-grey * .98;
-    color: $dark-grey ;
-}
-
-button.muted:hover,
-.button.muted:hover {
+a.button.muted,
+input.button.muted {
     background-color: $light-grey * .96;
     color: $dark-grey;
+
+    i.fa {
+        color: $dark-grey;
+    }
 }
+
+
+button.muted:hover,
+a.button.muted:hover,
+input.button.muted:hover {
+    background-color: $light-grey * .92;
+    color: $dark-grey;
+}
+
+button.disabled,
+a.button.disabled,
+input.button.disabled,
+button.disabled:hover,
+a.button.disabled:hover,
+input.button.disabled:hover {
+    background-color: $light-grey * .98;
+    color: $light-grey * .8;
+    cursor: not-allowed;
+
+    i.fa {
+        color: $mid-grey;
+    }
+}
+
 
 .active {
     background-color: $lighter-grey;
