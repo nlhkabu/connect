@@ -57,17 +57,6 @@ def dashboard(request):
     else:
         form = FilterMemberForm()
 
-    # Pagination
-    #~paginator = Paginator(listed_users, 2)
-    #~page = request.GET.get('page')
-#~
-    #~try:
-        #~listed_users = paginator.page(page)
-    #~except PageNotAnInteger:
-        #~listed_users = paginator.page(1)
-    #~except EmptyPage:
-        #~listed_users = paginator.page(paginator.num_pages)
-
     context = {
         'logged_in_user' : user,
         'listed_users': listed_users,
