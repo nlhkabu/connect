@@ -154,7 +154,7 @@
                             {% endif %}
                             <nav class="pull-right">
                                 <a href="#" class="pull-right toggle-user-expand full-profile">{% trans "View Full Profile" %}</a>
-                                {% if user != user %}
+                                {% if user != logged_in_user %}
                                     <a href="#" class="pull-right">
                                         {% trans "Connect" %}
                                     </a>

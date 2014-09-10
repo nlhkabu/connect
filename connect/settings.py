@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django_gravatar',
     'endless_pagination',
     'connect',
+    'connect_config',
     'accounts',
     'moderation',
     'discover',
@@ -49,6 +50,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -66,6 +68,7 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
+    'connect_config.context_processors.site_processor',
 )
 
 ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
@@ -127,9 +130,6 @@ GRAVATAR_DEFAULT_IMAGE = 'retro'
 
 SITE_ID = 1
 SITE_URL = 'http://localhost:8000' #TODO: change for production
-# Primary site email address.  Is used as a generic contact point in
-# email correspondence
-SITE_EMAIL = 'info@connect.test' # TODO: change for production
 
 # Set 'from' email address for system emails
 

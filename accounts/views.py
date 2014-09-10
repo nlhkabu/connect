@@ -1,6 +1,5 @@
 from urllib.parse import urlsplit
 
-from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
@@ -134,7 +133,6 @@ def profile_settings(request):
     Allows a user to update their own profile.
     """
     user = request.user
-    contact_email = settings.SITE_EMAIL
 
     has_skills = Skill.objects.count() > 0
     has_roles = Role.objects.count() > 0
@@ -186,7 +184,6 @@ def profile_settings(request):
         'form' : form,
         'skill_formset' : skill_formset,
         'link_formset' : link_formset,
-        'contact_email' : contact_email,
         'has_skills' : has_skills,
         'has_roles' : has_roles,
     }
