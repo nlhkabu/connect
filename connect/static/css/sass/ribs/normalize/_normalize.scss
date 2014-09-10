@@ -94,16 +94,7 @@ a {
  */
 
 a:focus {
-    outline: thin dotted;
-}
-
-/**
- * Improve readability when focused and also mouse hovered in all browsers.
- */
-
-a:active,
-a:hover {
-    outline: 0;
+    outline: #bbb thin dotted;
 }
 
 /* ==========================================================================
