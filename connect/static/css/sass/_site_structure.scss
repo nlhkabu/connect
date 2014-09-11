@@ -359,7 +359,6 @@ a:visited {
   color: $highlight;
 
   &:hover {
-    text-decoration: underline;
     color: $highlight-dark;
   }
 
@@ -418,17 +417,19 @@ input.button:hover {
     i.fa {
         color: $white;
     }
+
+    &:hover,
+    &:focus {
+        background-color: $highlight-dark;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &:focus {
+        outline: $mid-grey thin dotted;
+    }
 }
 
-button:hover,
-input.button:hover,
-a.button:hover,
-button:focus,
-input.button:focus {
-    background-color: $highlight-dark;
-    color: #fff;
-    text-decoration: none;
-}
 
 button.muted,
 a.button.muted,
@@ -439,21 +440,16 @@ input.button.muted {
     i.fa {
         color: $dark-grey;
     }
-}
 
+    &:hover,
+    &:focus {
+        background-color: $light-grey * .92;
+        color: $dark-grey;
+    }
 
-button.muted:hover,
-a.button.muted:hover,
-input.button.muted:hover,
-button.muted:focus,
-input.button.muted:focus, {
-    background-color: $light-grey * .92;
-    color: $dark-grey;
-}
-
-button:focus,
-input.button:focus {
-    text-decoration: underline;
+    &:focus {
+        outline: $mid-grey thin dotted;
+    }
 }
 
 .active {
