@@ -1,0 +1,14 @@
+{% extends "logged_out.html" %}
+
+{% block page_title %}
+    {{ flatpage.title }}
+{% endblock %}
+
+{% block page_content %}
+    <div class="container">
+        <div class="flatpage-content">
+            {{ flatpage.content }}
+        </div>
+        <a href="/" class="button">{{ site.name }} Home</a>
+    </div>
+{% endblock %}

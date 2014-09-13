@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^moderation/', include('moderation.urls', namespace='moderation')),
     url(r'^dashboard/', include('discover.urls', namespace='discover')),
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #TODO: Remove for production

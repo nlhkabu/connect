@@ -1,5 +1,7 @@
 {% load i18n %}
 {% load static %}
+{% load flatpages %}
+{% get_flatpages as flatpages %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -65,8 +67,9 @@
                     {% endblocktrans %}
                 </p>
                 <p class="pull-right">
-                    <span><a href="">{% trans "Privacy Policy" %}</a></span>
-                    <span><a href="">{% trans "Code of Conduct" %}</a></span>
+                    {% for page in flatpages %}
+                        <span><a href="{{ page.url }}">{{ page.title }}</a></span>
+                    {% endfor %}
                 </p>
                 <div class="clearfix"></div>
             </div>
