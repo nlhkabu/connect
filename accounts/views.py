@@ -105,7 +105,8 @@ def activate_account(request, token):
                 user = authenticate(username=email, password=password)
                 login(request, user)
 
-                # TODO: redirect to welcome page instead of standard dashboard
+                # Redirect to dashboard with welcome message
+                request.session['show_welcome'] = True
                 return redirect(reverse('dashboard'))
 
         else:

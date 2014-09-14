@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
@@ -17,15 +17,17 @@ def dashboard(request):
     """
     Shows all members as a list - with the capacity to filter by
     member skills and roles.
+
+    Session containing 'show_welcome' displays custom message for our
+    user's first visit.
     """
+    show_welcome = request.session.get('show_welcome')
+
+    if show_welcome is not None:
+        del request.session['show_welcome']
+
     # Get additional profile data
     user = request.user
-
-    working_offline = False
-    # working_offline = True
-
-    if not working_offline:
-        user.gravatar_exists = has_gravatar(user.email)
 
     # Display members
     listed_users = User.objects.filter(
@@ -61,6 +63,7 @@ def dashboard(request):
         'logged_in_user' : user,
         'listed_users': listed_users,
         'form': form,
+        'show_welcome': show_welcome,
     }
 
     return render(request, 'discover/list.html', context)
