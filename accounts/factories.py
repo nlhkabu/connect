@@ -6,6 +6,13 @@ from django.utils import timezone
 from .models import CustomUser, LinkBrand, Skill, UserLink, UserSkill
 
 
+class GroupFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Group
+
+    name = factory.Sequence(lambda n: "Group #%s" % n)
+
+
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = CustomUser
@@ -16,30 +23,22 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'user.{}@test.test'.format(n))
     registration_method = CustomUser.INVITED
 
+    @factory.post_generation
+    def groups(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
 
-class ModeratorGroupFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Group
-
-    name = 'Moderators'
-    permissions = (
-        ("access_moderators_section", "Can see the moderators section"),
-        ("invite_user", "Can issue or reissue an invitation"),
-        ("uninvite_user", "Can revoke a user invitation"),
-        ("approve_user_application", "Can approve a user's application"),
-        ("reject_user_application", "Can reject a user's application"),
-        ("dismiss_abuse_report", "Can dismiss an abuse report"),
-        ("warn_user", "Can warn a user in response to an abuse report"),
-        ("ban_user", "Can ban a user in response to an abuse report"),
-    )
+        if extracted:
+            # A list of groups were passed in, use them
+            for group in extracted:
+                self.groups.add(group)
 
 
 class ModeratorFactory(UserFactory):
     first_name = 'Moderator'
-
     is_moderator = True
-    is_superuser = True # Quick and dirty way to give moderator all permissions
-    # MAKE ME A MODERATOR - BY ADDING MODERATOR GROUP PERMISSIONS...
+    groups = Group.objects.filter(name='moderators')
 
 
 class InvitedPendingFactory(factory.django.DjangoModelFactory):
@@ -102,4 +101,3 @@ class BrandFactory(factory.django.DjangoModelFactory):
     name = 'Github'
     domain = 'github.com'
     fa_icon = 'fa-github'
-

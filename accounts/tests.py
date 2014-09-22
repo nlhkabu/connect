@@ -18,6 +18,7 @@ User = get_user_model()
 # Models.py
 
 class UserModelTest(TestCase):
+    fixtures = ['group_perms']
 
     def setUp(self):
         self.moderator = ModeratorFactory()
@@ -107,7 +108,6 @@ class UserModelTest(TestCase):
 
 
 class UserSkillTest(TestCase):
-
     def test_proficiency_percentage_calculates_correctly(self):
         user_skill = UserSkillFactory(proficiency=UserSkill.INTERMEDIATE)
         percentage = user_skill.get_proficiency_percentage()
@@ -116,7 +116,6 @@ class UserSkillTest(TestCase):
 
 
 class UserLinkTest(TestCase):
-
     def setUp(self):
         self.github = BrandFactory() # Github is default brand.
 
@@ -144,7 +143,6 @@ class UserLinkTest(TestCase):
 
 
 class LinkBrandTest(TestCase):
-
     def test_custom_save_method_applies_new_brand_to_existing_userlinks(self):
         UserLinkFactory(url='http://facebook.com/myusername')
 

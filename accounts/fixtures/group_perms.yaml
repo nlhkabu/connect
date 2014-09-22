@@ -1,0 +1,33 @@
+- fields:
+    id: 1
+    name: moderators
+    permissions:
+    # accounts.AbuseReport permissions:
+    - [add_abusereport, accounts, abusereport]
+
+    # accounts.CustomUser permissions:
+    - [access_moderators_section, accounts, customuser]
+    - [approve_user_application, accounts, customuser]
+    - [ban_user, accounts, customuser]
+    - [dismiss_abuse_report, accounts, customuser]
+    - [invite_user, accounts, customuser]
+    - [reject_user_application, accounts, customuser]
+    - [uninvite_user, accounts, customuser]
+    - [warn_user, accounts, customuser]
+
+    # accounts.ModerationLogMsg permissions:
+    - [add_moderationlogmsg, moderation, moderationlogmsg]
+
+  model: auth.group
+
+
+# Follow this pattern to add more groups:
+
+#- fields:
+#    id: 2
+#    name: group_name
+#    permissions:
+#    # app_name.ModelName permissions:
+#    - [permission_codename, app_name, modelname] # use lowercase ModelName
+#
+#  model: auth.group
