@@ -214,6 +214,7 @@ class LinkBrandTest(TestCase):
 # Utils.py
 
 class AccountUtilsTest(TestCase):
+    fixtures = ['group_perms']
 
     def setUp(self):
         self.standard = UserFactory()
