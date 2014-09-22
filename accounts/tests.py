@@ -1,9 +1,11 @@
 import factory
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import login
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.test import TestCase
+from django.core.urlresolvers import resolve
+from django.test import Client, TestCase
 
 from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
                         RequestedPendingFactory, UserFactory, UserLinkFactory,
@@ -11,6 +13,9 @@ from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
 
 from .forms import validate_email_availability
 from .models import CustomUser, UserLink, UserSkill
+from .utils import create_inactive_user, invite_user_to_reactivate_account
+from .views import activate_account, request_invitation
+
 
 User = get_user_model()
 
@@ -160,17 +165,17 @@ class LinkBrandTest(TestCase):
 
 # Forms.py
 
-class FormValidationTest(TestCase):
-    def test_email_is_unique(self):
-        users = factory.build_batch(UserFactory, 10)
-
-        validate_email_availability('unique_user@test.test')
-
-    def test_email_is_duplicate(self):
-        users = factory.build_batch(UserFactory, 10)
-
-        with self.assertRaises(ValidationError):
-            validate_email_availability('user.1@test.test')
+#~class FormValidationTest(TestCase):
+    #~def setup(self):
+        #~self.users = factory.build_batch(UserFactory, 10)
+#~
+    #~def test_email_is_unique(self):
+        #~validate_email_availability('unique_user@test.test')
+         #~ #TODO: assert no validation error here
+#~
+    #~def test_email_is_duplicate(self):
+        #~with self.assertRaises(ValidationError):
+            #~validate_email_availability('user.1@test.test')
 
 #~class RequestInvitationFormValidationTest(TestCase):
     #~def test_closed_account_prompts_custom_validation_message(self):
@@ -210,25 +215,145 @@ class FormValidationTest(TestCase):
 
 # Utils.py
 
-#~class AccountUtilsTest(TestCase):
-    #~def test_create_inactive_user_is_not_active(self):
-    #~def test_create_inactive_user_is_standard_user(self):
-#~
+class AccountUtilsTest(TestCase):
+
+    def setUp(self):
+        self.standard = UserFactory()
+
+    def test_create_inactive_user(self):
+        user = create_inactive_user('test@test.test', 'first', 'last')
+        moderators = Group.objects.get(name='moderators')
+
+        self.assertEqual(user.email, 'test@test.test')
+        self.assertEqual(user.first_name, 'first')
+        self.assertEqual(user.last_name, 'last')
+        self.assertEqual(user.is_active, False)
+        self.assertEqual(user.is_moderator, False)
+        self.assertNotIn(moderators, user.groups.all())
+
+
     #~def test_reactivated_account_token_is_reset(self):
+        #~initial_token = self.standard.auth_token
+#~
+        #~user = invite_user_to_reactivate_account(self.standard, request) <= Need to pass in request here.  how?
+#~
+        #~self.assertNotEqual(initial_token, user.auth_token)
+
 
 
 # Urls.py and views.py
 
-#~class RequestInvitationTest(TestCase):
-    #~def test_request_invitation_url_resolves_to_request_invitation_view(self):
-    #~def test_requested_account_is_saved_as_inactive_user(self):
+class RequestInvitationTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_request_invitation_url_resolves_to_request_invitation_view(self):
+        url = resolve('/accounts/request-invitation')
+
+        self.assertEqual(url.func, request_invitation)
+
+    def test_requested_account_registration_recorded(self):
+        response = self.client.post(
+            '/accounts/request-invitation',
+            data = {
+                'first_name' : 'First',
+                'last_name' : 'Last',
+                'email' : 'new_test@test.test',
+                'comments' : 'Please give me an account',
+            },
+        )
+
+        user = User.objects.get(email='new_test@test.test')
+
+        self.assertEqual(user.registration_method, 'REQ')
+        self.assertIsNotNone(user.applied_datetime)
+        self.assertEqual(user.application_comments, 'Please give me an account')
+
+    #~ TODO: def test_notification_emails_are_sent_to_moderators(self):
+
+    def test_request_invitation_redirect(self):
+        response = self.client.post(
+            '/accounts/request-invitation',
+            data = {
+                'first_name' : 'First',
+                'last_name' : 'Last',
+                'email' : 'new_test@test.test',
+                'comments' : 'Please give me an account',
+            },
+        )
+
+        self.assertRedirects(response, '/accounts/request-invitation/done')
 
 
-#~class ActivateAccountTest(TestCase):
-    #~def test_activate_account_url_resolves_to_activate_account_view(self):
-    #~def test_can_activate_account(self):
-    #~def test_notification_emails_are_sent_to_moderators(self):
-    #~def test_activated_account_redirects_to_correct_view(self):
+class ActivateAccountTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.invited_user = InvitedPendingFactory(
+            email='validuser@test.test',
+            auth_token='mytoken',
+        )
+        self.invalid_invited_user = InvitedPendingFactory(
+            auth_token = 'invalid',
+            auth_token_is_used = True,
+        )
+
+    def test_activate_account_url_resolves_to_activate_account_view(self):
+        url = resolve('/accounts/activate/mytoken')
+
+        self.assertEqual(url.func, activate_account)
+
+    def test_raises_404_if_given_token_not_attached_to_a_user(self):
+        response = self.client.get('/accounts/activate/notoken')
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_form_shows_if_token_is_valid(self):
+        response = self.client.get('/accounts/activate/mytoken')
+        expected_html = '<legend>Activate Account</legend>'
+
+        self.assertInHTML(expected_html, response.content.decode())
+
+    def test_error_shows_if_token_is_invalid(self):
+        response = self.client.get('/accounts/activate/invalid')
+        expected_html = '<h3 class="lined">Token is Used</h3>'
+
+        self.assertInHTML(expected_html, response.content.decode())
+
+    def test_can_activate_account(self):
+        self.client.post(
+            '/accounts/activate/mytoken',
+            data = {
+                'first_name' : 'Hello',
+                'last_name' : 'There',
+                'password' : 'abc',
+                'confirm_password' : 'abc',
+            },
+        )
+
+        user = User.objects.get(email='validuser@test.test')
+
+        self.assertEqual(user.first_name, 'Hello')
+        self.assertEqual(user.last_name, 'There')
+        #~ TODO: self.assertEqual(user.password, 'abc')
+        self.assertTrue(user.is_active)
+        self.assertTrue(user.auth_token_is_used)
+
+
+    def test_activated_account_redirects_to_correct_view(self):
+        response = self.client.post(
+            '/accounts/activate/mytoken',
+            data = {
+                'first_name' : 'Hello',
+                'last_name' : 'There',
+                'password' : 'abc',
+                'confirm_password' : 'abc',
+            },
+        )
+
+        #~ TODO: check 'show welcome' session here
+        self.assertRedirects(response, '/')
 
 
 #~class ProfileSettingsTest(TestCase):

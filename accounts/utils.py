@@ -44,6 +44,8 @@ def invite_user_to_reactivate_account(user, request):
                        site=site,
                        url=url)
 
+    return user
+
 
 def get_user(email):
     """
