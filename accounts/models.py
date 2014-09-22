@@ -181,7 +181,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         User = get_user_model()
 
-        if self.is_moderator and self.has_perm('invite_user'):
+        if self.is_moderator and self.has_perm('accounts.invite_user'):
             try:
                 existing_user = User.objects.get(email=email)
                 return None
@@ -204,7 +204,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         Reinvite an already invited user.
         """
-        if self.is_moderator and self.has_perm('invite_user'):
+        if self.is_moderator and self.has_perm('accounts.invite_user'):
             # Reset email, set a new token and update decision datetime
             user.email = email
             user.auth_token = hash_time(generate_salt())
@@ -221,7 +221,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         Approve a user's application
         """
-        if self.is_moderator and self.has_perm('approve_user_application'):
+        if self.is_moderator and self.has_perm('accounts.approve_user_application'):
             user.moderator = self
             user.moderator_decision=user.APPROVED
             user.decision_datetime = timezone.now()
@@ -238,7 +238,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         Reject a user's application
         """
-        if self.is_moderator and self.has_perm('reject_user_application'):
+        if self.is_moderator and self.has_perm('accounts.reject_user_application'):
             user.moderator = self
             user.moderator_decision=user.REJECTED
             user.decision_datetime = timezone.now()

@@ -4,23 +4,49 @@ Connect is a moderated platform that help individuals connect with each other ba
 
 ##  Demo
 
-TODO: Demo URL here
+\# TODO: Add demo URL here
+
+## Installation:
+
+### Ubuntu:
+
+```bash
+sudo apt-get install libyaml-dev
+sudo pip install virtualenv-wrapper
+mkvirtualenv --python=/bin/python3 connect
+pip install -r requirements/dev.txt
+```
+
+### Fedora:
+
+```bash
+sudo yum install libyaml-devel
+sudo pip install virtualenv-wrapper
+mkvirtualenv --python=/bin/python3 connect
+pip install -r requirements/dev.txt
+```
 
 ## Setting up connect for your group or organisation
 
-### settings.py
+### Site settings:
 
-Configure the following:
+Configure the following in `connect/settings.py`:
 
--  SITE_ID
--  SITE_URL
--  EMAIL_HOST
--  EMAIL_PORT
--  EMAIL_HOST_USER
--  EMAIL_HOST_PASSWORD
--  EMAIL_USE_TLS
+- `SITE_ID`
+- `SITE_URL`
+- `SITE_EMAIL`
+- `EMAIL_HOST`
+- `EMAIL_PORT`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `EMAIL_USE_TLS`
 
 ### Setting up the DB / Django Admin
+
+```bash
+python manage.py migrate
+python manage.py loaddata accounts/fixtures/group_perms.yaml
+```
 
 #### Accounts: Brands
 
@@ -39,15 +65,15 @@ Configure the following:
 
 ### Customising colours
 
-Connect is built with SCSS.  You can change the default pink highlight
-color by editing the $highlight variable at the top of _site_settings.scss
+Connect is built with [Sass](http://sass-lang.com/). You can change the default pink highlight
+color by editing the `$highlight` variable at the top of `_site_settings.scss`
 
 
 ## Misc.
 
 ### Font Awesome
 
-Connect is currently integrated with Font Awesome v4.0.3
+Connect is currently integrated with [Font Awesome](https://fortawesome.github.io/Font-Awesome/) (v4.0.3)
 
 ### What's with functional tests?
 
