@@ -1,5 +1,6 @@
 import factory
 
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.utils import timezone
 
@@ -21,6 +22,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = 'User'
     # Emails must be unique - so use a sequence here:
     email = factory.Sequence(lambda n: 'user.{}@test.test'.format(n))
+    password = make_password('pass')
     registration_method = CustomUser.INVITED
 
     @factory.post_generation

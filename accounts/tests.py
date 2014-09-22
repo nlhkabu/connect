@@ -1,10 +1,11 @@
 import factory
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import login
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, reverse
 from django.test import Client, TestCase
 
 from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
@@ -14,7 +15,7 @@ from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
 from .forms import validate_email_availability
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user, invite_user_to_reactivate_account
-from .views import activate_account, request_invitation
+from .views import activate_account, profile_settings, request_invitation
 
 
 User = get_user_model()
@@ -303,6 +304,12 @@ class ActivateAccountTest(TestCase):
 
         self.assertEqual(url.func, activate_account)
 
+    def test_activate_account_view_with_valid_token(self):
+        response = self.client.get('/accounts/activate/mytoken')
+
+        self.assertEqual(response.status_code, 200)
+
+
     def test_raises_404_if_given_token_not_attached_to_a_user(self):
         response = self.client.get('/accounts/activate/notoken')
 
@@ -332,10 +339,11 @@ class ActivateAccountTest(TestCase):
         )
 
         user = User.objects.get(email='validuser@test.test')
+        #~expected_pass = make_password('abc')
 
         self.assertEqual(user.first_name, 'Hello')
         self.assertEqual(user.last_name, 'There')
-        #~ TODO: self.assertEqual(user.password, 'abc')
+        #~self.assertEqual(user.password, expected_pass)
         self.assertTrue(user.is_active)
         self.assertTrue(user.auth_token_is_used)
 
@@ -355,9 +363,30 @@ class ActivateAccountTest(TestCase):
         self.assertRedirects(response, '/')
 
 
-#~class ProfileSettingsTest(TestCase):
-    #~def test_profile_url_resolves_to_profile_settings_view(self):
-    #~def test_profile_is_only_available_to_authenticated_users(self):
+class ProfileSettingsTest(TestCase):
+
+    def setUp(self):
+
+        self.standard = UserFactory()
+        self.client = Client()
+
+    def test_profile_url_resolves_to_profile_settings_view(self):
+        url = resolve('/accounts/profile')
+
+        self.assertEqual(url.func, profile_settings)
+
+    def test_profile_is_not_available_to_unauthenticated_users(self):
+        response = self.client.get(reverse('accounts:profile-settings'))
+
+        #Unauthenticated user is redirected to login page
+        self.assertEqual(response.status_code, 302)
+
+    def test_profile_is_available_to_authenticated_users(self):
+        self.client.login(username=self.standard.email, password='pass')
+        response = self.client.get(reverse('accounts:profile-settings'))
+
+        self.assertEqual(response.status_code, 200)
+
     #~def test_profile_form_is_prepopulated_with_users_data(self):
     #~def test_skills_formset_shows_users_skills(self):
     #~def test_links_formset_shows_users_links(self):
@@ -365,9 +394,29 @@ class ActivateAccountTest(TestCase):
     #~def test_link_is_correctly_matched_to_brand(self):
 
 
-#~class AccountSettingsTest(TestCase):
-    #~def test_account_settings_url_resolves_to_account_settings_view(self):
-    #~def test_account_settings_is_only_available_to_autheticated_users(self):
+class AccountSettingsTest(TestCase):
+    def setUp(self):
+
+        self.standard = UserFactory()
+        self.client = Client()
+
+    def test_account_settings_url_resolves_to_account_settings_view(self):
+        url = resolve('/accounts/settings')
+
+        self.assertEqual(url.func, account_settings)
+
+    def test_account_settings_is_not_available_to_unauthenticated_users(self):
+        response = self.client.get(reverse('accounts:account-settings'))
+
+        #Unauthenticated user is redirected to login page
+        self.assertEqual(response.status_code, 302)
+
+    def test_account_settings_is_available_to_authenticated_users(self):
+        self.client.login(username=self.standard.email, password='pass')
+        response = self.client.get(reverse('accounts:account-settings'))
+
+        self.assertEqual(response.status_code, 200)
+
     #~def test_account_settings_form_is_rendered_to_page(self):
     #~def test_email_field_is_prepopulated_with_correct_email(self):
     #~def test_close_account_form_is_rendered_to_page(self):
@@ -385,6 +434,3 @@ class ActivateAccountTest(TestCase):
     #~def test_can_close_account(self):
     #~def test_closed_account_is_inactive(self):
     #~def test_closed_account_redirects_to_correct_view(self):
-
-
-# TODO - need to find out a way to test custom migration (0002)

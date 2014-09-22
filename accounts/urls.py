@@ -74,10 +74,10 @@ urlpatterns = patterns('',
     url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
 
     # Profile settings
-    url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
+    url(r'^profile$', 'accounts.views.profile_settings', name='profile-settings'),
 
     # Account settings
-    url(r'^settings/$', 'accounts.views.account_settings', name='account-settings'),
+    url(r'^settings$', 'accounts.views.account_settings', name='account-settings'),
     url(r'^settings/update$', 'accounts.views.update_account', name='update-account'),
     url(r'^close$', 'accounts.views.close_account', name='close-account'),
     url(r'^close/done$',
