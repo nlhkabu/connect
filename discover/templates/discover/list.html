@@ -154,7 +154,7 @@
                             {% endif %}
                             <nav class="pull-right">
                                 <a href="#" class="pull-right toggle-user-expand full-profile">{% trans "View Full Profile" %}</a>
-                                {% if user != user %}
+                                {% if user != logged_in_user %}
                                     <a href="#" class="pull-right">
                                         {% trans "Connect" %}
                                     </a>
@@ -178,4 +178,23 @@
             {% endif %}
         </div>
     </div>
+
+    {% if show_welcome %}
+        <div class="dialog" id="welcome-dialog" title="Welcome to {{ site.name }}">
+            <div class="welcome-message">
+                <p>
+                    Hi {{ logged_in_user.first_name }},
+                </p>
+                <p>
+                    <strong>Thanks for joining {{ site.name }}!</strong><br/>
+                    To get started, we recommend visiting your <a href="{% url 'accounts:profile-settings' %}">accounts</a> page.  Here you can set your preferences, including what information you wish to share with other {{ site.name }} members.
+                </p>
+                <p>
+                    Cheers,<br/>
+                    The {{ site.name }} team
+                </p>
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}

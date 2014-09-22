@@ -134,7 +134,6 @@ textarea:focus,
 select:focus {
   border: $form_input_focus_border;
   color: $form_input_focus_text_colour;
-  outline: $form_input_focus_outline;
   @include box-shadow($form_input_focus_box_shadow_x, $form_input_focus_box_shadow_y, $form_input_focus_box_shadow_blur, $form_input_focus_box_shadow_colour)
 }
 

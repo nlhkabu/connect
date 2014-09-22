@@ -1,5 +1,7 @@
 {% load i18n %}
 {% load static %}
+{% load flatpages %}
+{% get_flatpages as flatpages %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -9,8 +11,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block page_title %}{% endblock %} | Connect</title><!-- TODO: replace this with content from admin-->
-        <meta name="description" content="">
+        <title>{% block page_title %}{% endblock %} | {{ site.name }}</title>
         <meta name="viewport" content="width=device-width">
 
         <link href='http://fonts.googleapis.com/css?family=Cantarell:400,400italic,700,700italic|Bree+Serif' rel='stylesheet' type='text/css'>
@@ -41,7 +42,7 @@
             <header>
                 <div class="container header-container">
                     <a href="/" class="pull-left app-title">
-                        <img src="{% static 'img/logo.png' %}" alt="Connect" title="Connect" /><!-- TODO: replace this with uploadable logo from admin-->
+                        <img src="{{ MEDIA_URL }}{{ site.logo }}" alt="{{ site.name }}" title="{{ site.name }}" />
                     </a>
                     <div class="pull-right">
                         {% block mobile_nav_btn %}{% endblock %}
@@ -66,8 +67,9 @@
                     {% endblocktrans %}
                 </p>
                 <p class="pull-right">
-                    <span><a href="">{% trans "Privacy Policy" %}</a></span>
-                    <span><a href="">{% trans "Code of Conduct" %}</a></span>
+                    {% for page in flatpages %}
+                        <span><a href="{{ page.url }}">{{ page.title }}</a></span>
+                    {% endfor %}
                 </p>
                 <div class="clearfix"></div>
             </div>

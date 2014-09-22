@@ -1,5 +1,5 @@
 #from django.test import LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -12,7 +12,7 @@ User = get_user_model()
 # test what happens from the users' points of view
 # ================================================
 
-class UserVisitTest(StaticLiveServerCase):
+class UserVisitTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()

@@ -79,6 +79,14 @@ $(document).ready(function(){
     });
 
 
+    // Display a Welcome dialog for new users
+
+    $('#welcome-dialog').dialog({
+        modal: true,
+        width: 600
+    });
+
+
     // ----------------------
     // MODERATION - UNIVERSAL
     // ----------------------
@@ -88,7 +96,8 @@ $(document).ready(function(){
     $('.comments-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 600
+        width: 600,
+        maxHeight: 600,
     });
 
     $('.read-more').click(function(e){

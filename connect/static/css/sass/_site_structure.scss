@@ -128,9 +128,9 @@ header {
     }
 
     .app-title {
-        padding:10px 0;
         font-size: 20px;
         font-family: georgia, sans-serif;
+        margin-top: 10px;
     }
 }
 
@@ -259,6 +259,10 @@ header {
     padding: 20px 0;
 }
 
+.flatpage-content {
+    margin-bottom: 20px;
+}
+
 
 // FOOTER
 
@@ -359,7 +363,6 @@ a:visited {
   color: $highlight;
 
   &:hover {
-    text-decoration: underline;
     color: $highlight-dark;
   }
 
@@ -418,15 +421,19 @@ input.button:hover {
     i.fa {
         color: $white;
     }
+
+    &:hover,
+    &:focus {
+        background-color: $highlight-dark;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &:focus {
+        outline: $mid-grey thin dotted;
+    }
 }
 
-button:hover,
-input.button:hover,
-a.button:hover {
-    background-color: $highlight-dark;
-    color: #fff;
-    text-decoration: none;
-}
 
 button.muted,
 a.button.muted,
@@ -437,31 +444,17 @@ input.button.muted {
     i.fa {
         color: $dark-grey;
     }
-}
 
+    &:hover,
+    &:focus {
+        background-color: $light-grey * .92;
+        color: $dark-grey;
+    }
 
-button.muted:hover,
-a.button.muted:hover,
-input.button.muted:hover {
-    background-color: $light-grey * .92;
-    color: $dark-grey;
-}
-
-button.disabled,
-a.button.disabled,
-input.button.disabled,
-button.disabled:hover,
-a.button.disabled:hover,
-input.button.disabled:hover {
-    background-color: $light-grey * .98;
-    color: $light-grey * .8;
-    cursor: not-allowed;
-
-    i.fa {
-        color: $mid-grey;
+    &:focus {
+        outline: $mid-grey thin dotted;
     }
 }
-
 
 .active {
     background-color: $lighter-grey;

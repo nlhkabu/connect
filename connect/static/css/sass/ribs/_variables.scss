@@ -56,7 +56,6 @@ $form_input_checkbox_display: inline !default;
 // ##Form input focus
 $form_input_focus_border: 1px solid #ed6c81 !default;
 $form_input_focus_text_colour: #444 !default;
-$form_input_focus_outline: none !default;
 $form_input_focus_box_shadow_x: 0 !default;
 $form_input_focus_box_shadow_y: 0 !default;
 $form_input_focus_box_shadow_blur: 3px !default;
@@ -79,7 +78,6 @@ $form_textarea_min_height: 60px !default;
 // #Links
 $link_colour: #333 !default;
 $link_decoration: underline !default;
-$link_outline: 0 !default;
 $link_hover_colour: #000 !default;
 $link_hover_decoration: none !default;
 

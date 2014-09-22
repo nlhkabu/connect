@@ -8,9 +8,10 @@
         {% if token_is_used %}
             <h3 class="lined">Token is Used</h3>
             <p class="intro">
-                We're sorry, this activation token has already been used.<br/>
-                If you already have an account, please login <a href="/">here.</a><br/>
-                To request a new token, please visit the <a href="{% url 'request_invitation' %}">request account</a> page.
+                We're sorry, this activation token has already been used.  If you already have an account, please login <a href="/">here.</a>
+            </p>
+            <p class="intro">
+                To request a new token, please visit the <a href="{% url 'accounts:request-invitation' %}">request account</a> page.
             </p>
 
         {% else %}
