@@ -1,7 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import resolve, reverse
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.utils.timezone import now
+
+from accounts.factories import UserFactory, ModeratorFactory
+
+from .views import moderation_home
 
 User = get_user_model()
 
@@ -22,41 +26,39 @@ User = get_user_model()
 
 # Urls.py and views.py
 
+class ModerationHomeTest(TestCase):
+    fixtures = ['group_perms']
 
-## REWRITE THIS CODE TO USE NEW FACTORIES##
 
-#~class ModerationHomeTest(TestCase):
-#~
-    #~def test_moderation_url_resolves_to_moderation_home(self):
-        #~found = resolve(reverse('moderation:moderators'))
-#~
-        #~self.assertEqual(found.func, invite_member)
-#~
-    #~def test_only_authenticated_users_can_access_moderation_home(self):
-        #~c = self.client
-        #~response = c.get(reverse('moderation:moderators'))
-        #~# Unauthenticated user is redirected to login page
-        #~self.assertEqual(response.status_code, 302)
-#~
-    #~def test_standard_users_cannot_access_moderation_home(self):
-        #~c = self.client
-        #~user = create_active_standard_user()
-        #~c.login(username=user.email, password='default')
-#~
-        #~response = c.get(reverse('moderation:moderators'))
-        #~# User lacking relevant permissions is redirected to login page
-        #~self.assertEqual(response.status_code, 302)
-#~
-    #~def test_moderators_can_access_moderation_home(self):
-        #~c = self.client
-        #~moderator = create_active_moderator()
-        #~c.login(username=moderator.email, password='default')
-#~
-        #~response = c.get(reverse('moderation:moderators'))
-        #~# User in moderation group can view the page
-        #~self.assertEqual(response.status_code, 200)
+    def setUp(self):
+        self.client = Client()
+        self.standard = UserFactory()
+        self.moderator = ModeratorFactory()
 
-## END REWRITE ##
+    def test_moderation_url_resolves_to_moderation_home(self):
+        found = resolve(reverse('moderation:moderators'))
+
+        self.assertEqual(found.func, moderation_home)
+
+    def test_unauthenticated_users_cannot_access_moderation_home(self):
+        response = self.client.get(reverse('moderation:moderators'))
+
+        # Unauthenticated user is redirected to login page
+        self.assertEqual(response.status_code, 302)
+
+    def test_authenticated_standard_users_cannot_access_moderation_home(self):
+        self.client.login(username=self.standard.email, password='pass')
+        response = self.client.get(reverse('moderation:moderators'))
+
+        # User lacking relevant permissions is redirected to login page
+        self.assertEqual(response.status_code, 302)
+
+    def test_authenticated_moderators_can_access_moderation_home(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:moderators'))
+
+        # User in moderation group can view the page
+        self.assertEqual(response.status_code, 200)
 
 
     #~def test_pending_users_show_in_list(self):
