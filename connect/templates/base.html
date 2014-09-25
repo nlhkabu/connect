@@ -42,7 +42,11 @@
             <header>
                 <div class="container header-container">
                     <a href="/" class="pull-left app-title">
-                        <img src="{{ MEDIA_URL }}{{ site.logo }}" alt="{{ site.name }}" title="{{ site.name }}" />
+                        {% if request.site.config.logo %}
+                            <img src="{{ MEDIA_URL }}{{ request.site.config.logo }}" alt="{{ site.name }}" title="{{ site.name }}" />
+                        {% else %}
+                            {{ site.name }}
+                        {% endif %}
                     </a>
                     <div class="pull-right">
                         {% block mobile_nav_btn %}{% endblock %}

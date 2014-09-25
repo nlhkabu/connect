@@ -86,7 +86,7 @@ def send_connect_email(subject, template, recipient, site, sender='',
         'sender': sender,
         'comments': comments,
         'logged_against': logged_against,
-        'contact_email':  site.email,
+        'contact_email':  site.config.email,
     }
 
     email = generate_html_email(

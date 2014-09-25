@@ -23,8 +23,10 @@
     <div class="connect-banner">
         <div class="container">
             <div>
-                <h1>{{ site.name }}</h1>
-                <h2>{{ site.tagline }}</h2>
+                <h1>{{ request.site.name }}</h1>
+                {% if request.site.config.tagline %}
+                    <h2>{{ request.site.config.tagline }}</h2>
+                {% endif %}
             </div>
             {% block tabs %}{% endblock %}
         </div>

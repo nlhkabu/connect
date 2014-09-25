@@ -70,7 +70,6 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
-    'connect_config.context_processors.site_processor',
 )
 
 ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
