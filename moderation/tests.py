@@ -1,14 +1,22 @@
+import datetime
 import factory
+import pytz
 
 from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import resolve, reverse
 from django.test import Client, TestCase
-from django.utils.timezone import now
+from django.utils import timezone
 
-from accounts.factories import InvitedPendingFactory, ModeratorFactory, UserFactory
+from accounts.factories import (InvitedPendingFactory, ModeratorFactory,
+                                RequestedPendingFactory, UserFactory)
 from accounts.models import CustomUser
 
-from .views import moderation_home
+from connect_config.factories import SiteFactory, SiteConfigFactory
+
+from .models import ModerationLogMsg
+from .utils import log_moderator_event, get_date_limits
+from .views import moderation_home, review_applications
 
 User = get_user_model()
 
@@ -22,9 +30,51 @@ User = get_user_model()
 
 # Utils.py
 
-#~class LogMessageTest(TestCase):
-    #~
-    #~def test_can_log_moderation_event(self):
+class LogMessageTest(TestCase):
+    fixtures = ['group_perms']
+
+    def test_can_log_moderation_event(self):
+
+        msg_type = ModerationLogMsg.INVITATION
+        user = UserFactory()
+        moderator = ModeratorFactory()
+        comment = 'This is my comment'
+
+        log = log_moderator_event(
+            msg_type=user,
+            user=user,
+            moderator=moderator,
+            comment=comment
+        )
+
+        logs = ModerationLogMsg.objects.all()
+
+        self.assertIn(log, logs)
+
+    def test_date_limits_with_one_date(self):
+        date = datetime.datetime(2011, 8, 15, 8, 15, 12, 0, pytz.UTC)
+        expected_start = datetime.datetime(2011, 8, 15, 0, 0, 0, 0, pytz.UTC)
+        expected_end = datetime.datetime(2011, 8, 15, 23, 59, 59, 999999, pytz.UTC)
+
+        start, end = get_date_limits(date)
+
+        self.assertEqual(start, expected_start)
+        self.assertEqual(end, expected_end)
+
+    def test_date_limits_with_two_dates(self):
+        day_1 = datetime.datetime(2011, 8, 15, 8, 15, 12, 0, pytz.UTC)
+        day_2 = datetime.datetime(2011, 9, 1, 8, 15, 12, 0, pytz.UTC)
+
+        expected_start = datetime.datetime(2011, 8, 15, 0, 0, 0, 0, pytz.UTC)
+        expected_end = datetime.datetime(2011, 9, 1, 23, 59, 59, 999999, pytz.UTC)
+
+        start, end = get_date_limits(day_1, day_2)
+
+        self.assertEqual(start, expected_start)
+        self.assertEqual(end, expected_end)
+
+    #~def test_date_limits_passing_non_UTC_timezone(self):
+
 
 
 # Urls.py and views.py
@@ -98,66 +148,220 @@ class ModerationHomeTest(TestCase):
 
         self.assertInHTML(expected_html, response.content.decode())
 
-    #~def test_submit_invite_user_form(self):
-        #~self.client.login(username=self.moderator.email, password='pass')
-        #~response = self.client.get(reverse('moderation:moderators'))
-#~
+    #~def test_invite_user_form(self):
         #~Check that the form submits to the correct view
 
+    #~def test_reinvite_user_form(self):
+        #~# check that this form submits to the correct view
+
+    #~def test_revoke_user_form(self):
+        #~# check that this form submits to the correct view
 
 
 
-#~class InviteUserTest(TestCase):
-    #~fixtures = ['group_perms']
-#~
-    #~def setUp(self):
-        #~self.client = Client()
-        #~self.moderator = ModeratorFactory()
-#~
-        #~self.client.login(username=self.moderator.email, password='pass')
-        #~self.client.post(
-            #~reverse('moderation:invite-user'),
-            #~data = {
-                #~'first_name' : 'Hello',
-                #~'last_name' : 'There',
-                #~'email' : 'invite.user@test.test',
-            #~},
-        #~)
-#~
-    #~def tearDown(self):
-        #~self.client.logout()
-#~
-    #~def test_can_invite_new_user(self):
-        #~user = User.objects.get(email='invite.user@test.test')
-#~
-        #~pass
-        #~assertTrue(user)
-        #~assertEqual(user.first_name, 'Hello')
-        #~assertEqual(user.last_name, 'There')
+class InviteUserTest(TestCase):
+    fixtures = ['group_perms']
 
-    #~def test_can_log_invitation(self):
+    def setUp(self):
+        self.client = Client()
+
+        self.moderator = ModeratorFactory(
+            first_name='My',
+            last_name='Moderator',
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
+        self.client.post(
+            reverse('moderation:invite-user'),
+            data = {
+                'first_name' : 'Hello',
+                'last_name' : 'There',
+                'email' : 'invite.user@test.test',
+            },
+        )
+
+    def tearDown(self):
+        self.client.logout()
+
+    def test_can_invite_new_user(self):
+        user = User.objects.get(email='invite.user@test.test')
+
+        self.assertTrue(user)
+        self.assertEqual(user.first_name, 'Hello')
+        self.assertEqual(user.last_name, 'There')
+
+    def test_can_log_invitation(self):
+        expected_comment = 'My Moderator invited Hello There'
+        invited_user = user = User.objects.get(email='invite.user@test.test')
+        log = ModerationLogMsg.objects.get(comment=expected_comment)
+
+        self.assertIsInstance(log, ModerationLogMsg)
+        self.assertEqual(log.msg_type, ModerationLogMsg.INVITATION)
+        self.assertEqual(log.pertains_to, invited_user)
+        self.assertEqual(log.logged_by, self.moderator)
+
     #~def test_can_email_invited_user(self):
 
 
-#~class ReInviteUserTest(TestCase):
-#~
-    #~def test_can_log_reinvitation(self):
+class ReInviteUserTest(TestCase):
+    fixtures = ['group_perms']
+
+    def setUp(self):
+        self.client = Client()
+
+        self.moderator = ModeratorFactory(
+            first_name='My',
+            last_name='Moderator',
+        )
+
+        self.existing = UserFactory(
+            first_name='Hello',
+            last_name='There',
+            email='reinviteme@test.test',
+            moderator = self.moderator,
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
+    def tearDown(self):
+        self.client.logout()
+
+    def test_reinvitation_resets_email(self):
+        self.client.post(
+            reverse('moderation:reinvite-user'),
+            data = {
+                'user_id' : self.existing.id,
+                'email' : 'different.email@test.test',
+            },
+        )
+        reinvited = User.objects.get(id=self.existing.id)
+
+        self.assertEqual(reinvited.email, 'different.email@test.test')
+
+    def test_can_log_reinvitation(self):
+        self.client.post(
+            reverse('moderation:reinvite-user'),
+            data = {
+                'user_id' : self.existing.id,
+                'email' : self.existing.email,
+            },
+        )
+        expected_comment = 'My Moderator resent invitation to Hello There'
+        reinvited = User.objects.get(id=self.existing.id)
+        log = ModerationLogMsg.objects.get(comment=expected_comment)
+
+        self.assertIsInstance(log, ModerationLogMsg)
+        self.assertEqual(log.msg_type, ModerationLogMsg.REINVITATION)
+        self.assertEqual(log.pertains_to, reinvited)
+        self.assertEqual(log.logged_by, self.moderator)
+
     #~def test_can_email_reinvited_user(self):
 
 
-#~class RevokeInvitationTest(TestCase):
-#~
-    #~def test_can_revoke_user_invitation(self):
+class RevokeInvitationTest(TestCase):
+    fixtures = ['group_perms']
 
-#~class ReviewApplicationTest(TestCase):
-#~
-    #~def test_review_application_url_resolves_to_view(self):
-    #~def test_only_authenticated_users_can_access_review_application_view(self):
-    #~def test_standard_users_cannot_access_review_application_view(self):
-    #~def test_moderators_can_access_review_application_view(self):
-    #~def test_pending_applications_render_on_page(self):
-#~
+    def setUp(self):
+        self.client = Client()
+
+        self.moderator = ModeratorFactory(
+            first_name='My',
+            last_name='Moderator',
+        )
+
+        self.existing = UserFactory(
+            first_name='Revoke',
+            last_name='Me',
+            email='revokeme@test.test',
+            moderator = self.moderator,
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+
+    def tearDown(self):
+        self.client.logout()
+
+    def test_can_revoke_user_invitation(self):
+        user = User.objects.get(id=self.existing.id)
+        self.assertIsInstance(user, User)
+
+        self.client.post(
+            reverse('moderation:revoke-invitation'),
+            data = {
+                'confirm' : True,
+                'user_id' : self.existing.id,
+            },
+        )
+
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(id=self.existing.id)
+
+
+class ReviewApplicationTest(TestCase):
+    fixtures = ['group_perms']
+
+    def setUp(self):
+        self.client = Client()
+        self.standard = UserFactory()
+        self.moderator = ModeratorFactory()
+        self.applied = RequestedPendingFactory()
+
+    def test_review_application_url_resolves_to_view(self):
+        url = resolve('/moderation/review-applications')
+
+        self.assertEqual(url.func, review_applications)
+
+    def test_unauthenticated_users_cannot_access_review_application(self):
+        response = self.client.get(reverse('moderation:review-applications'))
+
+        # Unauthenticated user is redirected to login page
+        self.assertEqual(response.status_code, 302)
+
+    def test_authenticated_standard_users_cannot_access_review_application(self):
+        self.client.login(username=self.standard.email, password='pass')
+        response = self.client.get(reverse('moderation:review-applications'))
+
+        # User lacking relevant permissions is redirected to login page
+        self.assertEqual(response.status_code, 302)
+
+    def test_authenticated_moderators_can_access_review_application(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:review-applications'))
+
+        # User in moderation group can view the page
+        self.assertEqual(response.status_code, 200)
+
+    def test_pending_applications_show_in_list(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:review-applications'))
+
+        # Check that the context includes the user we defined in Setup
+        context_pending = response.context['pending'][0]
+
+        self.assertEqual(context_pending, self.applied)
+
     #~def test_can_approve_application(self):
+        #~self.assertFalse(self.applied.is_active)
+#~
+        #~self.client.login(username=self.moderator.email, password='pass')
+        #~self.client.post(
+            #~reverse('moderation:review-applications'),
+            #~data = {
+                #~'user_id' : self.applied.id,
+                #~'decision' : CustomUser.APPROVED,
+                #~'comments' : 'Applicant is known to the community',
+            #~},
+        #~)
+#~
+        #~self.assertTrue(self.applied.is_active)
+
     #~def test_can_log_approval(self):
     #~def test_can_email_approved_user(self):
 
@@ -172,8 +376,8 @@ class ModerationHomeTest(TestCase):
     #~def test_only_authenticated_users_can_report_abuse(self):
     #~def test_report_abuse_form_renders_on_page(self):
     #~def test_can_report_abuse(self):
-    #~def test_can_email_moderators_alert_of_new_abuse_report(self):
-    #~def test_moderator_does_not_recieve_email_about_report_regarding_themself(self):
+    #~def test_moderators_emailed_about_new_abuse_report(self):
+    #~def test_moderator_is_not_send_email_about_report_about_themself(self):
 
 
 #~class ReviewAbuseTest(TestCase):
