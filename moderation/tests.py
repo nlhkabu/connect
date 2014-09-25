@@ -1,9 +1,12 @@
+import factory
+
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import resolve, reverse
 from django.test import Client, TestCase
 from django.utils.timezone import now
 
-from accounts.factories import UserFactory, ModeratorFactory
+from accounts.factories import InvitedPendingFactory, ModeratorFactory, UserFactory
+from accounts.models import CustomUser
 
 from .views import moderation_home
 
@@ -29,16 +32,15 @@ User = get_user_model()
 class ModerationHomeTest(TestCase):
     fixtures = ['group_perms']
 
-
     def setUp(self):
         self.client = Client()
         self.standard = UserFactory()
         self.moderator = ModeratorFactory()
 
     def test_moderation_url_resolves_to_moderation_home(self):
-        found = resolve(reverse('moderation:moderators'))
+        url = resolve('/moderation/')
 
-        self.assertEqual(found.func, moderation_home)
+        self.assertEqual(url.func, moderation_home)
 
     def test_unauthenticated_users_cannot_access_moderation_home(self):
         response = self.client.get(reverse('moderation:moderators'))
@@ -60,15 +62,79 @@ class ModerationHomeTest(TestCase):
         # User in moderation group can view the page
         self.assertEqual(response.status_code, 200)
 
+    def test_pending_users_show_in_list(self):
+        pending = factory.create_batch(
+            InvitedPendingFactory,
+            10,
+            moderator=self.moderator,
+        )
 
-    #~def test_pending_users_show_in_list(self):
-    #~def test_pending_users_are_invited_by_logged_in_moderator(self):
-    #~def test_pending_users_are_not_invited_by_other_moderators(self):
-    #~def test_invite_user_form_is_rendered_to_page(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:moderators'))
+
+        context_pending = list(response.context['pending'])
+
+        self.assertCountEqual(context_pending, pending)
+
+    def test_pending_users_are_not_invited_by_other_moderators(self):
+        other_moderator = ModeratorFactory()
+        pending = factory.create_batch(
+            InvitedPendingFactory,
+            10,
+            moderator=other_moderator,
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:moderators'))
+        # Should be empty...
+        context_pending = list(response.context['pending'])
+
+        self.assertFalse(context_pending)
+
+    def test_invite_user_form_is_rendered_to_page(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:moderators'))
+        expected_html = '<legend>Invite a New Member</legend>'
+
+        self.assertInHTML(expected_html, response.content.decode())
+
+    #~def test_submit_invite_user_form(self):
+        #~self.client.login(username=self.moderator.email, password='pass')
+        #~response = self.client.get(reverse('moderation:moderators'))
+#~
+        #~Check that the form submits to the correct view
+
+
 
 
 #~class InviteUserTest(TestCase):
+    #~fixtures = ['group_perms']
 #~
+    #~def setUp(self):
+        #~self.client = Client()
+        #~self.moderator = ModeratorFactory()
+#~
+        #~self.client.login(username=self.moderator.email, password='pass')
+        #~self.client.post(
+            #~reverse('moderation:invite-user'),
+            #~data = {
+                #~'first_name' : 'Hello',
+                #~'last_name' : 'There',
+                #~'email' : 'invite.user@test.test',
+            #~},
+        #~)
+#~
+    #~def tearDown(self):
+        #~self.client.logout()
+#~
+    #~def test_can_invite_new_user(self):
+        #~user = User.objects.get(email='invite.user@test.test')
+#~
+        #~pass
+        #~assertTrue(user)
+        #~assertEqual(user.first_name, 'Hello')
+        #~assertEqual(user.last_name, 'There')
+
     #~def test_can_log_invitation(self):
     #~def test_can_email_invited_user(self):
 

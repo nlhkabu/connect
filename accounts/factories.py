@@ -43,28 +43,38 @@ class ModeratorFactory(UserFactory):
     groups = Group.objects.filter(name='moderators')
 
 
-class InvitedPendingFactory(UserFactory):
+class InvitedPendingFactory(factory.django.DjangoModelFactory):
     """
     User who has been invited by a moderator, but not yet
     activated their account
     """
+    class Meta:
+        model = CustomUser
+
     first_name = 'Invited Pending'
+    last_name = 'User'
     email = factory.Sequence(lambda n: 'invited.pending.{}@test.test'.format(n))
 
     registration_method = CustomUser.INVITED
-    #~moderator = factory.SubFactory(ModeratorFactory)
+    moderator = factory.SubFactory(UserFactory)
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
     auth_token = 'abc'
+    is_active = False
 
 
-class RequestedPendingFactory(UserFactory):
+class RequestedPendingFactory(factory.django.DjangoModelFactory):
     """
     User who has requested an account, but not yet been accepted or rejected
     """
+    class Meta:
+        model = CustomUser
+
     first_name = 'Requested Pending'
+    last_name = 'User'
     email = factory.Sequence(lambda n: 'requested.pending.{}@test.test'.format(n))
     registration_method = CustomUser.REQUESTED
+    is_active = False
 
 
 class SkillFactory(factory.django.DjangoModelFactory):

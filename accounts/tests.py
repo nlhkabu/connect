@@ -15,7 +15,8 @@ from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
 from .forms import validate_email_availability
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user, invite_user_to_reactivate_account
-from .views import activate_account, profile_settings, request_invitation
+from .views import (account_settings, activate_account, profile_settings,
+                    request_invitation)
 
 
 User = get_user_model()
@@ -255,7 +256,7 @@ class RequestInvitationTest(TestCase):
 
     def test_requested_account_registration_recorded(self):
         response = self.client.post(
-            '/accounts/request-invitation',
+            reverse('accounts:request-invitation'),
             data = {
                 'first_name' : 'First',
                 'last_name' : 'Last',
@@ -274,7 +275,7 @@ class RequestInvitationTest(TestCase):
 
     def test_request_invitation_redirect(self):
         response = self.client.post(
-            '/accounts/request-invitation',
+            reverse('accounts:request-invitation'),
             data = {
                 'first_name' : 'First',
                 'last_name' : 'Last',
@@ -328,6 +329,10 @@ class ActivateAccountTest(TestCase):
         self.assertInHTML(expected_html, response.content.decode())
 
     def test_can_activate_account(self):
+
+        user = User.objects.get(email='validuser@test.test')
+        old_pass = user.password
+
         self.client.post(
             '/accounts/activate/mytoken',
             data = {
@@ -339,11 +344,10 @@ class ActivateAccountTest(TestCase):
         )
 
         user = User.objects.get(email='validuser@test.test')
-        #~expected_pass = make_password('abc')
 
         self.assertEqual(user.first_name, 'Hello')
         self.assertEqual(user.last_name, 'There')
-        #~self.assertEqual(user.password, expected_pass)
+        self.assertNotEqual(user.password, old_pass)
         self.assertTrue(user.is_active)
         self.assertTrue(user.auth_token_is_used)
 
