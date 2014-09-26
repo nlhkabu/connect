@@ -4,7 +4,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.utils import timezone
 
-from .models import CustomUser, LinkBrand, Skill, UserLink, UserSkill
+from .models import (AbuseReport, CustomUser, LinkBrand,
+                     Skill, UserLink, UserSkill)
 
 
 class GroupFactory(factory.django.DjangoModelFactory):
@@ -74,7 +75,23 @@ class RequestedPendingFactory(factory.django.DjangoModelFactory):
     last_name = 'User'
     email = factory.Sequence(lambda n: 'requested.pending.{}@test.test'.format(n))
     registration_method = CustomUser.REQUESTED
+    application_comments = 'Please give me an account'
     is_active = False
+
+
+class AbuseReportFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = AbuseReport
+
+    logged_against = factory.SubFactory(UserFactory)
+    logged_by = factory.SubFactory(UserFactory)
+
+
+class AbuseWarningFactory(AbuseReportFactory):
+
+    moderator = factory.SubFactory(UserFactory)
+    moderator_decision = AbuseReport.WARN
+    moderator_comment = 'Ths is a formal warning'
 
 
 class SkillFactory(factory.django.DjangoModelFactory):

@@ -226,6 +226,7 @@ def review_applications(request):
     form = ModerateApplicationForm()
 
     if request.method == 'POST':
+
         form = ModerateApplicationForm(request.POST)
 
         try:
