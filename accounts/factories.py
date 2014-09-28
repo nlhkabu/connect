@@ -92,6 +92,7 @@ class AbuseWarningFactory(AbuseReportFactory):
     moderator = factory.SubFactory(UserFactory)
     moderator_decision = AbuseReport.WARN
     moderator_comment = 'Ths is a formal warning'
+    decision_datetime = timezone.now()
 
 
 class SkillFactory(factory.django.DjangoModelFactory):

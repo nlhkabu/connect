@@ -383,7 +383,11 @@ class ProfileSettingsTest(TestCase):
         response = self.client.get(reverse('accounts:profile-settings'))
 
         #Unauthenticated user is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/profile',
+            status_code=302
+        )
 
     def test_profile_is_available_to_authenticated_users(self):
         self.client.login(username=self.standard.email, password='pass')
@@ -413,7 +417,11 @@ class AccountSettingsTest(TestCase):
         response = self.client.get(reverse('accounts:account-settings'))
 
         #Unauthenticated user is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/settings',
+            status_code=302
+        )
 
     def test_account_settings_is_available_to_authenticated_users(self):
         self.client.login(username=self.standard.email, password='pass')

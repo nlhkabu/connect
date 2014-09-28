@@ -487,11 +487,10 @@ def review_abuse(request):
 
 
             # Log moderation event
-            log_comment = '{}'.format(comments)
             log_moderator_event(msg_type=msg_type,
                                 user=user,
                                 moderator=moderator,
-                                comment=log_comment)
+                                comment=comments)
 
 
             return redirect('moderation:review-abuse')

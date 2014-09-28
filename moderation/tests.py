@@ -19,7 +19,7 @@ from connect_config.factories import SiteFactory, SiteConfigFactory
 from .models import ModerationLogMsg
 from .utils import log_moderator_event, get_date_limits
 from .views import (moderation_home, report_abuse,
-                    review_abuse, review_applications)
+                    review_abuse, review_applications, view_logs)
 
 User = get_user_model()
 
@@ -99,14 +99,23 @@ class ModerationHomeTest(TestCase):
         response = self.client.get(reverse('moderation:moderators'))
 
         # Unauthenticated user is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        #~self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/',
+            status_code=302
+        )
 
     def test_authenticated_standard_users_cannot_access_moderation_home(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('moderation:moderators'))
 
         # User lacking relevant permissions is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/',
+            status_code=302
+        )
 
     def test_authenticated_moderators_can_access_moderation_home(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -325,14 +334,22 @@ class ReviewApplicationTest(TestCase):
         response = self.client.get(reverse('moderation:review-applications'))
 
         # Unauthenticated user is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/review-applications',
+            status_code=302
+        )
 
     def test_authenticated_standard_users_cannot_access_review_application(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('moderation:review-applications'))
 
         # User lacking relevant permissions is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/review-applications',
+            status_code=302
+        )
 
     def test_authenticated_moderators_can_access_review_application(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -346,9 +363,10 @@ class ReviewApplicationTest(TestCase):
         response = self.client.get(reverse('moderation:review-applications'))
 
         # Check that the context includes the user we defined in Setup
-        context_pending = response.context['pending'][0]
+        context_pending = response.context['pending']
 
-        self.assertEqual(context_pending, self.applied_user)
+        self.assertIn(self.applied_user, context_pending)
+        self.assertEqual(len(context_pending), 1)
 
     def test_can_approve_application(self):
 
@@ -458,7 +476,11 @@ class ReportAbuseTest(TestCase):
         ))
 
         # Unauthenticated user is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/{}/report-abuse'.format(self.accused_user.id),
+            status_code=302
+        )
 
     def test_authenticated_users_can_report_abuse(self):
         self.client.login(username=self.reporting_user.email, password='pass')
@@ -536,14 +558,22 @@ class ReviewAbuseTest(TestCase):
         response = self.client.get(reverse('moderation:review-abuse'))
 
         # Unauthenticated user is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/review-abuse-reports',
+            status_code=302
+        )
 
     def test_authenticated_standard_users_cannot_review_abuse_reports(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('moderation:review-abuse'))
 
         # User lacking relevant permissions is redirected to login page
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/review-abuse-reports',
+            status_code=302
+        )
 
     def test_authenticated_moderators_can_access_review_application(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -552,34 +582,213 @@ class ReviewAbuseTest(TestCase):
         # User in moderation group can view the page
         self.assertEqual(response.status_code, 200)
 
-    def test_abuse_reports_render_on_page(self):
+    def test_only_undecided_abuse_reports_render_on_page(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(reverse('moderation:review-abuse'))
-        context_reports = response.context['reports'][0]
+        context_reports = response.context['reports']
 
-        self.assertEqual(context_reports, self.abuse_report)
+        self.assertEqual(len(context_reports), 1)
+        self.assertIn(self.abuse_report, context_reports)
 
-    #~def test_previous_warnings_are_attached_to_accused_user(self):
-        #~self.client.login(username=self.moderator.email, password='pass')
-        #~response = self.client.get(reverse('moderation:review-abuse'))
-#~
-        #~pass
+    def test_previous_warnings_are_attached_to_abuse_report(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:review-abuse'))
 
-    #~def test_moderator_cannot_see_abuse_reports_about_themself(self):
-    #~def test_can_resolve_abuse_report(self):
-    #~def test_can_log_dismissal(self):
-    #~def test_can_log_warning(self):
-    #~def test_can_log_ban(self):
+        context_reports = response.context['reports']
+
+        self.assertEqual(len(context_reports), 1)
+
+        context_report = context_reports[0]
+
+        self.assertEqual(len(context_report.prior_warnings), 1)
+        self.assertIn(self.abuse_warning, context_report.prior_warnings)
+
+
+    def test_moderator_cannot_see_abuse_reports_about_themself(self):
+        moderator_abuse_report = AbuseReportFactory(
+            logged_against=self.moderator
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:review-abuse'))
+
+        # We should only see self.abuse_report - as this is the only undecided
+        # abuse report that is not about the logged in moderator
+        context_reports = response.context['reports']
+
+        self.assertEqual(len(context_reports), 1)
+        self.assertIn(self.abuse_report, context_reports)
+
+
+    def test_can_dismiss_abuse_report(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id' : self.abuse_report.id,
+                'decision' : AbuseReport.DISMISS,
+                'comments' : 'Spam Report',
+            },
+        )
+
+        report = AbuseReport.objects.get(id=self.abuse_report.id)
+
+        self.assertEqual(report.moderator, self.moderator)
+        self.assertEqual(report.moderator_decision, AbuseReport.DISMISS)
+        self.assertEqual(report.moderator_comment, 'Spam Report')
+        self.assertTrue(report.decision_datetime)
+
+
+    def test_can_log_dismissal(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id' : self.abuse_report.id,
+                'decision' : AbuseReport.DISMISS,
+                'comments' : 'Spam Report',
+            },
+        )
+
+        log = ModerationLogMsg.objects.get(comment='Spam Report')
+
+        self.assertIsInstance(log, ModerationLogMsg)
+        self.assertEqual(log.msg_type, ModerationLogMsg.DISMISSAL)
+        self.assertEqual(log.pertains_to, self.accused_user)
+        self.assertEqual(log.logged_by, self.moderator)
+
+
+    #~def test_can_send_dismissal_email_to_reporting_user(self):
+
+
+    def test_can_issue_warning(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id' : self.abuse_report.id,
+                'decision' : AbuseReport.WARN,
+                'comments' : 'This is a warning',
+            },
+        )
+
+        report = AbuseReport.objects.get(id=self.abuse_report.id)
+
+        self.assertEqual(report.moderator, self.moderator)
+        self.assertEqual(report.moderator_decision, AbuseReport.WARN)
+        self.assertEqual(report.moderator_comment, 'This is a warning')
+        self.assertTrue(report.decision_datetime)
+
+
+    def test_can_log_warning(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id' : self.abuse_report.id,
+                'decision' : AbuseReport.WARN,
+                'comments' : 'This is a warning',
+            },
+        )
+
+        log = ModerationLogMsg.objects.get(comment='This is a warning')
+
+        self.assertIsInstance(log, ModerationLogMsg)
+        self.assertEqual(log.msg_type, ModerationLogMsg.WARNING)
+        self.assertEqual(log.pertains_to, self.accused_user)
+        self.assertEqual(log.logged_by, self.moderator)
+
+    #~def test_can_send_warning_email_to_reporting_user(self):
+    #~def test_can_send_warning_email_to_offending_user(self):
+
+
+    def test_can_ban_user(self):
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id' : self.abuse_report.id,
+                'decision' : AbuseReport.BAN,
+                'comments' : 'You are banned',
+            },
+        )
+
+        report = AbuseReport.objects.get(id=self.abuse_report.id)
+        user = report.logged_against
+
+        self.assertEqual(report.moderator, self.moderator)
+        self.assertEqual(report.moderator_decision, AbuseReport.BAN)
+        self.assertEqual(report.moderator_comment, 'You are banned')
+        self.assertTrue(report.decision_datetime)
+        self.assertFalse(user.is_active)
+
+    def test_can_log_ban(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id' : self.abuse_report.id,
+                'decision' : AbuseReport.BAN,
+                'comments' : 'You are banned',
+            },
+        )
+
+        log = ModerationLogMsg.objects.get(comment='You are banned')
+
+        self.assertIsInstance(log, ModerationLogMsg)
+        self.assertEqual(log.msg_type, ModerationLogMsg.BANNING)
+        self.assertEqual(log.pertains_to, self.accused_user)
+        self.assertEqual(log.logged_by, self.moderator)
+
+
     #~def test_can_send_email_to_reporting_user(self):
     #~def test_can_send_email_to_offending_user(self):
 
 
-#~class ViewLogsTest(TestCase):
+class ViewLogsTest(TestCase):
+    fixtures = ['group_perms']
 
-    #~def test_view_logs_url_resolves_to_view(self):
-    #~def test_only_authenticated_users_can_access_view_logs_view(self):
-    #~def test_standard_users_cannot_access_view_logs_view(self):
-    #~def test_moderators_can_access_view_logs_view(self):
+    def setUp(self):
+        self.client = Client()
+        self.standard_user = UserFactory()
+        self.moderator = ModeratorFactory()
+
+    def test_logs_url_resolves_to_view_logs(self):
+        url = resolve('/moderation/logs')
+
+        self.assertEqual(url.func, view_logs)
+
+    def test_unauthenticated_users_cannot_view_logs(self):
+        response = self.client.get(reverse('moderation:logs'))
+
+        # Unauthenticated user is redirected to login page
+        #~self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/logs',
+            status_code=302
+        )
+
+    def test_authenticated_standard_users_cannot_view_logs(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('moderation:logs'))
+
+        # User lacking relevant permissions is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/moderation/logs',
+            status_code=302
+        )
+
+    def test_authenticated_moderators_can_view_logs(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:logs'))
+
+        # User in moderation group can view the page
+        self.assertEqual(response.status_code, 200)
+
+
     #~def test_logs_render_on_page(self):
     #~def test_moderator_cannot_see_logs_about_themself(self):
     #~def test_can_filter_logs_by_type(self):
