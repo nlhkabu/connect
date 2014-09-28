@@ -16,6 +16,7 @@ from accounts.models import AbuseReport, CustomUser
 
 from connect_config.factories import SiteFactory, SiteConfigFactory
 
+from .factories import LogFactory
 from .models import ModerationLogMsg
 from .utils import log_moderator_event, get_date_limits
 from .views import (moderation_home, report_abuse,
@@ -753,6 +754,26 @@ class ViewLogsTest(TestCase):
         self.client = Client()
         self.standard_user = UserFactory()
         self.moderator = ModeratorFactory()
+
+        self.invitation_log = LogFactory()
+        self.reinvitation_log = LogFactory(
+            msg_type=ModerationLogMsg.REINVITATION
+        )
+        self.application_approval_log = LogFactory(
+            msg_type=ModerationLogMsg.APPROVAL
+        )
+        self.application_rejection_log = LogFactory(
+            msg_type=ModerationLogMsg.REJECTION
+        )
+        self.abuse_report_dismissal_log = LogFactory(
+            msg_type=ModerationLogMsg.DISMISSAL
+        )
+        self.abuse_report_warning_log = LogFactory(
+            msg_type=ModerationLogMsg.WARNING
+        )
+        self.ban_user_log = LogFactory(
+            msg_type=ModerationLogMsg.BANNING
+        )
 
     def test_logs_url_resolves_to_view_logs(self):
         url = resolve('/moderation/logs')

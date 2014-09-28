@@ -57,7 +57,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'invited.pending.{}@test.test'.format(n))
 
     registration_method = CustomUser.INVITED
-    moderator = factory.SubFactory(UserFactory)
+    moderator = factory.SubFactory(UserFactory) # TODO: change to moderator factory
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
     auth_token = 'abc'
