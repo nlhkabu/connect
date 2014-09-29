@@ -70,7 +70,6 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
-    'connect_config.context_processors.site_processor',
 )
 
 ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
@@ -82,11 +81,11 @@ ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'connect',
-        'USER': 'connect',
+        'NAME': os.environ['CONNECT_DB_NAME'],
+        'USER': os.environ['CONNECT_DB_USER'],
         'PASSWORD': os.environ['CONNECT_DB_PASSWORD'],
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'HOST': os.environ['CONNECT_DB_HOST'],
+        'PORT': os.environ['CONNECT_DB_PORT'],
     }
 }
 

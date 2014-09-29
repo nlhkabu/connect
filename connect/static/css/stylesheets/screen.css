@@ -2166,7 +2166,7 @@ header .app-title {
 
 /* line 269, ../sass/_site_structure.scss */
 footer {
-  background: #f9f9f9 url(../../img/shadow-top.png) repeat-x 0 0;
+  background-color: #f9f9f9;
   border-top: 1px solid #ddd;
   font-size: 12px;
 }
@@ -5178,7 +5178,7 @@ ul.dash-tabs li.active a i {
 .login-banner {
   padding: 30px 0 10px 0;
   margin-bottom: 20px;
-  background: #f9f9f9 url(../../img/shadow-top.png) repeat-x 0 0;
+  background-color: #f9f9f9;
   border-bottom: 1px solid #ececec;
 }
 

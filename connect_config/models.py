@@ -6,7 +6,7 @@ class SiteConfig(models.Model):
     """
     Site specific settings.
     """
-    site = models.OneToOneField(Site)
+    site = models.OneToOneField(Site, related_name='config')
     logo = models.ImageField(help_text='Must be no larger than 80px by 160px')
     tagline = models.CharField(max_length=200)
     email = models.EmailField(help_text='Email for receiving site-wide enquiries')

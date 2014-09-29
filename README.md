@@ -1,5 +1,7 @@
 # Connect
 
+[ ![Codeship Status for nlh/connect](https://codeship.io/projects/86e14520-1ec8-0132-5410-3e0b0834453b/status)](https://codeship.io/projects/35570)
+
 Connect is a moderated platform that help individuals connect with each other based on location, skills and interests.
 
 ##  Demo

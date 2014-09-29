@@ -226,6 +226,7 @@ def review_applications(request):
     form = ModerateApplicationForm()
 
     if request.method == 'POST':
+
         form = ModerateApplicationForm(request.POST)
 
         try:
@@ -311,7 +312,7 @@ def report_abuse(request, user_id):
             )
 
             # Send email(s) to moderator(s) alerting them of new report.
-            # Do not nofity the moderator the report is logged against
+            # Do not nofity moderators where the report is logged against them
             moderators = (User.objects.filter(is_moderator=True,
                                               is_active=True)
                                       .exclude(id=logged_against.id))
@@ -486,11 +487,10 @@ def review_abuse(request):
 
 
             # Log moderation event
-            log_comment = '{}'.format(comments)
             log_moderator_event(msg_type=msg_type,
                                 user=user,
                                 moderator=moderator,
-                                comment=log_comment)
+                                comment=comments)
 
 
             return redirect('moderation:review-abuse')
