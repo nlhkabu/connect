@@ -1,8 +1,6 @@
 try:
-    print("You appear to be running Python 3.x")
     from urllib.parse import urlsplit
 except ImportError:
-    print("You appear to be running Python 2.x")
     from urlparse import urlsplit
 
 from django.conf import settings
