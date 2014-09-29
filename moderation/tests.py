@@ -17,6 +17,7 @@ from accounts.models import AbuseReport, CustomUser
 from connect_config.factories import SiteFactory, SiteConfigFactory
 
 from .factories import LogFactory
+from .forms import FilterLogsForm
 from .models import ModerationLogMsg
 from .utils import log_moderator_event, get_date_limits
 from .views import (moderation_home, report_abuse,
@@ -100,7 +101,6 @@ class ModerationHomeTest(TestCase):
         response = self.client.get(reverse('moderation:moderators'))
 
         # Unauthenticated user is redirected to login page
-        #~self.assertEqual(response.status_code, 302)
         self.assertRedirects(
             response,
             '/accounts/login/?next=/moderation/',
@@ -583,7 +583,7 @@ class ReviewAbuseTest(TestCase):
         # User in moderation group can view the page
         self.assertEqual(response.status_code, 200)
 
-    def test_only_undecided_abuse_reports_render_on_page(self):
+    def test_only_undecided_abuse_reports_in_response(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(reverse('moderation:review-abuse'))
         context_reports = response.context['reports']
@@ -755,26 +755,6 @@ class ViewLogsTest(TestCase):
         self.standard_user = UserFactory()
         self.moderator = ModeratorFactory()
 
-        self.invitation_log = LogFactory()
-        self.reinvitation_log = LogFactory(
-            msg_type=ModerationLogMsg.REINVITATION
-        )
-        self.application_approval_log = LogFactory(
-            msg_type=ModerationLogMsg.APPROVAL
-        )
-        self.application_rejection_log = LogFactory(
-            msg_type=ModerationLogMsg.REJECTION
-        )
-        self.abuse_report_dismissal_log = LogFactory(
-            msg_type=ModerationLogMsg.DISMISSAL
-        )
-        self.abuse_report_warning_log = LogFactory(
-            msg_type=ModerationLogMsg.WARNING
-        )
-        self.ban_user_log = LogFactory(
-            msg_type=ModerationLogMsg.BANNING
-        )
-
     def test_logs_url_resolves_to_view_logs(self):
         url = resolve('/moderation/logs')
 
@@ -784,7 +764,6 @@ class ViewLogsTest(TestCase):
         response = self.client.get(reverse('moderation:logs'))
 
         # Unauthenticated user is redirected to login page
-        #~self.assertEqual(response.status_code, 302)
         self.assertRedirects(
             response,
             '/accounts/login/?next=/moderation/logs',
@@ -810,12 +789,51 @@ class ViewLogsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-    #~def test_logs_render_on_page(self):
-    #~def test_moderator_cannot_see_logs_about_themself(self):
-    #~def test_can_filter_logs_by_type(self):
-    #~def test_can_filter_logs_by_type_and_date(self):
+    def test_logs_in_response(self):
+        invitation_log = LogFactory()
+        log_about_moderator = LogFactory(
+            msg_type=ModerationLogMsg.DISMISSAL,
+            pertains_to=self.moderator
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:logs'))
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 1)
+        self.assertIn(invitation_log, context_logs)
+
+        # Check that the response does not include logs about the
+        # logged in moderator
+        self.assertNotIn(log_about_moderator, context_logs)
+
+
+    def test_can_filter_logs_by_type(self):
+        invitation_log = LogFactory()
+        reinvitation_log = LogFactory(
+            msg_type=ModerationLogMsg.REINVITATION
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(
+            reverse('moderation:logs'),
+            data = {
+                'msg_type' : ModerationLogMsg.INVITATION,
+                'period' : FilterLogsForm.ALL
+            },
+        )
+
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 1)
+        self.assertIn(invitation_log, context_logs)
+        self.assertNotIn(reinvitation_log, context_logs)
+
+
     #~def test_can_filter_logs_by_today(self):
     #~def test_can_filter_logs_by_yesterday(self):
     #~def test_can_filter_logs_by_last_seven_days(self):
     #~def test_can_filter_logs_by_custom_date_range(self):
+    #~def test_can_filter_logs_by_type_and_date(self):
+
 
