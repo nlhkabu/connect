@@ -1,4 +1,7 @@
-from urllib.parse import urlsplit
+try:
+    from urllib.parse import urlsplit
+except ImportError:
+    from urlparse import urlsplit
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
