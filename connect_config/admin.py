@@ -10,7 +10,6 @@ class SiteConfigInline(admin.StackedInline):
 
 
 class CustomSiteAdmin(SiteAdmin):
-
     inlines = (SiteConfigInline,)
 
 

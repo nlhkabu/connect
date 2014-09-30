@@ -67,7 +67,7 @@ class RequestInvitationForm(forms.Form):
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField()
     comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder' : 'Please explain why you would like to join this site',
+        'placeholder': 'Please explain why you would like to join this site',
     }))
 
     def clean_email(self):
@@ -303,20 +303,20 @@ class AccountSettingsForm(forms.Form):
 
         self.fields['current_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder' : 'Current Password'
+                                            'placeholder': 'Current Password'
                                         }),
                                         required=False)
 
         self.fields['reset_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'class' : 'pw',
-                                            'placeholder' : 'New Password'
+                                            'class': 'pw',
+                                            'placeholder': 'New Password'
                                         }),
                                         required=False)
 
         self.fields['reset_password_confirm'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder' : 'Confirm Password'
+                                            'placeholder': 'Confirm Password'
                                         }),
                                         required=False)
 
@@ -367,7 +367,7 @@ class CloseAccountForm(forms.Form):
 
         self.fields['password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder' : 'Password'
+                                            'placeholder': 'Password'
                                         }))
 
     def clean(self):

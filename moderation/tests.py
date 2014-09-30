@@ -191,9 +191,9 @@ class InviteUserTest(TestCase):
         self.client.post(
             reverse('moderation:invite-user'),
             data = {
-                'first_name' : 'Hello',
-                'last_name' : 'There',
-                'email' : 'invite.user@test.test',
+                'first_name': 'Hello',
+                'last_name': 'There',
+                'email': 'invite.user@test.test',
             },
         )
 
@@ -250,8 +250,8 @@ class ReInviteUserTest(TestCase):
         self.client.post(
             reverse('moderation:reinvite-user'),
             data = {
-                'user_id' : self.existing.id,
-                'email' : 'different.email@test.test',
+                'user_id': self.existing.id,
+                'email': 'different.email@test.test',
             },
         )
         reinvited_user = User.objects.get(id=self.existing.id)
@@ -262,8 +262,8 @@ class ReInviteUserTest(TestCase):
         self.client.post(
             reverse('moderation:reinvite-user'),
             data = {
-                'user_id' : self.existing.id,
-                'email' : self.existing.email,
+                'user_id': self.existing.id,
+                'email': self.existing.email,
             },
         )
         expected_comment = 'My Moderator resent invitation to Hello There'
@@ -308,8 +308,8 @@ class RevokeInvitationTest(TestCase):
         self.client.post(
             reverse('moderation:revoke-invitation'),
             data = {
-                'confirm' : True,
-                'user_id' : self.existing_user.id,
+                'confirm': True,
+                'user_id': self.existing_user.id,
             },
         )
 
@@ -379,9 +379,9 @@ class ReviewApplicationTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-applications'),
             data = {
-                'user_id' : self.applied_user.id,
-                'decision' : CustomUser.APPROVED,
-                'comments' : 'Applicant is known to the community',
+                'user_id': self.applied_user.id,
+                'decision': CustomUser.APPROVED,
+                'comments': 'Applicant is known to the community',
             },
         )
 
@@ -397,9 +397,9 @@ class ReviewApplicationTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-applications'),
             data = {
-                'user_id' : self.applied_user.id,
-                'decision' : CustomUser.APPROVED,
-                'comments' : 'Applicant is known to the community',
+                'user_id': self.applied_user.id,
+                'decision': CustomUser.APPROVED,
+                'comments': 'Applicant is known to the community',
             },
         )
 
@@ -422,9 +422,9 @@ class ReviewApplicationTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-applications'),
             data = {
-                'user_id' : self.applied_user.id,
-                'decision' : CustomUser.REJECTED,
-                'comments' : 'Spam Application',
+                'user_id': self.applied_user.id,
+                'decision': CustomUser.REJECTED,
+                'comments': 'Spam Application',
             },
         )
 
@@ -438,9 +438,9 @@ class ReviewApplicationTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-applications'),
             data = {
-                'user_id' : self.applied_user.id,
-                'decision' : CustomUser.REJECTED,
-                'comments' : 'Spam Application',
+                'user_id': self.applied_user.id,
+                'decision': CustomUser.REJECTED,
+                'comments': 'Spam Application',
             },
         )
 
@@ -626,9 +626,9 @@ class ReviewAbuseTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
-                'report_id' : self.abuse_report.id,
-                'decision' : AbuseReport.DISMISS,
-                'comments' : 'Spam Report',
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.DISMISS,
+                'comments': 'Spam Report',
             },
         )
 
@@ -645,9 +645,9 @@ class ReviewAbuseTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
-                'report_id' : self.abuse_report.id,
-                'decision' : AbuseReport.DISMISS,
-                'comments' : 'Spam Report',
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.DISMISS,
+                'comments': 'Spam Report',
             },
         )
 
@@ -667,9 +667,9 @@ class ReviewAbuseTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
-                'report_id' : self.abuse_report.id,
-                'decision' : AbuseReport.WARN,
-                'comments' : 'This is a warning',
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.WARN,
+                'comments': 'This is a warning',
             },
         )
 
@@ -686,9 +686,9 @@ class ReviewAbuseTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
-                'report_id' : self.abuse_report.id,
-                'decision' : AbuseReport.WARN,
-                'comments' : 'This is a warning',
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.WARN,
+                'comments': 'This is a warning',
             },
         )
 
@@ -709,9 +709,9 @@ class ReviewAbuseTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
-                'report_id' : self.abuse_report.id,
-                'decision' : AbuseReport.BAN,
-                'comments' : 'You are banned',
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.BAN,
+                'comments': 'You are banned',
             },
         )
 
@@ -729,9 +729,9 @@ class ReviewAbuseTest(TestCase):
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
-                'report_id' : self.abuse_report.id,
-                'decision' : AbuseReport.BAN,
-                'comments' : 'You are banned',
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.BAN,
+                'comments': 'You are banned',
             },
         )
 
@@ -818,8 +818,8 @@ class ViewLogsTest(TestCase):
         response = self.client.get(
             reverse('moderation:logs'),
             data = {
-                'msg_type' : ModerationLogMsg.INVITATION,
-                'period' : FilterLogsForm.ALL
+                'msg_type': ModerationLogMsg.INVITATION,
+                'period': FilterLogsForm.ALL
             },
         )
 

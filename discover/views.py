@@ -60,7 +60,7 @@ def dashboard(request):
         form = FilterMemberForm()
 
     context = {
-        'logged_in_user' : user,
+        'logged_in_user': user,
         'listed_users': listed_users,
         'form': form,
         'show_welcome': show_welcome,

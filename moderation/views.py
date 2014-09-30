@@ -55,10 +55,10 @@ def moderation_home(request,
         revocation_form = RevokeMemberForm()
 
     context = {
-        'invitation_form' : invitation_form,
-        'reinvitation_form' : reinvitation_form,
-        'revocation_form' : revocation_form,
-        'pending' : pending,
+        'invitation_form': invitation_form,
+        'reinvitation_form': reinvitation_form,
+        'revocation_form': revocation_form,
+        'pending': pending,
     }
 
     return render(request, 'moderation/invite_member.html', context)
@@ -283,8 +283,8 @@ def review_applications(request):
 
 
     context = {
-        'pending' : pending,
-        'form' : form,
+        'pending': pending,
+        'form': form,
     }
 
     return render(request, 'moderation/review_applications.html', context)
@@ -343,10 +343,10 @@ def report_abuse(request, user_id):
                                logged_against=logged_against)
 
     context = {
-        'form' : form,
-        'logged_against' : logged_against,
-        'logged_by' : logged_by,
-        'site' : site,
+        'form': form,
+        'logged_against': logged_against,
+        'logged_by': logged_by,
+        'site': site,
     }
 
     return render(request, 'moderation/report_abuse.html', context)
@@ -500,8 +500,8 @@ def review_abuse(request):
             return redirect('moderation:review-abuse')
 
     context = {
-        'reports' : undecided_reports,
-        'form' : form,
+        'reports': undecided_reports,
+        'form': form,
     }
 
     return render(request, 'moderation/review_abuse.html', context)
@@ -565,7 +565,7 @@ def view_logs(request):
                                    msg_datetime__lte=end)
 
     context = {
-        'form' : form,
+        'form': form,
         'logs': logs,
     }
 

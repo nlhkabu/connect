@@ -42,7 +42,7 @@ urlpatterns = patterns('',
         'django.contrib.auth.views.password_reset_done',
         {
             'template_name': 'accounts/password_reset_done.html',
-            'current_app' : 'accounts',
+            'current_app': 'accounts',
         },
         name="password_reset_done"
     ),
@@ -54,7 +54,7 @@ urlpatterns = patterns('',
         {
             'template_name': 'accounts/password_reset_confirm.html',
             'post_reset_redirect': '/accounts/password/done/',
-            'current_app' : 'accounts',
+            'current_app': 'accounts',
         },
         name="password_reset_confirm"
     ),

@@ -70,8 +70,8 @@ def request_invitation(request):
         form = RequestInvitationForm(request=request)
 
     context = {
-        'form' : form,
-        'site' : site,
+        'form': form,
+        'site': site,
     }
 
     return render(request, 'accounts/request_invitation.html', context)
@@ -114,16 +114,16 @@ def activate_account(request, token):
             form = ActivateAccountForm(user=user)
 
         context = {
-            'user' : user,
-            'form' : form,
-            'site' : site,
+            'user': user,
+            'form': form,
+            'site': site,
         }
 
     else:
         token_is_used = True
 
         context = {
-            'token_is_used' : token_is_used,
+            'token_is_used': token_is_used,
         }
 
     return render(request, 'accounts/activate_account.html', context)
@@ -183,11 +183,11 @@ def profile_settings(request):
 
 
     context = {
-        'form' : form,
-        'skill_formset' : skill_formset,
-        'link_formset' : link_formset,
-        'has_skills' : has_skills,
-        'has_roles' : has_roles,
+        'form': form,
+        'skill_formset': skill_formset,
+        'link_formset': link_formset,
+        'has_skills': has_skills,
+        'has_roles': has_roles,
     }
 
     return render(request, 'accounts/profile_settings.html', context)

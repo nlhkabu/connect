@@ -69,7 +69,7 @@ class ModerateApplicationForm(forms.Form):
     decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:],
                                  widget=forms.HiddenInput)
     comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder' : 'Please explain your decision. '
+        'placeholder': 'Please explain your decision. '
                         'This information will not be sent to the user, '
                         'but will be recorded in the moderation logs.',
     }))
@@ -106,7 +106,7 @@ class ModerateAbuseForm(forms.Form):
     decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES,
                                  widget=forms.HiddenInput)
     comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder' : 'Please explain your decision. '
+        'placeholder': 'Please explain your decision. '
                         'This information will be sent to both users '
                         'and recorded in the moderation logs.',
     }))
@@ -147,7 +147,7 @@ class FilterLogsForm(forms.Form):
                                     'class': 'start-date',
                                     'placeholder': 'Start Date',
                                     #~# Disable by default (unless shown)
-                                    'disabled' : 'True',
+                                    'disabled': 'True',
                             }))
 
     end_date = forms.DateTimeField(required=False,
@@ -159,7 +159,7 @@ class FilterLogsForm(forms.Form):
                                 'class': 'end-date',
                                 'placeholder': 'End Date',
                                 # Disable by default (unless shown)
-                                'disabled' : 'True',
+                                'disabled': 'True',
                         }))
 
 

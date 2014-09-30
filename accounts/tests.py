@@ -266,10 +266,10 @@ class RequestInvitationTest(TestCase):
         response = self.client.post(
             reverse('accounts:request-invitation'),
             data = {
-                'first_name' : 'First',
-                'last_name' : 'Last',
-                'email' : 'new_test@test.test',
-                'comments' : 'Please give me an account',
+                'first_name': 'First',
+                'last_name': 'Last',
+                'email': 'new_test@test.test',
+                'comments': 'Please give me an account',
             },
         )
 
@@ -285,10 +285,10 @@ class RequestInvitationTest(TestCase):
         response = self.client.post(
             reverse('accounts:request-invitation'),
             data = {
-                'first_name' : 'First',
-                'last_name' : 'Last',
-                'email' : 'new_test@test.test',
-                'comments' : 'Please give me an account',
+                'first_name': 'First',
+                'last_name': 'Last',
+                'email': 'new_test@test.test',
+                'comments': 'Please give me an account',
             },
         )
 
@@ -344,10 +344,10 @@ class ActivateAccountTest(TestCase):
         self.client.post(
             '/accounts/activate/mytoken',
             data = {
-                'first_name' : 'Hello',
-                'last_name' : 'There',
-                'password' : 'abc',
-                'confirm_password' : 'abc',
+                'first_name': 'Hello',
+                'last_name': 'There',
+                'password': 'abc',
+                'confirm_password': 'abc',
             },
         )
 
@@ -364,10 +364,10 @@ class ActivateAccountTest(TestCase):
         response = self.client.post(
             '/accounts/activate/mytoken',
             data = {
-                'first_name' : 'Hello',
-                'last_name' : 'There',
-                'password' : 'abc',
-                'confirm_password' : 'abc',
+                'first_name': 'Hello',
+                'last_name': 'There',
+                'password': 'abc',
+                'confirm_password': 'abc',
             },
         )
 
@@ -457,7 +457,7 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:update-account'),
             data = {
-                'email' : 'mynewemail@test.test',
+                'email': 'mynewemail@test.test',
             },
         )
 
@@ -479,7 +479,7 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:update-account'),
             data = {
-                'email' : 'mynewemail@test.test',
+                'email': 'mynewemail@test.test',
             },
         )
 
@@ -496,7 +496,7 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:update-account'),
             data = {
-                'email' : 'mynewemail@test.test',
+                'email': 'mynewemail@test.test',
             },
         )
 
@@ -510,10 +510,10 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:update-account'),
             data = {
-                'email' : self.standard_user.email,
-                'current_password' : 'pass',
-                'reset_password' : 'new',
-                'reset_password_confirm' : 'new',
+                'email': self.standard_user.email,
+                'current_password': 'pass',
+                'reset_password': 'new',
+                'reset_password_confirm': 'new',
             },
         )
 
@@ -530,7 +530,7 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:close-account'),
             data = {
-                'password' : 'pass',
+                'password': 'pass',
             },
         )
 
@@ -552,7 +552,7 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:close-account'),
             data = {
-                'password' : 'pass',
+                'password': 'pass',
             },
         )
 
@@ -568,7 +568,7 @@ class AccountSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:close-account'),
             data = {
-                'password' : 'pass',
+                'password': 'pass',
             },
         )
 
