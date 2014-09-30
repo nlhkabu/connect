@@ -87,18 +87,7 @@ DATABASES = {
         'HOST': os.environ['CONNECT_DB_HOST'],
         'PORT': os.environ['CONNECT_DB_PORT'],
     },
-
-    'testing': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['CONNECT_TEST_DB_NAME'],
-        'USER': os.environ['CONNECT_TEST_DB_USER'],
-        'PASSWORD': os.environ['CONNECT_TEST_DB_PASSWORD'],
-        'HOST': os.environ['CONNECT_TEST_DB_HOST'],
-        'PORT': os.environ['CONNECT_TEST_DB_PORT'],
-    },
 }
-
-TEST = {'NAME': 'testing'},
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
