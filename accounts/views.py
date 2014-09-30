@@ -11,6 +11,7 @@ from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from django.utils.timezone import now
+from django.views.decorators.http import require_POST
 
 from connect.utils import generate_html_email, hash_time, send_connect_email
 
@@ -266,57 +267,48 @@ def account_settings(request,
     return render(request, 'accounts/account_settings.html', context)
 
 
+@require_POST
 @login_required
 def update_account(request):
     """
     Update a user's account settings
     """
     user = request.user
+    form = AccountSettingsForm(request.POST, user=user)
 
-    if request.method == 'POST':
-        form = AccountSettingsForm(request.POST, user=user)
+    if form.is_valid():
+        user.email = form.cleaned_data['email']
 
-        if form.is_valid():
-            user.email = form.cleaned_data['email']
+        if form.cleaned_data['reset_password']:
+            new_pass = make_password(form.cleaned_data['reset_password'])
+            user.password = new_pass
 
-            if form.cleaned_data['reset_password']:
-                new_pass = make_password(form.cleaned_data['reset_password'])
-                user.password = new_pass
+        user.save()
 
-            user.save()
-
-            #TODO: add confirmation message here
-            return redirect(reverse('accounts:account-settings'))
-
-        else:
-            return account_settings(request, form=form)
+        #TODO: add confirmation message here
+        return redirect(reverse('accounts:account-settings'))
 
     else:
-        raise PermissionDenied
+        return account_settings(request, form=form)
 
 
+@require_POST
 @login_required
 def close_account(request):
     """
     Close a user's account
     """
     user = request.user
+    form = CloseAccountForm(request.POST, user=user)
 
-    if request.method == 'POST':
-        form = CloseAccountForm(request.POST, user=user)
+    if form.is_valid():
 
-        if form.is_valid():
+        user.is_active = False
+        user.is_closed = True
+        user.save()
+        logout(request)
 
-            user.is_active = False
-            user.is_closed = True
-            user.save()
-            logout(request)
-
-            return redirect(reverse('accounts:close-account-done'))
-
-        else:
-            return account_settings(request, close_form=form)
+        return redirect(reverse('accounts:close-account-done'))
 
     else:
-        raise PermissionDenied
-
+        return account_settings(request, close_form=form)

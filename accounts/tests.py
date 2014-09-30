@@ -15,8 +15,8 @@ from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
 from .forms import validate_email_availability
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user, invite_user_to_reactivate_account
-from .views import (account_settings, activate_account, profile_settings,
-                    request_invitation)
+from .views import (account_settings, activate_account, close_account,
+                    profile_settings, request_invitation, update_account)
 
 
 User = get_user_model()
@@ -29,17 +29,17 @@ class UserModelTest(TestCase):
 
     def setUp(self):
         self.moderator = ModeratorFactory()
-        self.standard = UserFactory()
+        self.standard_user = UserFactory()
         self.invited_pending = InvitedPendingFactory()
         self.requested_pending = RequestedPendingFactory()
 
     def test_moderator_can_invite_new_user(self):
-        user = self.moderator.invite_new_user(email='standard@test.test',
-                                              first_name='standard',
+        user = self.moderator.invite_new_user(email='standard_user@test.test',
+                                              first_name='standard_user',
                                               last_name='user')
 
-        self.assertEqual(user.email,'standard@test.test')
-        self.assertEqual(user.first_name, 'standard')
+        self.assertEqual(user.email,'standard_user@test.test')
+        self.assertEqual(user.first_name, 'standard_user')
         self.assertEqual(user.last_name, 'user')
         self.assertEqual(user.registration_method, CustomUser.INVITED)
         self.assertEqual(user.moderator, self.moderator)
@@ -47,10 +47,10 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(user.decision_datetime)
         self.assertIsNotNone(user.auth_token)
 
-    def test_standard_user_cannot_invite_new_user(self):
+    def test_standard_user_user_cannot_invite_new_user(self):
         with self.assertRaises(PermissionDenied):
-            user = self.standard.invite_new_user(email='standard@test.test',
-                                                 first_name='standard',
+            user = self.standard_user.invite_new_user(email='standard_user@test.test',
+                                                 first_name='standard_user',
                                                  last_name='user')
             self.assertIsNone(user)
 
@@ -66,13 +66,13 @@ class UserModelTest(TestCase):
         self.assertNotEqual(self.invited_pending.decision_datetime, decision_datetime)
         self.assertNotEqual(self.invited_pending.auth_token, auth_token)
 
-    def test_standard_user_cannot_reinvite_user(self):
+    def test_standard_user_user_cannot_reinvite_user(self):
 
         decision_datetime = self.invited_pending.decision_datetime
         auth_token = self.invited_pending.auth_token
 
         with self.assertRaises(PermissionDenied):
-            self.standard.reinvite_user(user=self.invited_pending,
+            self.standard_user.reinvite_user(user=self.invited_pending,
                                         email='reset_email@test.test')
 
             self.assertNotEqual(self.invited_pending.email, 'reset_email@test.test')
@@ -87,9 +87,9 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(self.requested_pending.decision_datetime)
         self.assertIsNotNone(self.requested_pending.auth_token)
 
-    def test_standard_user_cannot_approve_user_application(self):
+    def test_standard_user_user_cannot_approve_user_application(self):
         with self.assertRaises(PermissionDenied):
-            self.standard.approve_user_application(self.requested_pending)
+            self.standard_user.approve_user_application(self.requested_pending)
 
             self.assertIsNone(self.requested_pending.moderator)
             self.assertFalse(self.requested_pending.moderator_decision)
@@ -104,9 +104,9 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(self.requested_pending.decision_datetime)
         self.assertIsNotNone(self.requested_pending.auth_token)
 
-    def test_standard_user_cannot_reject_user_application(self):
+    def test_standard_user_user_cannot_reject_user_application(self):
         with self.assertRaises(PermissionDenied):
-            self.standard.reject_user_application(self.requested_pending)
+            self.standard_user.reject_user_application(self.requested_pending)
 
             self.assertIsNone(self.requested_pending.moderator)
             self.assertFalse(self.requested_pending.moderator_decision)
@@ -177,14 +177,19 @@ class LinkBrandTest(TestCase):
         #~with self.assertRaises(ValidationError):
             #~validate_email_availability('user.1@test.test')
 
-#~class RequestInvitationFormValidationTest(TestCase):
+#~class RequestInvitationFormTest(TestCase):
     #~def test_closed_account_prompts_custom_validation_message(self):
 
-#~class TestActivateAccountFormValidation(TestCase):
+#~class ActivateAccountFormTest(TestCase):
     #~def test_password_validation_fails_when_passwords_are_different(self):
     #~def test_password_validation_passes_when_passwords_are_same(self):
 #~
-#~class BaseSkillFormsetValidationTest(TestCase):
+
+#~class ProfileFormTest(TestCase):
+    #~def test_profile_form_is_prepopulated_with_users_data(self):
+
+#~class SkillFormsetTest(TestCase):
+    #~def test_skill_formset_is_prepopulated_with_users_skills(self):
     #~def test_validation_fails_when_userskill_is_not_unique_to_user(self):
     #~def test_validation_passes_when_userskill_is_unique_to_user(self):
     #~def test_validation_fails_when_userskill_has_skill_but_no_proficiency(self):
@@ -192,7 +197,8 @@ class LinkBrandTest(TestCase):
     #~def test_validation_passes_when_userskill_has_skill_and_proficiency(self):
     #~def test_validation_passes_when_both_skill_and_proficiency_are_empty(self):
 #~
-#~class BaseLinkFormsetValidationTest(TestCase):
+#~class LinkFormsetTest(TestCase):
+    #~def test_link_formset_is_prepopulated_with_users_links(self):
     #~def test_validation_fails_when_link_url_is_not_unique_to_user(self):
     #~def test_validation_passes_when_link_url_is_unique_to_user(self):
     #~def test_validation_fails_when_link_anchor_is_not_unique_to_user(self):
@@ -202,14 +208,16 @@ class LinkBrandTest(TestCase):
     #~def test_validation_passes_when_link_has_url_and_anchor(self):
     #~def test_validation_passes_when_both_url_and_anchor_are_empty(self):
 #~
-#~class AccountSettingsFormValidationTest(TestCase):
+#~class AccountSettingsFormTest(TestCase):
     #~def test_current_password_matches_users_password(self):
     #~def test_validation_fails_if_user_tries_to_change_password_without_current_password(self):
     #~def test_validation_fails_if_user_tries_to_change_password_without_confirming_password(self):
     #~def test_password_validation_fails_when_passwords_are_different(self):
     #~def test_password_validation_passes_when_passwords_are_same(self):
 #~
-#~class CloseAccountFormValidationTest(TestCase):
+
+#~class CloseAccountFormTest(TestCase):
+    #~def test_email_field_is_prepopulated_with_user_email(self):
     #~def test_current_password_matches_users_password(self):
 
 
@@ -219,7 +227,7 @@ class AccountUtilsTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.standard = UserFactory()
+        self.standard_user = UserFactory()
 
     def test_create_inactive_user(self):
         user = create_inactive_user('test@test.test', 'first', 'last')
@@ -234,9 +242,9 @@ class AccountUtilsTest(TestCase):
 
 
     #~def test_reactivated_account_token_is_reset(self):
-        #~initial_token = self.standard.auth_token
+        #~initial_token = self.standard_user.auth_token
 #~
-        #~user = invite_user_to_reactivate_account(self.standard, request) <= Need to pass in request here.  how?
+        #~user = invite_user_to_reactivate_account(self.standard_user, request) <= Need to pass in request here.  how?
 #~
         #~self.assertNotEqual(initial_token, user.auth_token)
 
@@ -371,7 +379,7 @@ class ProfileSettingsTest(TestCase):
 
     def setUp(self):
 
-        self.standard = UserFactory()
+        self.standard_user = UserFactory()
         self.client = Client()
 
     def test_profile_url_resolves_to_profile_settings_view(self):
@@ -390,14 +398,11 @@ class ProfileSettingsTest(TestCase):
         )
 
     def test_profile_is_available_to_authenticated_users(self):
-        self.client.login(username=self.standard.email, password='pass')
+        self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('accounts:profile-settings'))
 
         self.assertEqual(response.status_code, 200)
 
-    #~def test_profile_form_is_prepopulated_with_users_data(self):
-    #~def test_skills_formset_shows_users_skills(self):
-    #~def test_links_formset_shows_users_links(self):
     #~def test_can_update_profile(self):
     #~def test_link_is_correctly_matched_to_brand(self):
 
@@ -405,7 +410,7 @@ class ProfileSettingsTest(TestCase):
 class AccountSettingsTest(TestCase):
     def setUp(self):
 
-        self.standard = UserFactory()
+        self.standard_user = UserFactory()
         self.client = Client()
 
     def test_account_settings_url_resolves_to_account_settings_view(self):
@@ -424,25 +429,150 @@ class AccountSettingsTest(TestCase):
         )
 
     def test_account_settings_is_available_to_authenticated_users(self):
-        self.client.login(username=self.standard.email, password='pass')
+        self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('accounts:account-settings'))
 
         self.assertEqual(response.status_code, 200)
 
-    #~def test_account_settings_form_is_rendered_to_page(self):
-    #~def test_email_field_is_prepopulated_with_correct_email(self):
-    #~def test_close_account_form_is_rendered_to_page(self):
+    def test_account_settings_form_is_rendered_to_page(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:account-settings'))
+        expected_html = '<legend>Account Settings</legend>'
 
-    #~def test_update_account_url_resolves_to_update_account_view(self):
-    #~def test_update_account_is_only_available_to_autheticated_users(self):
-    #~def test_update_account_is_only_available_to_POST_data(self):
-    #~def test_email_is_updated(self):
-    #~def test_password_is_updated_if_submitted(self):
-    #~def test_password_is_not_updated_if_it_is_not_submitted(self):
+        self.assertInHTML(expected_html, response.content.decode())
 
-    #~def test_close_account_url_resolves_to_close_account_view(self):
-    #~def test_close_account_is_only_available_to_autheticated_users(self):
-    #~def test_close_account_is_only_available_to_POST_data(self):
-    #~def test_can_close_account(self):
-    #~def test_closed_account_is_inactive(self):
-    #~def test_closed_account_redirects_to_correct_view(self):
+    def test_close_account_form_is_rendered_to_page(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:account-settings'))
+        expected_html = '<legend>Close Account</legend>'
+
+        self.assertInHTML(expected_html, response.content.decode())
+
+    def test_update_account_url_resolves_to_update_account_view(self):
+        url = resolve('/accounts/settings/update')
+
+        self.assertEqual(url.func, update_account)
+
+    def test_update_account_not_available_to_unautheticated_users(self):
+        response = self.client.post(
+            reverse('accounts:update-account'),
+            data = {
+                'email' : 'mynewemail@test.test',
+            },
+        )
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/settings/update',
+            status_code=302
+        )
+
+    def test_update_account_not_available_without_POST_data(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:update-account'))
+
+        self.assertEqual(response.status_code, 405)
+
+    def test_update_account_is_available_to_authenticated_users_with_POST_data(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(
+            reverse('accounts:update-account'),
+            data = {
+                'email' : 'mynewemail@test.test',
+            },
+        )
+
+        # Sending valid data should result in this view redirecting back
+        # to account settings
+        self.assertRedirects(
+            response,
+            '/accounts/settings',
+            status_code=302
+        )
+
+    def test_can_update_email(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(
+            reverse('accounts:update-account'),
+            data = {
+                'email' : 'mynewemail@test.test',
+            },
+        )
+
+        user = User.objects.get(id=self.standard_user.id)
+
+        self.assertEqual(user.email, 'mynewemail@test.test')
+
+    def test_can_update_password(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        old_pass = self.standard_user.password
+        response = self.client.post(
+            reverse('accounts:update-account'),
+            data = {
+                'email' : self.standard_user.email,
+                'current_password' : 'pass',
+                'reset_password' : 'new',
+                'reset_password_confirm' : 'new',
+            },
+        )
+
+        user = User.objects.get(id=self.standard_user.id)
+        self.assertNotEqual(user.password, old_pass)
+
+    def test_close_account_url_resolves_to_close_account_view(self):
+        url = resolve('/accounts/close')
+
+        self.assertEqual(url.func, close_account)
+
+
+    def test_close_account_not_available_to_unautheticated_users(self):
+        response = self.client.post(
+            reverse('accounts:close-account'),
+            data = {
+                'password' : 'pass',
+            },
+        )
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/close',
+            status_code=302
+        )
+
+    def test_close_account_not_available_without_POST_data(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:close-account'))
+
+        self.assertEqual(response.status_code, 405)
+
+    def test_close_account_is_available_to_authenticated_users_with_POST_data(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(
+            reverse('accounts:close-account'),
+            data = {
+                'password' : 'pass',
+            },
+        )
+
+        # Sending valid data should result in this view redirecting to done
+        self.assertRedirects(
+            response,
+            '/accounts/close/done',
+            status_code=302
+        )
+
+    def test_can_close_account(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(
+            reverse('accounts:close-account'),
+            data = {
+                'password' : 'pass',
+            },
+        )
+
+        user = User.objects.get(id=self.standard_user.id)
+
+        self.assertFalse(user.is_active)
+        self.assertTrue(user.is_closed)
