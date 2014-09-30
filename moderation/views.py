@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 
 from accounts.models import AbuseReport
 from connect.utils import (generate_html_email, generate_salt,
@@ -63,6 +64,7 @@ def moderation_home(request,
     return render(request, 'moderation/invite_member.html', context)
 
 
+@require_POST
 @login_required
 @permission_required(['accounts.access_moderators_section',
                       'accounts.invite_user'])
@@ -112,6 +114,7 @@ def invite_user(request):
         return moderation_home(request, invitation_form=invitation_form)
 
 
+@require_POST
 @login_required
 @permission_required(['accounts.access_moderators_section',
                       'accounts.invite_user'])
@@ -170,6 +173,7 @@ def reinvite_user(request):
 
 
 
+@require_POST
 @login_required
 @permission_required(['accounts.access_moderators_section',
                       'accounts.uninvite_user'])
