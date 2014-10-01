@@ -23,6 +23,8 @@ def validate_email_availability(email):
 
             code='email_already_registered'
         )
+    else:
+        return True
 
 
 class CustomUserCreationForm(UserCreationForm):

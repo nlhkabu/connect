@@ -31,6 +31,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'user.{}@test.test'.format(n))
     password = make_password('pass')
     registration_method = CustomUser.INVITED
+    is_closed = False
 
     @factory.post_generation
     def groups(self, create, extracted, **kwargs):

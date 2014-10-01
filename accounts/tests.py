@@ -4,15 +4,18 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import login
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import resolve, reverse
-from django.test import Client, TestCase
+from django.test import Client, TestCase, RequestFactory
+
+from connect_config.factories import SiteConfigFactory
 
 from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
                         RequestedPendingFactory, UserFactory, UserLinkFactory,
                         UserSkillFactory)
 
-from .forms import validate_email_availability
+from .forms import validate_email_availability, RequestInvitationForm
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user, invite_user_to_reactivate_account
 from .views import (account_settings, activate_account, close_account,
@@ -165,25 +168,57 @@ class LinkBrandTest(TestCase):
 
 # Forms.py
 
-#~class FormValidationTest(TestCase):
-    #~def setup(self):
-        #~self.users = factory.build_batch(UserFactory, 10)
-#~
-    #~def test_email_is_unique(self):
-        #~validate_email_availability('unique_user@test.test')
-         #~ #TODO: assert no validation error here
-#~
-    #~def test_email_is_duplicate(self):
-        #~with self.assertRaises(ValidationError):
-            #~validate_email_availability('user.1@test.test')
+class FormValidationTest(TestCase):
 
-#~class RequestInvitationFormTest(TestCase):
-    #~def test_closed_account_prompts_custom_validation_message(self):
+    def setUp(self):
+        existing_user = UserFactory(email='existing.user@test.test')
+
+    def test_email_is_unique(self):
+        unique = validate_email_availability('unique_user@test.test')
+        self.assertTrue(unique)
+
+    def test_email_is_duplicate(self):
+        with self.assertRaises(ValidationError):
+            validate_email_availability('existing.user@test.test')
+
+
+class RequestInvitationFormTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
+    def test_closed_account_prompts_custom_validation_message(self):
+        closed_user = UserFactory(
+            email='closed.user@test.test',
+            is_closed=True,
+        )
+
+        request = self.factory.get(reverse('accounts:request-invitation'))
+
+        form = RequestInvitationForm(
+            request = request,
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'email': 'closed.user@test.test',
+                'comments': 'I would like an account',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+        # TODO: Check that correct error is raised - code='email_registered_to_closed_account'
+        # TODO: Check that invite_user_to_reactivate_account() is called.
+
+
+
 
 #~class ActivateAccountFormTest(TestCase):
     #~def test_password_validation_fails_when_passwords_are_different(self):
     #~def test_password_validation_passes_when_passwords_are_same(self):
-#~
+
 
 #~class ProfileFormTest(TestCase):
     #~def test_profile_form_is_prepopulated_with_users_data(self):
