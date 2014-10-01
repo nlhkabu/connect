@@ -263,6 +263,9 @@ class AccountUtilsTest(TestCase):
 
     def setUp(self):
         self.standard_user = UserFactory()
+        self.factory = RequestFactory()
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
 
     def test_create_inactive_user(self):
         user = create_inactive_user('test@test.test', 'first', 'last')
@@ -275,14 +278,15 @@ class AccountUtilsTest(TestCase):
         self.assertEqual(user.is_moderator, False)
         self.assertNotIn(moderators, user.groups.all())
 
+    def test_reactivated_account_token_is_reset(self):
+        initial_token = self.standard_user.auth_token
+        request = self.factory.get(reverse('accounts:request-invitation'))
+        user = invite_user_to_reactivate_account(self.standard_user, request)
 
-    #~def test_reactivated_account_token_is_reset(self):
-        #~initial_token = self.standard_user.auth_token
-#~
-        #~user = invite_user_to_reactivate_account(self.standard_user, request) <= Need to pass in request here.  how?
-#~
-        #~self.assertNotEqual(initial_token, user.auth_token)
+        self.assertNotEqual(initial_token, user.auth_token)
+        self.assertFalse(user.auth_token_is_used)
 
+    #~def test_reactivation_email_sent_to_user():
 
 
 # Urls.py and views.py
