@@ -20,14 +20,17 @@ SECRET_KEY = os.environ['CONNECT_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+
+ADMINS = (
+    ('Nicole Harris', 'n.harris@kabucreative.com.au'),
+)
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -39,8 +42,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django_extensions',
-    'debug_toolbar',
     'django_gravatar',
     'endless_pagination',
     'connect',
@@ -49,6 +50,12 @@ INSTALLED_APPS = (
     'moderation',
     'discover',
 )
+
+if DEBUG:
+    INSTALLED_APPS += (
+        'django_extensions',
+        'debug_toolbar',
+    )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,7 +89,7 @@ ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
 # Parse database configuration from $DATABASE_URL, if it is set
 if 'DATABASE_URL' in os.environ: 
     import dj_database_url
-    DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'])}
+    DATABASES = {'default': dj_database_url.config()}
     
 else:
     DATABASES = {
