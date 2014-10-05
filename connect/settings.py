@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_extensions',
     'django_gravatar',
     'endless_pagination',
     'connect',
@@ -53,7 +54,6 @@ INSTALLED_APPS = (
 
 if DEBUG:
     INSTALLED_APPS += (
-        'django_extensions',
         'debug_toolbar',
     )
 
