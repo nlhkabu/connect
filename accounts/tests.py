@@ -12,10 +12,13 @@ from django.test import Client, TestCase, RequestFactory
 from connect_config.factories import SiteConfigFactory
 
 from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
-                        RequestedPendingFactory, UserFactory, UserLinkFactory,
-                        UserSkillFactory)
+                        RequestedPendingFactory, RoleFactory, SkillFactory,
+                        UserFactory, UserLinkFactory, UserSkillFactory)
 
-from .forms import validate_email_availability, RequestInvitationForm
+from .forms import (ActivateAccountForm, AccountSettingsForm, CloseAccountForm,
+                    LinkForm, ProfileForm, RequestInvitationForm,
+                    SkillForm, validate_email_availability)
+
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user, invite_user_to_reactivate_account
 from .views import (account_settings, activate_account, close_account,
@@ -209,31 +212,127 @@ class RequestInvitationFormTest(TestCase):
         )
 
         self.assertFalse(form.is_valid())
-        # TODO: Check that correct error is raised - code='email_registered_to_closed_account'
+        # TODO: Checks that correct error is raised - code='email_registered_to_closed_account'
         # TODO: Check that invite_user_to_reactivate_account() is called.
 
 
+class ActivateAccountFormTest(TestCase):
+
+    def setUp(self):
+        self.pending_user = InvitedPendingFactory()
+
+    def test_password_validation_fails_when_passwords_are_different(self):
+        form = ActivateAccountForm(
+            user = self.pending_user,
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'password': 'pass1',
+                'confirm_password': 'pass2',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+        #TODO: Check correct error is raised
+
+    def test_password_validation_passes_when_passwords_are_same(self):
+        form = ActivateAccountForm(
+            user = self.pending_user,
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'password': 'pass1',
+                'confirm_password': 'pass1',
+            }
+        )
+
+        self.assertTrue(form.is_valid())
 
 
-#~class ActivateAccountFormTest(TestCase):
-    #~def test_password_validation_fails_when_passwords_are_different(self):
-    #~def test_password_validation_passes_when_passwords_are_same(self):
+class ProfileFormTest(TestCase):
+
+    def setUp(self):
+        self.standard_user = UserFactory()
+
+        # Setup skills and roles
+        self.django = SkillFactory(name='django')
+        self.rails = SkillFactory(name='rails')
+        self.jquery = SkillFactory(name='jquery')
+
+        self.mentor = RoleFactory(name='mentor')
+        self.mentee = RoleFactory(name='mentee')
+
+        client = Client()
+        client.login(username=self.standard_user.email, password='pass')
+
+    def test_validation_fails_if_first_name_not_provided(self):
+        form = ProfileForm(
+            user = self.standard_user,
+            data = {
+                'last_name': 'Last',
+                'bio': 'My bio',
+                'roles': [self.mentor.id, self.mentee.id],
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_validation_fails_if_last_name_not_provided(self):
+        form = ProfileForm(
+            user = self.standard_user,
+            data = {
+                'first_name': 'First',
+                'bio': 'My bio',
+                'roles': [self.mentor.id, self.mentee.id],
+            }
+        )
+
+        self.assertFalse(form.is_valid())
 
 
-#~class ProfileFormTest(TestCase):
-    #~def test_profile_form_is_prepopulated_with_users_data(self):
+    def test_validation_fails_when_userskill_is_not_unique_to_user(self):
 
-#~class SkillFormsetTest(TestCase):
-    #~def test_skill_formset_is_prepopulated_with_users_skills(self):
-    #~def test_validation_fails_when_userskill_is_not_unique_to_user(self):
+        form = ProfileForm(
+            user = self.standard_user,
+            data = {
+                'first_name': 'First',
+                'bio': 'My bio',
+                'roles': [self.mentor.id, self.mentee.id],
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
     #~def test_validation_passes_when_userskill_is_unique_to_user(self):
+        #~self.client.login(username=self.standard_user.email, password='pass')
+#~
+        #~response = self.client.post(
+            #~reverse('accounts:profile-settings'),
+            #~data = {
+                #~'first_name': 'First',
+                #~'last_name': 'Last',
+                #~'bio': 'My bio',
+                #~'roles': [self.mentor.id, self.mentee.id],
+                #~'link-TOTAL_FORMS': 2,
+                #~'link-INITIAL_FORMS': 0,
+                #~'link-0-anchor': 'First Anchor',
+                #~'link-0-url': 'http://mylink.com',
+                #~'link-1-anchor': 'Second Anchor',
+                #~'link-1-url': 'http://mysecondlink',
+                #~'skill-TOTAL_FORMS': 1,
+                #~'skill-INITIAL_FORMS': 0,
+                #~'skill-0-skill': self.django.id,
+                #~'skill-0-proficiency': UserSkill.BEGINNER,
+            #~}
+        #~)
+#~
+        #~print(UserSkill.objects.all())
+
     #~def test_validation_fails_when_userskill_has_skill_but_no_proficiency(self):
     #~def test_validation_fails_when_userskill_has_proficicency_but_no_skill(self):
     #~def test_validation_passes_when_userskill_has_skill_and_proficiency(self):
     #~def test_validation_passes_when_both_skill_and_proficiency_are_empty(self):
 #~
-#~class LinkFormsetTest(TestCase):
-    #~def test_link_formset_is_prepopulated_with_users_links(self):
     #~def test_validation_fails_when_link_url_is_not_unique_to_user(self):
     #~def test_validation_passes_when_link_url_is_unique_to_user(self):
     #~def test_validation_fails_when_link_anchor_is_not_unique_to_user(self):
@@ -242,18 +341,109 @@ class RequestInvitationFormTest(TestCase):
     #~def test_validation_fails_when_link_has_url_but_no_anchor(self):
     #~def test_validation_passes_when_link_has_url_and_anchor(self):
     #~def test_validation_passes_when_both_url_and_anchor_are_empty(self):
-#~
-#~class AccountSettingsFormTest(TestCase):
-    #~def test_current_password_matches_users_password(self):
-    #~def test_validation_fails_if_user_tries_to_change_password_without_current_password(self):
-    #~def test_validation_fails_if_user_tries_to_change_password_without_confirming_password(self):
-    #~def test_password_validation_fails_when_passwords_are_different(self):
-    #~def test_password_validation_passes_when_passwords_are_same(self):
-#~
 
-#~class CloseAccountFormTest(TestCase):
-    #~def test_email_field_is_prepopulated_with_user_email(self):
-    #~def test_current_password_matches_users_password(self):
+
+class AccountSettingsFormTest(TestCase):
+
+    def setUp(self):
+        self.user = UserFactory(email='thisemail@test.test')
+
+    def test_validation_fails_if_users_submits_incorrect_current_password(self):
+        form = AccountSettingsForm(
+            user = self.user,
+            data = {
+                'email': 'thisemail@test.test',
+                'current_password': 'wrongpass',
+                'reset_password': 'newpass',
+                'reset_password_confirm': 'newpass',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_validation_fails_if_user_tries_to_change_password_without_current_password(self):
+        form = AccountSettingsForm(
+            user = self.user,
+            data = {
+                'email': 'thisemail@test.test',
+                'reset_password': 'newpass',
+                'reset_password_confirm': 'newpass',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_validation_fails_if_user_tries_to_change_password_without_confirming_password(self):
+        form = AccountSettingsForm(
+            user = self.user,
+            data = {
+                'email': 'thisemail@test.test',
+                'current_password': 'pass',
+                'reset_password': 'newpass',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_password_validation_fails_when_new_passwords_are_different(self):
+        form = AccountSettingsForm(
+            user = self.user,
+            data = {
+                'email': 'thisemail@test.test',
+                'current_password': 'pass',
+                'reset_password': 'newpass',
+                'reset_password_confirm': 'differentpass',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_password_validation_passes_when_all_fields_correct(self):
+        form = AccountSettingsForm(
+            user = self.user,
+            data = {
+                'email': 'thisemail@test.test',
+                'current_password': 'pass',
+                'reset_password': 'newpass',
+                'reset_password_confirm': 'newpass',
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+
+
+class CloseAccountFormTest(TestCase):
+
+    def setUp(self):
+        self.user = UserFactory()
+
+    def test_validation_fails_with_no_password(self):
+        form = CloseAccountForm(
+            user = self.user,
+            data = {}
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_validation_fails_with_incorrect_password(self):
+        form = CloseAccountForm(
+            user = self.user,
+            data = {
+                'password': 'wrongpass',
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+
+    def test_validation_passes_with_correct_password(self):
+        form = CloseAccountForm(
+            user = self.user,
+            data = {
+                'password': 'pass',
+            }
+        )
+
+        self.assertTrue(form.is_valid())
 
 
 # Utils.py
@@ -287,6 +477,8 @@ class AccountUtilsTest(TestCase):
         self.assertFalse(user.auth_token_is_used)
 
     #~def test_reactivation_email_sent_to_user():
+
+    #~def test_get_user(self):
 
 
 # Urls.py and views.py
