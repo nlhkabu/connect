@@ -20,13 +20,17 @@ SECRET_KEY = os.environ['CONNECT_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+
+ADMINS = (
+    ('Nicole Harris', 'n.harris@kabucreative.com.au'),
+)
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -39,7 +43,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django_extensions',
-    'debug_toolbar',
     'django_gravatar',
     'endless_pagination',
     'connect',
@@ -48,6 +51,11 @@ INSTALLED_APPS = (
     'moderation',
     'discover',
 )
+
+if DEBUG:
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,16 +86,23 @@ ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['CONNECT_DB_NAME'],
-        'USER': os.environ['CONNECT_DB_USER'],
-        'PASSWORD': os.environ['CONNECT_DB_PASSWORD'],
-        'HOST': os.environ['CONNECT_DB_HOST'],
-        'PORT': os.environ['CONNECT_DB_PORT'],
-    },
-}
+# Parse database configuration from $DATABASE_URL, if it is set
+if 'DATABASE_URL' in os.environ: 
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}
+    
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['CONNECT_DB_NAME'],
+            'USER': os.environ['CONNECT_DB_USER'],
+            'PASSWORD': os.environ['CONNECT_DB_PASSWORD'],
+            'HOST': os.environ['CONNECT_DB_HOST'],
+            'PORT': os.environ['CONNECT_DB_PORT'],
+        },
+    }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -106,15 +121,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-#STATICFILES_DIRS = (
+STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    #os.path.join(BASE_DIR, 'static'),
-#)
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Media files (user uploaded)
 
@@ -141,3 +157,8 @@ EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+

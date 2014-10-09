@@ -1,12 +1,12 @@
 # Connect
 
-[ ![Codeship Status for nlh/connect](https://codeship.io/projects/86e14520-1ec8-0132-5410-3e0b0834453b/status)](https://codeship.io/projects/35570)
-
 Connect is a moderated platform that help individuals connect with each other based on location, skills and interests.
 
 ##  Demo
 
-\# TODO: Add demo URL here
+http://kabu-connect.herokuapp.com/
+
+[ ![Codeship Status for nlh/connect](https://codeship.io/projects/86e14520-1ec8-0132-5410-3e0b0834453b/status)](https://codeship.io/projects/35570)
 
 ## Installation:
 
@@ -50,19 +50,17 @@ python manage.py migrate
 python manage.py loaddata accounts/fixtures/group_perms.yaml
 ```
 
-#### Accounts: Brands
+#### Brands
 
-#### Accounts: Preferences
+#### Roles
 
-#### Auth: Groups
+#### Skills
 
-#### Auth: Permissions
+#### Users
 
-#### Auth: Users
+#### Flat Pages
 
-#### Sites: Site
-
-#### Skills: Skills
+#### Sites
 
 
 ### Customising colours
