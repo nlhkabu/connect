@@ -5,7 +5,7 @@ from django.test import Client, TestCase
 
 from accounts.factories import RoleFactory, SkillFactory, UserFactory, UserSkillFactory
 
-from .views import dashboard
+from .views import dashboard, map
 
 class DashboardTest(TestCase):
     def setUp(self):
@@ -46,7 +46,7 @@ class DashboardTest(TestCase):
             status_code=302
         )
 
-    def test_authenticated_userss_can_view_dashboard(self):
+    def test_authenticated_users_can_view_dashboard(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('dashboard'))
 
@@ -152,3 +152,30 @@ class DashboardTest(TestCase):
         self.assertIn(self.user_1, context_users)
         self.assertIn(self.user_3, context_users)
         self.assertEqual(len(context_users), 2)
+
+
+class MapTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.standard_user = UserFactory()
+
+    def test_map_url_resolves_to_map_view(self):
+        url = resolve('/dashboard/map')
+
+        self.assertEqual(url.func, map)
+
+    def test_unauthenticated_users_cannot_view_map(self):
+        response = self.client.get(reverse('discover:map'))
+
+        # Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/dashboard/map',
+            status_code=302
+        )
+
+    def test_authenticated_users_can_view_map(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('discover:map'))
+
+        self.assertEqual(response.status_code, 200)
