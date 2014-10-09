@@ -50,19 +50,17 @@ python manage.py migrate
 python manage.py loaddata accounts/fixtures/group_perms.yaml
 ```
 
-#### Accounts: Brands
+#### Brands
 
-#### Accounts: Preferences
+#### Roles
 
-#### Auth: Groups
+#### Skills
 
-#### Auth: Permissions
+#### Users
 
-#### Auth: Users
+#### Flat Pages
 
-#### Sites: Site
-
-#### Skills: Skills
+#### Sites
 
 
 ### Customising colours
