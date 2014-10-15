@@ -1,6 +1,5 @@
 {% extends "discover/dashboard.html" %}
-{% load static %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block map_active %}active{% endblock %}
 
@@ -29,7 +28,6 @@
 {% block extra_js %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
-
         function initialize() {
 
             var mapOptions = {

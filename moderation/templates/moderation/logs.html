@@ -72,7 +72,6 @@
         <p class="intro">{% trans "Sorry there are no moderation events of this type logged in the system." %}</p>
     {% endif %}
 
-
     {% for log in logs %}
         {% if log.comment|wordcount > 21 %}
             <div class="comments-dialog dialog" id="dialog{{ log.id }}" title="Comments for {{ log.get_msg_type_display }} Log from {{ log.msg_datetime|date:'M d, Y' }}">

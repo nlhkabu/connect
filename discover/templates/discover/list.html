@@ -1,8 +1,5 @@
 {% extends "discover/dashboard.html" %}
-{% load endless %}
-{% load i18n %}
-{% load staticfiles %}
-{% load gravatar %}
+{% load endless gravatar i18n staticfiles %}
 
 {% block page_title %}{% trans "Dashboard" %}{% endblock %}
 
@@ -196,5 +193,4 @@
             </div>
         </div>
     {% endif %}
-
 {% endblock %}

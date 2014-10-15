@@ -165,18 +165,18 @@
                                                         <td valign="top">
                                                             <div>
                                                                 {% block intro %}
-                                                                <p>Hi {{ recipient.first_name }},</p>
-                                                                {% endblock %}
+                                                                    <p>Hi {{ recipient.first_name }},</p>
+                                                                    {% endblock %}
 
-                                                                {% block email_content %}{% endblock %}
+                                                                    {% block email_content %}{% endblock %}
 
-                                                                {% block signoff %}
-                                                                <p>
-                                                                    Thanks,
-                                                                </p>
-                                                                <p>
-                                                                    The {{ site_name }} team
-                                                                </p>
+                                                                    {% block signoff %}
+                                                                    <p>
+                                                                        Thanks,
+                                                                    </p>
+                                                                    <p>
+                                                                        The {{ site_name }} team
+                                                                    </p>
                                                                 {% endblock %}
 
                                                                 {% endautoescape %}

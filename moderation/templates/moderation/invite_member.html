@@ -1,12 +1,8 @@
 {% extends "moderation/moderators_base.html" %}
-{% load i18n %}
-{% load static %}
-{% load humanize %}
-
+{% load humanize i18n static %}
 
 {% block page_title %}{% trans "Invite a New Member" %}{% endblock %}
 {% block invite_member_active %}active{% endblock %}
-
 
 {% block moderators_content %}
     <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form">
@@ -122,7 +118,5 @@
                 <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />
             </form>
         </div>
-
-
     {% endif %}
 {% endblock %}

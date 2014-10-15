@@ -1,7 +1,5 @@
 {% extends "accounts/settings_base.html" %}
-{% load i18n %}
-{% load staticfiles %}
-
+{% load i18n staticfiles %}
 
 {% block page_title %}{% trans "Profile Settings" %}{% endblock %}
 
@@ -9,8 +7,7 @@
 
 {% block settings_content %}
     <form action="" method="post" enctype="multipart/form-data" class="horizontal-form" novalidate>
-    {% csrf_token %}
-
+        {% csrf_token %}
         <fieldset>
             <legend>Your Biography</legend>
             <p class="intro">Tell us about yourself!  Include as much information as you feel is relevant.  This information will be visible to other users.</p>
@@ -142,6 +139,7 @@
                 </dl>
             </fieldset>
         {% endif %}
+
         <fieldset class="submit-fieldset">
             <dl>
                 <dt></dt>
@@ -154,11 +152,9 @@
     </form>
 {% endblock %}
 
-
 {% block extra_js %}
     <script src="{% static 'js/vendor/jquery.autosize.min.js' %}"></script>
     <script src="{% static 'js/vendor/jquery.formset.js' %}"></script>
-
     <script>
         // Add additional fields to formsets
         $('.skill-formset').formset({

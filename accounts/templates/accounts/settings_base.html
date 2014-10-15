@@ -1,7 +1,6 @@
 {% extends "logged_in.html" %}
 {% load i18n %}
 
-
 {% block myaccount_active %}active{% endblock %}
 
 {% block page_content %}
@@ -12,7 +11,6 @@
                 <li><a href="{% url 'accounts:account-settings' %}" class="{% block settings_active %}{% endblock %}">{% trans "Account Settings" %}</a></li>
             </ul>
         </div>
-
         <div class="twelve columns omega">
             {% block settings_content %}{% endblock %}
         </div>

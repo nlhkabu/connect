@@ -1,8 +1,5 @@
 {% extends "moderation/moderators_base.html" %}
-{% load i18n %}
-{% load static %}
-{% load humanize %}
-
+{% load humanize i18n static %}
 
 {% block page_title %}{% trans "Review Membership Applications" %}{% endblock %}
 {% block review_member_active %}active{% endblock %}
@@ -73,7 +70,6 @@
             <p class="intro">{% trans "There are currently no pending membership applications in the system." %}</p>
         </div>
     {% endif %}
-
 
     {% for user in pending %}
         {% if user.application_comments|wordcount > 21 %}

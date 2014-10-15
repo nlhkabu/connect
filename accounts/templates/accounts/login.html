@@ -1,5 +1,4 @@
 {% extends "logged_out.html" %}
-
 {% load i18n %}
 
 {% block page_title %}{% trans "Login" %}{% endblock %}
@@ -31,7 +30,6 @@
         <a class="forgotton" href="{% url 'accounts:password_reset' %}">{% trans "Forgotten your password?" %}</a>
     </form>
 {% endblock %}
-
 
 {% block page_content %}
     <div class="container">

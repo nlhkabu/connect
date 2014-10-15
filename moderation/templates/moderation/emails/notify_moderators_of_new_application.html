@@ -1,13 +1,12 @@
 {% extends 'emails/email_base.html' %}
+
 {% autoescape off %}
+    {% block email_content %}
+        <p>You have been sent this email as a new account application has be registered at {{ site_name }}.</p>
+        <p>To view, approve or reject this application, please visit the <a href="{{ url }}">review membership applications page</a> on your moderation dashboard.</p>
+    {% endblock %}
 
-{% block email_content %}
-    <p>You have been sent this email as a new account application has be registered at {{ site_name }}.</p>
-    <p>To view, approve or reject this application, please visit the <a href="{{ url }}">review membership applications page</a> on your moderation dashboard.</p>
-{% endblock %}
-
-{% block email_footer %}
-    You received this email because you are a moderator at {{ site_name }}.
-{% endblock %}
-
+    {% block email_footer %}
+        You received this email because you are a moderator at {{ site_name }}.
+    {% endblock %}
 {% endautoescape %}
