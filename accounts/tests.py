@@ -15,14 +15,18 @@ from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
                         RequestedPendingFactory, RoleFactory, SkillFactory,
                         UserFactory, UserLinkFactory, UserSkillFactory)
 
-from .forms import (ActivateAccountForm, AccountSettingsForm, CloseAccountForm,
-                    LinkForm, ProfileForm, RequestInvitationForm,
-                    SkillForm, validate_email_availability)
+from .forms import (ActivateAccountForm, AccountSettingsForm,
+                    CloseAccountForm, LinkForm, ProfileForm,
+                    RequestInvitationForm, SkillForm,
+                    validate_email_availability)
 
 from .models import CustomUser, UserLink, UserSkill
 from .utils import create_inactive_user, invite_user_to_reactivate_account
 from .views import (account_settings, activate_account, close_account,
                     profile_settings, request_invitation, update_account)
+
+from .view_utils import (match_link_to_brand, save_links,
+                         save_paired_items, save_skills)
 
 
 User = get_user_model()
@@ -807,3 +811,12 @@ class AccountSettingsTest(TestCase):
 
         self.assertFalse(user.is_active)
         self.assertTrue(user.is_closed)
+
+# View_utils.py
+
+#~class ViewUtilsTest(TestCase):
+#~
+    #~def test_can_save_skills(self):
+    #~def test_can_save_links(self):
+    #~def test_can_match_link_to_brand(self):
+
