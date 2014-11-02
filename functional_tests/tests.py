@@ -65,6 +65,10 @@ User = get_user_model()
 
 # There she sees:
 
+# The application logo
+# The application name (in the banner and the page title)
+# The application tagline
+
 # A card for each user registered on the site, with:
 # User name
 # User gravatar (if they have one)
@@ -95,6 +99,10 @@ User = get_user_model()
 # She is looking for a Django mentor, so selects 'Django' and 'Mentor'
 # All of the users listed in the results have the skill 'Django' and the
 # role 'Mentor'.
+
+# Sam notices that there are many users who match this search, so a pagination
+# panel appears at the bottom of the page.  Clicking on each link in the panel,
+# sam is taken to the appropriate page of content.
 
 # Sam is also making a Python game and is looking for users to join her.
 # She selects 'Game Development' and 'Coding Buddy', but there is nobody in

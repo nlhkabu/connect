@@ -124,6 +124,21 @@ User = get_user_model()
 # Janine logs out.
 
 
+# Activating Accounts
+# ===================
+
+# Chris recevies an email approving his application.
+# He clicks on the link and fills out a form asking him for:
+
+# - His First Name (this is prepopulated)
+# - His Last Name (this is also prepopulated)
+# - His Password
+# - A field to confirm his password
+
+# After successfully filling out the form, Chris is redirected to the dashboard,
+# where he sees a welcome message.
+
+
 # Abuse Reports
 # =============
 

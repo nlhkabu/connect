@@ -74,6 +74,9 @@ User = get_user_model()
 # Finally, he selects 'Public Speaking' making sure that 'beginner' is still selected.
 # This time it saves as expected
 
+# Chris thinks of a new skill that is not listed in the system.  He notices
+# a link to the site administer's email address and decides to follow this up.
+
 ## LINKS
 
 # Greg looks at his links and decides to change his link labelled with 'Facebook'

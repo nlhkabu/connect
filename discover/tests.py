@@ -153,6 +153,8 @@ class DashboardTest(TestCase):
         self.assertIn(self.user_3, context_users)
         self.assertEqual(len(context_users), 2)
 
+    #~def test_welcome_message_for_first_session(self):
+
 
 class MapTest(TestCase):
     def setUp(self):
