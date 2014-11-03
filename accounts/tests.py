@@ -197,16 +197,15 @@ class RequestInvitationFormTest(TestCase):
         site = get_current_site(self.client.request)
         site.config = SiteConfigFactory(site=site)
 
-    def test_closed_account_prompts_custom_validation_message(self):
-        closed_user = UserFactory(
+        self.closed_user = UserFactory(
             email='closed.user@test.test',
             is_closed=True,
         )
 
-        request = self.factory.get(reverse('accounts:request-invitation'))
+    def test_closed_account_prompts_custom_validation(self):
 
-        form = RequestInvitationForm(
-            request = request,
+        response = self.client.post(
+            reverse('accounts:request-invitation'),
             data = {
                 'first_name': 'First',
                 'last_name': 'Last',
@@ -215,9 +214,12 @@ class RequestInvitationFormTest(TestCase):
             }
         )
 
-        self.assertFalse(form.is_valid())
-        # TODO: Checks that correct error is raised - code='email_registered_to_closed_account'
-        # TODO: Check that invite_user_to_reactivate_account() is called.
+        self.assertFormError(response, 'form', 'email',
+            'This email address is already registered to another '
+            '(closed) account. To reactivate this account, '
+            'please check your email inbox. To register a new '
+            'account, please use a different email address.'
+        )
 
 
 class ActivateAccountFormTest(TestCase):
