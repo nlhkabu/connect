@@ -22,7 +22,8 @@ from .forms import (ActivateAccountForm, AccountSettingsForm,
                     validate_email_availability)
 
 from .models import CustomUser, UserLink, UserSkill
-from .utils import create_inactive_user, invite_user_to_reactivate_account
+from .utils import (create_inactive_user, get_user,
+                    invite_user_to_reactivate_account)
 from .views import (account_settings, activate_account, close_account,
                     profile_settings, request_invitation, update_account)
 
@@ -656,7 +657,7 @@ class AccountUtilsTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.standard_user = UserFactory()
+        self.standard_user = UserFactory(email='myuser@test.test')
         self.factory = RequestFactory()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
@@ -693,7 +694,10 @@ class AccountUtilsTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, expected_subject)
 
-    #~def test_get_user(self):
+    def test_get_user(self):
+        user = get_user('myuser@test.test')
+
+        self.assertEqual(user, self.standard_user)
 
 
 # Urls.py and views.py
@@ -1049,11 +1053,27 @@ class AccountSettingsTest(TestCase):
         self.assertFalse(user.is_active)
         self.assertTrue(user.is_closed)
 
+
 # View_utils.py
 
-#~class ViewUtilsTest(TestCase):
-#~
+class ViewUtilsTest(TestCase):
+
     #~def test_can_save_skills(self):
+
     #~def test_can_save_links(self):
-    #~def test_can_match_link_to_brand(self):
+
+    def test_can_match_link_to_brand(self):
+        github = BrandFactory()
+        link_user = UserFactory()
+        link = UserLinkFactory(
+            user=link_user,
+            anchor='Github',
+            url='http://github.com/myaccount',
+        )
+        userlinks = [link,]
+
+        match_link_to_brand(userlinks)
+        link = UserLink.objects.get(user=link_user)
+
+        self.assertEqual(link.icon, github)
 

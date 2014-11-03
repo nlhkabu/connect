@@ -6,7 +6,9 @@ from connect.utils import generate_salt, hash_time, send_connect_email
 
 def create_inactive_user(email, first_name, last_name):
     """
-    Create inactive user with basic details
+    Create inactive user with basic details.
+    Used when moderators invite new users and when a member of the public
+    requests an account.
     """
     User = get_user_model()
 
