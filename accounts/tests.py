@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import login
 from django.contrib.sites.shortcuts import get_current_site
+from django.core import mail
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import resolve, reverse
 from django.test import Client, TestCase, RequestFactory
@@ -460,8 +461,12 @@ class AccountUtilsTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
         self.factory = RequestFactory()
-        site = get_current_site(self.client.request)
-        site.config = SiteConfigFactory(site=site)
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
+        self.closed_user = UserFactory(
+            email='closed.user@test.test',
+            is_closed=True,
+        )
 
     def test_create_inactive_user(self):
         user = create_inactive_user('test@test.test', 'first', 'last')
@@ -482,7 +487,14 @@ class AccountUtilsTest(TestCase):
         self.assertNotEqual(initial_token, user.auth_token)
         self.assertFalse(user.auth_token_is_used)
 
-    #~def test_reactivation_email_sent_to_user():
+    def test_reactivation_email_sent_to_user(self):
+        request = self.factory.get('/')
+        invite_user_to_reactivate_account(self.closed_user, request)
+
+        expected_subject = 'Reactivate your {} account'.format(self.site.name)
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
 
     #~def test_get_user(self):
 
@@ -490,9 +502,14 @@ class AccountUtilsTest(TestCase):
 # Urls.py and views.py
 
 class RequestInvitationTest(TestCase):
+    fixtures = ['group_perms']
 
     def setUp(self):
         self.client = Client()
+        self.factory = RequestFactory()
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
+        self.moderator = ModeratorFactory()
 
     def test_request_invitation_url_resolves_to_request_invitation_view(self):
         url = resolve('/accounts/request-invitation')
@@ -516,7 +533,28 @@ class RequestInvitationTest(TestCase):
         self.assertIsNotNone(user.applied_datetime)
         self.assertEqual(user.application_comments, 'Please give me an account')
 
-    #~ TODO: def test_notification_emails_are_sent_to_moderators(self):
+    def test_notification_emails_are_sent_to_moderators(self):
+        # Setup moderators to receive emails
+        factory.create_batch(
+            ModeratorFactory,
+            3,
+            moderator=self.moderator
+        )
+
+        response = self.client.post(
+            reverse('accounts:request-invitation'),
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'email': 'new_test@test.test',
+                'comments': 'Please give me an account',
+            },
+        )
+
+        expected_subject = 'New account request at {}'.format(self.site.name)
+
+        self.assertEqual(len(mail.outbox), 4) # 3 created as batch, plus original.
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
 
     def test_request_invitation_redirect(self):
         response = self.client.post(
