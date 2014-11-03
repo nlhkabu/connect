@@ -456,7 +456,7 @@ def review_abuse(request):
 
                 # send email to the user who made the report
                 subject = ('{} {} has been issued a formal '
-                          'warning from {} ').format(logged_against.first_name,
+                          'warning from {}').format(logged_against.first_name,
                                                     logged_against.last_name,
                                                     site.name)
                 template = 'moderation/emails/abuse_report_warn_other_user.html'

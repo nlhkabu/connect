@@ -4,6 +4,7 @@ import pytz
 
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
+from django.core import mail
 from django.core.urlresolvers import resolve, reverse
 from django.test import Client, TestCase
 from django.utils import timezone
@@ -218,8 +219,8 @@ class InviteUserTest(TestCase):
 
         self.client.login(username=self.moderator.email, password='pass')
 
-        site = get_current_site(self.client.request)
-        site.config = SiteConfigFactory(site=site)
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
 
         self.client.post(
             reverse('moderation:invite-user'),
@@ -250,7 +251,13 @@ class InviteUserTest(TestCase):
         self.assertEqual(log.pertains_to, invited_user)
         self.assertEqual(log.logged_by, self.moderator)
 
-    #~def test_can_email_invited_user(self):
+    def test_can_email_invited_user(self):
+        expected_subject = 'Welcome to {}'.format(self.site.name)
+        expected_recipient = 'invite.user@test.test'
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(mail.outbox[0].to[0], expected_recipient)
 
 
 class ReInviteUserTest(TestCase):
@@ -273,8 +280,8 @@ class ReInviteUserTest(TestCase):
 
         self.client.login(username=self.moderator.email, password='pass')
 
-        site = get_current_site(self.client.request)
-        site.config = SiteConfigFactory(site=site)
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
 
     def tearDown(self):
         self.client.logout()
@@ -308,7 +315,20 @@ class ReInviteUserTest(TestCase):
         self.assertEqual(log.pertains_to, reinvited_user)
         self.assertEqual(log.logged_by, self.moderator)
 
-    #~def test_can_email_reinvited_user(self):
+    def test_can_email_reinvited_user(self):
+        self.client.post(
+            reverse('moderation:reinvite-user'),
+            data = {
+                'user_id': self.existing.id,
+                'email': self.existing.email,
+            },
+        )
+
+        expected_subject = 'Activate your {} account'.format(self.site.name)
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(mail.outbox[0].to[0], self.existing.email)
 
 
 class RevokeInvitationTest(TestCase):
@@ -355,9 +375,13 @@ class ReviewApplicationTest(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
+
         self.standard_user = UserFactory()
         self.moderator = ModeratorFactory()
         self.applied_user = RequestedPendingFactory()
+
 
     def test_review_application_url_resolves_to_view(self):
         url = resolve('/moderation/review-applications')
@@ -445,7 +469,22 @@ class ReviewApplicationTest(TestCase):
         self.assertEqual(log.pertains_to, self.applied_user)
         self.assertEqual(log.logged_by, self.moderator)
 
-    #~def test_can_email_approved_user(self):
+    def test_can_email_approved_user(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-applications'),
+            data = {
+                'user_id': self.applied_user.id,
+                'decision': CustomUser.APPROVED,
+                'comments': 'Applicant is known to the community',
+            },
+        )
+
+        expected_subject = 'Welcome to {}'.format(self.site.name)
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(mail.outbox[0].to[0], self.applied_user.email)
 
     def test_can_reject_application(self):
         self.assertFalse(self.applied_user.moderator)
@@ -485,15 +524,40 @@ class ReviewApplicationTest(TestCase):
         self.assertEqual(log.logged_by, self.moderator)
 
 
-    #~def test_can_email_rejected_user(self):
+    def test_can_email_rejected_user(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-applications'),
+            data = {
+                'user_id': self.applied_user.id,
+                'decision': CustomUser.REJECTED,
+                'comments': 'Spam Application',
+            },
+        )
+
+        expected_subject = ('Unfortunately, your application to {} '
+                           'was not successful'.format(self.site.name))
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(mail.outbox[0].to[0], self.applied_user.email)
 
 
 class ReportAbuseTest(TestCase):
+    fixtures = ['group_perms']
 
     def setUp(self):
         self.client = Client()
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
         self.reporting_user = UserFactory()
         self.accused_user = UserFactory()
+        self.moderator = ModeratorFactory()
+        factory.create_batch(
+            ModeratorFactory,
+            10,
+            moderator=self.moderator,
+        )
 
     def test_report_abuse_url_resolves_to_report_abuse_view(self):
         url = resolve(
@@ -563,9 +627,48 @@ class ReportAbuseTest(TestCase):
         self.assertEqual(report.logged_against, self.accused_user)
         self.assertEqual(report.abuse_comment, 'User is a spam account')
 
+    def test_moderators_emailed_about_new_abuse_report(self):
+        self.client.login(username=self.reporting_user.email, password='pass')
 
-    #~def test_moderators_emailed_about_new_abuse_report(self):
-    #~def test_moderator_is_not_send_email_about_report_about_themself(self):
+        response = self.client.post(
+            reverse(
+                'moderation:report-abuse',
+                kwargs={'user_id': self.accused_user.id},
+            ),
+            data = {
+                'logged_by': self.reporting_user.id,
+                'logged_against': self.accused_user.id,
+                'comments': 'User is a spam account',
+            },
+        )
+
+        expected_subject = 'New abuse report at {}'.format(self.site.name)
+
+        self.assertEqual(len(mail.outbox), 11)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
+
+    def test_moderator_not_sent_email_regarding_report_about_themself(self):
+        self.client.login(username=self.reporting_user.email, password='pass')
+
+        response = self.client.post(
+            reverse(
+                'moderation:report-abuse',
+                kwargs={'user_id': self.accused_user.id},
+            ),
+            data = {
+                'logged_by': self.reporting_user.id,
+                'logged_against': self.moderator.id,
+                'comments': 'This moderator is not nice',
+            },
+        )
+
+        recipients = []
+
+        for email in mail.outbox:
+            recipients.append(email.to[0])
+
+        self.assertEqual(len(mail.outbox), 10)
+        self.assertNotIn(self.moderator.email, recipients)
 
 
 class ReviewAbuseTest(TestCase):
@@ -573,11 +676,15 @@ class ReviewAbuseTest(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
         self.standard_user = UserFactory()
         self.moderator = ModeratorFactory()
+        self.reporting_user = UserFactory()
         self.accused_user = UserFactory()
         self.abuse_report = AbuseReportFactory(
-            logged_against=self.accused_user
+            logged_against=self.accused_user,
+            logged_by=self.reporting_user
         )
         self.abuse_warning = AbuseWarningFactory(
             logged_against=self.accused_user
@@ -692,7 +799,23 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(log.logged_by, self.moderator)
 
 
-    #~def test_can_send_dismissal_email_to_reporting_user(self):
+    def test_can_send_dismissal_email_to_reporting_user(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.DISMISS,
+                'comments': 'Spam Report',
+            },
+        )
+
+        expected_subject = ('Your {} Abuse Report has'
+                            ' been dismissed'.format(self.site.name))
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
 
 
     def test_can_issue_warning(self):
@@ -732,12 +855,35 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(log.pertains_to, self.accused_user)
         self.assertEqual(log.logged_by, self.moderator)
 
-    #~def test_can_send_warning_email_to_reporting_user(self):
-    #~def test_can_send_warning_email_to_offending_user(self):
+    def test_can_send_warning_emails(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.WARN,
+                'comments': 'This is a warning',
+            },
+        )
 
+        self.assertEqual(len(mail.outbox), 2)
+
+        # Reporting user
+        reporting_subject = ('{} {} has been issued a formal warning from {}'
+                           .format(self.abuse_report.logged_against.first_name,
+                                   self.abuse_report.logged_against.last_name,
+                                   self.site.name))
+
+        self.assertEqual(mail.outbox[0].subject, reporting_subject)
+        self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
+
+        # Offending user
+        offending_subject = 'A formal warning from {}'.format(self.site.name)
+
+        self.assertEqual(mail.outbox[1].subject, offending_subject)
+        self.assertEqual(mail.outbox[1].to[0], self.accused_user.email)
 
     def test_can_ban_user(self):
-
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
@@ -776,8 +922,34 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(log.logged_by, self.moderator)
 
 
-    #~def test_can_send_email_to_reporting_user(self):
-    #~def test_can_send_email_to_offending_user(self):
+    def test_can_send_ban_emails(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.post(
+            reverse('moderation:review-abuse'),
+            data = {
+                'report_id': self.abuse_report.id,
+                'decision': AbuseReport.BAN,
+                'comments': 'You are banned',
+            },
+        )
+
+        self.assertEqual(len(mail.outbox), 2)
+
+        # Reporting user
+        reporting_subject = ('{} {} has been banned from {}'
+                           .format(self.abuse_report.logged_against.first_name,
+                                   self.abuse_report.logged_against.last_name,
+                                   self.site.name))
+
+        self.assertEqual(mail.outbox[0].subject, reporting_subject)
+        self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
+
+        # Offending user
+        offending_subject = ('Your {} account has been terminated'
+                            .format(self.site.name))
+
+        self.assertEqual(mail.outbox[1].subject, offending_subject)
+        self.assertEqual(mail.outbox[1].to[0], self.accused_user.email)
 
 
 class ViewLogsTest(TestCase):
