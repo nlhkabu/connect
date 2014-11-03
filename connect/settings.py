@@ -87,10 +87,10 @@ ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # Parse database configuration from $DATABASE_URL, if it is set
-if 'DATABASE_URL' in os.environ: 
+if 'DATABASE_URL' in os.environ:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}
-    
+
 else:
     DATABASES = {
         'default': {
@@ -121,7 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
 # Additional locations of static files
@@ -129,7 +129,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'static'),
 )
 
 # Media files (user uploaded)
