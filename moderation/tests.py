@@ -73,7 +73,6 @@ class LogMessageTest(TestCase):
     fixtures = ['group_perms']
 
     def test_can_log_moderation_event(self):
-
         msg_type = ModerationLogMsg.INVITATION
         user = UserFactory()
         moderator = ModeratorFactory()
@@ -113,7 +112,6 @@ class LogMessageTest(TestCase):
         self.assertEqual(end, expected_end)
 
     #~def test_date_limits_passing_non_UTC_timezone(self):
-
 
 
 # Urls.py and views.py
@@ -168,7 +166,6 @@ class ModerationHomeTest(TestCase):
 
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(reverse('moderation:moderators'))
-
         context_pending = list(response.context['pending'])
 
         self.assertCountEqual(context_pending, pending)
@@ -195,22 +192,14 @@ class ModerationHomeTest(TestCase):
 
         self.assertInHTML(expected_html, response.content.decode())
 
-    #~def test_invite_user_form(self):
-        #~Check that the form submits to the correct view
-
-    #~def test_reinvite_user_form(self):
-        #~# check that this form submits to the correct view
-
-    #~def test_revoke_user_form(self):
-        #~# check that this form submits to the correct view
-
-
 
 class InviteUserTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
         self.client = Client()
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
 
         self.moderator = ModeratorFactory(
             first_name='My',
@@ -218,10 +207,6 @@ class InviteUserTest(TestCase):
         )
 
         self.client.login(username=self.moderator.email, password='pass')
-
-        self.site = get_current_site(self.client.request)
-        self.site.config = SiteConfigFactory(site=self.site)
-
         self.client.post(
             reverse('moderation:invite-user'),
             data = {
@@ -265,6 +250,8 @@ class ReInviteUserTest(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.site = get_current_site(self.client.request)
+        self.site.config = SiteConfigFactory(site=self.site)
 
         self.moderator = ModeratorFactory(
             first_name='My',
@@ -279,9 +266,6 @@ class ReInviteUserTest(TestCase):
         )
 
         self.client.login(username=self.moderator.email, password='pass')
-
-        self.site = get_current_site(self.client.request)
-        self.site.config = SiteConfigFactory(site=self.site)
 
     def tearDown(self):
         self.client.logout()
@@ -379,9 +363,8 @@ class ReviewApplicationTest(TestCase):
         self.site.config = SiteConfigFactory(site=self.site)
 
         self.standard_user = UserFactory()
-        self.moderator = ModeratorFactory()
         self.applied_user = RequestedPendingFactory()
-
+        self.moderator = ModeratorFactory()
 
     def test_review_application_url_resolves_to_view(self):
         url = resolve('/moderation/review-applications')
@@ -427,7 +410,6 @@ class ReviewApplicationTest(TestCase):
         self.assertEqual(len(context_pending), 1)
 
     def test_can_approve_application(self):
-
         self.assertFalse(self.applied_user.moderator)
         self.assertFalse(self.applied_user.moderator_decision)
         self.assertFalse(self.applied_user.auth_token)
@@ -447,7 +429,6 @@ class ReviewApplicationTest(TestCase):
         self.assertEqual(user.moderator, self.moderator)
         self.assertEqual(user.moderator_decision, CustomUser.APPROVED)
         self.assertTrue(user.auth_token)
-
 
     def test_can_log_approval(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -523,7 +504,6 @@ class ReviewApplicationTest(TestCase):
         self.assertEqual(log.pertains_to, self.applied_user)
         self.assertEqual(log.logged_by, self.moderator)
 
-
     def test_can_email_rejected_user(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
@@ -550,6 +530,7 @@ class ReportAbuseTest(TestCase):
         self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
+
         self.reporting_user = UserFactory()
         self.accused_user = UserFactory()
         self.moderator = ModeratorFactory()
@@ -567,7 +548,6 @@ class ReportAbuseTest(TestCase):
         self.assertEqual(url.func, report_abuse)
 
     def test_unauthenticated_users_cannot_report_abuse(self):
-
         response = self.client.get(reverse(
             'moderation:report-abuse',
             kwargs={'user_id': self.accused_user.id}
@@ -678,10 +658,12 @@ class ReviewAbuseTest(TestCase):
         self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
+
         self.standard_user = UserFactory()
-        self.moderator = ModeratorFactory()
         self.reporting_user = UserFactory()
         self.accused_user = UserFactory()
+        self.moderator = ModeratorFactory()
+
         self.abuse_report = AbuseReportFactory(
             logged_against=self.accused_user,
             logged_by=self.reporting_user
@@ -736,14 +718,13 @@ class ReviewAbuseTest(TestCase):
         response = self.client.get(reverse('moderation:review-abuse'))
 
         context_reports = response.context['reports']
-
         self.assertEqual(len(context_reports), 1)
+
 
         context_report = context_reports[0]
 
         self.assertEqual(len(context_report.prior_warnings), 1)
         self.assertIn(self.abuse_warning, context_report.prior_warnings)
-
 
     def test_moderator_cannot_see_abuse_reports_about_themself(self):
         moderator_abuse_report = AbuseReportFactory(
@@ -759,7 +740,6 @@ class ReviewAbuseTest(TestCase):
 
         self.assertEqual(len(context_reports), 1)
         self.assertIn(self.abuse_report, context_reports)
-
 
     def test_can_dismiss_abuse_report(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -779,7 +759,6 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(report.moderator_comment, 'Spam Report')
         self.assertTrue(report.decision_datetime)
 
-
     def test_can_log_dismissal(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
@@ -797,7 +776,6 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(log.msg_type, ModerationLogMsg.DISMISSAL)
         self.assertEqual(log.pertains_to, self.accused_user)
         self.assertEqual(log.logged_by, self.moderator)
-
 
     def test_can_send_dismissal_email_to_reporting_user(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -817,7 +795,6 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(mail.outbox[0].subject, expected_subject)
         self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
 
-
     def test_can_issue_warning(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
@@ -835,7 +812,6 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(report.moderator_decision, AbuseReport.WARN)
         self.assertEqual(report.moderator_comment, 'This is a warning')
         self.assertTrue(report.decision_datetime)
-
 
     def test_can_log_warning(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -921,7 +897,6 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(log.pertains_to, self.accused_user)
         self.assertEqual(log.logged_by, self.moderator)
 
-
     def test_can_send_ban_emails(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
@@ -993,7 +968,6 @@ class ViewLogsTest(TestCase):
         # User in moderation group can view the page
         self.assertEqual(response.status_code, 200)
 
-
     def test_logs_in_response(self):
         invitation_log = LogFactory()
         log_about_moderator = LogFactory(
@@ -1011,7 +985,6 @@ class ViewLogsTest(TestCase):
         # Check that the response does not include logs about the
         # logged in moderator
         self.assertNotIn(log_about_moderator, context_logs)
-
 
     def test_can_filter_logs_by_type(self):
         invitation_log = LogFactory()
@@ -1034,11 +1007,8 @@ class ViewLogsTest(TestCase):
         self.assertIn(invitation_log, context_logs)
         self.assertNotIn(reinvitation_log, context_logs)
 
-
     #~def test_can_filter_logs_by_today(self):
     #~def test_can_filter_logs_by_yesterday(self):
     #~def test_can_filter_logs_by_last_seven_days(self):
     #~def test_can_filter_logs_by_custom_date_range(self):
     #~def test_can_filter_logs_by_type_and_date(self):
-
-
