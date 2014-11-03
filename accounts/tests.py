@@ -204,7 +204,6 @@ class RequestInvitationFormTest(TestCase):
         )
 
     def test_closed_account_prompts_custom_validation(self):
-
         response = self.client.post(
             reverse('accounts:request-invitation'),
             data = {
@@ -215,8 +214,11 @@ class RequestInvitationFormTest(TestCase):
             }
         )
 
-        self.assertFormError(response, 'form', 'email',
-            'This email address is already registered to another '
+        self.assertFormError(
+            response,
+            form='form',
+            field='email',
+            errors='This email address is already registered to another '
             '(closed) account. To reactivate this account, '
             'please check your email inbox. To register a new '
             'account, please use a different email address.'
@@ -226,11 +228,16 @@ class RequestInvitationFormTest(TestCase):
 class ActivateAccountFormTest(TestCase):
 
     def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
         self.pending_user = InvitedPendingFactory()
 
     def test_password_validation_fails_when_passwords_are_different(self):
-        form = ActivateAccountForm(
-            user = self.pending_user,
+        response = self.client.post(
+            reverse('accounts:activate-account', args=(self.pending_user.auth_token,)),
             data = {
                 'first_name': 'First',
                 'last_name': 'Last',
@@ -239,8 +246,12 @@ class ActivateAccountFormTest(TestCase):
             }
         )
 
-        self.assertFalse(form.is_valid())
-        #TODO: Check correct error is raised
+        self.assertFormError(
+            response,
+            'form',
+            field=None,
+            errors='Your passwords do not match. Please try again.'
+        )
 
     def test_password_validation_passes_when_passwords_are_same(self):
         form = ActivateAccountForm(
@@ -259,6 +270,11 @@ class ActivateAccountFormTest(TestCase):
 class ProfileFormTest(TestCase):
 
     def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
         self.standard_user = UserFactory()
 
         # Setup skills and roles
@@ -297,57 +313,238 @@ class ProfileFormTest(TestCase):
         self.assertFalse(form.is_valid())
 
 
-    def test_validation_fails_when_userskill_is_not_unique_to_user(self):
-
+    def test_skill_formset_validation_passes_with_correct_data(self):
         form = ProfileForm(
             user = self.standard_user,
             data = {
                 'first_name': 'First',
-                'bio': 'My bio',
-                'roles': [self.mentor.id, self.mentee.id],
+                'last_name': 'Last',
+                'link-TOTAL_FORMS': 0,
+                'link-INITIAL_FORMS': 0,
+                'skill-TOTAL_FORMS': 1,
+                'skill-INITIAL_FORMS': 0,
+                'skill-0-skill': self.django.id,
+                'skill-0-proficiency': UserSkill.BEGINNER,
             }
         )
 
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
 
-    #~def test_validation_passes_when_userskill_is_unique_to_user(self):
-        #~self.client.login(username=self.standard_user.email, password='pass')
-#~
-        #~response = self.client.post(
-            #~reverse('accounts:profile-settings'),
-            #~data = {
-                #~'first_name': 'First',
-                #~'last_name': 'Last',
-                #~'bio': 'My bio',
-                #~'roles': [self.mentor.id, self.mentee.id],
-                #~'link-TOTAL_FORMS': 2,
-                #~'link-INITIAL_FORMS': 0,
-                #~'link-0-anchor': 'First Anchor',
-                #~'link-0-url': 'http://mylink.com',
-                #~'link-1-anchor': 'Second Anchor',
-                #~'link-1-url': 'http://mysecondlink',
-                #~'skill-TOTAL_FORMS': 1,
-                #~'skill-INITIAL_FORMS': 0,
-                #~'skill-0-skill': self.django.id,
-                #~'skill-0-proficiency': UserSkill.BEGINNER,
-            #~}
-        #~)
-#~
-        #~print(UserSkill.objects.all())
+    def test_skill_formset_validation_passes_with_empty_fields(self):
+        form = ProfileForm(
+            user = self.standard_user,
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'link-TOTAL_FORMS': 0,
+                'link-INITIAL_FORMS': 0,
+                'skill-TOTAL_FORMS': 1,
+                'skill-INITIAL_FORMS': 0,
+                'skill-0-skill': '',
+                'skill-0-proficiency': '',
+            }
+        )
 
-    #~def test_validation_fails_when_userskill_has_skill_but_no_proficiency(self):
-    #~def test_validation_fails_when_userskill_has_proficicency_but_no_skill(self):
-    #~def test_validation_passes_when_userskill_has_skill_and_proficiency(self):
-    #~def test_validation_passes_when_both_skill_and_proficiency_are_empty(self):
-#~
-    #~def test_validation_fails_when_link_url_is_not_unique_to_user(self):
-    #~def test_validation_passes_when_link_url_is_unique_to_user(self):
-    #~def test_validation_fails_when_link_anchor_is_not_unique_to_user(self):
-    #~def test_validation_passes_when_link_anchor_is_unique_to_user(self):
-    #~def test_validation_fails_when_link_has_anchor_but_no_url(self):
-    #~def test_validation_fails_when_link_has_url_but_no_anchor(self):
-    #~def test_validation_passes_when_link_has_url_and_anchor(self):
-    #~def test_validation_passes_when_both_url_and_anchor_are_empty(self):
+        self.assertTrue(form.is_valid())
+
+    def test_validation_fails_when_skill_is_listed_more_than_once(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 0,
+                'link-INITIAL_FORMS': 0,
+                'skill-TOTAL_FORMS': 2,
+                'skill-INITIAL_FORMS': 0,
+                'skill-0-skill': self.django.id,
+                'skill-0-proficiency': UserSkill.BEGINNER,
+                'skill-1-skill': self.django.id,
+                'skill-1-proficiency': UserSkill.INTERMEDIATE,
+            }
+        )
+
+        self.assertFormsetError(
+            response,
+            formset='skill_formset',
+            form_index=None,
+            field=None,
+            errors='Each skill can only be entered once.'
+        )
+
+    def test_validation_fails_when_userskill_has_skill_but_no_proficiency(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 0,
+                'link-INITIAL_FORMS': 0,
+                'skill-TOTAL_FORMS': 1,
+                'skill-INITIAL_FORMS': 0,
+                'skill-0-skill': self.django.id,
+                'skill-0-proficiency': '',
+            }
+        )
+        self.assertFormsetError(
+            response,
+            formset='skill_formset',
+            form_index=None,
+            field=None,
+            errors='All skills must have a proficiency.'
+        )
+
+    def test_validation_fails_when_userskill_has_proficicency_but_no_skill(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 0,
+                'link-INITIAL_FORMS': 0,
+                'skill-TOTAL_FORMS': 1,
+                'skill-INITIAL_FORMS': 0,
+                'skill-0-skill': '',
+                'skill-0-proficiency': UserSkill.BEGINNER,
+            }
+        )
+        self.assertFormsetError(
+            response,
+            formset='skill_formset',
+            form_index=None,
+            field=None,
+            errors='All profiencies must be attached to a skill.'
+        )
+
+    def test_link_formset_validation_passes_with_correct_data(self):
+        form = ProfileForm(
+            user = self.standard_user,
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'link-TOTAL_FORMS': 1,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': 'My Link',
+                'link-0-url': 'http://mylink.com',
+                'skill-TOTAL_FORMS': 0,
+                'skill-INITIAL_FORMS': 0,
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+
+    def test_link_formset_validation_passes_with_empty_fields(self):
+        form = ProfileForm(
+            user = self.standard_user,
+            data = {
+                'first_name': 'First',
+                'last_name': 'Last',
+                'link-TOTAL_FORMS': 1,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': '',
+                'link-0-url': '',
+                'skill-TOTAL_FORMS': 0,
+                'skill-INITIAL_FORMS': 0,
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+
+    def test_validation_fails_when_link_anchor_is_listed_more_than_once(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 2,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': 'My Link',
+                'link-0-url': 'http://mylink.com',
+                'link-1-anchor': 'My Link',
+                'link-1-url': 'http://mylink2.com',
+                'skill-TOTAL_FORMS': 0,
+                'skill-INITIAL_FORMS': 0,
+            }
+        )
+
+        self.assertFormsetError(
+            response,
+            formset='link_formset',
+            form_index=None,
+            field=None,
+            errors='Links must have unique anchors and URLs.'
+        )
+
+    def test_validation_fails_when_link_url_is_listed_more_than_once(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 2,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': 'My Link',
+                'link-0-url': 'http://mylink.com',
+                'link-1-anchor': 'My Link 2',
+                'link-1-url': 'http://mylink.com',
+                'skill-TOTAL_FORMS': 0,
+                'skill-INITIAL_FORMS': 0,
+            }
+        )
+
+        self.assertFormsetError(
+            response,
+            formset='link_formset',
+            form_index=None,
+            field=None,
+            errors='Links must have unique anchors and URLs.'
+        )
+
+    def test_validation_fails_when_link_has_anchor_but_no_url(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 1,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': 'My Link',
+                'link-0-url': '',
+                'skill-TOTAL_FORMS': 0,
+                'skill-INITIAL_FORMS': 0,
+            }
+        )
+
+        self.assertFormsetError(
+            response,
+            formset='link_formset',
+            form_index=None,
+            field=None,
+            errors='All links must have a URL.'
+        )
+
+    def test_validation_fails_when_link_has_url_but_no_anchor(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'link-TOTAL_FORMS': 1,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': '',
+                'link-0-url': 'http://mylink.com',
+                'skill-TOTAL_FORMS': 0,
+                'skill-INITIAL_FORMS': 0,
+            }
+        )
+
+        self.assertFormsetError(
+            response,
+            formset='link_formset',
+            form_index=None,
+            field=None,
+            errors='All links must have an anchor.'
+        )
 
 
 class AccountSettingsFormTest(TestCase):
