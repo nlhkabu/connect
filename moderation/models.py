@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import truncatewords
+from django.utils import timezone
 
 
 User = settings.AUTH_USER_MODEL
@@ -30,7 +31,7 @@ class ModerationLogMsg(models.Model):
         (BANNING, 'Ban User'),
     ]
 
-    msg_datetime = models.DateTimeField(auto_now_add=True)
+    msg_datetime = models.DateTimeField(default=timezone.now)
     msg_type = models.CharField(max_length=20, choices=MSG_TYPE_CHOICES)
     comment = models.TextField()
     pertains_to = models.ForeignKey(User, related_name='log_messages_about')

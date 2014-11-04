@@ -273,7 +273,7 @@ class AbuseReport(models.Model):
     logged_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   related_name='abuse_reports_by')
 
-    logged_datetime = models.DateTimeField(auto_now_add=True)
+    logged_datetime = models.DateTimeField(default=timezone.now)
 
     abuse_comment = models.TextField()
 
