@@ -1007,8 +1007,124 @@ class ViewLogsTest(TestCase):
         self.assertIn(invitation_log, context_logs)
         self.assertNotIn(reinvitation_log, context_logs)
 
-    #~def test_can_filter_logs_by_today(self):
-    #~def test_can_filter_logs_by_yesterday(self):
-    #~def test_can_filter_logs_by_last_seven_days(self):
-    #~def test_can_filter_logs_by_custom_date_range(self):
-    #~def test_can_filter_logs_by_type_and_date(self):
+    def test_can_filter_logs_by_today(self):
+        today_log = LogFactory()
+        yesterday_log = LogFactory(
+            msg_datetime = timezone.now() - timezone.timedelta(days=1)
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(
+            reverse('moderation:logs'),
+            data = {
+                'msg_type': 'ALL',
+                'period': FilterLogsForm.TODAY
+            },
+        )
+
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 1)
+        self.assertIn(today_log, context_logs)
+        self.assertNotIn(yesterday_log, context_logs)
+
+    def test_can_filter_logs_by_yesterday(self):
+        today_log = LogFactory()
+        yesterday_log = LogFactory(
+            msg_datetime = timezone.now() - timezone.timedelta(days=1)
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(
+            reverse('moderation:logs'),
+            data = {
+                'msg_type': 'ALL',
+                'period': FilterLogsForm.YESTERDAY
+            },
+        )
+
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 1)
+        self.assertIn(yesterday_log, context_logs)
+        self.assertNotIn(today_log, context_logs)
+
+    def test_can_filter_logs_by_last_seven_days(self):
+        today_log = LogFactory()
+        this_week_log = LogFactory(
+            msg_datetime = timezone.now() - timezone.timedelta(days=7)
+        )
+        last_month_log = LogFactory(
+            msg_datetime = timezone.now() - timezone.timedelta(days=60)
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(
+            reverse('moderation:logs'),
+            data = {
+                'msg_type': 'ALL',
+                'period': FilterLogsForm.THIS_WEEK
+            },
+        )
+
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 2)
+        self.assertIn(today_log, context_logs)
+        self.assertIn(this_week_log, context_logs)
+        self.assertNotIn(last_month_log, context_logs)
+
+    def test_can_filter_logs_by_custom_date_range(self):
+        first_of_feb_log = LogFactory(
+            msg_datetime = datetime.datetime(2014, 2, 1, 1, 1, 1, 1, pytz.UTC)
+        )
+        first_of_mar_log = LogFactory(
+            msg_datetime = datetime.datetime(2014, 3, 1, 1, 1, 1, 1, pytz.UTC)
+        )
+        first_of_apr_log = LogFactory(
+            msg_datetime = datetime.datetime(2014, 4, 1, 1, 1, 1, 1, pytz.UTC)
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(
+            reverse('moderation:logs'),
+            data = {
+                'msg_type': ModerationLogMsg.INVITATION,
+                'period': FilterLogsForm.CUSTOM,
+                'start_date': '1/2/2014',
+                'end_date': '30/3/2014',
+            },
+        )
+
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 2)
+        self.assertIn(first_of_feb_log, context_logs)
+        self.assertIn(first_of_feb_log, context_logs)
+        self.assertNotIn(first_of_apr_log, context_logs)
+
+    def test_can_filter_logs_by_type_and_date(self):
+        today_invitation_log = LogFactory()
+        today_reinvitation_log = LogFactory(
+            msg_type = ModerationLogMsg.REINVITATION
+        )
+        yesterday_invitation_log = LogFactory(
+            msg_datetime = timezone.now() - timezone.timedelta(days=1)
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(
+            reverse('moderation:logs'),
+            data = {
+                'msg_type': ModerationLogMsg.INVITATION,
+                'period': FilterLogsForm.TODAY
+            },
+        )
+
+        context_logs = response.context['logs']
+
+        self.assertEqual(len(context_logs), 1)
+        self.assertIn(today_invitation_log, context_logs)
+        self.assertNotIn(today_reinvitation_log, context_logs)
+        self.assertNotIn(yesterday_invitation_log, context_logs)
+
