@@ -179,7 +179,6 @@ class LinkBrandTest(TestCase):
 # Forms.py
 
 class FormValidationTest(TestCase):
-
     def setUp(self):
         existing_user = UserFactory(email='existing.user@test.test')
 
@@ -193,10 +192,8 @@ class FormValidationTest(TestCase):
 
 
 class RequestInvitationFormTest(TestCase):
-
     def setUp(self):
         self.client = Client()
-        self.factory = RequestFactory()
         site = get_current_site(self.client.request)
         site.config = SiteConfigFactory(site=site)
 
@@ -228,10 +225,8 @@ class RequestInvitationFormTest(TestCase):
 
 
 class ActivateAccountFormTest(TestCase):
-
     def setUp(self):
         self.client = Client()
-        self.factory = RequestFactory()
         site = get_current_site(self.client.request)
         site.config = SiteConfigFactory(site=site)
 
@@ -270,10 +265,8 @@ class ActivateAccountFormTest(TestCase):
 
 
 class ProfileFormTest(TestCase):
-
     def setUp(self):
         self.client = Client()
-        self.factory = RequestFactory()
         site = get_current_site(self.client.request)
         site.config = SiteConfigFactory(site=site)
 
@@ -550,7 +543,6 @@ class ProfileFormTest(TestCase):
 
 
 class AccountSettingsFormTest(TestCase):
-
     def setUp(self):
         self.user = UserFactory(email='thisemail@test.test')
 
@@ -619,7 +611,6 @@ class AccountSettingsFormTest(TestCase):
 
 
 class CloseAccountFormTest(TestCase):
-
     def setUp(self):
         self.user = UserFactory()
 
@@ -708,7 +699,6 @@ class RequestInvitationTest(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.factory = RequestFactory()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
         self.moderator = ModeratorFactory()
@@ -773,7 +763,6 @@ class RequestInvitationTest(TestCase):
 
 
 class ActivateAccountTest(TestCase):
-
     def setUp(self):
         self.client = Client()
         self.invited_user = InvitedPendingFactory(
@@ -852,7 +841,6 @@ class ActivateAccountTest(TestCase):
 
 
 class ProfileSettingsTest(TestCase):
-
     def setUp(self):
         self.standard_user = UserFactory()
         self.client = Client()
@@ -919,7 +907,6 @@ class ProfileSettingsTest(TestCase):
 
 class AccountSettingsTest(TestCase):
     def setUp(self):
-
         self.standard_user = UserFactory()
         self.client = Client()
 
@@ -1091,7 +1078,6 @@ class AccountSettingsTest(TestCase):
 # View_utils.py
 
 class ViewUtilsTest(TestCase):
-
     def setUp(self):
         self.standard_user = UserFactory()
 
@@ -1170,4 +1156,3 @@ class ViewUtilsTest(TestCase):
         link = UserLink.objects.get(user=link_user)
 
         self.assertEqual(link.icon, github)
-
