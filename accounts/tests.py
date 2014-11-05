@@ -8,6 +8,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import resolve, reverse
+from django.forms.formsets import formset_factory
 from django.test import Client, TestCase, RequestFactory
 
 from connect_config.factories import SiteConfigFactory
@@ -17,6 +18,7 @@ from .factories import (BrandFactory, InvitedPendingFactory, ModeratorFactory,
                         UserFactory, UserLinkFactory, UserSkillFactory)
 
 from .forms import (ActivateAccountForm, AccountSettingsForm,
+                    BaseLinkFormSet, BaseSkillFormSet,
                     CloseAccountForm, LinkForm, ProfileForm,
                     RequestInvitationForm, SkillForm,
                     validate_email_availability)
@@ -27,8 +29,7 @@ from .utils import (create_inactive_user, get_user,
 from .views import (account_settings, activate_account, close_account,
                     profile_settings, request_invitation, update_account)
 
-from .view_utils import (match_link_to_brand, save_links,
-                         save_paired_items, save_skills)
+from .view_utils import match_link_to_brand, save_links, save_skills
 
 
 User = get_user_model()
@@ -847,14 +848,12 @@ class ActivateAccountTest(TestCase):
             },
         )
 
-        #~ TODO: check 'show welcome' session here
         self.assertRedirects(response, '/')
 
 
 class ProfileSettingsTest(TestCase):
 
     def setUp(self):
-
         self.standard_user = UserFactory()
         self.client = Client()
 
@@ -879,8 +878,43 @@ class ProfileSettingsTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    #~def test_can_update_profile(self):
-    #~def test_link_is_correctly_matched_to_brand(self):
+    def test_can_update_profile(self):
+        # Setup skills and roles
+        django = SkillFactory(name='django')
+        mentor = RoleFactory(name='mentor')
+
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data = {
+                'first_name': 'New First Name',
+                'last_name': 'New Last Name',
+                'bio': 'New bio',
+                'roles': [mentor.id],
+                'link-TOTAL_FORMS': 1,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': 'My Link',
+                'link-0-url': 'http://mylink.com',
+                'skill-TOTAL_FORMS': 1,
+                'skill-INITIAL_FORMS': 0,
+                'skill-0-skill': django.id,
+                'skill-0-proficiency': UserSkill.INTERMEDIATE,
+            },
+        )
+
+        user = User.objects.get(id=self.standard_user.id)
+        user_link = UserLink.objects.get(user=user)
+        user_skill = UserSkill.objects.get(user=user)
+
+        self.assertEqual(user.first_name, 'New First Name')
+        self.assertEqual(user.last_name, 'New Last Name')
+        self.assertEqual(user.bio, 'New bio')
+        self.assertEqual(user.roles.count(), 1)
+        self.assertEqual(user.roles.first(), mentor)
+        self.assertEqual(user_link.anchor, 'My Link')
+        self.assertEqual(user_link.url, 'http://mylink.com/')
+        self.assertEqual(user_skill.skill, django)
+        self.assertEqual(user_skill.proficiency, UserSkill.INTERMEDIATE)
 
 
 class AccountSettingsTest(TestCase):
@@ -1058,9 +1092,69 @@ class AccountSettingsTest(TestCase):
 
 class ViewUtilsTest(TestCase):
 
-    #~def test_can_save_skills(self):
+    def setUp(self):
+        self.standard_user = UserFactory()
 
-    #~def test_can_save_links(self):
+    def test_can_save_skills(self):
+        django = SkillFactory(name='django')
+        python = SkillFactory(name='python')
+
+        SkillFormSet = formset_factory(SkillForm, max_num=None,
+                                       formset=BaseSkillFormSet)
+
+        formset = SkillFormSet(
+            data = {
+                'form-TOTAL_FORMS': 2,
+                'form-INITIAL_FORMS': 0,
+                'form-0-skill': django.id,
+                'form-0-proficiency': UserSkill.BEGINNER,
+                'form-1-skill': python.id,
+                'form-1-proficiency': UserSkill.INTERMEDIATE,
+            }
+        )
+
+        save_skills(self.standard_user, formset)
+
+        user = User.objects.get(id=self.standard_user.id)
+        user_skills = UserSkill.objects.filter(user=user)
+
+        skill_names = [skill.skill for skill in user_skills]
+        skill_proficencies = [skill.proficiency for skill in user_skills]
+
+        self.assertEqual(len(user_skills), 2)
+        self.assertIn(django, skill_names)
+        self.assertIn(python, skill_names)
+        self.assertIn(UserSkill.BEGINNER, skill_proficencies)
+        self.assertIn(UserSkill.INTERMEDIATE, skill_proficencies)
+
+    def test_can_save_links(self):
+        LinkFormSet = formset_factory(LinkForm, max_num=None,
+                                      formset=BaseLinkFormSet)
+
+        formset = LinkFormSet(
+            data = {
+                'form-TOTAL_FORMS': 2,
+                'form-INITIAL_FORMS': 0,
+                'form-0-anchor': 'Anchor 1',
+                'form-0-url': 'http://link1.com',
+                'form-1-anchor': 'Anchor 2',
+                'form-1-url': 'http://link2.com',
+            }
+        )
+
+        save_links(self.standard_user, formset)
+
+        user = User.objects.get(id=self.standard_user.id)
+        user_links = UserLink.objects.filter(user=user)
+
+        link_anchors = [link.anchor for link in user_links]
+        link_urls = [link.url for link in user_links]
+
+        self.assertEqual(len(user_links), 2)
+        self.assertIn('Anchor 1', link_anchors)
+        self.assertIn('Anchor 2', link_anchors)
+        self.assertIn('http://link1.com/', link_urls)
+        self.assertIn('http://link2.com/', link_urls)
 
     def test_can_match_link_to_brand(self):
         github = BrandFactory()

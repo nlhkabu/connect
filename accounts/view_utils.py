@@ -13,14 +13,15 @@ def save_paired_items(user, formset, Model, item_name, counterpart_name):
     paired_items = []
 
     for form in formset:
-        item = form.cleaned_data.get(item_name, None)
-        counterpart = form.cleaned_data.get(counterpart_name, None)
+        if form.is_valid():
+            item = form.cleaned_data.get(item_name, None)
+            counterpart = form.cleaned_data.get(counterpart_name, None)
 
-        if item and counterpart:
-            model_instance = Model(user=user)
-            setattr(model_instance, item_name, item)
-            setattr(model_instance, counterpart_name, counterpart)
-            paired_items.append(model_instance)
+            if item and counterpart:
+                model_instance = Model(user=user)
+                setattr(model_instance, item_name, item)
+                setattr(model_instance, counterpart_name, counterpart)
+                paired_items.append(model_instance)
 
     # Replace old pairs with new
     Model.objects.filter(user=user).delete()
