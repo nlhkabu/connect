@@ -1,7 +1,7 @@
 import factory
 
 from django.core.urlresolvers import resolve, reverse
-from django.test import Client, TestCase
+from django.test import Client, TestCase, RequestFactory
 
 from accounts.factories import RoleFactory, SkillFactory, UserFactory, UserSkillFactory
 
@@ -153,7 +153,14 @@ class DashboardTest(TestCase):
         self.assertIn(self.user_3, context_users)
         self.assertEqual(len(context_users), 2)
 
-    #~def test_welcome_message_for_first_session(self):
+    def test_welcome_message_for_first_session(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        session = self.client.session
+        session['show_welcome'] = True
+        session.save()
+        response = self.client.get(reverse('dashboard'))
+
+        self.assertTrue(response.context['show_welcome'])
 
 
 class MapTest(TestCase):

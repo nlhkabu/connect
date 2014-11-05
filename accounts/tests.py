@@ -802,12 +802,12 @@ class ActivateAccountTest(TestCase):
 
         self.assertInHTML(expected_html, response.content.decode())
 
-    def test_can_activate_account(self):
+    def test_account_activation(self):
 
         user = User.objects.get(email='validuser@test.test')
         old_pass = user.password
 
-        self.client.post(
+        response = self.client.post(
             '/accounts/activate/mytoken',
             data = {
                 'first_name': 'Hello',
@@ -825,18 +825,7 @@ class ActivateAccountTest(TestCase):
         self.assertTrue(user.is_active)
         self.assertTrue(user.auth_token_is_used)
 
-
-    def test_activated_account_redirects_to_correct_view(self):
-        response = self.client.post(
-            '/accounts/activate/mytoken',
-            data = {
-                'first_name': 'Hello',
-                'last_name': 'There',
-                'password': 'abc',
-                'confirm_password': 'abc',
-            },
-        )
-
+        self.assertTrue(self.client.session['show_welcome'])
         self.assertRedirects(response, '/')
 
 
