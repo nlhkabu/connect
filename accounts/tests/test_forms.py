@@ -228,7 +228,7 @@ class ProfileFormTest(TestCase):
 
         response = self.client.post(
             reverse('accounts:profile-settings'),
-            data=
+            data={
                 'link-TOTAL_FORMS': 0,
                 'link-INITIAL_FORMS': 0,
                 'skill-TOTAL_FORMS': 1,
