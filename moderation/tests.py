@@ -228,6 +228,10 @@ class InviteUserTest(TestCase):
             },
         )
 
+        self.invited_user = user = User.objects.get(
+            email='invite.user@test.test'
+        )
+
     def tearDown(self):
         self.client.logout()
 
@@ -240,21 +244,36 @@ class InviteUserTest(TestCase):
 
     def test_can_log_invitation(self):
         expected_comment = 'My Moderator invited Hello There'
-        invited_user = user = User.objects.get(email='invite.user@test.test')
+
         log = ModerationLogMsg.objects.get(comment=expected_comment)
 
         self.assertIsInstance(log, ModerationLogMsg)
         self.assertEqual(log.msg_type, ModerationLogMsg.INVITATION)
-        self.assertEqual(log.pertains_to, invited_user)
+        self.assertEqual(log.pertains_to, self.invited_user)
         self.assertEqual(log.logged_by, self.moderator)
 
     def test_can_email_invited_user(self):
         expected_subject = 'Welcome to {}'.format(self.site.name)
         expected_recipient = 'invite.user@test.test'
+        expected_intro = 'Hi {},'.format('Hello')
+        expected_content = 'created for you at {}'.format(
+            self.site.name
+        )
+        expected_url = 'http://testserver/accounts/activate/{}'.format(
+            self.invited_user.auth_token
+        )
+        expected_footer = 'My Moderator registered a new {} account'.format(
+            self.site.name
+        )
 
+        email = mail.outbox[0]
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
-        self.assertEqual(mail.outbox[0].to[0], expected_recipient)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertEqual(email.to[0], expected_recipient)
+        self.assertIn(expected_intro, email.body)
+        self.assertIn(expected_content, email.body)
+        self.assertIn(expected_url, email.alternatives[0][0])
+        self.assertIn(expected_footer, email.body)
 
 
 class ReInviteUserTest(TestCase):
@@ -321,10 +340,26 @@ class ReInviteUserTest(TestCase):
         )
 
         expected_subject = 'Activate your {} account'.format(self.site.name)
+        expected_recipient = 'invite.user@test.test'
+        expected_intro = 'Hi {},'.format('Hello')
+        expected_content = 'created for you at {}'.format(
+            self.site.name
+        )
+        expected_url = 'http://testserver/accounts/activate/{}'.format(
+            self.existing.auth_token
+        )
+        expected_footer = 'My Moderator registered a new {} account'.format(
+            self.site.name
+        )
 
+        email = mail.outbox[0]
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
-        self.assertEqual(mail.outbox[0].to[0], self.existing.email)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertEqual(email.to[0], self.existing.email)
+        self.assertIn(expected_intro, email.body)
+        self.assertIn(expected_content, email.body)
+        self.assertIn(expected_url, email.alternatives[0][0])
+        self.assertIn(expected_footer, email.body)
 
 
 class RevokeInvitationTest(TestCase):
@@ -376,7 +411,10 @@ class ReviewApplicationTest(TestCase):
 
         self.standard_user = UserFactory()
         self.applied_user = RequestedPendingFactory()
-        self.moderator = ModeratorFactory()
+        self.moderator = ModeratorFactory(
+            first_name = 'My',
+            last_name = 'Moderator',
+        )
 
     def test_review_application_url_resolves_to_view(self):
         url = resolve('/moderation/review-applications')
@@ -474,10 +512,22 @@ class ReviewApplicationTest(TestCase):
         )
 
         expected_subject = 'Welcome to {}'.format(self.site.name)
+        expected_intro = 'Hi {},'.format('Hello')
+        expected_content = 'created for you at {}'.format(
+            self.site.name
+        )
+        expected_url = 'http://testserver/accounts/activate/{}'.format(
+            self.applied_user.auth_token
+        )
+        expected_footer = 'My Moderator has approved your application'
+        email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
-        self.assertEqual(mail.outbox[0].to[0], self.applied_user.email)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertEqual(email.to[0], self.applied_user.email)
+        self.assertIn(expected_content, email.body)
+        self.assertIn(expected_url, email.alternatives[0][0])
+        self.assertIn(expected_footer, email.body)
 
     def test_can_reject_application(self):
         self.assertFalse(self.applied_user.moderator)
@@ -529,10 +579,16 @@ class ReviewApplicationTest(TestCase):
 
         expected_subject = ('Unfortunately, your application to {} '
                            'was not successful'.format(self.site.name))
+        expected_intro = 'Hi {},'.format('Hello')
+        expected_email = self.site.config.email
+        expected_footer = 'you applied for a {} account'.format(self.site.name)
+        email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
-        self.assertEqual(mail.outbox[0].to[0], self.applied_user.email)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertEqual(email.to[0], self.applied_user.email)
+        self.assertIn(expected_email, email.body)
+        self.assertIn(expected_footer, email.body)
 
 
 class ReportAbuseTest(TestCase):
@@ -635,9 +691,17 @@ class ReportAbuseTest(TestCase):
         )
 
         expected_subject = 'New abuse report at {}'.format(self.site.name)
+        expected_intro = 'Hi {},'.format('Hello')
+        expected_url = 'href="http://testserver/moderation/review-abuse-reports">review'
+        expected_footer = 'you are a moderator at {}'.format(self.site.name)
+        email = mail.outbox[0]
+        recipients = [message.to[0] for message in mail.outbox]
 
         self.assertEqual(len(mail.outbox), 11)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertIn(self.moderator.email, recipients)
+        self.assertIn(expected_url, email.alternatives[0][0])
+        self.assertIn(expected_footer, email.body)
 
     def test_moderator_not_sent_email_regarding_report_about_themself(self):
         self.client.login(username=self.reporting_user.email, password='pass')
@@ -791,21 +855,34 @@ class ReviewAbuseTest(TestCase):
 
     def test_can_send_dismissal_email_to_reporting_user(self):
         self.client.login(username=self.moderator.email, password='pass')
+        comments = 'Spam Report'
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.DISMISS,
-                'comments': 'Spam Report',
+                'comments': comments,
             },
         )
 
         expected_subject = ('Your {} Abuse Report has'
                             ' been dismissed'.format(self.site.name))
+        expected_intro = 'Hi {},'.format('Hello')
+        expected_content = 'against {} at {}'.format(
+            self.accused_user.get_full_name(),
+            self.site.name
+        )
+        expected_email = self.site.config.email
+        expected_footer = 'logged an abuse report at {}'.format(self.site.name)
+        email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
-        self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertEqual(email.to[0], self.reporting_user.email)
+        self.assertIn(expected_content, email.body)
+        self.assertIn(comments, email.body)
+        self.assertIn(expected_email, email.body)
+        self.assertIn(expected_footer, email.body)
 
     def test_can_issue_warning(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -817,7 +894,6 @@ class ReviewAbuseTest(TestCase):
                 'comments': 'This is a warning',
             },
         )
-
         report = AbuseReport.objects.get(id=self.abuse_report.id)
 
         self.assertEqual(report.moderator, self.moderator)
@@ -845,31 +921,58 @@ class ReviewAbuseTest(TestCase):
 
     def test_can_send_warning_emails(self):
         self.client.login(username=self.moderator.email, password='pass')
+        comments = 'This is a warning'
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.WARN,
-                'comments': 'This is a warning',
+                'comments': comments,
             },
         )
 
         self.assertEqual(len(mail.outbox), 2)
 
-        # Reporting user
-        reporting_subject = ('{} {} has been issued a formal warning from {}'
-                           .format(self.abuse_report.logged_against.first_name,
-                                   self.abuse_report.logged_against.last_name,
-                                   self.site.name))
+        # Reporting user's email
+        reporting_subject = '{} has been issued a formal warning from {}'.format(
+            self.accused_user.get_full_name(),
+            self.site.name,
+        )
+        reporting_intro = 'Hi {},'.format(
+            self.reporting_user.first_name,
+        )
+        reporting_content = 'against {} at {}'.format(
+            self.accused_user.get_full_name(),
+            self.site.name
+        )
+        reporting_content_2 = "{}'s profile and will be flagged".format(
+            self.accused_user.get_full_name()
+        )
+        reporting_footer = 'logged an abuse report at {}'.format(self.site.name)
+        email = mail.outbox[0]
 
-        self.assertEqual(mail.outbox[0].subject, reporting_subject)
-        self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
+        self.assertEqual(email.subject, reporting_subject)
+        self.assertEqual(email.to[0], self.reporting_user.email)
+        self.assertIn(reporting_content, email.body)
+        self.assertIn(reporting_content_2, email.body)
+        self.assertIn(reporting_footer, email.body)
 
-        # Offending user
+        # Offending user's email
         offending_subject = 'A formal warning from {}'.format(self.site.name)
+        offending_intro = 'Hi {},'.format(
+            self.accused_user.first_name,
+        )
+        offending_content = 'against you at {}'.format(self.site.name)
+        offending_url = self.site.config.email
+        offending_footer = 'logged against you at {}'.format(self.site.name)
+        email = mail.outbox[1]
 
-        self.assertEqual(mail.outbox[1].subject, offending_subject)
-        self.assertEqual(mail.outbox[1].to[0], self.accused_user.email)
+        self.assertEqual(email.subject, offending_subject)
+        self.assertEqual(email.to[0], self.accused_user.email)
+        self.assertIn(offending_content, email.body)
+        self.assertIn(comments, email.body)
+        self.assertIn(offending_url, email.body)
+        self.assertIn(offending_footer, email.body)
 
     def test_can_ban_user(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -910,33 +1013,65 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(log.logged_by, self.moderator)
 
     def test_can_send_ban_emails(self):
+        comments = 'You are banned'
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
             data = {
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.BAN,
-                'comments': 'You are banned',
+                'comments': comments,
             },
         )
 
         self.assertEqual(len(mail.outbox), 2)
 
-        # Reporting user
-        reporting_subject = ('{} {} has been banned from {}'
-                           .format(self.abuse_report.logged_against.first_name,
-                                   self.abuse_report.logged_against.last_name,
-                                   self.site.name))
+        # Reporting user's email
+        reporting_subject = '{} has been banned from {}'.format(
+            self.accused_user.get_full_name(),
+            self.site.name
+        )
+        reporting_intro = 'Hi {},'.format(
+            self.reporting_user.first_name,
+        )
+        reporting_content = 'against {} at {}'.format(
+            self.accused_user.get_full_name(),
+            self.site.name
+        )
+        reporting_content_2 = "decision to ban {}".format(
+            self.accused_user.get_full_name()
+        )
+        reporting_footer = 'logged an abuse report at {}'.format(self.site.name)
+        email = mail.outbox[0]
 
-        self.assertEqual(mail.outbox[0].subject, reporting_subject)
-        self.assertEqual(mail.outbox[0].to[0], self.reporting_user.email)
+        self.assertEqual(email.subject, reporting_subject)
+        self.assertEqual(email.to[0], self.reporting_user.email)
+        self.assertIn(reporting_content, email.body)
+        self.assertIn(reporting_content_2, email.body)
+        self.assertIn(comments, email.body)
+        self.assertIn(reporting_footer, email.body)
 
-        # Offending user
+        # Offending user's email
         offending_subject = ('Your {} account has been terminated'
                             .format(self.site.name))
+        offending_intro = 'Hi {},'.format(
+            self.accused_user.first_name,
+        )
+        offending_content = 'against you at {}'.format(self.site.name)
+        offending_content_2 = "ban you from future use of {}".format(
+            self.site.name
+        )
+        offending_url = self.site.config.email
+        offending_footer = 'logged against you at {}'.format(self.site.name)
+        email = mail.outbox[1]
 
-        self.assertEqual(mail.outbox[1].subject, offending_subject)
-        self.assertEqual(mail.outbox[1].to[0], self.accused_user.email)
+        self.assertEqual(email.subject, offending_subject)
+        self.assertEqual(email.to[0], self.accused_user.email)
+        self.assertIn(offending_content, email.body)
+        self.assertIn(offending_content_2, email.body)
+        self.assertIn(comments, email.body)
+        self.assertIn(offending_url, email.body)
+        self.assertIn(offending_footer, email.body)
 
 
 class ViewLogsTest(TestCase):

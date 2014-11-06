@@ -654,6 +654,7 @@ class AccountUtilsTest(TestCase):
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
         self.closed_user = UserFactory(
+            first_name = 'Closed',
             email='closed.user@test.test',
             is_closed=True,
         )
@@ -682,9 +683,18 @@ class AccountUtilsTest(TestCase):
         invite_user_to_reactivate_account(self.closed_user, request)
 
         expected_subject = 'Reactivate your {} account'.format(self.site.name)
+        expected_intro = 'Hi {},'.format(self.closed_user.first_name)
+        expected_content = '{} using this email address.'.format(self.site.name)
+        expected_url = 'http://testserver/accounts/activate/{}'.format(
+            self.closed_user.auth_token
+        )
+        email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertIn(expected_intro, email.body)
+        self.assertIn(expected_content, email.body)
+        self.assertIn(expected_url, email.body)
 
     def test_get_user(self):
         user = get_user('myuser@test.test')
@@ -744,9 +754,19 @@ class RequestInvitationTest(TestCase):
         )
 
         expected_subject = 'New account request at {}'.format(self.site.name)
+        expected_intro = 'Hi {},'.format('Moderator')
+        expected_content = 'new account application has be registered at {}'.format(
+            self.site.name
+        )
+
+        expected_url = '<a href="http://testserver/moderation/review-applications">review membership applications page</a>'
+        email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 4) # 3 created as batch, plus original.
-        self.assertEqual(mail.outbox[0].subject, expected_subject)
+        self.assertEqual(email.subject, expected_subject)
+        self.assertIn(expected_intro, email.body)
+        self.assertIn(expected_content, email.body)
+        self.assertIn(expected_url, email.alternatives[0][0])
 
     def test_request_invitation_redirect(self):
         response = self.client.post(

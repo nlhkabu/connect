@@ -98,3 +98,6 @@ def send_connect_email(subject, template, recipient, site, sender='',
     )
 
     email.send()
+
+    return email
+
