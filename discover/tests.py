@@ -1,7 +1,7 @@
 import factory
 
 from django.core.urlresolvers import resolve, reverse
-from django.test import Client, TestCase, RequestFactory
+from django.test import TestCase, RequestFactory
 
 from accounts.factories import RoleFactory, SkillFactory, UserFactory, UserSkillFactory
 
@@ -9,7 +9,6 @@ from .views import dashboard, map
 
 class DashboardTest(TestCase):
     def setUp(self):
-        self.client = Client()
         self.standard_user = UserFactory()
 
         # Setup users with skills
@@ -165,7 +164,6 @@ class DashboardTest(TestCase):
 
 class MapTest(TestCase):
     def setUp(self):
-        self.client = Client()
         self.standard_user = UserFactory()
 
     def test_map_url_resolves_to_map_view(self):

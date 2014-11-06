@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail
 from django.core.urlresolvers import resolve, reverse
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.utils import timezone
 
 from accounts.factories import (AbuseReportFactory, AbuseWarningFactory,
@@ -132,7 +132,6 @@ class ModerationHomeTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.standard_user = UserFactory()
         self.moderator = ModeratorFactory()
 
@@ -209,7 +208,6 @@ class InviteUserTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
 
@@ -280,7 +278,6 @@ class ReInviteUserTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
 
@@ -366,8 +363,6 @@ class RevokeInvitationTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
-
         self.moderator = ModeratorFactory(
             first_name='My',
             last_name='Moderator',
@@ -405,7 +400,6 @@ class ReviewApplicationTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
 
@@ -595,7 +589,6 @@ class ReportAbuseTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
 
@@ -731,7 +724,6 @@ class ReviewAbuseTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
 
@@ -1078,7 +1070,6 @@ class ViewLogsTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.client = Client()
         self.standard_user = UserFactory()
         self.moderator = ModeratorFactory()
 

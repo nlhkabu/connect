@@ -1,6 +1,6 @@
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail
-from django.test import Client, TestCase
+from django.test import TestCase
 
 from accounts.factories import UserFactory
 from connect_config.factories import SiteConfigFactory
@@ -48,7 +48,6 @@ class UtilsTest(TestCase):
         self.assertEqual(email.to, recipients)
         self.assertIn(expected_string, email.body)
         self.assertIn('<html>', email.alternatives[0][0])
-
 
     def test_can_send_connect_email(self):
         subject = 'Test email'
