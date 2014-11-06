@@ -17,116 +17,15 @@ from accounts.models import AbuseReport, CustomUser
 
 from connect_config.factories import SiteFactory, SiteConfigFactory
 
-from .factories import LogFactory
-from .forms import FilterLogsForm
-from .models import ModerationLogMsg
-from .utils import log_moderator_event, get_date_limits
-from .views import (moderation_home, report_abuse,
-                    review_abuse, review_applications, view_logs)
+from moderation.factories import LogFactory
+from moderation.forms import FilterLogsForm
+from moderation.models import ModerationLogMsg
+from moderation.views import (moderation_home, report_abuse,
+                              review_abuse, review_applications, view_logs)
+
 
 User = get_user_model()
 
-# Forms.py
-
-class TestFilterLogsFormValidation(TestCase):
-
-    def test_validation_fails_if_custom_is_selected_but_both_dates_not_set(self):
-        form = FilterLogsForm(data = {
-            'msg_type': 'ALL',
-            'period': FilterLogsForm.CUSTOM,
-        })
-
-        self.assertFalse(form.is_valid())
-
-    def test_validation_fails_if_custom_is_selected_but_start_date_not_set(self):
-        form = FilterLogsForm(data = {
-            'msg_type': 'ALL',
-            'period': FilterLogsForm.CUSTOM,
-            'end_date': '02/10/2014',
-        })
-
-        self.assertFalse(form.is_valid())
-
-    def test_validation_fails_if_custom_is_selected_but_end_date_not_set(self):
-        form = FilterLogsForm(data = {
-            'msg_type': 'ALL',
-            'period': FilterLogsForm.CUSTOM,
-            'start_date': '01/10/2014',
-        })
-
-        self.assertFalse(form.is_valid())
-
-    def test_validation_passes_if_custom_is_selected_and_dates_set(self):
-        form = FilterLogsForm(data = {
-            'msg_type': 'ALL',
-            'period': FilterLogsForm.CUSTOM,
-            'start_date': '01/10/2014',
-            'end_date': '02/10/2014',
-        })
-
-        self.assertTrue(form.is_valid())
-
-
-# Utils.py
-
-class LogMessageTest(TestCase):
-    fixtures = ['group_perms']
-
-    def test_can_log_moderation_event(self):
-        msg_type = ModerationLogMsg.INVITATION
-        user = UserFactory()
-        moderator = ModeratorFactory()
-        comment = 'This is my comment'
-
-        log = log_moderator_event(
-            msg_type=user,
-            user=user,
-            moderator=moderator,
-            comment=comment
-        )
-
-        logs = ModerationLogMsg.objects.all()
-
-        self.assertIn(log, logs)
-
-    def test_date_limits_with_one_date(self):
-        date = datetime.datetime(2011, 8, 15, 8, 15, 12, 0, pytz.UTC)
-        expected_start = datetime.datetime(2011, 8, 15, 0, 0, 0, 0, pytz.UTC)
-        expected_end = datetime.datetime(2011, 8, 15, 23, 59, 59, 999999, pytz.UTC)
-
-        start, end = get_date_limits(date)
-
-        self.assertEqual(start, expected_start)
-        self.assertEqual(end, expected_end)
-
-    def test_date_limits_with_two_dates(self):
-        day_1 = datetime.datetime(2011, 8, 15, 8, 15, 12, 0, pytz.UTC)
-        day_2 = datetime.datetime(2011, 9, 1, 8, 15, 12, 0, pytz.UTC)
-
-        expected_start = datetime.datetime(2011, 8, 15, 0, 0, 0, 0, pytz.UTC)
-        expected_end = datetime.datetime(2011, 9, 1, 23, 59, 59, 999999, pytz.UTC)
-
-        start, end = get_date_limits(day_1, day_2)
-
-        self.assertEqual(start, expected_start)
-        self.assertEqual(end, expected_end)
-
-    def test_date_limits_passing_non_UTC_timezone(self):
-        local_tz = timezone.get_current_timezone() # TODO: Get user's preferred timezone
-
-        day_1_UTC = datetime.datetime(2011, 8, 15, 8, 15, 12, 0, pytz.UTC)
-        day_1_local = day_1_UTC.astimezone(local_tz)
-
-        expected_start = datetime.datetime(2011, 8, 15, 0, 0, 0, 0, pytz.UTC)
-        expected_end = datetime.datetime(2011, 8, 15, 23, 59, 59, 999999, pytz.UTC)
-
-        start, end = get_date_limits(day_1_local)
-
-        self.assertEqual(start, expected_start)
-        self.assertEqual(end, expected_end)
-
-
-# Urls.py and views.py
 
 class ModerationHomeTest(TestCase):
     fixtures = ['group_perms']
@@ -219,7 +118,7 @@ class InviteUserTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         self.client.post(
             reverse('moderation:invite-user'),
-            data = {
+            data={
                 'first_name': 'Hello',
                 'last_name': 'There',
                 'email': 'invite.user@test.test',
@@ -290,7 +189,7 @@ class ReInviteUserTest(TestCase):
             first_name='Hello',
             last_name='There',
             email='reinviteme@test.test',
-            moderator = self.moderator,
+            moderator=self.moderator,
         )
 
         self.client.login(username=self.moderator.email, password='pass')
@@ -301,7 +200,7 @@ class ReInviteUserTest(TestCase):
     def test_reinvitation_resets_email(self):
         self.client.post(
             reverse('moderation:reinvite-user'),
-            data = {
+            data={
                 'user_id': self.existing.id,
                 'email': 'different.email@test.test',
             },
@@ -313,7 +212,7 @@ class ReInviteUserTest(TestCase):
     def test_can_log_reinvitation(self):
         self.client.post(
             reverse('moderation:reinvite-user'),
-            data = {
+            data={
                 'user_id': self.existing.id,
                 'email': self.existing.email,
             },
@@ -330,7 +229,7 @@ class ReInviteUserTest(TestCase):
     def test_can_email_reinvited_user(self):
         self.client.post(
             reverse('moderation:reinvite-user'),
-            data = {
+            data={
                 'user_id': self.existing.id,
                 'email': self.existing.email,
             },
@@ -372,7 +271,7 @@ class RevokeInvitationTest(TestCase):
             first_name='Revoke',
             last_name='Me',
             email='revokeme@test.test',
-            moderator = self.moderator,
+            moderator=self.moderator,
         )
 
         self.client.login(username=self.moderator.email, password='pass')
@@ -386,7 +285,7 @@ class RevokeInvitationTest(TestCase):
 
         self.client.post(
             reverse('moderation:revoke-invitation'),
-            data = {
+            data={
                 'confirm': True,
                 'user_id': self.existing_user.id,
             },
@@ -406,8 +305,8 @@ class ReviewApplicationTest(TestCase):
         self.standard_user = UserFactory()
         self.applied_user = RequestedPendingFactory()
         self.moderator = ModeratorFactory(
-            first_name = 'My',
-            last_name = 'Moderator',
+            first_name='My',
+            last_name='Moderator',
         )
 
     def test_review_application_url_resolves_to_view(self):
@@ -461,7 +360,7 @@ class ReviewApplicationTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-applications'),
-            data = {
+            data={
                 'user_id': self.applied_user.id,
                 'decision': CustomUser.APPROVED,
                 'comments': 'Applicant is known to the community',
@@ -478,7 +377,7 @@ class ReviewApplicationTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-applications'),
-            data = {
+            data={
                 'user_id': self.applied_user.id,
                 'decision': CustomUser.APPROVED,
                 'comments': 'Applicant is known to the community',
@@ -498,7 +397,7 @@ class ReviewApplicationTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-applications'),
-            data = {
+            data={
                 'user_id': self.applied_user.id,
                 'decision': CustomUser.APPROVED,
                 'comments': 'Applicant is known to the community',
@@ -530,7 +429,7 @@ class ReviewApplicationTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-applications'),
-            data = {
+            data={
                 'user_id': self.applied_user.id,
                 'decision': CustomUser.REJECTED,
                 'comments': 'Spam Application',
@@ -546,7 +445,7 @@ class ReviewApplicationTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-applications'),
-            data = {
+            data={
                 'user_id': self.applied_user.id,
                 'decision': CustomUser.REJECTED,
                 'comments': 'Spam Application',
@@ -564,7 +463,7 @@ class ReviewApplicationTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-applications'),
-            data = {
+            data={
                 'user_id': self.applied_user.id,
                 'decision': CustomUser.REJECTED,
                 'comments': 'Spam Application',
@@ -617,7 +516,9 @@ class ReportAbuseTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/{}/report-abuse'.format(self.accused_user.id),
+            '/accounts/login/?next=/moderation/{}/report-abuse'.format(
+                self.accused_user.id
+            ),
             status_code=302
         )
 
@@ -639,10 +540,10 @@ class ReportAbuseTest(TestCase):
             kwargs={'user_id': self.accused_user.id}
         ))
 
-        expected_html = '<legend>Log an abuse report against {} {}</legend>'.format(
-            self.accused_user.first_name,
-            self.accused_user.last_name,
-        )
+        expected_html = ('<legend>Log an abuse report '
+                         'against {}</legend>'.format(
+                         self.accused_user.get_full_name()
+                        ))
 
         self.assertInHTML(expected_html, response.content.decode())
 
@@ -654,7 +555,7 @@ class ReportAbuseTest(TestCase):
                 'moderation:report-abuse',
                 kwargs={'user_id': self.accused_user.id},
             ),
-            data = {
+            data={
                 'logged_by': self.reporting_user.id,
                 'logged_against': self.accused_user.id,
                 'comments': 'User is a spam account',
@@ -676,7 +577,7 @@ class ReportAbuseTest(TestCase):
                 'moderation:report-abuse',
                 kwargs={'user_id': self.accused_user.id},
             ),
-            data = {
+            data={
                 'logged_by': self.reporting_user.id,
                 'logged_against': self.accused_user.id,
                 'comments': 'User is a spam account',
@@ -685,7 +586,8 @@ class ReportAbuseTest(TestCase):
 
         expected_subject = 'New abuse report at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Hello')
-        expected_url = 'href="http://testserver/moderation/review-abuse-reports">review'
+        expected_url = ('href="http://testserver/moderation/review-'
+                       'abuse-reports">review')
         expected_footer = 'you are a moderator at {}'.format(self.site.name)
         email = mail.outbox[0]
         recipients = [message.to[0] for message in mail.outbox]
@@ -704,7 +606,7 @@ class ReportAbuseTest(TestCase):
                 'moderation:report-abuse',
                 kwargs={'user_id': self.accused_user.id},
             ),
-            data = {
+            data={
                 'logged_by': self.reporting_user.id,
                 'logged_against': self.moderator.id,
                 'comments': 'This moderator is not nice',
@@ -813,7 +715,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.DISMISS,
                 'comments': 'Spam Report',
@@ -831,7 +733,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.DISMISS,
                 'comments': 'Spam Report',
@@ -850,7 +752,7 @@ class ReviewAbuseTest(TestCase):
         comments = 'Spam Report'
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.DISMISS,
                 'comments': comments,
@@ -880,7 +782,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.WARN,
                 'comments': 'This is a warning',
@@ -897,7 +799,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.WARN,
                 'comments': 'This is a warning',
@@ -916,7 +818,7 @@ class ReviewAbuseTest(TestCase):
         comments = 'This is a warning'
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.WARN,
                 'comments': comments,
@@ -926,10 +828,12 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(len(mail.outbox), 2)
 
         # Reporting user's email
-        reporting_subject = '{} has been issued a formal warning from {}'.format(
-            self.accused_user.get_full_name(),
-            self.site.name,
-        )
+        reporting_subject = ('{} has been issued a formal '
+                             'warning from {}'.format(
+                              self.accused_user.get_full_name(),
+                              self.site.name,
+                            ))
+
         reporting_intro = 'Hi {},'.format(
             self.reporting_user.first_name,
         )
@@ -940,7 +844,7 @@ class ReviewAbuseTest(TestCase):
         reporting_content_2 = "{}'s profile and will be flagged".format(
             self.accused_user.get_full_name()
         )
-        reporting_footer = 'logged an abuse report at {}'.format(self.site.name)
+        reporting_footer = 'an abuse report at {}'.format(self.site.name)
         email = mail.outbox[0]
 
         self.assertEqual(email.subject, reporting_subject)
@@ -970,7 +874,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.BAN,
                 'comments': 'You are banned',
@@ -990,7 +894,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.BAN,
                 'comments': 'You are banned',
@@ -1009,7 +913,7 @@ class ReviewAbuseTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.post(
             reverse('moderation:review-abuse'),
-            data = {
+            data={
                 'report_id': self.abuse_report.id,
                 'decision': AbuseReport.BAN,
                 'comments': comments,
@@ -1033,7 +937,7 @@ class ReviewAbuseTest(TestCase):
         reporting_content_2 = "decision to ban {}".format(
             self.accused_user.get_full_name()
         )
-        reporting_footer = 'logged an abuse report at {}'.format(self.site.name)
+        reporting_footer = 'an abuse report at {}'.format(self.site.name)
         email = mail.outbox[0]
 
         self.assertEqual(email.subject, reporting_subject)
@@ -1133,7 +1037,7 @@ class ViewLogsTest(TestCase):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(
             reverse('moderation:logs'),
-            data = {
+            data={
                 'msg_type': ModerationLogMsg.INVITATION,
                 'period': FilterLogsForm.ALL
             },
@@ -1148,13 +1052,13 @@ class ViewLogsTest(TestCase):
     def test_can_filter_logs_by_today(self):
         today_log = LogFactory()
         yesterday_log = LogFactory(
-            msg_datetime = timezone.now() - timezone.timedelta(days=1)
+            msg_datetime=timezone.now() - timezone.timedelta(days=1)
         )
 
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(
             reverse('moderation:logs'),
-            data = {
+            data={
                 'msg_type': 'ALL',
                 'period': FilterLogsForm.TODAY
             },
@@ -1169,13 +1073,13 @@ class ViewLogsTest(TestCase):
     def test_can_filter_logs_by_yesterday(self):
         today_log = LogFactory()
         yesterday_log = LogFactory(
-            msg_datetime = timezone.now() - timezone.timedelta(days=1)
+            msg_datetime=timezone.now() - timezone.timedelta(days=1)
         )
 
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(
             reverse('moderation:logs'),
-            data = {
+            data={
                 'msg_type': 'ALL',
                 'period': FilterLogsForm.YESTERDAY
             },
@@ -1190,16 +1094,16 @@ class ViewLogsTest(TestCase):
     def test_can_filter_logs_by_last_seven_days(self):
         today_log = LogFactory()
         this_week_log = LogFactory(
-            msg_datetime = timezone.now() - timezone.timedelta(days=7)
+            msg_datetime=timezone.now() - timezone.timedelta(days=7)
         )
         last_month_log = LogFactory(
-            msg_datetime = timezone.now() - timezone.timedelta(days=60)
+            msg_datetime=timezone.now() - timezone.timedelta(days=60)
         )
 
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(
             reverse('moderation:logs'),
-            data = {
+            data={
                 'msg_type': 'ALL',
                 'period': FilterLogsForm.THIS_WEEK
             },
@@ -1214,19 +1118,19 @@ class ViewLogsTest(TestCase):
 
     def test_can_filter_logs_by_custom_date_range(self):
         first_of_feb_log = LogFactory(
-            msg_datetime = datetime.datetime(2014, 2, 1, 1, 1, 1, 1, pytz.UTC)
+            msg_datetime=datetime.datetime(2014, 2, 1, 1, 1, 1, 1, pytz.UTC)
         )
         first_of_mar_log = LogFactory(
-            msg_datetime = datetime.datetime(2014, 3, 1, 1, 1, 1, 1, pytz.UTC)
+            msg_datetime=datetime.datetime(2014, 3, 1, 1, 1, 1, 1, pytz.UTC)
         )
         first_of_apr_log = LogFactory(
-            msg_datetime = datetime.datetime(2014, 4, 1, 1, 1, 1, 1, pytz.UTC)
+            msg_datetime=datetime.datetime(2014, 4, 1, 1, 1, 1, 1, pytz.UTC)
         )
 
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(
             reverse('moderation:logs'),
-            data = {
+            data={
                 'msg_type': ModerationLogMsg.INVITATION,
                 'period': FilterLogsForm.CUSTOM,
                 'start_date': '1/2/2014',
@@ -1244,16 +1148,16 @@ class ViewLogsTest(TestCase):
     def test_can_filter_logs_by_type_and_date(self):
         today_invitation_log = LogFactory()
         today_reinvitation_log = LogFactory(
-            msg_type = ModerationLogMsg.REINVITATION
+            msg_type=ModerationLogMsg.REINVITATION
         )
         yesterday_invitation_log = LogFactory(
-            msg_datetime = timezone.now() - timezone.timedelta(days=1)
+            msg_datetime=timezone.now() - timezone.timedelta(days=1)
         )
 
         self.client.login(username=self.moderator.email, password='pass')
         response = self.client.get(
             reverse('moderation:logs'),
-            data = {
+            data={
                 'msg_type': ModerationLogMsg.INVITATION,
                 'period': FilterLogsForm.TODAY
             },
