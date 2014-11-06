@@ -33,8 +33,8 @@ class UtilsTest(TestCase):
         from_address = 'from@test.test'
         recipients = ['to@test.test']
         site_name = 'My Site'
-        html_template='emails/email_base.html'
-        template_vars={
+        html_template = 'emails/email_base.html'
+        template_vars = {
             'site_name': site_name,
         }
 

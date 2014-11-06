@@ -56,7 +56,7 @@ class DashboardTest(TestCase):
 
         response = self.client.get(
             reverse('dashboard'),
-            data = {
+            data={
                 'skills': self.django.id,
             },
         )
@@ -72,7 +72,7 @@ class DashboardTest(TestCase):
 
         response = self.client.get(
             reverse('dashboard'),
-            data = {
+            data={
                 'skills': [self.django.id, self.rails.id],
             },
         )
@@ -90,7 +90,7 @@ class DashboardTest(TestCase):
 
         response = self.client.get(
             reverse('dashboard'),
-            data = {
+            data={
                 'roles': self.mentor.id,
             },
         )
@@ -106,7 +106,7 @@ class DashboardTest(TestCase):
 
         response = self.client.get(
             reverse('dashboard'),
-            data = {
+            data={
                 'roles': [self.mentor.id, self.mentee.id],
             },
         )
@@ -124,7 +124,7 @@ class DashboardTest(TestCase):
 
         response = self.client.get(
             reverse('dashboard'),
-            data = {
+            data={
                 'skills': self.django.id,
                 'roles': self.mentor.id,
             },
@@ -140,7 +140,7 @@ class DashboardTest(TestCase):
 
         response = self.client.get(
             reverse('dashboard'),
-            data = {
+            data={
                 'skills': [self.django.id, self.rails.id],
                 'roles': self.mentor.id,
             },
