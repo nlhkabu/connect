@@ -167,7 +167,7 @@ class MapTest(TestCase):
         self.standard_user = UserFactory()
 
     def test_map_url_resolves_to_map_view(self):
-        url = resolve('/dashboard/map')
+        url = resolve('/dashboard/map/')
 
         self.assertEqual(url.func, map)
 
@@ -177,7 +177,7 @@ class MapTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/dashboard/map',
+            '/accounts/login/?next=/dashboard/map/',
             status_code=302
         )
 

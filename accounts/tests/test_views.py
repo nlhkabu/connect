@@ -33,7 +33,7 @@ class RequestInvitationTest(TestCase):
         self.moderator = ModeratorFactory()
 
     def test_request_invitation_url_resolves_to_request_invitation_view(self):
-        url = resolve('/accounts/request-invitation')
+        url = resolve('/accounts/request-invitation/')
 
         self.assertEqual(url.func, request_invitation)
 
@@ -79,7 +79,7 @@ class RequestInvitationTest(TestCase):
         )
 
         expected_url = ('<a href="http://testserver/moderation/review-applica'
-                        'tions">review membership applications page</a>')
+                        'tions/">review membership applications page</a>')
         email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 4) # 3 created as batch, plus original.
@@ -99,7 +99,7 @@ class RequestInvitationTest(TestCase):
             },
         )
 
-        self.assertRedirects(response, '/accounts/request-invitation/done')
+        self.assertRedirects(response, '/accounts/request-invitation/done/')
 
 
 class ActivateAccountTest(TestCase):
@@ -173,7 +173,7 @@ class ProfileSettingsTest(TestCase):
         self.standard_user = UserFactory()
 
     def test_profile_url_resolves_to_profile_settings_view(self):
-        url = resolve('/accounts/profile')
+        url = resolve('/accounts/profile/')
 
         self.assertEqual(url.func, profile_settings)
 
@@ -183,7 +183,7 @@ class ProfileSettingsTest(TestCase):
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/accounts/profile',
+            '/accounts/login/?next=/accounts/profile/',
             status_code=302
         )
 
@@ -237,7 +237,7 @@ class AccountSettingsTest(TestCase):
         self.standard_user = UserFactory()
 
     def test_account_settings_url_resolves_to_account_settings_view(self):
-        url = resolve('/accounts/settings')
+        url = resolve('/accounts/settings/')
 
         self.assertEqual(url.func, account_settings)
 
@@ -247,7 +247,7 @@ class AccountSettingsTest(TestCase):
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/accounts/settings',
+            '/accounts/login/?next=/accounts/settings/',
             status_code=302
         )
 
@@ -272,7 +272,7 @@ class AccountSettingsTest(TestCase):
         self.assertInHTML(expected_html, response.content.decode())
 
     def test_update_account_url_resolves_to_update_account_view(self):
-        url = resolve('/accounts/settings/update')
+        url = resolve('/accounts/settings/update/')
 
         self.assertEqual(url.func, update_account)
 
@@ -287,7 +287,7 @@ class AccountSettingsTest(TestCase):
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/accounts/settings/update',
+            '/accounts/login/?next=/accounts/settings/update/',
             status_code=302
         )
 
@@ -310,7 +310,7 @@ class AccountSettingsTest(TestCase):
         # to account settings
         self.assertRedirects(
             response,
-            '/accounts/settings',
+            '/accounts/settings/',
             status_code=302
         )
 
@@ -344,7 +344,7 @@ class AccountSettingsTest(TestCase):
         self.assertNotEqual(user.password, old_pass)
 
     def test_close_account_url_resolves_to_close_account_view(self):
-        url = resolve('/accounts/close')
+        url = resolve('/accounts/close/')
 
         self.assertEqual(url.func, close_account)
 
@@ -360,7 +360,7 @@ class AccountSettingsTest(TestCase):
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/accounts/close',
+            '/accounts/login/?next=/accounts/close/',
             status_code=302
         )
 
@@ -382,7 +382,7 @@ class AccountSettingsTest(TestCase):
         # Sending valid data should result in this view redirecting to done
         self.assertRedirects(
             response,
-            '/accounts/close/done',
+            '/accounts/close/done/',
             status_code=302
         )
 
@@ -474,7 +474,7 @@ class ViewUtilsTest(TestCase):
         link = UserLinkFactory(
             user=link_user,
             anchor='Github',
-            url='http://github.com/myaccount',
+            url='http://github.com/myaccount/',
         )
         userlinks = [link,]
 

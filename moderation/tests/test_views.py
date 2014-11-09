@@ -310,7 +310,7 @@ class ReviewApplicationTest(TestCase):
         )
 
     def test_review_application_url_resolves_to_view(self):
-        url = resolve('/moderation/review-applications')
+        url = resolve('/moderation/review-applications/')
 
         self.assertEqual(url.func, review_applications)
 
@@ -320,7 +320,7 @@ class ReviewApplicationTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/review-applications',
+            '/accounts/login/?next=/moderation/review-applications/',
             status_code=302
         )
 
@@ -331,7 +331,7 @@ class ReviewApplicationTest(TestCase):
         # User lacking relevant permissions is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/review-applications',
+            '/accounts/login/?next=/moderation/review-applications/',
             status_code=302
         )
 
@@ -502,7 +502,7 @@ class ReportAbuseTest(TestCase):
 
     def test_report_abuse_url_resolves_to_report_abuse_view(self):
         url = resolve(
-            '/moderation/{}/report-abuse'.format(self.accused_user.id)
+            '/moderation/{}/report-abuse/'.format(self.accused_user.id)
         )
 
         self.assertEqual(url.func, report_abuse)
@@ -516,7 +516,7 @@ class ReportAbuseTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/{}/report-abuse'.format(
+            '/accounts/login/?next=/moderation/{}/report-abuse/'.format(
                 self.accused_user.id
             ),
             status_code=302
@@ -587,7 +587,7 @@ class ReportAbuseTest(TestCase):
         expected_subject = 'New abuse report at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Hello')
         expected_url = ('href="http://testserver/moderation/review-'
-                       'abuse-reports">review')
+                       'abuse-reports/">review')
         expected_footer = 'you are a moderator at {}'.format(self.site.name)
         email = mail.outbox[0]
         recipients = [message.to[0] for message in mail.outbox]
@@ -643,7 +643,7 @@ class ReviewAbuseTest(TestCase):
         )
 
     def test_review_abuse_url_resolves_to_view(self):
-        url = resolve('/moderation/review-abuse-reports')
+        url = resolve('/moderation/review-abuse-reports/')
 
         self.assertEqual(url.func, review_abuse)
 
@@ -653,7 +653,7 @@ class ReviewAbuseTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/review-abuse-reports',
+            '/accounts/login/?next=/moderation/review-abuse-reports/',
             status_code=302
         )
 
@@ -664,7 +664,7 @@ class ReviewAbuseTest(TestCase):
         # User lacking relevant permissions is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/review-abuse-reports',
+            '/accounts/login/?next=/moderation/review-abuse-reports/',
             status_code=302
         )
 
@@ -978,7 +978,7 @@ class ViewLogsTest(TestCase):
         self.moderator = ModeratorFactory()
 
     def test_logs_url_resolves_to_view_logs(self):
-        url = resolve('/moderation/logs')
+        url = resolve('/moderation/logs/')
 
         self.assertEqual(url.func, view_logs)
 
@@ -988,7 +988,7 @@ class ViewLogsTest(TestCase):
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/logs',
+            '/accounts/login/?next=/moderation/logs/',
             status_code=302
         )
 
@@ -999,7 +999,7 @@ class ViewLogsTest(TestCase):
         # User lacking relevant permissions is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/logs',
+            '/accounts/login/?next=/moderation/logs/',
             status_code=302
         )
 
