@@ -158,3 +158,15 @@ class LinkBrandTest(TestCase):
         link = UserLink.objects.get(url='http://facebook.com/myusername')
 
         self.assertEqual(link.icon, new_brand)
+
+    def test_false_positive_does_not_apply_brand(self):
+        UserLinkFactory(url='http://notreallyfacebook.com/me')
+
+        new_brand = BrandFactory(name='Facebook',
+                                 domain='facebook.com',
+                                 fa_icon='fa-facebook')
+
+        # Retreive the link to check that it does not have the new brand
+        link = UserLink.objects.get(url='http://notreallyfacebook.com/me')
+
+        self.assertIsNone(link.icon)
