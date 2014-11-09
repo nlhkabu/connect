@@ -152,11 +152,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             ("ban_user", "Can ban a user in response to an abuse report"),
         )
 
-
-    def get_absolute_url(self):
-        return "/users/%s/" % urlquote(self.email)
-
-
     def get_full_name(self):
         """
         Returns the first_name plus the last_name, with a space in between.
@@ -166,15 +161,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
     def get_short_name(self):
-        "Returns the short name for the user."
+        """
+        Returns the short name for the user - required for admin.
+        """
         return self.first_name
-
-
-    def email_user(self, subject, message, from_email=None):
-        """
-        Sends an email to this User.
-        """
-        send_mail(subject, message, from_email, [self.email])
 
 
     def invite_new_user(self, email, first_name, last_name):

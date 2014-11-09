@@ -13,9 +13,22 @@ class UserModelTest(TestCase):
 
     def setUp(self):
         self.moderator = ModeratorFactory()
-        self.standard_user = UserFactory()
+        self.standard_user = UserFactory(
+            first_name='Firsto',
+            last_name='Namo',
+        )
         self.invited_pending = InvitedPendingFactory()
         self.requested_pending = RequestedPendingFactory()
+
+    def test_get_full_name(self):
+        full_name = self.standard_user.get_full_name()
+
+        self.assertEqual(full_name, 'Firsto Namo')
+
+    def test_get_short_name(self):
+        short_name = self.standard_user.get_short_name()
+
+        self.assertEqual(short_name, 'Firsto')
 
     def test_moderator_can_invite_new_user(self):
         user = self.moderator.invite_new_user(email='standard_user@test.test',
