@@ -74,9 +74,3 @@ color by editing the `$highlight` variable at the top of `_site_settings.scss`
 ### Font Awesome
 
 Connect is currently integrated with [Font Awesome](https://fortawesome.github.io/Font-Awesome/) (v4.0.3)
-
-### What's with functional tests?
-
-As a newcomer to Django, I wanted to get into the habit of writing tests before code, but couldn't quite face the prospect of learning to code tests too.
-
-So, I've written the tests as comments, so if I ever want/when I decide to come back and write them properly, I have a good outline to work from.
