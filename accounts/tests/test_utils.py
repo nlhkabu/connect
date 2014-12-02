@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group
 from django.core import mail
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.sites.shortcuts import get_current_site
 from django.test import TestCase, RequestFactory
@@ -8,14 +9,15 @@ from connect_config.factories import SiteConfigFactory
 
 from accounts.factories import UserFactory
 from accounts.utils import (create_inactive_user, get_user,
-                            invite_user_to_reactivate_account)
+                            invite_user_to_reactivate_account,
+                            validate_email_availability)
 
 
 class AccountUtilsTest(TestCase):
     fixtures = ['group_perms']
 
     def setUp(self):
-        self.standard_user = UserFactory(email='myuser@test.test')
+        self.standard_user = UserFactory(email='my.user@test.test')
         self.factory = RequestFactory()
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
@@ -63,6 +65,14 @@ class AccountUtilsTest(TestCase):
         self.assertIn(expected_url, email.body)
 
     def test_get_user(self):
-        user = get_user('myuser@test.test')
+        user = get_user('my.user@test.test')
 
         self.assertEqual(user, self.standard_user)
+
+    def test_unregistered_email_should_be_available(self):
+        unregistered = validate_email_availability('unregistered.user@test.test')
+        self.assertTrue(unregistered)
+
+    def test_registered_email_should_not_be_available(self):
+        with self.assertRaises(ValidationError):
+            validate_email_availability('my.user@test.test')

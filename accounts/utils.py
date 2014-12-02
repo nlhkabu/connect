@@ -1,6 +1,10 @@
+from django import forms
+
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+
 from connect.utils import generate_salt, hash_time, send_connect_email
 
 
@@ -62,3 +66,18 @@ def get_user(email):
 
     except User.DoesNotExist:
         return None
+
+
+def validate_email_availability(email):
+    """
+    Check that the email address is not registered to an existing user.
+    """
+    user = get_user(email)
+    if user:
+        raise forms.ValidationError(
+            _('Sorry, this email address is already '
+                'registered to another user'),
+            code='email_already_registered'
+        )
+    else:
+        return True

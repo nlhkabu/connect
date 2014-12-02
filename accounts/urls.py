@@ -77,8 +77,8 @@ urlpatterns = patterns('',
     url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
 
     # Account settings
-    url(r'^settings/$', 'accounts.views.account_settings', name='account-settings'),
-    url(r'^settings/update/$', 'accounts.views.update_account', name='update-account'),
+    url(r'^update/email/$', 'accounts.views.update_email', name='update-email'),
+    url(r'^update/password/$', 'accounts.views.update_password', name='update-password'),
     url(r'^close/$', 'accounts.views.close_account', name='close-account'),
     url(r'^close/done/$',
         TemplateView.as_view(template_name='accounts/close_account_done.html'),

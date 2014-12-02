@@ -8,7 +8,9 @@
         <div class="four columns alpha">
             <ul class="sidebar-menu">
                 <li><a href="{% url 'accounts:profile-settings' %}" class="{% block profile_active %}{% endblock %}">{% trans "Profile Settings" %}</a></li>
-                <li><a href="{% url 'accounts:account-settings' %}" class="{% block settings_active %}{% endblock %}">{% trans "Account Settings" %}</a></li>
+                <li><a href="{% url 'accounts:update-email' %}" class="{% block update_email_active %}{% endblock %}">{% trans "Update Email" %}</a></li>
+                <li><a href="{% url 'accounts:update-password' %}" class="{% block update_password_active %}{% endblock %}">{% trans "Update Password" %}</a></li>
+                <li><a href="{% url 'accounts:close-account' %}" class="{% block close_account_active %}{% endblock %}">{% trans "Close Account" %}</a></li>
             </ul>
         </div>
         <div class="twelve columns omega">

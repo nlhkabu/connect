@@ -1,0 +1,36 @@
+{% extends "accounts/settings_base.html" %}
+{% load i18n %}
+
+{% block page_title %}{% trans "Close Account" %}{% endblock %}
+{% block close_account_active %}active{% endblock %}
+
+{% block settings_content %}
+    <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form" novalidate>
+        {% csrf_token %}
+        <fieldset>
+            <legend>Close Account</legend>
+            <p class="intro">Please enter your password to delete your account.</p>
+            <dl>
+                <dt>{% trans "Password" %}</dt>
+                <dd>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <span class="form-error">
+                            {% for error in form.password.errors %}
+                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="{% trans 'Close Account' %}" class="button"/>
+                </dd>
+                <span class="clearfix"></span>
+            </dl>
+        </fieldset>
+    </form>
+{% endblock %}

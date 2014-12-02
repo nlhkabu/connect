@@ -13,9 +13,10 @@ from django.views.decorators.http import require_POST
 
 from connect.utils import generate_html_email, hash_time, send_connect_email
 
-from .forms import (AccountSettingsForm, ActivateAccountForm,
-                    BaseLinkFormSet, BaseSkillFormSet, CloseAccountForm,
-                    LinkForm, ProfileForm, RequestInvitationForm, SkillForm)
+from .forms import (ActivateAccountForm, BaseLinkFormSet, BaseSkillFormSet,
+                    CloseAccountForm, LinkForm, ProfileForm,
+                    RequestInvitationForm, SkillForm, UpdateEmailForm,
+                    UpdatePasswordForm)
 from .models import CustomUser, LinkBrand, Role, Skill, UserLink, UserSkill
 from .utils import create_inactive_user
 from .view_utils import match_link_to_brand, save_links, save_skills
@@ -194,69 +195,110 @@ def profile_settings(request):
 
 @login_required
 def account_settings(request,
-                     form=None,
+                     update_email_form=None,
+                     update_password_form=None,
                      close_form=None):
     """
     Page for users to update their account settings and delete their account
     """
     user = request.user
 
-    if not form:
-        form = AccountSettingsForm(user=user)
+    if not update_email_form:
+        update_email_form = UpdateEmailForm(user=user)
+
+    if not update_password_form:
+        update_password_form = UpdatePasswordForm(user=user)
 
     if not close_form:
         close_form = CloseAccountForm(user=user)
 
     context = {
-        'form': form,
+        'update_email_form': update_email_form,
+        'update_password_form': update_password_form,
         'close_form': close_form,
     }
 
     return render(request, 'accounts/account_settings.html', context)
 
 
-@require_POST
 @login_required
-def update_account(request):
+def update_email(request):
     """
-    Update a user's account settings
+    Update a user's email
     """
     user = request.user
-    form = AccountSettingsForm(request.POST, user=user)
 
-    if form.is_valid():
-        user.email = form.cleaned_data['email']
+    if request.method == 'POST':
+        form = UpdateEmailForm(request.POST, user=user)
 
-        if form.cleaned_data['reset_password']:
-            new_pass = make_password(form.cleaned_data['reset_password'])
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            user.save()
+
+            #TODO: add confirmation message here
+            return redirect(reverse('accounts:update-email'))
+    else:
+        form = UpdateEmailForm(user=user)
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'accounts/update_email.html', context)
+
+
+@login_required
+def update_password(request):
+    """
+    Update a user's password
+    """
+    user = request.user
+
+    if request.method == 'POST':
+        form = UpdatePasswordForm(request.POST, user=user)
+
+        if form.is_valid():
+            new_pass = make_password(form.cleaned_data['new_password'])
             user.password = new_pass
+            user.save()
 
-        user.save()
-
-        #TODO: add confirmation message here
-        return redirect(reverse('accounts:account-settings'))
+            #TODO: add confirmation message here
+            return redirect(reverse('accounts:update-password'))
 
     else:
-        return account_settings(request, form=form)
+        form = UpdatePasswordForm(user=user)
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'accounts/update_password.html', context)
 
 
-@require_POST
 @login_required
 def close_account(request):
     """
     Close a user's account
     """
     user = request.user
-    form = CloseAccountForm(request.POST, user=user)
 
-    if form.is_valid():
+    if request.method == 'POST':
+        form = CloseAccountForm(request.POST, user=user)
 
-        user.is_active = False
-        user.is_closed = True
-        user.save()
-        logout(request)
+        if form.is_valid():
 
-        return redirect(reverse('accounts:close-account-done'))
+            user.is_active = False
+            user.is_closed = True
+            user.save()
+            logout(request)
+
+            return redirect(reverse('accounts:close-account-done'))
 
     else:
-        return account_settings(request, close_form=form)
+        form = CloseAccountForm(user=user)
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'accounts/close_account.html', context)

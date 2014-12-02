@@ -17,7 +17,7 @@ from accounts.forms import (BaseLinkFormSet, BaseSkillFormSet,
 from accounts.models import UserLink, UserSkill
 from accounts.views import (account_settings, activate_account, close_account,
                             profile_settings, request_invitation,
-                            update_account)
+                            update_email, update_password)
 from accounts.view_utils import match_link_to_brand, save_links, save_skills
 
 
@@ -232,122 +232,129 @@ class ProfileSettingsTest(TestCase):
         self.assertEqual(user_skill.proficiency, UserSkill.INTERMEDIATE)
 
 
-class AccountSettingsTest(TestCase):
+class UpdateEmailTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_account_settings_url_resolves_to_account_settings_view(self):
-        url = resolve('/accounts/settings/')
+    def test_update_email_url_resolves_to_update_email_view(self):
+        url = resolve('/accounts/update/email/')
 
-        self.assertEqual(url.func, account_settings)
+        self.assertEqual(url.func, update_email)
 
-    def test_account_settings_is_not_available_to_unauthenticated_users(self):
-        response = self.client.get(reverse('accounts:account-settings'))
-
-        #Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/settings/',
-            status_code=302
-        )
-
-    def test_account_settings_is_available_to_authenticated_users(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.get(reverse('accounts:account-settings'))
-
-        self.assertEqual(response.status_code, 200)
-
-    def test_account_settings_form_is_rendered_to_page(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.get(reverse('accounts:account-settings'))
-        expected_html = '<legend>Account Settings</legend>'
-
-        self.assertInHTML(expected_html, response.content.decode())
-
-    def test_close_account_form_is_rendered_to_page(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.get(reverse('accounts:account-settings'))
-        expected_html = '<legend>Close Account</legend>'
-
-        self.assertInHTML(expected_html, response.content.decode())
-
-    def test_update_account_url_resolves_to_update_account_view(self):
-        url = resolve('/accounts/settings/update/')
-
-        self.assertEqual(url.func, update_account)
-
-    def test_update_account_not_available_to_unautheticated_users(self):
-        response = self.client.post(
-            reverse('accounts:update-account'),
-            data={
-                'email': 'mynewemail@test.test',
-            },
-        )
-
-        #Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/settings/update/',
-            status_code=302
-        )
-
-    def test_update_account_not_available_without_POST_data(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.get(reverse('accounts:update-account'))
-
-        self.assertEqual(response.status_code, 405)
-
-    def test_update_account_is_available_to_authenticated_users_with_POST_data(self):
+    def test_authenticated_users_can_update_email_with_POST_data(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.post(
-            reverse('accounts:update-account'),
+            reverse('accounts:update-email'),
             data={
-                'email': 'mynewemail@test.test',
-            },
-        )
-
-        # Sending valid data should result in this view redirecting back
-        # to account settings
-        self.assertRedirects(
-            response,
-            '/accounts/settings/',
-            status_code=302
-        )
-
-    def test_can_update_email(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.post(
-            reverse('accounts:update-account'),
-            data={
-                'email': 'mynewemail@test.test',
+                'email': 'my.new.email@test.test',
+                'password': 'pass',
             },
         )
 
         user = User.objects.get(id=self.standard_user.id)
 
-        self.assertEqual(user.email, 'mynewemail@test.test')
+        # Valid data should result in this view redirecting back to itself
+        self.assertRedirects(
+            response,
+            '/accounts/update/email/',
+            status_code=302
+        )
+        self.assertEqual(user.email, 'my.new.email@test.test')
 
-    def test_can_update_password(self):
+    def test_update_email_not_available_to_unautheticated_users(self):
+        response = self.client.post(
+            reverse('accounts:update-email'),
+            data={
+                'email': 'my.new.email@test.test',
+                'password': 'pass',
+            },
+        )
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/update/email/',
+            status_code=302
+        )
+
+
+class UpdatePasswordTest(TestCase):
+    def setUp(self):
+        self.standard_user = UserFactory()
+
+    def test_update_password_url_resolves_to_update_password_view(self):
+        url = resolve('/accounts/update/password/')
+
+        self.assertEqual(url.func, update_password)
+
+    def test_authenticated_users_can_update_password(self):
         self.client.login(username=self.standard_user.email, password='pass')
         old_pass = self.standard_user.password
+
         response = self.client.post(
-            reverse('accounts:update-account'),
+            reverse('accounts:update-password'),
             data={
-                'email': self.standard_user.email,
+                'new_password': 'newpass',
                 'current_password': 'pass',
-                'reset_password': 'new',
-                'reset_password_confirm': 'new',
             },
         )
 
         user = User.objects.get(id=self.standard_user.id)
+
+        # Valid data should result in this view redirecting back
+        # to itself
+        self.assertRedirects(
+            response,
+            '/accounts/update/password/',
+            status_code=302
+        )
         self.assertNotEqual(user.password, old_pass)
+
+    def test_update_password_not_available_to_unautheticated_users(self):
+        response = self.client.post(
+            reverse('accounts:update-password'),
+            data={
+                'new_password': 'newpass',
+                'current_password': 'pass',
+            },
+        )
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/update/password/',
+            status_code=302
+        )
+
+
+class CloseAccountTest(TestCase):
+    def setUp(self):
+        self.standard_user = UserFactory()
 
     def test_close_account_url_resolves_to_close_account_view(self):
         url = resolve('/accounts/close/')
 
         self.assertEqual(url.func, close_account)
 
+    def test_authenticated_users_can_close_account(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(
+            reverse('accounts:close-account'),
+            data={
+                'password': 'pass',
+            },
+        )
+
+        # Sending valid data should result in this view redirecting to done
+        self.assertRedirects(
+            response,
+            '/accounts/close/done/',
+            status_code=302
+        )
+        user = User.objects.get(id=self.standard_user.id)
+
+        self.assertFalse(user.is_active)
+        self.assertTrue(user.is_closed)
 
     def test_close_account_not_available_to_unautheticated_users(self):
         response = self.client.post(
@@ -363,42 +370,6 @@ class AccountSettingsTest(TestCase):
             '/accounts/login/?next=/accounts/close/',
             status_code=302
         )
-
-    def test_close_account_not_available_without_POST_data(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.get(reverse('accounts:close-account'))
-
-        self.assertEqual(response.status_code, 405)
-
-    def test_close_account_is_available_to_authenticated_users_with_POST_data(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.post(
-            reverse('accounts:close-account'),
-            data={
-                'password': 'pass',
-            },
-        )
-
-        # Sending valid data should result in this view redirecting to done
-        self.assertRedirects(
-            response,
-            '/accounts/close/done/',
-            status_code=302
-        )
-
-    def test_can_close_account(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.post(
-            reverse('accounts:close-account'),
-            data={
-                'password': 'pass',
-            },
-        )
-
-        user = User.objects.get(id=self.standard_user.id)
-
-        self.assertFalse(user.is_active)
-        self.assertTrue(user.is_closed)
 
 
 # View_utils.py

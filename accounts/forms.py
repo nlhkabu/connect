@@ -7,24 +7,10 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
 from .models import CustomUser, Role, Skill, UserSkill
-from .utils import get_user, invite_user_to_reactivate_account
+from .utils import (get_user, invite_user_to_reactivate_account,
+                    validate_email_availability)
 
 User = get_user_model()
-
-def validate_email_availability(email):
-    """
-    Check that the email address is not registered to an existing user.
-    """
-    user = get_user(email)
-    if user:
-        raise forms.ValidationError(
-            _('Sorry, this email address is already '
-                'registered to another user'),
-
-            code='email_already_registered'
-        )
-    else:
-        return True
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -32,7 +18,6 @@ class CustomUserCreationForm(UserCreationForm):
     A form that creates a user, with no privileges, from the given email and
     password.
     """
-
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         del self.fields['username']
@@ -47,7 +32,6 @@ class CustomUserChangeForm(UserChangeForm):
     the user, but replaces the password field with admin's
     password hash display field.
     """
-
     def __init__(self, *args, **kwargs):
         super(CustomUserChangeForm, self).__init__(*args, **kwargs)
         del self.fields['username']
@@ -132,6 +116,7 @@ class ActivateAccountForm(forms.Form):
             raise forms.ValidationError('Your passwords do not match. '
                                         'Please try again.')
 
+
         return cleaned_data
 
 
@@ -165,7 +150,7 @@ class BaseSkillFormSet(BaseFormSet):
                           'All skills must have a proficiency.')
                 elif proficiency and not skill:
                     raise forms.ValidationError(
-                          'All profiencies must be attached to a skill.')
+                          'All proficiencies must be attached to a skill.')
 
 
 class SkillForm(forms.Form):
@@ -289,66 +274,21 @@ class ProfileForm(forms.Form):
                                    required=False)
 
 
-class AccountSettingsForm(forms.Form):
+class UpdateEmailForm(forms.Form):
     """
-    Form for user to update their not publically viewable settings
+    Form for user to update their password.
     """
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
-        super(AccountSettingsForm, self).__init__(*args, **kwargs)
+        super(UpdateEmailForm, self).__init__(*args, **kwargs)
 
-        self.fields['email'] = forms.EmailField(
-                                        initial = self.user.email,
-                                        widget=forms.TextInput(attrs={
-                                            'placeholder': 'Email Address',
+        self.fields['email'] = forms.EmailField(initial = self.user.email,)
+                                                #~widget=forms.HiddenInput)
+
+        self.fields['password'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'placeholder': 'Password'
                                         }))
-
-        self.fields['current_password'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'placeholder': 'Current Password'
-                                        }),
-                                        required=False)
-
-        self.fields['reset_password'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'class': 'pw',
-                                            'placeholder': 'New Password'
-                                        }),
-                                        required=False)
-
-        self.fields['reset_password_confirm'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'placeholder': 'Confirm Password'
-                                        }),
-                                        required=False)
-
-    def clean(self):
-        """
-        Adds validation to:
-        - Check that the email address is not registerd with another user.
-        - Ensure current password matches the user's password.
-        - Ensure reset password and reset password confirm are the same.
-        """
-        cleaned_data = super(AccountSettingsForm, self).clean()
-
-        currentpass = cleaned_data.get('current_password')
-        password1 = cleaned_data.get('reset_password')
-        password2 = cleaned_data.get('reset_password_confirm')
-
-        if currentpass:
-            if not self.user.check_password(currentpass):
-                raise forms.ValidationError({
-                'current_password': ['Incorrect Password.  Please try again.',]})
-
-        if password1:
-            if not currentpass:
-                raise forms.ValidationError("Please provide your current password")
-            if not password2:
-                raise forms.ValidationError("Please confirm your password")
-            if password1 != password2:
-                raise forms.ValidationError("Your passwords do not match. Please try again.")
-
-        return cleaned_data
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -357,6 +297,44 @@ class AccountSettingsForm(forms.Form):
             validate_email_availability(email)
 
         return email
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+
+        if not self.user.check_password(password):
+            raise forms.ValidationError(
+                "Please provide your current password",
+                code='incorrect_pass'
+            )
+        else:
+            pass
+
+
+class UpdatePasswordForm(forms.Form):
+    """
+    Form for user to update their password
+    """
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(UpdatePasswordForm, self).__init__(*args, **kwargs)
+
+        self.fields['new_password'] = forms.CharField(widget=forms.PasswordInput)
+
+        self.fields['current_password'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'placeholder': 'Current Password'
+                                        }))
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data['current_password']
+
+        if not self.user.check_password(current_password):
+            raise forms.ValidationError(
+                "Please provide your current password",
+                code='incorrect_pass'
+            )
+        else:
+            pass
 
 
 class CloseAccountForm(forms.Form):
@@ -372,17 +350,17 @@ class CloseAccountForm(forms.Form):
                                             'placeholder': 'Password'
                                         }))
 
-    def clean(self):
+    def clean_password(self):
         """
         Adds validation to:
         - Ensure current password matches the user's password.
         """
-        cleaned_data = super(CloseAccountForm, self).clean()
-
-        password = cleaned_data.get('password')
+        password = self.cleaned_data.get('password')
 
         if not self.user.check_password(password):
-            raise forms.ValidationError({
-            'password': ['Incorrect Password.  Please try again.',]})
-
-        return cleaned_data
+            raise forms.ValidationError(
+                "Please provide your current password",
+                code='incorrect_pass'
+            )
+        else:
+            pass
