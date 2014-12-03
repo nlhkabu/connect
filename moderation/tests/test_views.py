@@ -130,9 +130,6 @@ class InviteUserTest(TestCase):
             email='invite.user@test.test'
         )
 
-    def tearDown(self):
-        self.client.logout()
-
     def test_can_invite_new_user(self):
         user = User.objects.get(email='invite.user@test.test')
 
@@ -200,9 +197,6 @@ class ReInviteUserTest(TestCase):
         )
 
         self.client.login(username=self.moderator.email, password='pass')
-
-    def tearDown(self):
-        self.client.logout()
 
     def test_reinvitation_resets_email(self):
         self.client.post(
@@ -297,9 +291,6 @@ class RevokeInvitationTest(TestCase):
         )
 
         self.client.login(username=self.moderator.email, password='pass')
-
-    def tearDown(self):
-        self.client.logout()
 
     def test_can_revoke_user_invitation(self):
         user = User.objects.get(id=self.existing_user.id)
