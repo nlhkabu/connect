@@ -5,6 +5,9 @@
 {% block invite_member_active %}active{% endblock %}
 
 {% block moderators_content %}
+
+    {% include "messages.html" %}
+
     <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form">
         <fieldset>
             <legend>{% trans "Invite a New Member" %}</legend>

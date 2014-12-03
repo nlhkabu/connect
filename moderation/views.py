@@ -1,6 +1,7 @@
 import datetime
 import pytz
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.models import get_current_site
@@ -107,7 +108,10 @@ def invite_user(request):
                            site=site,
                            url=url)
 
-        # TODO: Add confirmation message here
+        messages.success(request, '{} has been invited to {}.'.format(
+            new_user.get_full_name(),
+            site.name))
+
         return redirect('moderation:moderators')
 
     else:
@@ -165,7 +169,10 @@ def reinvite_user(request):
                                site=site,
                                url=url)
 
-        # TODO: Add confirmation message here
+        messages.success(request, '{} has been reinvited to {}.'.format(
+            user.get_full_name(),
+            site.name))
+
         return redirect('moderation:moderators')
 
     else:
@@ -195,6 +202,10 @@ def revoke_invitation(request):
         except User.DoesNotExist:
             raise PermissionDenied
 
+        messages.success(request, '{} has been uninvited from {}.'.format(
+            user.get_full_name(),
+            site.name))
+
         if not user.auth_token_is_used:
 
             # Delete the user rather than deactivate it.
@@ -205,7 +216,6 @@ def revoke_invitation(request):
             # resulting in less junk to filter in that view.
             user.delete()
 
-        # TODO: Add confirmation message here
         return redirect('moderation:moderators')
 
     else:

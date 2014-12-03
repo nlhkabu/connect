@@ -116,13 +116,14 @@ class InviteUserTest(TestCase):
         )
 
         self.client.login(username=self.moderator.email, password='pass')
-        self.client.post(
+        self.response = self.client.post(
             reverse('moderation:invite-user'),
             data={
                 'first_name': 'Hello',
                 'last_name': 'There',
                 'email': 'invite.user@test.test',
             },
+            follow=True,
         )
 
         self.invited_user = user = User.objects.get(
@@ -171,6 +172,12 @@ class InviteUserTest(TestCase):
         self.assertIn(expected_content, email.body)
         self.assertIn(expected_url, email.alternatives[0][0])
         self.assertIn(expected_footer, email.body)
+
+    def test_confirmation_message(self):
+        messages = list(self.response.context['messages'])
+
+        self.assertEqual(len(messages), 1)
+        self.assertIn('has been invited to', str(messages[0]))
 
 
 class ReInviteUserTest(TestCase):
@@ -257,6 +264,21 @@ class ReInviteUserTest(TestCase):
         self.assertIn(expected_url, email.alternatives[0][0])
         self.assertIn(expected_footer, email.body)
 
+    def test_confirmation_message(self):
+        response = self.client.post(
+            reverse('moderation:reinvite-user'),
+            data={
+                'user_id': self.existing.id,
+                'email': self.existing.email,
+            },
+            follow=True,
+        )
+
+        messages = list(response.context['messages'])
+
+        self.assertEqual(len(messages), 1)
+        self.assertIn('has been reinvited to', str(messages[0]))
+
 
 class RevokeInvitationTest(TestCase):
     fixtures = ['group_perms']
@@ -283,13 +305,19 @@ class RevokeInvitationTest(TestCase):
         user = User.objects.get(id=self.existing_user.id)
         self.assertIsInstance(user, User)
 
-        self.client.post(
+        response = self.client.post(
             reverse('moderation:revoke-invitation'),
             data={
                 'confirm': True,
                 'user_id': self.existing_user.id,
             },
+            follow=True,
         )
+
+        messages = list(response.context['messages'])
+
+        self.assertEqual(len(messages), 1)
+        self.assertIn('has been uninvited from', str(messages[0]))
 
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(id=self.existing_user.id)
