@@ -230,7 +230,7 @@ class ProfileSettingsTest(TestCase):
         self.assertEqual(user_skill.proficiency, UserSkill.INTERMEDIATE)
 
         # Check that we see success message
-        expected_message = 'Success!'
+        expected_message = 'profile has been updated.'
         self.assertIn(expected_message, response.content.decode())
 
 
@@ -257,7 +257,7 @@ class UpdateEmailTest(TestCase):
         self.assertEqual(user.email, 'my.new.email@test.test')
 
         # Check that we see success message
-        expected_message = 'Success!'
+        expected_message = 'email has been updated.'
         self.assertIn(expected_message, response.content.decode())
 
     def test_update_email_not_available_to_unautheticated_users(self):
@@ -302,7 +302,7 @@ class UpdatePasswordTest(TestCase):
         self.assertNotEqual(user.password, old_pass)
 
         # Check that we see success message
-        expected_message = 'Success!'
+        expected_message = 'password has been updated.'
         self.assertIn(expected_message, response.content.decode())
 
     def test_update_password_not_available_to_unautheticated_users(self):

@@ -173,7 +173,7 @@ def profile_settings(request):
 
             site = get_current_site(request)
             messages.success(request,
-                'Success!  Your {} profile has been updated.'.format(site.name))
+                'Your {} profile has been updated.'.format(site.name))
 
     else:
         form = ProfileForm(user=user)
@@ -208,7 +208,7 @@ def update_email(request):
 
             site = get_current_site(request)
             messages.success(request,
-                'Success!  Your {} email address has been updated.'.format(site.name))
+                'Your {} email has been updated.'.format(site.name))
 
     else:
         form = UpdateEmailForm(user=user)
@@ -237,7 +237,7 @@ def update_password(request):
 
             site = get_current_site(request)
             messages.success(request,
-                'Success!  Your {} password has been updated.'.format(site.name))
+                'Your {} password has been updated.'.format(site.name))
 
     else:
         form = UpdatePasswordForm(user=user)
