@@ -114,8 +114,8 @@ class ActivateAccountForm(forms.Form):
 
         if password1 != password2:
             raise forms.ValidationError('Your passwords do not match. '
-                                        'Please try again.')
-
+                                        'Please try again.',
+                                         code='unmatched_passwords')
 
         return cleaned_data
 
@@ -141,16 +141,25 @@ class BaseSkillFormSet(BaseFormSet):
                 if skill and proficiency:
                     if skill in skills:
                         raise forms.ValidationError(
-                          'Each skill can only be entered once.')
+                            'Each skill can only be entered once.',
+                            code='duplicate_skill'
+                        )
+
                     skills.append(skill)
 
                 # Check that all skills have both a name and proficiency
                 if skill and not proficiency:
+
                     raise forms.ValidationError(
-                          'All skills must have a proficiency.')
+                        'All skills must have a proficiency.',
+                        code='missing_proficiency'
+                    )
+
                 elif proficiency and not skill:
                     raise forms.ValidationError(
-                          'All proficiencies must be attached to a skill.')
+                        'All skills must have a skill name.',
+                        code='missing_skill_name'
+                    )
 
 
 class SkillForm(forms.Form):
@@ -197,15 +206,21 @@ class BaseLinkFormSet(BaseFormSet):
 
                 if duplicates:
                     raise forms.ValidationError(
-                          'Links must have unique anchors and URLs.')
+                        'Links must have unique anchors and URLs.',
+                        code='duplicate_links'
+                    )
 
                 # Check that all links have both an anchor and URL
                 if url and not anchor:
                     raise forms.ValidationError(
-                          'All links must have an anchor.')
+                        'All links must have an anchor.',
+                        code='missing_anchor'
+                    )
                 elif anchor and not url:
                     raise forms.ValidationError(
-                          'All links must have a URL.')
+                        'All links must have a URL.',
+                        code='missing_URL'
+                    )
 
 
 class LinkForm(forms.Form):
@@ -282,8 +297,11 @@ class UpdateEmailForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(UpdateEmailForm, self).__init__(*args, **kwargs)
 
-        self.fields['email'] = forms.EmailField(initial = self.user.email,)
-                                                #~widget=forms.HiddenInput)
+        self.fields['email'] = forms.EmailField(
+                                        initial = self.user.email,
+                                        widget=forms.EmailInput(attrs={
+                                            'placeholder': 'Email'
+                                        }))
 
         self.fields['password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
@@ -303,7 +321,7 @@ class UpdateEmailForm(forms.Form):
 
         if not self.user.check_password(password):
             raise forms.ValidationError(
-                "Incorrect password. Please try again.",
+                'Incorrect password. Please try again.',
                 code='incorrect_pass'
             )
         else:
@@ -318,7 +336,10 @@ class UpdatePasswordForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(UpdatePasswordForm, self).__init__(*args, **kwargs)
 
-        self.fields['new_password'] = forms.CharField(widget=forms.PasswordInput)
+        self.fields['new_password'] = forms.CharField(
+                                        widget=forms.PasswordInput(attrs={
+                                            'placeholder': 'New Password'
+                                        }))
 
         self.fields['current_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
@@ -330,7 +351,7 @@ class UpdatePasswordForm(forms.Form):
 
         if not self.user.check_password(current_password):
             raise forms.ValidationError(
-                "Incorrect password. Please try again.",
+                'Incorrect password. Please try again.',
                 code='incorrect_pass'
             )
         else:
@@ -359,7 +380,7 @@ class CloseAccountForm(forms.Form):
 
         if not self.user.check_password(password):
             raise forms.ValidationError(
-                "Incorrect password. Please try again.",
+                'Incorrect password. Please try again.',
                 code='incorrect_pass'
             )
         else:

@@ -119,19 +119,11 @@ class ActivateAccountFormTest(TestCase):
 
 class ProfileFormTest(TestCase):
     def setUp(self):
-        site = get_current_site(self.client.request)
-        site.config = SiteConfigFactory(site=site)
-
-        self.standard_user = UserFactory()
-
-        # Setup skills and roles
-        self.django = SkillFactory(name='django')
-        self.rails = SkillFactory(name='rails')
-        self.jquery = SkillFactory(name='jquery')
-
+        # Setup Roles
         self.mentor = RoleFactory(name='mentor')
         self.mentee = RoleFactory(name='mentee')
 
+        self.standard_user = UserFactory()
         self.client.login(username=self.standard_user.email, password='pass')
 
     def test_validation_fails_if_first_name_not_provided(self):
@@ -163,6 +155,21 @@ class ProfileFormTest(TestCase):
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'required')
+
+
+class SkillFormsetTest(TestCase):
+    def setUp(self):
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
+        self.standard_user = UserFactory()
+
+        # Setup skills
+        self.django = SkillFactory(name='django')
+        self.rails = SkillFactory(name='rails')
+        self.jquery = SkillFactory(name='jquery')
+
+        self.client.login(username=self.standard_user.email, password='pass')
 
     def test_skill_formset_validation_passes_with_correct_data(self):
         form = ProfileForm(
@@ -264,8 +271,17 @@ class ProfileFormTest(TestCase):
             formset='skill_formset',
             form_index=None,
             field=None,
-            errors='All proficiencies must be attached to a skill.'
+            errors='All skills must have a skill name.'
         )
+
+
+class LinkFormsetTest(TestCase):
+    def setUp(self):
+        site = get_current_site(self.client.request)
+        site.config = SiteConfigFactory(site=site)
+
+        self.standard_user = UserFactory()
+        self.client.login(username=self.standard_user.email, password='pass')
 
     def test_link_formset_validation_passes_with_correct_data(self):
         form = ProfileForm(
@@ -423,7 +439,10 @@ class UpdateEmailFormTest(TestCase):
             }
         )
 
-        self.assertFalse(form.is_valid())
+        errors = form['password'].errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, 'incorrect_pass')
 
     def test_validation_fails_if_email_is_already_registered_to_another_user(self):
         form = UpdateEmailForm(
@@ -434,7 +453,10 @@ class UpdateEmailFormTest(TestCase):
             }
         )
 
-        self.assertFalse(form.is_valid())
+        errors = form['email'].errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, 'email_already_registered')
 
 
 class UpdatePasswordFormTest(TestCase):
@@ -452,6 +474,17 @@ class UpdatePasswordFormTest(TestCase):
 
         self.assertTrue(form.is_valid())
 
+    def test_validation_fails_with_no_new_password(self):
+        form = UpdatePasswordForm(
+            user=self.standard_user,
+            data={}
+        )
+
+        errors = form['new_password'].errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, 'required')
+
     def test_validation_fails_if_user_submits_incorrect_current_password(self):
         form = UpdatePasswordForm(
             user=self.standard_user,
@@ -461,34 +494,43 @@ class UpdatePasswordFormTest(TestCase):
             }
         )
 
-        self.assertFalse(form.is_valid())
+        errors = form['current_password'].errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, 'incorrect_pass')
 
 
 class CloseAccountFormTest(TestCase):
     def setUp(self):
-        self.user = UserFactory()
+        self.standard_user = UserFactory()
 
     def test_validation_fails_with_no_password(self):
         form = CloseAccountForm(
-            user=self.user,
+            user=self.standard_user,
             data={}
         )
 
-        self.assertFalse(form.is_valid())
+        errors = form['password'].errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, 'required')
 
     def test_validation_fails_with_incorrect_password(self):
         form = CloseAccountForm(
-            user=self.user,
+            user=self.standard_user,
             data={
                 'password': 'wrongpass',
             }
         )
 
-        self.assertFalse(form.is_valid())
+        errors = form['password'].errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, 'incorrect_pass')
 
     def test_validation_passes_with_correct_password(self):
         form = CloseAccountForm(
-            user = self.user,
+            user = self.standard_user,
             data = {
                 'password': 'pass',
             }
