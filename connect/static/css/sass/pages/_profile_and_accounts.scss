@@ -4,6 +4,14 @@
 .horizontal-form {
     margin-top: 10px;
 
+    p.intro.indented {
+        margin: 0 0 10px 155px;
+    }
+
+    dl.update-pass {
+        margin-top: 15px;
+    }
+
     dl {
         display: block;
 
@@ -72,6 +80,14 @@
 @media only screen and (max-width: 1060px) {
 .horizontal-form {
     margin-top: 5px;
+
+    p.intro.indented {
+        margin: 0 0 10px 0;
+    }
+
+    dl.update-pass {
+        margin-top: 5px;
+    }
 
     dl {
         display: block;

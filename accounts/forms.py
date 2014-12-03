@@ -303,7 +303,7 @@ class UpdateEmailForm(forms.Form):
 
         if not self.user.check_password(password):
             raise forms.ValidationError(
-                "Please provide your current password",
+                "Incorrect password. Please try again.",
                 code='incorrect_pass'
             )
         else:
@@ -330,7 +330,7 @@ class UpdatePasswordForm(forms.Form):
 
         if not self.user.check_password(current_password):
             raise forms.ValidationError(
-                "Please provide your current password",
+                "Incorrect password. Please try again.",
                 code='incorrect_pass'
             )
         else:
@@ -359,7 +359,7 @@ class CloseAccountForm(forms.Form):
 
         if not self.user.check_password(password):
             raise forms.ValidationError(
-                "Please provide your current password",
+                "Incorrect password. Please try again.",
                 code='incorrect_pass'
             )
         else:
