@@ -191,34 +191,6 @@ def profile_settings(request):
 
 
 @login_required
-def account_settings(request,
-                     update_email_form=None,
-                     update_password_form=None,
-                     close_form=None):
-    """
-    Page for users to update their account settings and delete their account
-    """
-    user = request.user
-
-    if not update_email_form:
-        update_email_form = UpdateEmailForm(user=user)
-
-    if not update_password_form:
-        update_password_form = UpdatePasswordForm(user=user)
-
-    if not close_form:
-        close_form = CloseAccountForm(user=user)
-
-    context = {
-        'update_email_form': update_email_form,
-        'update_password_form': update_password_form,
-        'close_form': close_form,
-    }
-
-    return render(request, 'accounts/account_settings.html', context)
-
-
-@login_required
 def update_email(request):
     """
     Update a user's email

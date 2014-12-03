@@ -15,9 +15,8 @@ from accounts.factories import (BrandFactory, InvitedPendingFactory,
 from accounts.forms import (BaseLinkFormSet, BaseSkillFormSet,
                             LinkForm, SkillForm)
 from accounts.models import UserLink, UserSkill
-from accounts.views import (account_settings, activate_account, close_account,
-                            profile_settings, request_invitation,
-                            update_email, update_password)
+from accounts.views import (activate_account, close_account, profile_settings,
+                            request_invitation, update_email, update_password)
 from accounts.view_utils import match_link_to_brand, save_links, save_skills
 
 
