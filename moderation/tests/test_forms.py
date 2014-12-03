@@ -11,7 +11,10 @@ class TestFilterLogsFormValidation(TestCase):
             'period': FilterLogsForm.CUSTOM,
         })
 
-        self.assertFalse(form.is_valid())
+        errors = form.errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors['__all__'][0].code, 'missing_date')
 
     def test_validation_fails_if_custom_is_selected_but_start_date_not_set(self):
         form = FilterLogsForm(data={
@@ -20,7 +23,10 @@ class TestFilterLogsFormValidation(TestCase):
             'end_date': '02/10/2014',
         })
 
-        self.assertFalse(form.is_valid())
+        errors = form.errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors['__all__'][0].code, 'missing_date')
 
     def test_validation_fails_if_custom_is_selected_but_end_date_not_set(self):
         form = FilterLogsForm(data={
@@ -29,7 +35,10 @@ class TestFilterLogsFormValidation(TestCase):
             'start_date': '01/10/2014',
         })
 
-        self.assertFalse(form.is_valid())
+        errors = form.errors.as_data()
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors['__all__'][0].code, 'missing_date')
 
     def test_validation_passes_if_custom_is_selected_and_dates_set(self):
         form = FilterLogsForm(data={
