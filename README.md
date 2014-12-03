@@ -73,7 +73,7 @@ color by editing the `$highlight` variable at the top of `_site_settings.scss`
 
 ### Font Awesome
 
-Connect is currently integrated with [Font Awesome](https://fortawesome.github.io/Font-Awesome/) (v4.0.3)
+Connect is integrated with [Font Awesome](https://fortawesome.github.io/Font-Awesome/) (v4.2.0)
 
 ### What's with functional tests?
 
