@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
@@ -170,8 +171,9 @@ def profile_settings(request):
             user_links = UserLink.objects.filter(user=user)
             match_link_to_brand(user_links)
 
-            #TODO: add confirmation message here
-            return redirect(reverse('accounts:profile-settings'))
+            site = get_current_site(request)
+            messages.success(request,
+                'Success!  Your %s profile has been updated.' % site.name)
 
     else:
         form = ProfileForm(user=user)
@@ -204,8 +206,10 @@ def update_email(request):
             user.email = form.cleaned_data['email']
             user.save()
 
-            #TODO: add confirmation message here
-            return redirect(reverse('accounts:update-email'))
+            site = get_current_site(request)
+            messages.success(request,
+                'Success!  Your %s email address has been updated.' % site.name)
+
     else:
         form = UpdateEmailForm(user=user)
 
@@ -231,8 +235,9 @@ def update_password(request):
             user.password = new_pass
             user.save()
 
-            #TODO: add confirmation message here
-            return redirect(reverse('accounts:update-password'))
+            site = get_current_site(request)
+            messages.success(request,
+                'Success!  Your %s password has been updated.' % site.name)
 
     else:
         form = UpdatePasswordForm(user=user)

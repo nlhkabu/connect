@@ -1,0 +1,24 @@
+{% if messages %}
+    <div class="notification-messages">
+        {% for message in messages %}
+            <p>
+                {% if message.tags %}
+                    <i class="fa
+                        {% if message.tags == 'debug' %}
+                            fa-bug
+                        {% elif message.tags == 'info' %}
+                            fa-info
+                        {% elif message.tags == 'success' %}
+                            fa-thumbs-o-up
+                        {% elif message.tags == 'warning' %}
+                            fa-thumbs-o-down
+                        {% elif message.tags == 'error' %}
+                            fa-exclamation-triangle
+                        {% endif %}
+                    "></i>
+                {% endif %}
+                {{ message }}
+            </p>
+        {% endfor %}
+    </div>
+{% endif %}

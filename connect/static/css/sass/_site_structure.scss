@@ -54,9 +54,10 @@ p.intro {
   color: $white;
 }
 
-// Validation
+// Validation and Messages
 
-.form-error {
+.form-error,
+.notification-messages p {
     background-color: $white;
     color: $highlight;
     border: 1px solid $highlight;
@@ -75,6 +76,10 @@ p.intro {
         margin: 0 3px 0 0;
         display: inline;
     }
+}
+
+.notification-messages p {
+    margin: 10px 0;
 }
 
 

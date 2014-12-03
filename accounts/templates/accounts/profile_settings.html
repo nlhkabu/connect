@@ -6,6 +6,9 @@
 {% block profile_active %}active{% endblock %}
 
 {% block settings_content %}
+
+    {% include "messages.html" %}
+
     <form action="" method="post" enctype="multipart/form-data" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>

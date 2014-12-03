@@ -5,6 +5,9 @@
 {% block update_email_active %}active{% endblock %}
 
 {% block settings_content %}
+
+    {% include "messages.html" %}
+
     <form action="{% url 'accounts:update-email' %}" method="post" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>

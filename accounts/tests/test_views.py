@@ -141,7 +141,6 @@ class ActivateAccountTest(TestCase):
         self.assertInHTML(expected_html, response.content.decode())
 
     def test_account_activation(self):
-
         user = User.objects.get(email='validuser@test.test')
         old_pass = user.password
 
@@ -230,6 +229,10 @@ class ProfileSettingsTest(TestCase):
         self.assertEqual(user_skill.skill, django)
         self.assertEqual(user_skill.proficiency, UserSkill.INTERMEDIATE)
 
+        # Check that we see success message
+        expected_message = 'Success!'
+        self.assertIn(expected_message, response.content.decode())
+
 
 class UpdateEmailTest(TestCase):
     def setUp(self):
@@ -251,14 +254,11 @@ class UpdateEmailTest(TestCase):
         )
 
         user = User.objects.get(id=self.standard_user.id)
-
-        # Valid data should result in this view redirecting back to itself
-        self.assertRedirects(
-            response,
-            '/accounts/update/email/',
-            status_code=302
-        )
         self.assertEqual(user.email, 'my.new.email@test.test')
+
+        # Check that we see success message
+        expected_message = 'Success!'
+        self.assertIn(expected_message, response.content.decode())
 
     def test_update_email_not_available_to_unautheticated_users(self):
         response = self.client.post(
@@ -299,15 +299,11 @@ class UpdatePasswordTest(TestCase):
         )
 
         user = User.objects.get(id=self.standard_user.id)
-
-        # Valid data should result in this view redirecting back
-        # to itself
-        self.assertRedirects(
-            response,
-            '/accounts/update/password/',
-            status_code=302
-        )
         self.assertNotEqual(user.password, old_pass)
+
+        # Check that we see success message
+        expected_message = 'Success!'
+        self.assertIn(expected_message, response.content.decode())
 
     def test_update_password_not_available_to_unautheticated_users(self):
         response = self.client.post(
