@@ -42,7 +42,7 @@
                 <div class="container header-container">
                     <a href="/" class="pull-left app-title">
                         {% if request.site.config.logo %}
-                            <img src="{{ MEDIA_URL }}{{ request.site.config.logo }}" alt="{{ site.name }}" title="{{ site.name }}" />
+                            <img src="{{ MEDIA_URL }}{{ request.site.config.logo }}" alt="{{ request.site.name }}" title="{{ request.site.name }}" />
                         {% else %}
                             {{ request.site.name }}
                         {% endif %}

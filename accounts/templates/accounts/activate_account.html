@@ -19,7 +19,7 @@
                 {% csrf_token %}
                 <fieldset>
                     <legend>Activate Account</legend>
-                    <p class="intro">Activate your {{ site.name }} account.  If you wish to change the email account you are registered with, you can do so once logged in.</p>
+                    <p class="intro">Activate your {{ request.site.name }} account.  If you wish to change the email account you are registered with, you can do so once logged in.</p>
                     <dl>
                         <dt>{% trans "First Name" %}</dt>
                         <dd>
