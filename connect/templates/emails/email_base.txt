@@ -1,12 +1,12 @@
-{% load url from future %}
+{% load i18n %}
 {% autoescape off %}
 
-{% block intro %}Hi {{ recipient.first_name }},{% endblock %}
+{% block intro %}{% trans "Hi" %} {{ recipient.first_name }},{% endblock %}
 
 {% block email_content %}{% endblock %}
 
-{% block signoff %}Thanks,
-The {{ site_name }} team
+{% block signoff %}{% trans "Thanks" %},
+{% trans "The" %} {{ site_name }} {% trans "team" %}
 
 {% endautoescape %}
 {% endblock %}
