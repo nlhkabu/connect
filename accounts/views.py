@@ -10,6 +10,7 @@ from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from django.utils.timezone import now
+from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from connect.utils import generate_html_email, hash_time, send_connect_email
@@ -56,7 +57,7 @@ def request_invitation(request):
             url = request.build_absolute_uri(
                                 reverse('moderation:review-applications'))
 
-            subject = 'New account request at {}'.format(site.name)
+            subject = _('New account request at {}'.format(site.name))
             template = 'moderation/emails/notify_moderators_of_new_application.html'
 
             for moderator in moderators:
@@ -173,7 +174,7 @@ def profile_settings(request):
 
             site = get_current_site(request)
             messages.success(request,
-                'Your {} profile has been updated.'.format(site.name))
+                _('Your {} profile has been updated.'.format(site.name)))
 
     else:
         form = ProfileForm(user=user)
@@ -208,7 +209,7 @@ def update_email(request):
 
             site = get_current_site(request)
             messages.success(request,
-                'Your {} email has been updated.'.format(site.name))
+                _('Your {} email has been updated.'.format(site.name)))
 
     else:
         form = UpdateEmailForm(user=user)
@@ -237,7 +238,7 @@ def update_password(request):
 
             site = get_current_site(request)
             messages.success(request,
-                'Your {} password has been updated.'.format(site.name))
+                _('Your {} password has been updated.'.format(site.name)))
 
     else:
         form = UpdatePasswordForm(user=user)

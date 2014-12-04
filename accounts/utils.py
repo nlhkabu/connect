@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 
 from connect.utils import generate_salt, hash_time, send_connect_email
 
@@ -41,7 +42,7 @@ def invite_user_to_reactivate_account(user, request):
                     args=[user.auth_token]))
 
     # Send email
-    subject = 'Reactivate your {} account'.format(site.name)
+    subject = _('Reactivate your {} account'.format(site.name))
     template = 'accounts/emails/reactivate_account.html'
 
     send_connect_email(subject=subject,
@@ -75,7 +76,7 @@ def validate_email_availability(email):
     user = get_user(email)
     if user:
         raise forms.ValidationError(
-            _('Sorry, this email address is already '
+            ugettext_lazy('Sorry, this email address is already '
                 'registered to another user'),
             code='email_already_registered'
         )

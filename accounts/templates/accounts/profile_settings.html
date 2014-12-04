@@ -12,8 +12,8 @@
     <form action="" method="post" enctype="multipart/form-data" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>
-            <legend>Your Biography</legend>
-            <p class="intro">Tell us about yourself!  Include as much information as you feel is relevant.  This information will be visible to other users.</p>
+            <legend>{% trans "Your Biography" %}</legend>
+            <p class="intro">{% trans "Tell us about yourself!  Include as much information as you feel is relevant.  This information will be visible to other users." %}</p>
 
             <dl>
                 <dt>{% trans "First Name" %}</dt>
@@ -53,8 +53,8 @@
         </fieldset>
 
         <fieldset>
-            <legend>Your Links</legend>
-            <p class="intro">List any links that you wish to display on your profile.  For example, you could include your personal website, twitter account or links to your projects.</p>
+            <legend>{% trans "Your Links" %}</legend>
+            <p class="intro">{% trans "List any links that you wish to display on your profile.  For example, you could include your personal website, twitter account or links to your projects." %}</p>
             <dl>
                 <dt>{% trans "Links" %}</dt>
                 <dd>
@@ -84,8 +84,8 @@
 
         {% if has_roles %}
             <fieldset>
-                <legend>Your Roles</legend>
-                <p class="intro">How would you like other members to interact with you?  Please select all that apply.</p>
+                <legend>{% trans "Your Roles" %}</legend>
+                <p class="intro">{% trans "How would you like other members to interact with you?  Please select all that apply." %}</p>
                 <dl>
                     <dt>{% trans "Roles" %}</dt>
                     <dd>
@@ -107,11 +107,11 @@
 
         {% if has_skills %}
             <fieldset>
-                <legend>Your Skills &amp; Interests</legend>
+                <legend>{% trans "Your Skills and Interests" %}</legend>
                 <p class="intro">
-                    Please list all of your relevant skills and interests.
+                    {% trans "Please list all of your relevant skills and interests." %}
                     {% if request.site.config.email %}
-                        If you'd like to include something here that is not already on the list, please email us at <a href="mailto:{{ request.site.config.email }}">{{ request.site.config.email }}</a>.
+                        {% trans "If you'd like to include something here that is not already on the list, please email us at" %} <a href="mailto:{{ request.site.config.email }}">{{ request.site.config.email }}</a>.
                     {% endif %}
                 </p>
                 <dl>

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import ugettext_lazy as _
 
 from .models import (AbuseReport, CustomUser, Role, LinkBrand,
                      Skill, UserLink, UserSkill)
@@ -16,10 +17,8 @@ class UserLinkInline(admin.TabularInline):
 class UserAbuseReportInline(admin.StackedInline):
     fk_name = 'logged_against'
     model = AbuseReport
-    #can_delete = False
     extra = 0
-    verbose_name = 'Abuse Report'
-    verbose_name_plural = 'Abuse Reports'
+    verbose_name = _('Abuse Report')
 
 class UserSkillInline(admin.TabularInline):
     model = UserSkill
@@ -27,28 +26,23 @@ class UserSkillInline(admin.TabularInline):
 
 
 class CustomUserAdmin(UserAdmin):
-    # The forms to add and change user instances
-
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserAdmin
-    # that reference the removed 'username' field
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name')}),
-        ('Registration info', {'fields': ('registration_method',
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Registration info'), {'fields': ('registration_method',
                                           'application_comments',
                                           'moderator',
                                           'moderator_decision',
                                           'auth_token',
                                           'auth_token_is_used')}),
-        ('Important dates', {'fields': ('applied_datetime',
+        (_('Important dates'), {'fields': ('applied_datetime',
                                         'decision_datetime',
                                         'activated_datetime',
                                         'last_login',)}),
-        ('Permissions', {'fields': ('is_active', 'is_closed', 'is_staff',
+        (_('Permissions'), {'fields': ('is_active', 'is_closed', 'is_staff',
                                     'is_superuser', 'is_moderator',
                                     'groups', 'user_permissions')}),
-        ('Roles', {'fields': ('roles',)}),
+        (_('Roles'), {'fields': ('roles',)}),
 
     )
     add_fieldsets = (

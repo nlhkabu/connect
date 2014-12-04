@@ -131,7 +131,6 @@ class ActivateAccountTest(TestCase):
     def test_form_shows_if_token_is_valid(self):
         response = self.client.get('/accounts/activate/mytoken')
         expected_html = '<legend>Activate Account</legend>'
-
         self.assertInHTML(expected_html, response.content.decode())
 
     def test_error_shows_if_token_is_invalid(self):

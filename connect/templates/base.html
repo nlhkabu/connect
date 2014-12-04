@@ -1,5 +1,4 @@
-{% load i18n %}
-{% load static flatpages%}
+{% load flatpages i18n static %}
 {% get_flatpages as flatpages %}
 
 <!DOCTYPE html>
@@ -23,11 +22,9 @@
     </head>
     <body>
         <!--[if lt IE 7]>
-            {% blocktrans %}
-                <p>
-                    You are using an <strong>outdated</strong> browser. Please <a href='http://browsehappy.com/'>upgrade your browser to improve your experience.
-                </p>
-            {% endblocktrans %}
+            <p>
+                {% trans "You are using an" %} <strong>{% trans "outdated" %}</strong> {% trans "browser. Please" %} <a href='http://browsehappy.com/'>{% trans "upgrade your browser" %}</a> {% trans "to improve your experience" %}.
+            </p>
         <![endif]-->
 
         <div class="wrapper">
@@ -64,10 +61,8 @@
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">
-                    {% blocktrans %}
-                        <span>Made with <i class="fa fa-heart"></i> by <a href="http://twitter.com/nlhkabu">nlh</a>, other names here.</span>
-                        <span><a href="">Fork me on Github.</a></span>
-                    {% endblocktrans %}
+                    <span>{% trans "Made with" %} <i class="fa fa-heart"></i> {% trans "by" %} <a href="http://twitter.com/nlhkabu">nlh</a> {% trans "and" %} <a href="<!-- TODO: add contributors file -->">{% trans "contributors" %}</a>.</span>
+                    <span><a href="">{% trans "Fork me on Github" %}.</a></span>
                 </p>
                 <p class="pull-right">
                     {% for page in flatpages %}

@@ -5,10 +5,10 @@
 
 {% block page_content %}
     <div class="container">
-        <h3 class="lined">We're sorry to see you go!</h2>
+        <h3 class="lined">{% trans "We're sorry to see you go" %}!</h2>
         <p class="intro">
-            Your account has been closed.<br/>
-            If you would like to reopen your account, please visit the <a href="{% url 'accounts:request-invitation' %}">request invitation</a> page.
+            {% trans "Your account has been closed" %}.<br/>
+            {% trans "If you would like to reopen your account, please visit the" %} <a href="{% url 'accounts:request-invitation' %}">{% trans "request invitation page" %}</a>.
         </p>
     </div>
 {% endblock %}

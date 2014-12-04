@@ -1,3 +1,6 @@
+import os
+from django.utils.translation import ugettext_lazy as _
+
 """
 Django settings for connect project.
 
@@ -9,7 +12,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
@@ -60,6 +62,7 @@ if DEBUG:
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -107,15 +110,20 @@ else:
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
 TIME_ZONE = 'Australia/Melbourne'
+LANGUAGE_CODE = 'en'
 
-USE_I18N = True
+LANGUAGES = (
+    ('en', _('English')),
+)
 
-USE_L10N = True
-
-USE_TZ = True
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 
 # Static files (CSS, JavaScript, Images)

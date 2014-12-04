@@ -4,22 +4,29 @@
 {% block page_title %}{% trans "Activate Account" %}{% endblock %}
 
 {% block page_content %}
+
+    {% trans "Activate Account" as title %}
+
     <div class="container">
         {% if token_is_used %}
-            <h3 class="lined">Token is Used</h3>
+            <h3 class="lined">{% trans "Token is Used" %}</h3>
             <p class="intro">
-                We're sorry, this activation token has already been used.  If you already have an account, please login <a href="/">here.</a>
+                {% trans "We're sorry, this activation token has already been used.  If you already have an account, please login" %} <a href="/">{% trans "here" %}.</a>
             </p>
             <p class="intro">
-                To request a new token, please visit the <a href="{% url 'accounts:request-invitation' %}">request account</a> page.
+                {% trans "To request a new token, please visit the" %} <a href="{% url 'accounts:request-invitation' %}">{% trans "request account page" %}</a>.
             </p>
 
         {% else %}
             <form action="" method="post" class="horizontal-form">
                 {% csrf_token %}
                 <fieldset>
-                    <legend>Activate Account</legend>
-                    <p class="intro">Activate your {{ request.site.name }} account.  If you wish to change the email account you are registered with, you can do so once logged in.</p>
+                    <legend>{{ title }}</legend>
+                    <p class="intro">
+                        {% blocktrans trimmed %}
+                            Activate your {{ request.site.name }} account.  If you wish to change the email account you are registered with, you can do so once logged in.
+                        {% endblocktrans %}
+                    </p>
                     <dl>
                         <dt>{% trans "First Name" %}</dt>
                         <dd>
@@ -86,7 +93,7 @@
                     <dl>
                         <dt></dt>
                         <dd>
-                            <input type="submit" value="{% trans 'Activate Account' %}" class="button"/>
+                            <input type="submit" value="{{ title }}" class="button"/>
                         </dd>
                         <span class="clearfix"></span>
                     </dl>

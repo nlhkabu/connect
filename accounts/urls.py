@@ -1,21 +1,21 @@
 from django.conf import settings
 from django.conf.urls import patterns, url
+from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
+from django.utils.translation import ugettext_lazy as _
 
 from accounts import views
 
 
 urlpatterns = patterns('',
     # Auth
-    url(
-        r'^login/$',
-        'django.contrib.auth.views.login',
+    url(_(r'^login/$'),
+        auth_views.login,
         {'template_name': 'accounts/login.html'},
         name='login'
     ),
-    url(
-        r'^logout/$',
-        'django.contrib.auth.views.logout',
+    url(_(r'^logout/$'),
+        auth_views.logout,
         {
             'next_page': '/',
             'template_name': 'accounts/login.html'
@@ -24,8 +24,8 @@ urlpatterns = patterns('',
     ),
 
     # page where user can request to reset their password
-    url(r'^password/reset/$',
-        'django.contrib.auth.views.password_reset',
+    url(_(r'^password/reset/$'),
+        auth_views.password_reset,
         {
             'template_name': 'accounts/password_reset.html',
             'post_reset_redirect': '/accounts/password/reset/done/',
@@ -38,8 +38,8 @@ urlpatterns = patterns('',
     ),
 
     # page to confirm that email has been sent
-    url(r'^password/reset/done/$',
-        'django.contrib.auth.views.password_reset_done',
+    url(_(r'^password/reset/done/$'),
+        auth_views.password_reset_done,
         {
             'template_name': 'accounts/password_reset_done.html',
             'current_app': 'accounts',
@@ -49,8 +49,8 @@ urlpatterns = patterns('',
 
 
     # page for user to change password (uses token sent in email)
-    url(r'^password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
-        'django.contrib.auth.views.password_reset_confirm',
+    url(_(r'^password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$'),
+        auth_views.password_reset_confirm,
         {
             'template_name': 'accounts/password_reset_confirm.html',
             'post_reset_redirect': '/accounts/password/done/',
@@ -60,27 +60,27 @@ urlpatterns = patterns('',
     ),
 
     # page confirming password has been reset
-    url(r'^password/done/$',
-        'django.contrib.auth.views.password_reset_complete',
+    url(_(r'^password/done/$'),
+        auth_views.password_reset_complete,
         {'template_name': 'accounts/password_reset_complete.html',},
         name="pasword_reset_complete"
     ),
 
     # Request and activate account
-    url(r'^request-invitation/$', 'accounts.views.request_invitation', name='request-invitation'),
-    url(r'^request-invitation/done/$',
+    url(_(r'^request-invitation/$'), views.request_invitation, name='request-invitation'),
+    url(_(r'^request-invitation/done/$'),
         TemplateView.as_view(template_name='accounts/request_invitation_done.html'),
         name='request-invitation-done'),
-    url(r'^activate/(?P<token>\w+)$', 'accounts.views.activate_account', name='activate-account'),
+    url(_(r'^activate/(?P<token>\w+)$'), views.activate_account, name='activate-account'),
 
     # Profile settings
-    url(r'^profile/$', 'accounts.views.profile_settings', name='profile-settings'),
+    url(_(r'^profile/$'), views.profile_settings, name='profile-settings'),
 
     # Account settings
-    url(r'^update/email/$', 'accounts.views.update_email', name='update-email'),
-    url(r'^update/password/$', 'accounts.views.update_password', name='update-password'),
-    url(r'^close/$', 'accounts.views.close_account', name='close-account'),
-    url(r'^close/done/$',
+    url(_(r'^update/email/$'), views.update_email, name='update-email'),
+    url(_(r'^update/password/$'), views.update_password, name='update-password'),
+    url(_(r'^close/$'), views.close_account, name='close-account'),
+    url(_(r'^close/done/$'),
         TemplateView.as_view(template_name='accounts/close_account_done.html'),
         name='close-account-done'),
 )

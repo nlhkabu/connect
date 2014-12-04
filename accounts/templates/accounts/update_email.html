@@ -11,8 +11,12 @@
     <form action="{% url 'accounts:update-email' %}" method="post" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>
-            <legend>Update Email Address</legend>
-            <p class="intro">Update your email address here.  This address is used for logging into {{ request.site.name }}, as well as when when another user sends you a message.  This information is not displayed on your profile.</p>
+            <legend>{% trans "Update Email Address" %}</legend>
+            <p class="intro">
+                {% blocktrans trimmed %}
+                    Update your email address here.  This address is used for logging into {{ request.site.name }}, as well as when when another user sends you a message.  This information is not displayed on your profile
+                {% endblocktrans %}.
+            </p>
             <dl>
                 <dt>{% trans "Email" %}</dt>
                 <dd>
@@ -27,7 +31,7 @@
                 </dd>
                 <span class="clearfix"></span>
             </dl>
-            <p class="intro indented">Please confirm you wish to update your email address by entering your password.</p>
+            <p class="intro indented">{% trans "Please confirm you wish to update your email address by entering your password." %}</p>
             <dl>
                 <dt>{% trans "Password" %}</dt>
                 <dd>

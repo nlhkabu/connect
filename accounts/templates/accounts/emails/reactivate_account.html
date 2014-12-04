@@ -5,21 +5,21 @@
 {% autoescape off %}
     {% block email_content %}
         <p>
-            You have been sent this email because you (or someone pretending to be you) tried to set up a new account at {{ site_name }} using this email address.
+            {% blocktrans trimmed %}
+                You have been sent this email because you (or someone pretending to be you) tried to set up a new account at {{ site_name }} using this email address.
+            {% endblocktrans %}
         </p>
 
-        <p>
-            If this was not you, you may safely ignore this email.
-        </p>
+        <p>{% trans "If this was not you, you may safely ignore this email" %}.</p>
 
-        <p>If you wish to reactivate your <em>closed</em> account at this email address, please visit the following page:</p>
+        <p>{% trans "If you wish to reactivate your" %} <em>{% trans "closed" %}</em> {% trans "account at this email address, please visit the following page" %}:</p>
 
-        <p>
-            {{ url }}
-        </p>
+        <p>{{ url }}</p>
     {% endblock %}
 
     {% block email_footer %}
-        You received this email because you were previously a registered user at {{ site_name }}.
+        {% blocktrans trimmed %}
+            You received this email because you were previously a registered user at {{ site_name }}.
+        {% endblocktrans %}
     {% endblock %}
 {% endautoescape %}

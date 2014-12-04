@@ -1,8 +1,4 @@
-try:
-    from urllib.parse import urlsplit
-except ImportError:
-    from urlparse import urlsplit
-
+from urllib.parse import urlsplit
 from .models import UserLink, UserSkill, LinkBrand
 
 

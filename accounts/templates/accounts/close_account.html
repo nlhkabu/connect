@@ -1,15 +1,24 @@
 {% extends "accounts/settings_base.html" %}
 {% load i18n %}
 
+
+
 {% block page_title %}{% trans "Close Account" %}{% endblock %}
 {% block close_account_active %}active{% endblock %}
 
 {% block settings_content %}
+
+    {% trans "Close Account" as title %}
+
     <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form" novalidate>
         {% csrf_token %}
         <fieldset>
-            <legend>Close Account</legend>
-            <p class="intro">Please enter your {{ request.site.name }} password to confirm you wish to close your account.</p>
+            <legend>{{ title }}</legend>
+            <p class="intro">
+                {% blocktrans trimmed %}
+                    Please enter your {{ request.site.name }} password to confirm you wish to close your account.
+                {% endblocktrans %}
+            </p>
             <dl>
                 <dt>{% trans "Password" %}</dt>
                 <dd>
@@ -27,7 +36,7 @@
             <dl>
                 <dt></dt>
                 <dd>
-                    <input type="submit" value="{% trans 'Close Account' %}" class="button"/>
+                    <input type="submit" value="{{ title }}" class="button"/>
                 </dd>
                 <span class="clearfix"></span>
             </dl>

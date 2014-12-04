@@ -1,7 +1,4 @@
-try:
-    from urllib.parse import urlsplit
-except ImportError:
-    from urlparse import urlsplit
+from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -12,6 +9,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.http import urlquote
+from django.utils.translation import ugettext_lazy as _
 
 from connect.utils import generate_salt, hash_time
 from .utils import create_inactive_user
@@ -56,8 +54,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUESTED = 'REQ'
 
     REGISTRATION_CHOICES = (
-        (INVITED, 'Invited'),
-        (REQUESTED, 'Requested'),
+        (INVITED, _('Invited')),
+        (REQUESTED, _('Requested')),
     )
 
     PRE_APPROVED = 'PRE'
@@ -65,73 +63,85 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REJECTED = 'REJ'
 
     MODERATOR_CHOICES = (
-        (PRE_APPROVED, 'Pre-approved'),
-        (APPROVED, 'Approved'),
-        (REJECTED, 'Rejected')
+        (PRE_APPROVED, _('Pre-approved')),
+        (APPROVED, _('Approved')),
+        (REJECTED, _('Rejected')),
     )
 
-    email = models.EmailField('email address', max_length=254, unique=True)
+    email = models.EmailField(_('email address'), max_length=254, unique=True)
 
-    first_name = models.CharField('first name', max_length=30, blank=True)
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
 
-    last_name = models.CharField('last name', max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
-    is_staff = models.BooleanField('staff status', default=False,
-                        help_text='Designates whether the user can log '
-                                  'into this admin site.')
+    is_staff = models.BooleanField(_('staff status'), default=False,
+                        help_text=_('Designates whether the user can log '
+                                    'into this admin site.'))
 
-    is_active = models.BooleanField('active', default=True,
-                        help_text='Designates whether this user should be '
-                                  'treated as active. Unselect this instead '
-                                  'of deleting accounts.')
+    is_active = models.BooleanField(_('active'), default=True,
+                        help_text=_('Designates whether this user should be '
+                                    'treated as active. Unselect this instead '
+                                    'of deleting accounts.'))
 
-    is_closed = models.BooleanField('closed', default=False,
-                        help_text='Designates whether the user has closed '
-                                  'their own account.')
+    is_closed = models.BooleanField(_('closed'), default=False,
+                        help_text=_('Designates whether the user has closed '
+                                    'their own account.'))
 
-    date_joined = models.DateTimeField('date joined', default=timezone.now)
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     # Custom connect fields
-    bio = models.TextField(blank=True)
+    bio = models.TextField(_('biography'), blank=True)
 
-    roles = models.ManyToManyField('Role', null=True, blank=True)
+    roles = models.ManyToManyField('Role', verbose_name=_('role'),
+                                   null=True, blank=True)
 
-    is_moderator = models.BooleanField(default=False)
+    is_moderator = models.BooleanField(_('is_moderator'), default=False)
 
     # Registration details
-    registration_method = models.CharField(max_length=3,
+    registration_method = models.CharField(_('registration_method'),
+                                           max_length=3,
                                            choices=REGISTRATION_CHOICES)
 
-    applied_datetime = models.DateTimeField(blank=True, null=True,
-                       help_text='When user applied for an account (if applicable)')
+    applied_datetime = models.DateTimeField(_('date_applied'),
+            blank=True, null=True,
+            help_text=_('When user applied for an account (if applicable)'))
 
-    application_comments = models.TextField(blank=True,
-                           help_text='Information user supplied when applying '
-                                     'for an account (if applicable)')
+    application_comments = models.TextField(_('application comments'),
+            blank=True,
+            help_text='Information user supplied when applying '
+                      'for an account (if applicable)')
 
     moderator = models.ForeignKey('self',
+                verbose_name=_('moderator'),
                 blank=True,
                 null=True,
                 limit_choices_to={'is_moderator': True},
-                help_text='Moderator who invited, approved or rejected this user')
+                help_text=_('Moderator who invited, '
+                            'approved or rejected this user'))
 
-    moderator_decision = models.CharField(max_length=3,
+    moderator_decision = models.CharField(_('moderator decision'),
+                                          max_length=3,
                                           choices=MODERATOR_CHOICES,
                                           blank=True)
 
-    decision_datetime = models.DateTimeField(blank=True, null=True,
-                        help_text='When moderator made decision to invite, '
-                                  'approve or reject this user')
+    decision_datetime = models.DateTimeField(_('decision datetime'),
+            blank=True,
+            null=True,
+            help_text=_('When moderator made their decision to invite, approve'
+                        ' or reject this user'))
 
-    auth_token = models.CharField(max_length=40,
-                                  blank=True,
-                                  verbose_name='Authentication token')
+    auth_token = models.CharField(_('authentication_token'),
+            max_length=40,
+            blank=True,
+            help_text=_('Token for user to activate their account'))
 
-    auth_token_is_used = models.BooleanField(default=False,
-                                             verbose_name='Token is used')
+    auth_token_is_used = models.BooleanField(_('token is used'),
+                                             default=False)
 
-    activated_datetime = models.DateTimeField(blank=True, null=True,
-                         help_text='When user activated their account')
+    activated_datetime = models.DateTimeField(_('date account activated'),
+            blank=True,
+            null=True,
+            help_text=_('Date and time when user activated their account'))
 
     objects = CustomUserManager()
 
@@ -139,8 +149,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
         permissions = (
             ("access_moderators_section", "Can see the moderators section"),
             ("invite_user", "Can issue or reissue an invitation"),
@@ -252,49 +262,67 @@ class AbuseReport(models.Model):
     BAN = 'BAN'
 
     ABUSE_REPORT_CHOICES = (
-       (DISMISS, 'Dismiss Report'),
-       (WARN, 'Warn User'),
-       (BAN, 'Ban User'),
+       (DISMISS, _('Dismiss Report')),
+       (WARN, _('Warn User')),
+       (BAN, _('Ban User')),
     )
 
     logged_against = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                       related_name='abuse_reports_about')
+                            verbose_name=_('logged_against'),
+                            related_name='abuse_reports_about',
+                            help_text=_('User who is subject of abuse report'))
 
     logged_by = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                  related_name='abuse_reports_by')
+                            verbose_name=_('logged_by'),
+                            related_name='abuse_reports_by',
+                            help_text=_('User who logged the abuse report'))
 
-    logged_datetime = models.DateTimeField(default=timezone.now)
+    logged_datetime = models.DateTimeField(_('logged_datetime'),
+                                           default=timezone.now)
 
-    abuse_comment = models.TextField()
+    abuse_comment = models.TextField(_('abuse_comment'),
+                                     help_text=_('Content of abuse report'))
 
     moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                  related_name='abuse_reports_moderated_by',
-                                  blank=True,
-                                  null=True)
+                            related_name='abuse_reports_moderated_by',
+                            verbose_name=_('moderator'),
+                            blank=True,
+                            null=True,
+                            help_text=_('Moderator who has decided on report'))
 
-    moderator_decision = models.CharField(max_length=20,
+    moderator_decision = models.CharField(_('moderator decision'),
+                                          max_length=20,
                                           choices=ABUSE_REPORT_CHOICES,
                                           blank=True)
 
-    moderator_comment = models.TextField(blank=True)
+    moderator_comment = models.TextField(_('moderator comment'), blank=True)
 
-    decision_datetime = models.DateTimeField(blank=True, null=True)
+    decision_datetime = models.DateTimeField(_('decision datetime'),
+        blank=True, null=True,
+        help_text=_('Time and date when moderator made a decision on the report'))
 
     class Meta:
-        verbose_name = 'Abuse Report'
+        verbose_name = _('abuse report')
+        verbose_name_plural = _('abuse reports')
 
     def __str__(self):
-        return 'Reported by {} against {}'.format(
-                                            self.logged_by.get_full_name(),
-                                            self.logged_against.get_full_name())
+        return _('Reported by {} against {}'.format(
+                                        self.logged_by.get_full_name(),
+                                        self.logged_against.get_full_name()))
 
 
 class Skill(models.Model):
     """
     Represents a skill in the community.
     """
-    name = models.CharField(max_length=100, unique=True)
-    owner = models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserSkill')
+    name = models.CharField(_('name'), max_length=100, unique=True)
+    owner = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                   through='UserSkill',
+                                   verbose_name=_('owner'))
+
+    class Meta:
+        verbose_name = _('skill')
+        verbose_name_plural = _('skills')
 
     def __str__(self):
         return self.name
@@ -312,15 +340,16 @@ class UserSkill(models.Model):
 
     PROFICIENCY_CHOICES = (
         ('', '---------'),
-        (BEGINNER, 'Beginner'),
-        (INTERMEDIATE, 'Intermediate'),
-        (ADVANCED, 'Advanced'),
-        (EXPERT, 'Expert'),
+        (BEGINNER, _('Beginner')),
+        (INTERMEDIATE, _('Intermediate')),
+        (ADVANCED, _('Advanced')),
+        (EXPERT, _('Expert')),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    skill = models.ForeignKey(Skill)
-    proficiency = models.IntegerField(max_length=2,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("user"))
+    skill = models.ForeignKey(Skill, verbose_name=_('skill'))
+    proficiency = models.IntegerField(_('proficiency'),
+                                      max_length=2,
                                       choices=PROFICIENCY_CHOICES,
                                       default=BEGINNER)
 
@@ -342,6 +371,8 @@ class UserSkill(models.Model):
 
 
     class Meta:
+        verbose_name = _('user skill')
+        verbose_name_plural = _('user skills')
         unique_together = ('user', 'skill')
 
     def __str__(self):
@@ -353,11 +384,12 @@ class Role(models.Model):
     Roles that users can take when connecting with others.
     e.g. Mentor, Mentee, Coding Partner, etc.
     """
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
+    name = models.CharField(_('name'), max_length=100)
+    description = models.TextField(_('description'), blank=True)
 
     class Meta:
-        verbose_name = "Role"
+        verbose_name = _('role')
+        verbose_name_plural = _('roles')
 
     def __str__(self):
         return self.name
@@ -368,11 +400,14 @@ class UserLink(models.Model):
     Link attached to a user's profile, e.g. github account,
     twitter account, etc.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='links')
-    anchor = models.CharField(max_length=100, verbose_name='Anchor Text')
-    url = models.URLField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             verbose_name=_('user'),
+                             related_name='links')
+    anchor = models.CharField(_('anchor text'), max_length=100)
+    url = models.URLField(_('url'))
     icon = models.ForeignKey('LinkBrand', blank=True, null=True,
-                             on_delete=models.SET_NULL)
+                             on_delete=models.SET_NULL,
+                             verbose_name=_('icon'))
 
     def get_icon(self):
         """
@@ -386,7 +421,8 @@ class UserLink(models.Model):
         return icon
 
     class Meta:
-        verbose_name = 'Link'
+        verbose_name = _('link')
+        verbose_name_plural = _('links')
         unique_together = (('user', 'anchor'), ('user', 'url'))
 
     def __str__(self):
@@ -410,21 +446,22 @@ class LinkBrand(models.Model):
     """
     Recognised third-party services.
     """
-    name = models.CharField(max_length=100, unique=True)
-    domain = models.CharField(max_length=100, unique=True,
-                              help_text='Do not include scheme '
-                              '(e.g. http://, https://)  or subdomain (e.g. www.) '
-                              'e.g github.com, facebook.com, etc.')
+    name = models.CharField(_('brand name'), max_length=100, unique=True)
+    domain = models.CharField(_('domain'), max_length=100, unique=True,
+            help_text=_('Do not include scheme '
+            '(e.g. http://, https://)  or subdomain (e.g. www.).'
+            ' Valid examples include "github.com", "facebook.com", etc.'))
 
     fa_icon = models.CharField(
         max_length=100,
-        verbose_name='Font Awesome Icon',
-        help_text='Choose an icon name from '
-                  '<a href="http://fontawesome.io/icons/">Font Awesome</a> '
-                  '(v4.0.3)')
+        verbose_name=_('font awesome icon'),
+        help_text=_('Choose an icon name from '
+                    '<a href="http://fontawesome.io/icons/">Font Awesome</a> '
+                    '(v4.2.0)'))
 
     class Meta:
-        verbose_name = 'Brand'
+        verbose_name = _('brand')
+        verbose_name_plural = _('brands')
 
     def __str__(self):
         return self.name

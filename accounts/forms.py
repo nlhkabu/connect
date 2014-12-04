@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from .models import CustomUser, Role, Skill, UserSkill
 from .utils import (get_user, invite_user_to_reactivate_account,
@@ -53,7 +53,7 @@ class RequestInvitationForm(forms.Form):
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField()
     comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': 'Please explain why you would like to join this site',
+        'placeholder': _('Please explain why you would like to join this site'),
     }))
 
     def clean_email(self):
@@ -113,9 +113,9 @@ class ActivateAccountForm(forms.Form):
         password2 = cleaned_data.get('confirm_password')
 
         if password1 != password2:
-            raise forms.ValidationError('Your passwords do not match. '
-                                        'Please try again.',
-                                         code='unmatched_passwords')
+            raise forms.ValidationError(_('Your passwords do not match. '
+                                          'Please try again.'),
+                                        code='unmatched_passwords')
 
         return cleaned_data
 
@@ -141,7 +141,7 @@ class BaseSkillFormSet(BaseFormSet):
                 if skill and proficiency:
                     if skill in skills:
                         raise forms.ValidationError(
-                            'Each skill can only be entered once.',
+                            _('Each skill can only be entered once.'),
                             code='duplicate_skill'
                         )
 
@@ -151,13 +151,13 @@ class BaseSkillFormSet(BaseFormSet):
                 if skill and not proficiency:
 
                     raise forms.ValidationError(
-                        'All skills must have a proficiency.',
+                        _('All skills must have a proficiency.'),
                         code='missing_proficiency'
                     )
 
                 elif proficiency and not skill:
                     raise forms.ValidationError(
-                        'All skills must have a skill name.',
+                        _('All skills must have a skill name.'),
                         code='missing_skill_name'
                     )
 
@@ -206,19 +206,19 @@ class BaseLinkFormSet(BaseFormSet):
 
                 if duplicates:
                     raise forms.ValidationError(
-                        'Links must have unique anchors and URLs.',
+                        _('Links must have unique anchors and URLs.'),
                         code='duplicate_links'
                     )
 
                 # Check that all links have both an anchor and URL
                 if url and not anchor:
                     raise forms.ValidationError(
-                        'All links must have an anchor.',
+                        _('All links must have an anchor.'),
                         code='missing_anchor'
                     )
                 elif anchor and not url:
                     raise forms.ValidationError(
-                        'All links must have a URL.',
+                        _('All links must have a URL.'),
                         code='missing_URL'
                     )
 
@@ -231,13 +231,13 @@ class LinkForm(forms.Form):
     anchor = forms.CharField(
                     max_length=100,
                     widget=forms.TextInput(attrs={
-                        'placeholder': 'Link Name / Anchor Text',
+                        'placeholder': _('Link Name / Anchor Text'),
                     }),
                     required=False)
 
     url = forms.URLField(
                     widget=forms.URLInput(attrs={
-                        'placeholder': 'URL',
+                        'placeholder': _('URL'),
                     }),
                     required=False)
 
@@ -262,21 +262,21 @@ class ProfileForm(forms.Form):
                                         max_length=30,
                                         initial = self.user.first_name,
                                         widget=forms.TextInput(attrs={
-                                            'placeholder': 'First Name',
+                                            'placeholder': _('First Name'),
                                         }))
 
         self.fields['last_name'] = forms.CharField(
                                         max_length=30,
                                         initial = self.user.last_name,
                                         widget=forms.TextInput(attrs={
-                                            'placeholder': 'Last Name',
+                                            'placeholder': _('Last Name'),
                                         }))
 
         self.fields['bio'] = forms.CharField(
                         initial = self.user.bio,
                         widget=forms.Textarea(attrs={
                             'class': 'bio',
-                            'placeholder': 'Add some details about yourself...',
+                            'placeholder': _('Add some details about yourself...'),
                             'rows': 'auto',
                         }),
                         required=False)
@@ -300,12 +300,12 @@ class UpdateEmailForm(forms.Form):
         self.fields['email'] = forms.EmailField(
                                         initial = self.user.email,
                                         widget=forms.EmailInput(attrs={
-                                            'placeholder': 'Email'
+                                            'placeholder': _('Email')
                                         }))
 
         self.fields['password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder': 'Password'
+                                            'placeholder': _('Password')
                                         }))
 
     def clean_email(self):
@@ -321,7 +321,7 @@ class UpdateEmailForm(forms.Form):
 
         if not self.user.check_password(password):
             raise forms.ValidationError(
-                'Incorrect password. Please try again.',
+                _('Incorrect password. Please try again.'),
                 code='incorrect_pass'
             )
         else:
@@ -338,12 +338,12 @@ class UpdatePasswordForm(forms.Form):
 
         self.fields['new_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder': 'New Password'
+                                            'placeholder': _('New Password')
                                         }))
 
         self.fields['current_password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder': 'Current Password'
+                                            'placeholder': _('Current Password')
                                         }))
 
     def clean_current_password(self):
@@ -351,7 +351,7 @@ class UpdatePasswordForm(forms.Form):
 
         if not self.user.check_password(current_password):
             raise forms.ValidationError(
-                'Incorrect password. Please try again.',
+                _('Incorrect password. Please try again.'),
                 code='incorrect_pass'
             )
         else:
@@ -368,7 +368,7 @@ class CloseAccountForm(forms.Form):
 
         self.fields['password'] = forms.CharField(
                                         widget=forms.PasswordInput(attrs={
-                                            'placeholder': 'Password'
+                                            'placeholder': _('Password')
                                         }))
 
     def clean_password(self):
@@ -380,7 +380,7 @@ class CloseAccountForm(forms.Form):
 
         if not self.user.check_password(password):
             raise forms.ValidationError(
-                'Incorrect password. Please try again.',
+                _('Incorrect password. Please try again.'),
                 code='incorrect_pass'
             )
         else:
