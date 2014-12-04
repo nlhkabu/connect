@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
+from django.utils.translation import ugettext_lazy as _
+
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^map/$', 'discover.views.map', name='map'),
+    url(_(r'^map/$'), views.map, name='map'),
 )

@@ -27,7 +27,7 @@
             <form action="" method="get" class="filter-form">
                 {% if form.skills %}
                     <fieldset>
-                        <legend>Skills/Interests</legend>
+                        <legend>{% trans "Skills/Interests" %}</legend>
                         {% for skill in form.skills %}
                             {{ skill }}
                         {% endfor %}
@@ -36,7 +36,7 @@
 
                 {% if form.roles %}
                     <fieldset>
-                        <legend>Roles</legend>
+                        <legend>{% trans "Roles" %}</legend>
                         {% for role in form.roles %}
                             {{ role }}
                         {% endfor %}
@@ -44,7 +44,7 @@
                 {% endif %}
 
                 <fieldset>
-                    <legend>Location</legend>
+                    <legend>{% trans "Location" %}</legend>
                     <label for="all">
                         <input type="radio" name="locationRadios" id="all" value="all" checked />
                         <span>{% trans "All users" %}</span>
@@ -180,15 +180,15 @@
         <div class="dialog" id="welcome-dialog" title="Welcome to {{ request.site.name }}">
             <div class="welcome-message">
                 <p>
-                    Hi {{ logged_in_user.first_name }},
+                    {% trans "Hi" %} {{ logged_in_user.first_name }},
                 </p>
                 <p>
-                    <strong>Thanks for joining {{ request.site.name }}!</strong><br/>
-                    To get started, we recommend visiting your <a href="{% url 'accounts:profile-settings' %}">accounts</a> page.  Here you can set your preferences, including what information you wish to share with other {{ request.site.name }} members.
+                    <strong>{% trans "Thanks for joining" %} {{ request.site.name }}!</strong><br/>
+                    {% trans "To get started, we recommend visiting your" %} <a href="{% url 'accounts:profile-settings' %}">{% trans "accounts" %}</a> {% trans "page.  Here you can set your preferences, including what information you wish to share with other" %} {{ request.site.name }} {% trans "members" %}.
                 </p>
                 <p>
-                    Cheers,<br/>
-                    The {{ request.site.name }} team
+                    {% trans "Cheers" %},<br/>
+                    {% trans "The" %} {{ request.site.name }} {% trans "team" %}
                 </p>
             </div>
         </div>
