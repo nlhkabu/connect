@@ -8,6 +8,7 @@ from .models import SiteConfig
 
 class SiteConfigInline(admin.StackedInline):
     model = SiteConfig
+    can_delete = False
 
 
 class CustomSiteAdmin(SiteAdmin):
