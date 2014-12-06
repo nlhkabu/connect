@@ -95,14 +95,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     roles = models.ManyToManyField('Role', verbose_name=_('role'),
                                    null=True, blank=True)
 
-    is_moderator = models.BooleanField(_('is_moderator'), default=False)
+    is_moderator = models.BooleanField(_('moderator status'), default=False,
+                        help_text=_('Designates whether the user has '
+                                    'moderator privileges.'))
 
     # Registration details
-    registration_method = models.CharField(_('registration_method'),
+    registration_method = models.CharField(_('registration method'),
                                            max_length=3,
                                            choices=REGISTRATION_CHOICES)
 
-    applied_datetime = models.DateTimeField(_('date_applied'),
+    applied_datetime = models.DateTimeField(_('date applied'),
             blank=True, null=True,
             help_text=_('When user applied for an account (if applicable)'))
 
@@ -130,7 +132,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             help_text=_('When moderator made their decision to invite, approve'
                         ' or reject this user'))
 
-    auth_token = models.CharField(_('authentication_token'),
+    auth_token = models.CharField(_('authentication token'),
             max_length=40,
             blank=True,
             help_text=_('Token for user to activate their account'))
@@ -268,19 +270,19 @@ class AbuseReport(models.Model):
     )
 
     logged_against = models.ForeignKey(settings.AUTH_USER_MODEL,
-                            verbose_name=_('logged_against'),
+                            verbose_name=_('logged against'),
                             related_name='abuse_reports_about',
                             help_text=_('User who is subject of abuse report'))
 
     logged_by = models.ForeignKey(settings.AUTH_USER_MODEL,
-                            verbose_name=_('logged_by'),
+                            verbose_name=_('logged by'),
                             related_name='abuse_reports_by',
                             help_text=_('User who logged the abuse report'))
 
-    logged_datetime = models.DateTimeField(_('logged_datetime'),
+    logged_datetime = models.DateTimeField(_('date and time logged'),
                                            default=timezone.now)
 
-    abuse_comment = models.TextField(_('abuse_comment'),
+    abuse_comment = models.TextField(_('abuse comment'),
                                      help_text=_('Content of abuse report'))
 
     moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
