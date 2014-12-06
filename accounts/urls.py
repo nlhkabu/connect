@@ -34,7 +34,7 @@ urlpatterns = patterns('',
             'email_template_name': 'accounts/emails/password_reset_email.html',
             'html_email_template_name': 'accounts/emails/password_reset_email.html',
         },
-        name="password_reset"
+        name="password-reset"
     ),
 
     # page to confirm that email has been sent
@@ -44,7 +44,7 @@ urlpatterns = patterns('',
             'template_name': 'accounts/password_reset_done.html',
             'current_app': 'accounts',
         },
-        name="password_reset_done"
+        name="password-reset-done"
     ),
 
 
@@ -56,14 +56,14 @@ urlpatterns = patterns('',
             'post_reset_redirect': '/accounts/password/done/',
             'current_app': 'accounts',
         },
-        name="password_reset_confirm"
+        name="password-reset-confirm"
     ),
 
     # page confirming password has been reset
     url(_(r'^password/done/$'),
         auth_views.password_reset_complete,
         {'template_name': 'accounts/password_reset_complete.html',},
-        name="pasword_reset_complete"
+        name="pasword-reset-complete"
     ),
 
     # Request and activate account
