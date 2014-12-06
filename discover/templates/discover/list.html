@@ -185,7 +185,8 @@
                     {% endblocktrans %}
                 </p>
                 <p>
-                    {% blocktrans with site=request.site.name url 'accounts:profile-settings' as url trimmed %}
+                    {% url 'accounts:profile-settings' as url %}
+                    {% blocktrans with site=request.site.name trimmed %}
                         <strong>Thanks for joining {{ site }}!</strong><br/>
                         To get started, we recommend visiting your <a href="{{ url }}">accounts</a> page.
                         Here you can set your preferences, including what information you wish to share with other {{ site }} members.
