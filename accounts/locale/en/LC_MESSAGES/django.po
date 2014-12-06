@@ -1,0 +1,878 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-06 18:22+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin.py:21
+msgid "Abuse Report"
+msgstr ""
+
+#: admin.py:31
+msgid "Personal info"
+msgstr ""
+
+#: admin.py:32
+msgid "Registration info"
+msgstr ""
+
+#: admin.py:38
+msgid "Important dates"
+msgstr ""
+
+#: admin.py:42
+msgid "Permissions"
+msgstr ""
+
+#: admin.py:45 templates/accounts/profile_settings.html:90
+msgid "Roles"
+msgstr ""
+
+#: forms.py:56
+msgid "Please explain why you would like to join this site"
+msgstr ""
+
+#: forms.py:71
+msgid ""
+"This email address is already registered to another (closed) account. To "
+"reactivate this account, please check your email inbox. To register a new "
+"account, please use a different email address."
+msgstr ""
+
+#: forms.py:81 utils.py:79
+msgid "Sorry, this email address is already registered to another user"
+msgstr ""
+
+#: forms.py:116
+msgid "Your passwords do not match. Please try again."
+msgstr ""
+
+#: forms.py:144
+msgid "Each skill can only be entered once."
+msgstr ""
+
+#: forms.py:154
+msgid "All skills must have a proficiency."
+msgstr ""
+
+#: forms.py:160
+msgid "All skills must have a skill name."
+msgstr ""
+
+#: forms.py:209
+msgid "Links must have unique anchors and URLs."
+msgstr ""
+
+#: forms.py:216
+msgid "All links must have an anchor."
+msgstr ""
+
+#: forms.py:221
+msgid "All links must have a URL."
+msgstr ""
+
+#: forms.py:234
+msgid "Link Name / Anchor Text"
+msgstr ""
+
+#: forms.py:240
+msgid "URL"
+msgstr ""
+
+#: forms.py:265 templates/accounts/activate_account.html:32
+#: templates/accounts/profile_settings.html:19
+#: templates/accounts/request_invitation.html:20
+msgid "First Name"
+msgstr ""
+
+#: forms.py:272 templates/accounts/activate_account.html:46
+#: templates/accounts/profile_settings.html:33
+#: templates/accounts/request_invitation.html:34
+msgid "Last Name"
+msgstr ""
+
+#: forms.py:279
+msgid "Add some details about yourself..."
+msgstr ""
+
+#: forms.py:303 templates/accounts/login.html:16
+#: templates/accounts/request_invitation.html:48
+#: templates/accounts/update_email.html:22
+msgid "Email"
+msgstr ""
+
+#: forms.py:308 forms.py:371 templates/accounts/activate_account.html:60
+#: templates/accounts/close_account.html:23 templates/accounts/login.html:21
+#: templates/accounts/update_email.html:37
+msgid "Password"
+msgstr ""
+
+#: forms.py:324 forms.py:354 forms.py:383
+msgid "Incorrect password. Please try again."
+msgstr ""
+
+#: forms.py:341 templates/accounts/password_reset_confirm.html:19
+#: templates/accounts/update_password.html:17
+msgid "New Password"
+msgstr ""
+
+#: forms.py:346 templates/accounts/update_password.html:32
+msgid "Current Password"
+msgstr ""
+
+#: models.py:57
+msgid "Invited"
+msgstr ""
+
+#: models.py:58
+msgid "Requested"
+msgstr ""
+
+#: models.py:66
+msgid "Pre-approved"
+msgstr ""
+
+#: models.py:67
+msgid "Approved"
+msgstr ""
+
+#: models.py:68
+msgid "Rejected"
+msgstr ""
+
+#: models.py:71
+msgid "email address"
+msgstr ""
+
+#: models.py:73
+msgid "first name"
+msgstr ""
+
+#: models.py:75
+msgid "last name"
+msgstr ""
+
+#: models.py:77
+msgid "staff status"
+msgstr ""
+
+#: models.py:78
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: models.py:81
+msgid "active"
+msgstr ""
+
+#: models.py:82
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: models.py:86
+msgid "closed"
+msgstr ""
+
+#: models.py:87
+msgid "Designates whether the user has closed their own account."
+msgstr ""
+
+#: models.py:90
+msgid "date joined"
+msgstr ""
+
+#: models.py:93
+msgid "biography"
+msgstr ""
+
+#: models.py:95 models.py:391
+msgid "role"
+msgstr ""
+
+#: models.py:98
+msgid "is_moderator"
+msgstr ""
+
+#: models.py:101
+msgid "registration_method"
+msgstr ""
+
+#: models.py:105
+msgid "date_applied"
+msgstr ""
+
+#: models.py:107
+msgid "When user applied for an account (if applicable)"
+msgstr ""
+
+#: models.py:109
+msgid "application comments"
+msgstr ""
+
+#: models.py:115 models.py:288
+msgid "moderator"
+msgstr ""
+
+#: models.py:119
+msgid "Moderator who invited, approved or rejected this user"
+msgstr ""
+
+#: models.py:122 models.py:293
+msgid "moderator decision"
+msgstr ""
+
+#: models.py:127 models.py:300
+msgid "decision datetime"
+msgstr ""
+
+#: models.py:130
+msgid ""
+"When moderator made their decision to invite, approve or reject this user"
+msgstr ""
+
+#: models.py:133
+msgid "authentication_token"
+msgstr ""
+
+#: models.py:136
+msgid "Token for user to activate their account"
+msgstr ""
+
+#: models.py:138
+msgid "token is used"
+msgstr ""
+
+#: models.py:141
+msgid "date account activated"
+msgstr ""
+
+#: models.py:144
+msgid "Date and time when user activated their account"
+msgstr ""
+
+#: models.py:152 models.py:349 models.py:404
+msgid "user"
+msgstr ""
+
+#: models.py:153
+msgid "users"
+msgstr ""
+
+#: models.py:265
+msgid "Dismiss Report"
+msgstr ""
+
+#: models.py:266
+msgid "Warn User"
+msgstr ""
+
+#: models.py:267
+msgid "Ban User"
+msgstr ""
+
+#: models.py:271
+msgid "logged_against"
+msgstr ""
+
+#: models.py:273
+msgid "User who is subject of abuse report"
+msgstr ""
+
+#: models.py:276
+msgid "logged_by"
+msgstr ""
+
+#: models.py:278
+msgid "User who logged the abuse report"
+msgstr ""
+
+#: models.py:280
+msgid "logged_datetime"
+msgstr ""
+
+#: models.py:283
+msgid "abuse_comment"
+msgstr ""
+
+#: models.py:284
+msgid "Content of abuse report"
+msgstr ""
+
+#: models.py:291
+msgid "Moderator who has decided on report"
+msgstr ""
+
+#: models.py:298
+msgid "moderator comment"
+msgstr ""
+
+#: models.py:302
+msgid "Time and date when moderator made a decision on the report"
+msgstr ""
+
+#: models.py:305
+msgid "abuse report"
+msgstr ""
+
+#: models.py:306
+msgid "abuse reports"
+msgstr ""
+
+#: models.py:309
+msgid "Reported by {} against {}"
+msgstr ""
+
+#: models.py:318 models.py:387
+msgid "name"
+msgstr ""
+
+#: models.py:321
+msgid "owner"
+msgstr ""
+
+#: models.py:324 models.py:350
+msgid "skill"
+msgstr ""
+
+#: models.py:325
+msgid "skills"
+msgstr ""
+
+#: models.py:343
+msgid "Beginner"
+msgstr ""
+
+#: models.py:344
+msgid "Intermediate"
+msgstr ""
+
+#: models.py:345
+msgid "Advanced"
+msgstr ""
+
+#: models.py:346
+msgid "Expert"
+msgstr ""
+
+#: models.py:351
+msgid "proficiency"
+msgstr ""
+
+#: models.py:374
+msgid "user skill"
+msgstr ""
+
+#: models.py:375
+msgid "user skills"
+msgstr ""
+
+#: models.py:388
+msgid "description"
+msgstr ""
+
+#: models.py:392
+msgid "roles"
+msgstr ""
+
+#: models.py:406
+msgid "anchor text"
+msgstr ""
+
+#: models.py:407
+msgid "url"
+msgstr ""
+
+#: models.py:410
+msgid "icon"
+msgstr ""
+
+#: models.py:424
+msgid "link"
+msgstr ""
+
+#: models.py:425
+msgid "links"
+msgstr ""
+
+#: models.py:449
+msgid "brand name"
+msgstr ""
+
+#: models.py:450
+msgid "domain"
+msgstr ""
+
+#: models.py:451
+msgid ""
+"Do not include scheme (e.g. http://, https://)  or subdomain (e.g. www.). "
+"Valid examples include \"github.com\", \"facebook.com\", etc."
+msgstr ""
+
+#: models.py:457
+msgid "font awesome icon"
+msgstr ""
+
+#: models.py:458
+msgid ""
+"Choose an icon name from <a href=\"http://fontawesome.io/icons/\">Font "
+"Awesome</a> (v4.2.0)"
+msgstr ""
+
+#: models.py:463
+msgid "brand"
+msgstr ""
+
+#: models.py:464
+msgid "brands"
+msgstr ""
+
+#: templates/accounts/activate_account.html:4
+#: templates/accounts/activate_account.html:8
+msgid "Activate Account"
+msgstr ""
+
+#: templates/accounts/activate_account.html:12
+msgid "Token is Used"
+msgstr ""
+
+#: templates/accounts/activate_account.html:15
+#, python-format
+msgid ""
+"We're sorry, this activation token has already been used.  If you already "
+"have an account, please login <a href=\"/\">here.</a><br/> To request a new "
+"token, please visit the <a href=\"%(url)s\">request account page</a>."
+msgstr ""
+
+#: templates/accounts/activate_account.html:27
+#, python-format
+msgid ""
+"Activate your %(site)s account.  If you wish to change the email account you "
+"are registered with, you can do so once you have logged in."
+msgstr ""
+
+#: templates/accounts/activate_account.html:74
+#: templates/accounts/password_reset_confirm.html:33
+msgid "Confirm Password"
+msgstr ""
+
+#: templates/accounts/close_account.html:6
+#: templates/accounts/close_account.html:11
+#: templates/accounts/settings_base.html:13
+msgid "Close Account"
+msgstr ""
+
+#: templates/accounts/close_account.html:18
+#, python-format
+msgid ""
+"Please enter your %(site)s password to confirm you wish to close your "
+"account."
+msgstr ""
+
+#: templates/accounts/close_account_done.html:4
+msgid "Account Closed"
+msgstr ""
+
+#: templates/accounts/close_account_done.html:8
+msgid "We're sorry to see you go"
+msgstr ""
+
+#: templates/accounts/close_account_done.html:11
+#, python-format
+msgid ""
+"Your account has been closed<br/> If you would like to reopen your account, "
+"please visit the <a href=\"%(url)s\">request invitation page</a>."
+msgstr ""
+
+#: templates/accounts/emails/password_reset_email.html:7
+#, python-format
+msgid ""
+"You have been sent this email because you (or someone pretending to be you) "
+"made a request to reset your password at %(site)s."
+msgstr ""
+
+#: templates/accounts/emails/password_reset_email.html:11
+msgid ""
+"If you did not make this request, or you do not wish to change your current "
+"password, you may safely ignore this email."
+msgstr ""
+
+#: templates/accounts/emails/password_reset_email.html:12
+msgid ""
+"If you wish to reset your current password, please visit the following page"
+msgstr ""
+
+#: templates/accounts/emails/password_reset_email.html:18
+#, python-format
+msgid "You received this email because you are a registered user at %(site)s."
+msgstr ""
+
+#: templates/accounts/emails/reactivate_account.html:7
+#, python-format
+msgid ""
+"You have been sent this email because you (or someone pretending to be you) "
+"tried to set up a new account at %(site)s using this email address."
+msgstr ""
+
+#: templates/accounts/emails/reactivate_account.html:11
+msgid "If this was not you, you may safely ignore this email"
+msgstr ""
+
+#: templates/accounts/emails/reactivate_account.html:13
+msgid ""
+"If you wish to reactivate your <em>closed</em> account at this email "
+"address, please visit the following page:"
+msgstr ""
+
+#: templates/accounts/emails/reactivate_account.html:22
+#, python-format
+msgid ""
+"You received this email because you were previously a registered user at "
+"%(site)s."
+msgstr ""
+
+#: templates/accounts/login.html:4 templates/accounts/login.html.py:26
+msgid "Login"
+msgstr ""
+
+#: templates/accounts/login.html:8
+msgid "Your email and password didn't match. Please try again."
+msgstr ""
+
+#: templates/accounts/login.html:30
+msgid "Forgotten your password?"
+msgstr ""
+
+#: templates/accounts/login.html:37
+msgid "Request an Account"
+msgstr ""
+
+#: templates/accounts/password_reset.html:4
+msgid "Retrieve Your Login Details"
+msgstr ""
+
+#: templates/accounts/password_reset.html:11
+msgid "Trouble logging in?"
+msgstr ""
+
+#: templates/accounts/password_reset.html:12
+msgid ""
+"Please enter your email address below, and we will email you instructions "
+"for setting a new password"
+msgstr ""
+
+#: templates/accounts/password_reset.html:16
+msgid "Email Address"
+msgstr ""
+
+#: templates/accounts/password_reset.html:32
+msgid "Retrieve Login Details"
+msgstr ""
+
+#: templates/accounts/password_reset_complete.html:4
+msgid "Password Reset"
+msgstr ""
+
+#: templates/accounts/password_reset_complete.html:9
+msgid "Password reset successful"
+msgstr ""
+
+#: templates/accounts/password_reset_complete.html:10
+msgid "Your password has been successfully reset"
+msgstr ""
+
+#: templates/accounts/password_reset_complete.html:11
+#: templates/accounts/password_reset_done.html:14
+msgid "Return to Login page"
+msgstr ""
+
+#: templates/accounts/password_reset_confirm.html:4
+#: templates/accounts/password_reset_confirm.html:8
+msgid "Reset Password"
+msgstr ""
+
+#: templates/accounts/password_reset_confirm.html:16
+msgid "Please enter your new password twice for verification purposes"
+msgstr ""
+
+#: templates/accounts/password_reset_confirm.html:67
+msgid "Invalid Link"
+msgstr ""
+
+#: templates/accounts/password_reset_confirm.html:68
+msgid ""
+"This password reset link is invalid, possibly because it has already been "
+"used"
+msgstr ""
+
+#: templates/accounts/password_reset_confirm.html:69
+msgid "Request a New Password Reset"
+msgstr ""
+
+#: templates/accounts/password_reset_done.html:4
+msgid "Check your email"
+msgstr ""
+
+#: templates/accounts/password_reset_done.html:9
+msgid "Please check your email"
+msgstr ""
+
+#: templates/accounts/password_reset_done.html:11
+msgid ""
+"We have sent you an email containing instructions on how to reset your "
+"password"
+msgstr ""
+
+#: templates/accounts/password_reset_done.html:12
+msgid ""
+"If you have not received this email please check your spam folder, or "
+"contact your system administrator"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:4
+#: templates/accounts/settings_base.html:10
+msgid "Profile Settings"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:15
+msgid "Your Biography"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:16
+msgid ""
+"Tell us about yourself!  Include as much information as you feel is "
+"relevant.  This information will be visible to other users."
+msgstr ""
+
+#: templates/accounts/profile_settings.html:47
+msgid "Bio"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:56
+msgid "Your Links"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:57
+msgid ""
+"List any links that you wish to display on your profile.  For example, you "
+"could include your personal website, twitter account or links to your "
+"projects."
+msgstr ""
+
+#: templates/accounts/profile_settings.html:59
+msgid "Links"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:87
+msgid "Your Roles"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:88
+msgid ""
+"How would you like other members to interact with you?  Please select all "
+"that apply."
+msgstr ""
+
+#: templates/accounts/profile_settings.html:110
+msgid "Your Skills and Interests"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:112
+#, python-format
+msgid ""
+"Please list all of your relevant skills and interests. If you'd like to "
+"include something here that is not already on the list, please email us at "
+"<a href=\"%(email)s\">%(email)s</a>."
+msgstr ""
+
+#: templates/accounts/profile_settings.html:118
+msgid "Skills"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:150
+msgid "Update Profile Settings"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:166
+msgid "add skill"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:167
+#: templates/accounts/profile_settings.html:174
+msgid "remove"
+msgstr ""
+
+#: templates/accounts/profile_settings.html:173
+msgid "add link"
+msgstr ""
+
+#: templates/accounts/request_invitation.html:4
+msgid "Request Account Invitation"
+msgstr ""
+
+#: templates/accounts/request_invitation.html:11
+msgid "Request an Invitation"
+msgstr ""
+
+#: templates/accounts/request_invitation.html:13
+#, python-format
+msgid ""
+"Fill out the form below to request an account at %(site)s.<br/> Please "
+"provide as much information you think is relevant for our moderators to "
+"approve your application."
+msgstr ""
+
+#: templates/accounts/request_invitation.html:62
+msgid "Comments"
+msgstr ""
+
+#: templates/accounts/request_invitation.html:85
+msgid "Cancel"
+msgstr ""
+
+#: templates/accounts/request_invitation.html:86
+msgid "Request Invitation"
+msgstr ""
+
+#: templates/accounts/request_invitation_done.html:4
+msgid "Account Pending"
+msgstr ""
+
+#: templates/accounts/request_invitation_done.html:8
+msgid "Your request for an account has been sent"
+msgstr ""
+
+#: templates/accounts/request_invitation_done.html:10
+msgid ""
+"A moderator has been notified of your application and will review it shortly."
+msgstr ""
+
+#: templates/accounts/request_invitation_done.html:11
+msgid ""
+"If your request is approved, you will be emailed with further instructions."
+msgstr ""
+
+#: templates/accounts/settings_base.html:11
+#: templates/accounts/update_email.html:4
+#: templates/accounts/update_email.html:53
+msgid "Update Email"
+msgstr ""
+
+#: templates/accounts/settings_base.html:12
+#: templates/accounts/update_password.html:4
+#: templates/accounts/update_password.html:9
+msgid "Update Password"
+msgstr ""
+
+#: templates/accounts/update_email.html:15
+msgid "Update Email Address"
+msgstr ""
+
+#: templates/accounts/update_email.html:17
+#, python-format
+msgid ""
+"Update your email address here.  This address is used for logging into "
+"%(site)s, as well as when when another user sends you a message.  This "
+"information is not displayed on your profile."
+msgstr ""
+
+#: templates/accounts/update_email.html:35
+msgid ""
+"Please confirm you wish to update your email address by entering your "
+"password."
+msgstr ""
+
+#: templates/accounts/update_password.html:30
+msgid ""
+"Please confirm you wish to update your password by entering your current "
+"password."
+msgstr ""
+
+#: urls.py:12
+msgid "^login/$"
+msgstr ""
+
+#: urls.py:17
+msgid "^logout/$"
+msgstr ""
+
+#: urls.py:27
+msgid "^password/reset/$"
+msgstr ""
+
+#: urls.py:41
+msgid "^password/reset/done/$"
+msgstr ""
+
+#: urls.py:52
+msgid "^password/reset/(?P<uidb64>[0-9A-Za-z_\\-]+)/(?P<token>.+)/$"
+msgstr ""
+
+#: urls.py:63
+msgid "^password/done/$"
+msgstr ""
+
+#: urls.py:70
+msgid "^request-invitation/$"
+msgstr ""
+
+#: urls.py:71
+msgid "^request-invitation/done/$"
+msgstr ""
+
+#: urls.py:74
+msgid "^activate/(?P<token>\\w+)$"
+msgstr ""
+
+#: urls.py:77
+msgid "^profile/$"
+msgstr ""
+
+#: urls.py:80
+msgid "^update/email/$"
+msgstr ""
+
+#: urls.py:81
+msgid "^update/password/$"
+msgstr ""
+
+#: urls.py:82
+msgid "^close/$"
+msgstr ""
+
+#: urls.py:83
+msgid "^close/done/$"
+msgstr ""
+
+#: utils.py:45
+msgid "Reactivate your {} account"
+msgstr ""
+
+#: views.py:60
+msgid "New account request at {}"
+msgstr ""
+
+#: views.py:177
+msgid "Your {} profile has been updated."
+msgstr ""
+
+#: views.py:212
+msgid "Your {} email has been updated."
+msgstr ""
+
+#: views.py:241
+msgid "Your {} password has been updated."
+msgstr ""
