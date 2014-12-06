@@ -109,10 +109,10 @@
             <fieldset>
                 <legend>{% trans "Your Skills and Interests" %}</legend>
                 <p class="intro">
-                    {% trans "Please list all of your relevant skills and interests." %}
-                    {% if request.site.config.email %}
-                        {% trans "If you'd like to include something here that is not already on the list, please email us at" %} <a href="mailto:{{ request.site.config.email }}">{{ request.site.config.email }}</a>.
-                    {% endif %}
+                    {% blocktrans with email=request.site.config.email trimmed %}
+                        Please list all of your relevant skills and interests.
+                        If you'd like to include something here that is not already on the list, please email us at <a href="{{ email }}">{{ email }}</a>.
+                    {% endblocktrans %}
                 </p>
                 <dl>
                     <dt>{% trans "Skills" %}</dt>

@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block page_title %}{% trans "Update Email" %}{% endblock %}
+
 {% block update_email_active %}active{% endblock %}
 
 {% block settings_content %}
@@ -13,9 +14,9 @@
         <fieldset>
             <legend>{% trans "Update Email Address" %}</legend>
             <p class="intro">
-                {% blocktrans trimmed %}
-                    Update your email address here.  This address is used for logging into {{ request.site.name }}, as well as when when another user sends you a message.  This information is not displayed on your profile
-                {% endblocktrans %}.
+                {% blocktrans with site=request.site.name trimmed %}
+                    Update your email address here.  This address is used for logging into {{ site }}, as well as when when another user sends you a message.  This information is not displayed on your profile.
+                {% endblocktrans %}
             </p>
             <dl>
                 <dt>{% trans "Email" %}</dt>

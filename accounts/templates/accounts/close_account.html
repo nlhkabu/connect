@@ -15,8 +15,8 @@
         <fieldset>
             <legend>{{ title }}</legend>
             <p class="intro">
-                {% blocktrans trimmed %}
-                    Please enter your {{ request.site.name }} password to confirm you wish to close your account.
+                {% blocktrans with site=request.site.name trimmed %}
+                    Please enter your {{ site }} password to confirm you wish to close your account.
                 {% endblocktrans %}
             </p>
             <dl>
