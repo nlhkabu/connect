@@ -16,7 +16,7 @@ class SiteConfig(models.Model):
                                                       'site-wide enquiries'))
     email_header = models.ImageField(_('email header'),
                                      help_text=_('Header image on site generated '
-                                                 'emails. Must be 600px wide.'
+                                                 'emails. Must be 600px wide. '
                                                  'Keep the file size as '
                                                  'small as possible!'))
     class Meta:
