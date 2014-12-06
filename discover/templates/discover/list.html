@@ -180,15 +180,22 @@
         <div class="dialog" id="welcome-dialog" title="Welcome to {{ request.site.name }}">
             <div class="welcome-message">
                 <p>
-                    {% trans "Hi" %} {{ logged_in_user.first_name }},
+                    {% blocktrans with name=logged_in_user.first_name trimmed %}
+                        Hi {{ name }},
+                    {% endblocktrans %}
                 </p>
                 <p>
-                    <strong>{% trans "Thanks for joining" %} {{ request.site.name }}!</strong><br/>
-                    {% trans "To get started, we recommend visiting your" %} <a href="{% url 'accounts:profile-settings' %}">{% trans "accounts" %}</a> {% trans "page.  Here you can set your preferences, including what information you wish to share with other" %} {{ request.site.name }} {% trans "members" %}.
+                    {% blocktrans with site=request.site.name url 'accounts:profile-settings' as url trimmed %}
+                        <strong>Thanks for joining {{ site }}!</strong><br/>
+                        To get started, we recommend visiting your <a href="{{ url }}">accounts</a> page.
+                        Here you can set your preferences, including what information you wish to share with other {{ site }} members.
+                    {% endblocktrans %}
                 </p>
                 <p>
-                    {% trans "Cheers" %},<br/>
-                    {% trans "The" %} {{ request.site.name }} {% trans "team" %}
+                    {% blocktrans with site=request.site.name trimmed %}
+                        Cheers,<br/>
+                        The {{ site }} team
+                    {% endblocktrans %}
                 </p>
             </div>
         </div>

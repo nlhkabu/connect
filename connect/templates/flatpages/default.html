@@ -9,6 +9,6 @@
         <div class="flatpage-content">
             {{ flatpage.content }}
         </div>
-        <a href="/" class="button">{{ request.site.name }} {% trans "Home" %}</a>
+        <a href="/" class="button">{% blocktrans with site=request.site.name %}{{ site }} Home{% endblocktrans %}</a>
     </div>
 {% endblock %}

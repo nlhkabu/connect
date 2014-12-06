@@ -1,12 +1,14 @@
 {% load i18n %}
 {% autoescape off %}
 
-{% block intro %}{% trans "Hi" %} {{ recipient.first_name }},{% endblock %}
+{% block intro %}
+{% blocktrans with name=recipient.first_name trimmed %}Hi {{ name }},{% endblocktrans %}
+{% endblock %}
 
 {% block email_content %}{% endblock %}
 
-{% block signoff %}{% trans "Thanks" %},
-{% trans "The" %} {{ site_name }} {% trans "team" %}
-
+{% block signoff %}
+{% blocktrans with site=site_name trimmed %}Thanks,
+The {{ site }} team{% endblocktrans %}
 {% endautoescape %}
 {% endblock %}

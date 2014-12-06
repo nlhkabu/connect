@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-06 18:14+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: settings.py:121
+msgid "English"
+msgstr ""
+
+#: templates/base.html:26
+msgid ""
+"You are using an <strong>outdated</strong> browser. Please <a href='http://"
+"browsehappy.com/'>upgrade your browser</a> to improve your experience."
+msgstr ""
+
+#: templates/base.html:68
+msgid "Fork me on Github"
+msgstr ""
+
+#: templates/emails/email_base.html:169 templates/emails/email_base.txt:5
+#, python-format
+msgid "Hi %(name)s,"
+msgstr ""
+
+#: templates/emails/email_base.html:178
+#, python-format
+msgid "<p>Thanks,</p> <p>The %(site)s team</p>"
+msgstr ""
+
+#: templates/emails/email_base.html:207
+#, python-format
+msgid "You received this email because you are a registered user at %(site)s."
+msgstr ""
+
+#: templates/emails/email_base.txt:11
+#, python-format
+msgid "Thanks, The %(site)s team"
+msgstr ""
+
+#: templates/flatpages/default.html:12
+#, python-format
+msgid "%(site)s Home"
+msgstr ""
+
+#: templates/logged_in.html:5
+msgid "Menu"
+msgstr ""
+
+#: templates/logged_in.html:12
+msgid "Moderators"
+msgstr ""
+
+#: templates/logged_in.html:14
+msgid "My Account"
+msgstr ""
+
+#: templates/logged_in.html:15
+msgid "Logout"
+msgstr ""
+
+#: urls.py:19
+msgid "^admin/"
+msgstr ""
+
+#: urls.py:21
+msgid "^accounts/"
+msgstr ""
+
+#: urls.py:22
+msgid "^moderation/"
+msgstr ""
+
+#: urls.py:23
+msgid "^dashboard/"
+msgstr ""
+
+#: urls.py:24
+msgid "^pages/"
+msgstr ""

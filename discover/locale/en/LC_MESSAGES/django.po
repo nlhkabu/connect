@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-06 18:02+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/discover/dashboard.html:10 templates/discover/list.html:16
+#: templates/discover/map.html:13
+msgid "List View"
+msgstr ""
+
+#: templates/discover/dashboard.html:15 templates/discover/list.html:22
+#: templates/discover/map.html:19
+msgid "Map View"
+msgstr ""
+
+#: templates/discover/list.html:4
+msgid "Dashboard"
+msgstr ""
+
+#: templates/discover/list.html:30
+msgid "Skills/Interests"
+msgstr ""
+
+#: templates/discover/list.html:39
+msgid "Roles"
+msgstr ""
+
+#: templates/discover/list.html:47
+msgid "Location"
+msgstr ""
+
+#: templates/discover/list.html:50
+msgid "All users"
+msgstr ""
+
+#: templates/discover/list.html:54
+msgid "Close to me"
+msgstr ""
+
+#: templates/discover/list.html:58
+msgid "Within"
+msgstr ""
+
+#: templates/discover/list.html:64
+msgid "apply"
+msgstr ""
+
+#: templates/discover/list.html:67
+msgid "Clear"
+msgstr ""
+
+#: templates/discover/list.html:68
+msgid "Refine Results"
+msgstr ""
+
+#: templates/discover/list.html:149
+msgid "Report Abuse"
+msgstr ""
+
+#: templates/discover/list.html:153
+msgid "View Full Profile"
+msgstr ""
+
+#: templates/discover/list.html:156
+msgid "Connect"
+msgstr ""
+
+#: templates/discover/list.html:172
+msgid "Sorry!"
+msgstr ""
+
+#: templates/discover/list.html:173
+msgid "There are no users matching your selected search.  Please try again."
+msgstr ""
+
+#: templates/discover/list.html:183
+#, python-format
+msgid "Hi %(name)s,"
+msgstr ""
+
+#: templates/discover/list.html:188
+#, python-format
+msgid ""
+"<strong>Thanks for joining %(site)s!</strong><br/> To get started, we "
+"recommend visiting your <a href=\"%(url)s\">accounts</a> page. Here you can "
+"set your preferences, including what information you wish to share with "
+"other %(site)s members."
+msgstr ""
+
+#: templates/discover/list.html:195
+#, python-format
+msgid "Cheers,<br/> The %(site)s team"
+msgstr ""
+
+#: urls.py:7
+msgid "^map/$"
+msgstr ""

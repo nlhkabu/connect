@@ -23,7 +23,9 @@
     <body>
         <!--[if lt IE 7]>
             <p>
-                {% trans "You are using an" %} <strong>{% trans "outdated" %}</strong> {% trans "browser. Please" %} <a href='http://browsehappy.com/'>{% trans "upgrade your browser" %}</a> {% trans "to improve your experience" %}.
+                {% blocktrans trimmed %}
+                    You are using an <strong>outdated</strong> browser. Please <a href='http://browsehappy.com/'>upgrade your browser</a> to improve your experience.
+                {% endblocktrans %}
             </p>
         <![endif]-->
 
@@ -61,7 +63,8 @@
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">
-                    <span>{% trans "Made with" %} <i class="fa fa-heart"></i> {% trans "by" %} <a href="http://twitter.com/nlhkabu">nlh</a> {% trans "and" %} <a href="<!-- TODO: add contributors file -->">{% trans "contributors" %}</a>.</span>
+                    <!-- TODO: add contributors file -->
+                    <span>{% trans "Made with <i class="fa fa-heart"></i> by <a href="http://twitter.com/nlhkabu">nlh</a> and <a href="#">contributors</a>.</span>
                     <span><a href="">{% trans "Fork me on Github" %}.</a></span>
                 </p>
                 <p class="pull-right">
@@ -74,7 +77,6 @@
         </footer>
 
         <!-- Load Extra JS  -->
-
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.10.1.min.js' %}"><\/script>')</script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>

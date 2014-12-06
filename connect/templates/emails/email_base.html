@@ -165,18 +165,20 @@
                                                         <td valign="top">
                                                             <div>
                                                                 {% block intro %}
-                                                                    <p>{% trans "Hi" %} {{ recipient.first_name }},</p>
-                                                                    {% endblock %}
-
-                                                                    {% block email_content %}{% endblock %}
-
-                                                                    {% block signoff %}
                                                                     <p>
-                                                                        {% trans "Thanks" %},
+                                                                        {% blocktrans with name=recipient.first_name trimmed %}
+                                                                            Hi {{ name }},
+                                                                        {% endblocktrans %}
                                                                     </p>
-                                                                    <p>
-                                                                        {% trans "The" %} {{ site_name }} {% trans "team" %}
-                                                                    </p>
+                                                                {% endblock %}
+
+                                                                {% block email_content %}{% endblock %}
+
+                                                                {% block signoff %}
+                                                                    {% blocktrans with site=site_name trimmed %}
+                                                                        <p>Thanks,</p>
+                                                                        <p>The {{ site }} team</p>
+                                                                    {% endblocktrans %}
                                                                 {% endblock %}
 
                                                                 {% endautoescape %}
@@ -202,7 +204,9 @@
                                                             <div>
                                                                 <p>
                                                                     {% block email_footer %}
-                                                                        {% trans "You received this email because you are a registered user at" %} {{ site_name }}.
+                                                                        {% blocktrans with site=site_name trimmed %}
+                                                                            You received this email because you are a registered user at {{ site }}.
+                                                                        {% endblocktrans %}
                                                                     {% endblock %}
                                                                 </p>
                                                             </div>
