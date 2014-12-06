@@ -8,8 +8,8 @@
     <h3 class="lined">{% trans "Review Abuse Reports" %}</h3>
 
     {% if reports %}
-        <p class="intro">Review abuse reports currently logged in the system.  User's emails are provided in the event that you need to gather additional information to make an appropriate ruling - please only use them for this purpose.</p>
-        <p class="intro">To help moderators make informed decisions (especially in the context of recurring reports), previous warnings are displayed on the accused user.</p>
+        <p class="intro">{% trans "Review abuse reports currently logged in the system.  User's emails are provided in the event that you need to gather additional information to make an appropriate ruling - please only use them for this purpose." %}</p>
+        <p class="intro">{% trans "To help moderators make informed decisions (especially in the context of recurring reports), previous warnings are displayed on the accused user." %}</p>
 
         <table class="responsive abuse-table">
             <thead>
@@ -30,7 +30,11 @@
                             <a href="mailto:{{ report.logged_against.email }}" class="wrap">{{ report.logged_against.email }}</a>
                             {% if report.prior_warnings %}
                                 <a href="#" class="show-warnings" data-user="{{ report.logged_against.id }}">
-                                    {{ report.prior_warnings|length }} prior warning{{ report.prior_warnings|length|pluralize }}
+                                    {% blocktrans count warning_count=report.prior_warnings.count trimmed %}
+                                        {{ warning_count }} prior warning
+                                    {% plural %}
+                                        {{ warning_count }} prior warnings
+                                    {% endblocktrans %}
                                 </a>
                             {% endif %}
                         </td>
@@ -42,7 +46,7 @@
                             <span class="desktop">
                                 {{ report.abuse_comment|linebreaksbr|truncatewords_html:20 }}
                                 {% if report.abuse_comment|wordcount > 21 %}
-                                    <a class="read-more" href="#" data-id="{{ report.id }}">Read More</a>
+                                    <a class="read-more" href="#" data-id="{{ report.id }}">{% trans "Read More" %}</a>
                                 {% endif %}
                             </span>
                             <span class="mobile">
@@ -50,9 +54,9 @@
                             </span>
                         </td>
                         <td class="actions">
-                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="Dismiss Abuse Report">Dismiss Report</a>
-                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="WARN" data-title="Warn User">Warn User</a>
-                            <a href="#" class="table-link decision-link last" data-report="{{ report.id }}" data-decision="BAN" data-title="Ban User">Ban User</a>
+                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="DISMISS" data-title="{% trans 'Dismiss Abuse Report' %}">{% trans "Dismiss Report" %}</a>
+                            <a href="#" class="table-link decision-link" data-report="{{ report.id }}" data-decision="WARN" data-title="{% trans 'Warn User' %}">{% trans "Warn User" %}</a>
+                            <a href="#" class="table-link decision-link last" data-report="{{ report.id }}" data-decision="BAN" data-title="{% trans 'Ban User' %}">{% trans "Ban User" %}</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -63,29 +67,44 @@
         {% for report in reports %}
             <!-- Comments dialog -->
             {% if report.abuse_comment|wordcount > 21 %}
-                <div class="comments-dialog dialog" id="dialog{{ report.id }}" title="Comments for report logged against {{ report.logged_against.get_full_name|title }}">
+                <div class="comments-dialog dialog" id="dialog{{ report.id }}" title="{% blocktrans with user=report.logged_against.get_full_name|title %}Comments for report logged against {{ user }}{% endblocktrans %}">
                     <div class="comments">
                         {{ report.abuse_comment|linebreaksbr }}
                     </div>
                 </div>
             {% endif %}
 
+
             <!-- Prior Warnings Modal-->
             {% if report.prior_warnings %}
-                <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="{{ report.prior_warnings|length|apnumber|title }} prior warning{{ report.prior_warnings|length|pluralize }} for {{ report.logged_against.get_full_name|title }}">
+
+                <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="
+                    {% blocktrans with name=report.logged_against.get_full_name|title count warning_count=report.prior_warnings.count|apnumber|title trimmed %}
+                        {{ warning_count }} prior warning for {{ name }}
+                    {% plural %}
+                        {{ warning_count }} prior warnings for {{ name }}
+                    {% endblocktrans %}
+                ">
+
                     {% for warning in report.prior_warnings %}
                         <div class="warning {% if forloop.last %}last{% endif %}">
                             <h4 class="{% if forloop.first %}first{% endif %}">{% trans "Abuse Report Details" %}:</h4>
                             {{ warning.abuse_comment|linebreaksbr }}
                             <h4>{% trans "Moderator Comment" %}:</h4>
                             {{ warning.moderator_comment|linebreaksbr }}<br/>
-                            <h4>Meta:</h4>
+                            <h4>{% trans "Meta" %}:</h4>
                             <p class="meta">
-                                {% trans "Report made on" %} <em>{{ warning.logged_datetime|date:"M d, Y" }}</em> by <em>{{ warning.logged_by.get_full_name|title }}</em><br/>
-                                {% trans "Warning issued on" %} <em>{{ warning.decision_datetime|date:"M d, Y" }}</em> by <em>{{ warning.moderator.get_full_name|title }}</em>
+                                {% blocktrans with date=warning.logged_datetime|date:"M d, Y" reporting_user=warning.logged_by.get_full_name|title trimmed %}
+                                    Report made on <em>{{ date }}</em> by <em>{{ reporting_user }}</em>
+                                {% endblocktrans %}
+                                <br/>
+                                {% blocktrans with date=warning.decision_datetime|date:"M d, Y" moderator=warning.moderator.get_full_name|title trimmed %}
+                                    Warning issued on <em>{{ date }}</em> by <em>{{ moderator }}</em>
+                                {% endblocktrans %}
                             </p>
                         </div>
                     {% endfor %}
+
                 </div>
             {% endif %}
         {% endfor %}
@@ -97,7 +116,7 @@
                 {{ form.report_id }}
                 {{ form.decision }}
                 <p>
-                    <label>Comments</label>
+                    <label>{% trans "Comments" %}</label>
                     {{ form.comments }}
                     {% if form.comments.errors %}
                         <span class="form-error">
@@ -112,6 +131,7 @@
         </div>
 
     {% else %}
-        <p class="intro">There are currently no abuse reports logged in the system.</p>
+        <p class="intro">{% trans "There are currently no abuse reports logged in the system" %}.</p>
     {% endif %}
+
 {% endblock %}

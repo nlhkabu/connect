@@ -5,10 +5,10 @@
 
 {% block page_content %}
     <div class="container">
-        <h3 class="lined">Your Abuse Report has been logged</h4>
+        <h3 class="lined">{% trans "Your Abuse Report has been logged" %}</h4>
         <p class="intro">
-            A moderator will review your report and make a decision to either dismiss the report, warn the offender, or ban the offender from their account.<br/>
-            In all cases, you will be notified by email regarding the outcome.
+            {% trans "A moderator will review your report and make a decision to either dismiss the report, warn the offender, or ban the offender from their account" %}.<br/>
+            {% trans "In all cases, you will be notified by email regarding the outcome" %}.
         </p>
     </div>
 {% endblock %}

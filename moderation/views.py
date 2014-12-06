@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from accounts.models import AbuseReport
@@ -96,7 +97,7 @@ def invite_user(request):
                             comment=log_comment)
 
         # Send email
-        subject = 'Welcome to {}'.format(site.name)
+        subject = _('Welcome to {}'.format(site.name))
         template = 'moderation/emails/invite_new_user.html'
         token = new_user.auth_token
         url = request.build_absolute_uri(
@@ -108,9 +109,8 @@ def invite_user(request):
                            site=site,
                            url=url)
 
-        messages.success(request, '{} has been invited to {}.'.format(
-            new_user.get_full_name(),
-            site.name))
+        messages.success(request,_('{} has been invited to {}.'.format(
+                         new_user.get_full_name(), site.name)))
 
         return redirect('moderation:moderators')
 
@@ -147,8 +147,9 @@ def reinvite_user(request):
 
             # Log moderation event
             msg_type = ModerationLogMsg.REINVITATION
-            log_comment = '{} resent invitation to {}'.format(moderator.get_full_name(),
-                                                              user.get_full_name())
+            log_comment = _('{} resent invitation to {}'.format(
+                                moderator.get_full_name(),
+                                user.get_full_name()))
             log_moderator_event(msg_type=msg_type,
                                 user=user,
                                 moderator=moderator,
@@ -159,7 +160,7 @@ def reinvite_user(request):
                         reverse('accounts:activate-account',
                                 args=[user.auth_token]))
 
-            subject = 'Activate your {} account'.format(site.name)
+            subject = _('Activate your {} account'.format(site.name))
             template = 'moderation/emails/reinvite_user.html'
 
             send_connect_email(subject=subject,
@@ -169,9 +170,8 @@ def reinvite_user(request):
                                site=site,
                                url=url)
 
-        messages.success(request, '{} has been reinvited to {}.'.format(
-            user.get_full_name(),
-            site.name))
+        messages.success(request, _('{} has been reinvited to {}.'.format(
+                         user.get_full_name(), site.name)))
 
         return redirect('moderation:moderators')
 
@@ -202,9 +202,8 @@ def revoke_invitation(request):
         except User.DoesNotExist:
             raise PermissionDenied
 
-        messages.success(request, '{} has been uninvited from {}.'.format(
-            user.get_full_name(),
-            site.name))
+        messages.success(request, _('{} has been uninvited from {}.'.format(
+                         user.get_full_name(), site.name)))
 
         if not user.auth_token_is_used:
 
@@ -260,7 +259,7 @@ def review_applications(request):
                 url = request.build_absolute_uri(
                                     reverse('accounts:activate-account',
                                     args=[user.auth_token]))
-                subject = 'Welcome to {}'.format(site.name)
+                subject = _('Welcome to {}'.format(site.name))
                 template = 'moderation/emails/approve_user.html'
 
             elif decision == 'REJ':
@@ -269,8 +268,8 @@ def review_applications(request):
                 # Set log and email settings
                 msg_type = ModerationLogMsg.REJECTION
                 url = ''
-                subject = ('Unfortunately, your application to {} '
-                           'was not successful'.format(site.name))
+                subject = _(('Unfortunately, your application to {} '
+                             'was not successful').format(site.name))
                 template = 'moderation/emails/reject_user.html'
 
 
@@ -315,7 +314,8 @@ def report_abuse(request, user_id):
 
         if form.is_valid():
             logged_by = User.objects.get(id=form.cleaned_data['logged_by'])
-            logged_against = User.objects.get(id=form.cleaned_data['logged_against'])
+            logged_against = User.objects.get(
+                id=form.cleaned_data['logged_against'])
             abuse_comment = form.cleaned_data['comments']
 
             new_report = AbuseReport.objects.create(
@@ -335,7 +335,7 @@ def report_abuse(request, user_id):
             url = request.build_absolute_uri(
                                 reverse('moderation:review-abuse'))
 
-            subject = 'New abuse report at {}'.format(site.name)
+            subject = _('New abuse report at {}'.format(site.name))
             template = 'moderation/emails/notify_moderators_of_abuse_report.html'
 
             for moderator in moderators:
@@ -454,7 +454,8 @@ def review_abuse(request):
                 msg_type = ModerationLogMsg.DISMISSAL
 
                 # Send email to the user who made the report
-                subject = 'Your {} Abuse Report has been dismissed'.format(site.name)
+                subject = _('Your {} Abuse Report has been dismissed'.format(
+                                                                    site.name))
                 template = 'moderation/emails/abuse_report_dismissed.html'
                 send_email_to_reporting_user(subject, template)
 
@@ -463,15 +464,14 @@ def review_abuse(request):
                 msg_type = ModerationLogMsg.WARNING
 
                 # send email to the user who made the report
-                subject = ('{} {} has been issued a formal '
-                          'warning from {}').format(logged_against.first_name,
-                                                    logged_against.last_name,
-                                                    site.name)
+                subject = _('{} has been issued a formal warning from {}'.format(
+                                                logged_against.get_full_name(),
+                                                site.name))
                 template = 'moderation/emails/abuse_report_warn_other_user.html'
                 send_email_to_reporting_user(subject, template)
 
                 # send email to the user the report is logged against
-                subject = 'A formal warning from {}'.format(site.name)
+                subject = _('A formal warning from {}'.format(site.name))
                 template = 'moderation/emails/abuse_report_warn_this_user.html'
                 send_email_to_offending_user(subject, template)
 
@@ -480,23 +480,22 @@ def review_abuse(request):
                 msg_type = ModerationLogMsg.BANNING
 
                 # send email to the user who made the report
-                subject = ('{} {} has been '
-                           'banned from {}').format(logged_against.first_name,
-                                                    logged_against.last_name,
-                                                    site.name)
+                subject = _('{} has been banned from {}'.format(
+                                logged_against.get_full_name(),
+                                site.name))
                 template = 'moderation/emails/abuse_report_ban_other_user.html'
                 send_email_to_reporting_user(subject, template)
 
 
                 # send email to the user the report is logged against
-                subject = 'Your {} account has been terminated'.format(site.name)
+                subject = _(('Your {} account has been terminated').format(
+                                                                    site.name))
                 template = 'moderation/emails/abuse_report_ban_this_user.html'
                 send_email_to_offending_user(subject, template)
 
                 # deactivate account
                 user.is_active = False
                 user.save()
-
 
             # Log moderation event
             log_moderator_event(msg_type=msg_type,

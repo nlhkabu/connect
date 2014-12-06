@@ -2,6 +2,8 @@ from datetime import date
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
+
 from .models import ModerationLogMsg
 from accounts.models import AbuseReport
 from accounts.forms import validate_email_availability
@@ -38,7 +40,8 @@ class ReInviteMemberForm(forms.Form):
 
     def clean(self):
         """
-        If the moderator changes the email, make sure the new email is not already in the system.
+        If the moderator changes the email, make sure the new
+        email is not already in the system.
         """
         cleaned_data = super(ReInviteMemberForm, self).clean()
         email = cleaned_data.get('email')
@@ -69,9 +72,9 @@ class ModerateApplicationForm(forms.Form):
     decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:],
                                  widget=forms.HiddenInput)
     comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': 'Please explain your decision. '
-                        'This information will not be sent to the user, '
-                        'but will be recorded in the moderation logs.',
+        'placeholder': _('Please explain your decision. '
+                         'This information will not be sent to the user, '
+                         'but will be recorded in the moderation logs.'),
     }))
 
 
@@ -106,9 +109,9 @@ class ModerateAbuseForm(forms.Form):
     decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES,
                                  widget=forms.HiddenInput)
     comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': 'Please explain your decision. '
-                        'This information will be sent to both users '
-                        'and recorded in the moderation logs.',
+        'placeholder': _('Please explain your decision. '
+                         'This information will be sent to both users '
+                         'and recorded in the moderation logs.'),
     }))
 
 
@@ -124,11 +127,11 @@ class FilterLogsForm(forms.Form):
     CUSTOM = 'CUSTOM'
 
     DATE_CHOICES = (
-        (ALL, 'All'),
-        (TODAY, 'Today'),
-        (YESTERDAY, 'Yesterday'),
-        (THIS_WEEK, 'This Week (Last 7 days)'),
-        (CUSTOM, 'Custom Date Range'),
+        (ALL, _('All')),
+        (TODAY, _('Today')),
+        (YESTERDAY, _('Yesterday')),
+        (THIS_WEEK, _('This Week (Last 7 days)')),
+        (CUSTOM, _('Custom Date Range')),
     )
 
     MSG_FILTER_CHOICES = ModerationLogMsg.MSG_TYPE_CHOICES
@@ -139,13 +142,14 @@ class FilterLogsForm(forms.Form):
     period = forms.ChoiceField(choices=DATE_CHOICES)
 
     start_date = forms.DateTimeField(required=False,
-                            initial=lambda: date.today().replace(year=date.today().year - 1),
+                            initial=lambda: date.today().replace(
+                                year=date.today().year - 1),
                             input_formats=('%d/%m/%Y',),
                             widget=forms.DateInput(
                                 format='%d/%m/%Y',
                                 attrs={
                                     'class': 'start-date',
-                                    'placeholder': 'Start Date',
+                                    'placeholder': _('Start Date'),
                                     #~# Disable by default (unless shown)
                                     'disabled': 'True',
                             }))
@@ -157,7 +161,7 @@ class FilterLogsForm(forms.Form):
                             format='%d/%m/%Y',
                             attrs={
                                 'class': 'end-date',
-                                'placeholder': 'End Date',
+                                'placeholder': _('End Date'),
                                 # Disable by default (unless shown)
                                 'disabled': 'True',
                         }))
@@ -178,7 +182,8 @@ class FilterLogsForm(forms.Form):
 
             if not start_date or not end_date:
                 raise forms.ValidationError(
-                    'To filter by date, please provide a start and end date',
-                     code='missing_date')
+                    _('To filter by date, please provide a '
+                      'start and end date'),
+                    code='missing_date')
 
         return cleaned_data

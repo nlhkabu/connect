@@ -1,15 +1,20 @@
 {% extends 'emails/email_base.html' %}
+{% load i18n %}
 
 {% autoescape off %}
     {% block email_content %}
-        <p>You have been sent this email as a new account has been created for you at {{ site_name }}.</p>
-        <p>To activate this account, please click on the following link (or copy it into a web browser):</p>
+        {% blocktrans with site=site_name trimmed %}
+            <p>You have been sent this email as a new account has been created for you at {{ site }}.</p>
+        {% endblocktrans %}
+        <p>{% trans "To activate this account, please click on the following link (or copy it into a web browser)" %}:</p>
         <p>
             <a href="{{ url }}">{{ url }}</a>
         </p>
     {% endblock %}
 
     {% block email_footer %}
-        You received this email because {{ sender.first_name }} {{ sender.last_name }} registered a new {{ site_name }} account for you.
+        {% blocktrans with name=sender.get_full_name site=site_name trimmed %}
+            You received this email because {{ name }} registered a new {{ site }} account for you.
+        {% endblocktrans %}
     {% endblock %}
 {% endautoescape %}

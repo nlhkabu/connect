@@ -1,18 +1,24 @@
 {% extends 'emails/email_base.html' %}
+{% load i18n %}
 
 {% autoescape off %}
     {% block email_content %}
-        <p>You have been sent this email as you logged an abuse report against {{ logged_against.get_full_name }} at {{ site_name }}.</p>
-        <p>Your report has been reviewed by a {{ site_name }} moderator, and in this instance, they have made the decision to dismiss the report.</p>
-        <p>Please find their comments below:</p>
+        {% blocktrans with name=logged_against.get_full_name trimmed %}
+            <p>You have been sent this email as you logged an abuse report against {{ name }} at {{ site_name }}.</p>
+            <p>Your report has been reviewed by a {{ site_name }} moderator, and in this instance, they have made the decision to dismiss the report.</p>
+        {% endblocktrans %}
+        <p>{% trans "Please find their comments below" %}:</p>
         <blockquote>
             {{ comments }}
         </blockquote>
-
-        <p>If you wish to appeal this decision, please contact <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+        {% blocktrans trimmed %}
+            <p>If you wish to appeal this decision, please contact <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+        {% endblocktrans %}
     {% endblock %}
 
     {% block email_footer %}
-        You received this email because you logged an abuse report at {{ site_name }}.
+        {% blocktrans trimmed %}
+            You received this email because you logged an abuse report at {{ site_name }}.
+        {% endblocktrans %}
     {% endblock %}
 {% endautoescape %}

@@ -7,14 +7,18 @@
     <div class="container">
         <form action="" method="post" class="horizontal-form">
             <fieldset>
-                <legend>Log an abuse report against {{ logged_against.get_full_name|title }}</legend>
+                <legend>{% trans "Log an abuse report against" %} {{ logged_against.get_full_name|title }}</legend>
                 <p class="intro">
-                    Describe the complaint you wish to make against {{ logged_against.get_full_name|title }}, providing as much relevant information as you can.<br/>
-                    Based on the information provided, a {{ request.site.name }} moderator will either dismiss the report, warn the user, or ban the user from their account. <br />
+                    {% blocktrans with user=logged_against.get_full_name|title site=request.site.name trimmed %}
+                        Describe the complaint you wish to make against {{ user }}, providing as much relevant information as you can.<br/>
+                        Based on the information provided, a {{ site }} moderator will either dismiss the report, warn the user, or ban the user from their account.
+                    {% endblocktrans %}
                 </p>
 
                 <p class="intro">
-                    If your complaint is about a {{ request.site.name }} moderator, they will not notified, nor will they be able to view this report.
+                    {% blocktrans with site=request.site.name trimmed %}
+                        If your complaint is about a {{ site }} moderator, they will not notified, nor will they be able to view this report.
+                    {% endblocktrans %}
                 </p>
                 {% csrf_token %}
 

@@ -8,7 +8,12 @@
     <h3 class="lined">{% trans "Review Membership Applications" %}</h3>
 
     {% if pending %}
-        <p class="intro">There {{ pending.count|pluralize:"is,are" }} {{ pending.count|apnumber }} pending member application{{ pending.count|pluralize }}:</p>
+        <p class="intro">
+            {% blocktrans count pending_count=pending.count|apnumber trimmed %}
+                There is {{ pending_count }} pending member application:
+            {% plural %}
+                There are {{ pending_count }} pending member applications:
+            {% endblocktrans %}
         <table class="responsive review-app-table">
             <thead>
                 <tr>
@@ -30,7 +35,7 @@
                         <span class="desktop">
                             {{ user.application_comments|linebreaksbr|truncatewords_html:20 }}
                             {% if user.application_comments|wordcount > 21 %}
-                                <a class="read-more" href="#" data-id="{{ user.id }}">Read More</a>
+                                <a class="read-more" href="#" data-id="{{ user.id }}">{% trans "Read More" %}</a>
                             {% endif %}
                         </span>
                         <span class="mobile">
@@ -38,8 +43,8 @@
                         </span>
                     </td>
                     <td class="actions">
-                        <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="APP">Approve Application</a>
-                        <a href="#" class="table-link decision-link last" data-user="{{ user.id }}" data-decision="REJ">Reject Application</a>
+                        <a href="#" class="table-link decision-link" data-user="{{ user.id }}" data-decision="APP">{% trans "Approve Application" %}</a>
+                        <a href="#" class="table-link decision-link last" data-user="{{ user.id }}" data-decision="REJ">{% trans "Reject Application" %}</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -52,7 +57,7 @@
                 {{ form.user_id }}
                 {{ form.decision }}
                 <p>
-                    <label>Comments</label>
+                    <label>{% trans "Comments" %}</label>
                     {{ form.comments }}
                     {% if form.comments.errors %}
                         <span class="form-error">
@@ -73,7 +78,7 @@
 
     {% for user in pending %}
         {% if user.application_comments|wordcount > 21 %}
-            <div class="comments-dialog dialog" id="dialog{{ user.id }}" title="Application comments for {{ user.get_full_name|title }}">
+            <div class="comments-dialog dialog" id="dialog{{ user.id }}" title="{% blocktrans with user=user.get_full_name|title %}Application comments for {{ user }}{% endblocktrans %}">
                 <div class="comments">
                     {{ user.application_comments|linebreaksbr }}
                 </div>

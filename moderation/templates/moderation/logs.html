@@ -9,11 +9,11 @@
 
     <form action="" method="get" class="filter-logs">
         <div class="filter-input first">
-            <label for="id_msg_type">Log Type</label>
+            <label for="id_msg_type">{% trans "Log Type" %}</label>
             {{ form.msg_type }}
         </div>
         <div class="filter-input">
-            <label for="id_period">Period</label>
+            <label for="id_period">{% trans "Period" %}</label>
             {{ form.period }}
         </div>
         <div class="custom-date">
@@ -55,7 +55,7 @@
                             <span class="desktop">
                                 {{ log.comment|linebreaksbr|truncatewords_html:20 }}
                                 {% if log.comment|wordcount > 21 %}
-                                    <a class="read-more" href="#" data-id="{{ log.id }}">Read More</a>
+                                    <a class="read-more" href="#" data-id="{{ log.id }}">{% trans "Read More" %}</a>
                                 {% endif %}
                             </span>
                             <span class="mobile">
@@ -74,7 +74,7 @@
 
     {% for log in logs %}
         {% if log.comment|wordcount > 21 %}
-            <div class="comments-dialog dialog" id="dialog{{ log.id }}" title="Comments for {{ log.get_msg_type_display }} Log from {{ log.msg_datetime|date:'M d, Y' }}">
+            <div class="comments-dialog dialog" id="dialog{{ log.id }}" title="{% trans 'Comments for' %} {{ log.get_msg_type_display }} {% trans 'Log from' %} {{ log.msg_datetime|date:'M d, Y' }}">
                 <div class="comments">
                     {{ log.comment|linebreaksbr }}
                 </div>

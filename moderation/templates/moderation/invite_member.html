@@ -74,8 +74,13 @@
     </form>
     {% if pending %}
         <h3 class="lined">{% trans "Invitations pending activation" %}</h3>
-        <!-- TODO: How to translate this? -->
-        <p class="intro">{{ pending.count|apnumber|title }} member{{ pending.count|pluralize }} you have invited {{ pending.count|pluralize:"has,have" }} not yet activated their account:</p>
+        <p class="intro">
+            {% blocktrans count invitation_count=pending.count|apnumber|title trimmed %}
+                {{ invitation_count }} member you have invited has not yet activated their account:
+            {% plural %}
+                {{ invitation_count }} members you have invited have not yet activated their account:
+            {% endblocktrans %}
+        </p>
         <table class="responsive invitation-table">
             <thead>
                 <tr>
@@ -100,7 +105,7 @@
             </tbody>
         </table>
 
-        <div class="dialog" id="reinvite-member-dialog" title="Resend Invitation">
+        <div class="dialog" id="reinvite-member-dialog" title="{% trans 'Resend Invitation' %}">
             <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form">
                 {% csrf_token %}
                 {{ reinvitation_form.as_p }}
@@ -108,14 +113,16 @@
             </form>
         </div>
 
-        <div class="dialog" id="revoke-member-dialog" title="Revoke Invitation">
+        <div class="dialog" id="revoke-member-dialog" title="{% trans 'Revoke Invitation' %}">
             <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form">
                 {% csrf_token %}
                 <label class="revoke-label">
                     {{ revocation_form.confirm }}
-                    Revoke my invitation to <span class="name">this user</span> at <span class="email">this email address</span>
+                    {% blocktrans trimmed %}
+                        Revoke my invitation to <span class="name">this user</span> at <span class="email">this email address</span>.
+                    {% endblocktrans %}
                 </label>
-                <p class="intro">This action will also remove logs related to inviting this user.</p>
+                <p class="intro">{% trans "This action will also remove logs related to inviting this user" %}.</p>
 
                 {{ revocation_form.user_id }}
                 <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />

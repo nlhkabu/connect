@@ -1,18 +1,25 @@
 {% extends 'emails/email_base.html' %}
+{% load i18n %}
 
 {% autoescape off %}
     {% block email_content %}
-        <p>You have been sent this email as an abuse report has been logged against you at {{ site_name }}.</p>
-        <p>This report has been reviewed by a {{ site_name }} moderator, and in this instance, they have made the decision to issue a formal warning.</p>
-        <p>This warning will be stored against your profile and flagged in the event of another complaint, where a moderator may choose to ban you from the site.</p>
-        <p>Please find the moderator's comments below:</p>
+        {% blocktrans with site=site_name trimmed %}
+            <p>You have been sent this email as an abuse report has been logged against you at {{ site }}.</p>
+            <p>This report has been reviewed by a {{ site }} moderator, and in this instance, they have made the decision to issue a formal warning.</p>
+        {% endblocktrans %}
+        <p>{% trans "This warning will be stored against your profile and flagged in the event of another complaint, where a moderator may choose to ban you from the site." %}</p>
+        <p>{% trans "Please find the moderator's comments below" %}:</p>
         <blockquote>
             {{ comments }}
         </blockquote>
-        <p>If you wish to appeal this decision, please email <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+        {% blocktrans with email=contact_email trimmed %}
+            <p>If you wish to appeal this decision, please contact <a href="mailto:{{ email }}">{{ email }}</a>.</p>
+        {% endblocktrans %}
     {% endblock %}
 
     {% block email_footer %}
-        You received this email because an abuse report has been logged against you at {{ site_name }}.
+        {% blocktrans with site=site_name trimmed %}
+            You received this email because an abuse report has been logged against you at {{ site }}.
+        {% endblocktrans %}
     {% endblock %}
 {% endautoescape %}
