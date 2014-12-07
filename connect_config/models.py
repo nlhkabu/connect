@@ -19,6 +19,7 @@ class SiteConfig(models.Model):
                                                  'emails. Must be 600px wide. '
                                                  'Keep the file size as '
                                                  'small as possible!'))
+
     class Meta:
         verbose_name = _('site configuration')
         verbose_name_plural = _('site configurations')

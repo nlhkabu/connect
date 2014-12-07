@@ -606,7 +606,7 @@ class ReportAbuseTest(TestCase):
         expected_subject = 'New abuse report at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Hello')
         expected_url = ('href="http://testserver/moderation/review-'
-                       'abuse-reports/">review')
+                       'abuse-reports/"')
         expected_footer = 'you are a moderator at {}'.format(self.site.name)
         email = mail.outbox[0]
         recipients = [message.to[0] for message in mail.outbox]

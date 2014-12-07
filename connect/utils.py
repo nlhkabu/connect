@@ -79,6 +79,9 @@ def send_connect_email(subject, template, recipient, site, sender='',
     e.g. account activation, abuse decisions, new account applications, etc.
     """
 
+    email_header_url = site.config.email_header.url
+    email_header = ''.join(['http://', site.domain, email_header_url])
+
     template_vars = {
         'recipient': recipient,
         'site_name': site.name,
@@ -87,6 +90,8 @@ def send_connect_email(subject, template, recipient, site, sender='',
         'comments': comments,
         'logged_against': logged_against,
         'contact_email':  site.config.email,
+        'email_header': email_header,
+        'link_color': 'e51e41', # TODO: dynamically retrieve color from CSS
     }
 
     email = generate_html_email(

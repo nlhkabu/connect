@@ -5,7 +5,7 @@
     {% block email_content %}
         {% blocktrans with site=site_name email=contact_email trimmed %}
             <p>Unfortunately, your application for an account at {{ site }} was not successful.</p>
-            <p>If you wish to appeal this decision, please email <a href="mailto:{{ email }}">{{ email }}</a>.</p>
+            <p>If you wish to appeal this decision, please email <a href="mailto:{{ email }}" style="color: #{{ link_color }};">{{ email }}</a>.</p>
         {% endblocktrans %}
     {% endblock %}
 

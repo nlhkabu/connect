@@ -5,7 +5,7 @@
     {% block email_content %}
         {% blocktrans with url=url site=site_name trimmed %}
             <p>You have been sent this email as a new abuse report has been registered at {{ name }}.</p>
-            <p>To review this report, please visit the <a href="{{ url }}">review abuse reports page</a> on your moderation dashboard.</p>
+            <p>To review this report, please visit the <a href="{{ url }}" style="color: #{{ link_color }};">review abuse reports page</a> on your moderation dashboard.</p>
         {% endblocktrans %}
     {% endblock %}
 

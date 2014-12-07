@@ -131,7 +131,6 @@
                 text-align:left;
             }
 
-
             .footerContent div a:link,
             .footerContent div a:visited,
             /* Yahoo! Mail Override */ .footerContent div a .yshortcuts /* Yahoo! Mail Override */ {
@@ -154,6 +153,19 @@
                 <tr>
                     <td align="center" valign="top">
                         <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" style="border:1px solid #DDDDDD;">
+                            <tr>
+                                <td align="center" valign="top">
+                                    <!-- Begin Template Header -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                                        <tr>
+                                            <td class="headerContent">
+                                                <img src="{% block header_image %}{{ email_header }}{% endblock %}" alt="{% block header_alt %}{{ site_name }} Email Header{% endblock %}" style="max-width:600px;" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- End Template Header -->
+                                </td>
+                            </tr>
                             <tr>
                                 <td align="center" valign="top">
                                     <!--  Begin Template Body  -->

@@ -8,7 +8,7 @@
         {% endblocktrans %}
         <p>{% trans "To activate this account, please click on the following link (or copy it into a web browser)" %}:</p>
         <p>
-            <a href="{{ url }}">{{ url }}</a>
+            <a href="{{ url }}" style="color: #{{ link_color }};">{{ url }}</a>
         </p>
     {% endblock %}
 

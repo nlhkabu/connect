@@ -18,3 +18,5 @@ class SiteConfigFactory(factory.django.DjangoModelFactory):
 
     site = factory.SubFactory(Site)
     email = factory.Sequence(lambda n: "site.email%s@test.test" % n)
+    tagline = 'A tagline'
+    email_header = factory.django.ImageField(filename='my_image.png')

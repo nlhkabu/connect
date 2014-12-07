@@ -5,7 +5,7 @@
     {% block email_content %}
         {% blocktrans with url=url site=site_name trimmed %}
             <p>You have been sent this email as a new account application has be registered at {{ site }}.</p>
-            <p>To view, approve or reject this application, please visit the <a href="{{ url }}">review membership applications page</a> on your moderation dashboard.</p>
+            <p>To view, approve or reject this application, please visit the <a href="{{ url }}" style="color: #{{ link_color }};">review membership applications page</a> on your moderation dashboard.</p>
         {% endblocktrans %}
     {% endblock %}
 

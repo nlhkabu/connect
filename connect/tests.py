@@ -3,9 +3,11 @@ from django.core import mail
 from django.test import TestCase
 
 from accounts.factories import UserFactory
-from connect_config.factories import SiteConfigFactory
+from connect_config.factories import SiteFactory, SiteConfigFactory
+from .settings import MEDIA_ROOT
 from .utils import (generate_salt, generate_html_email, hash_time,
                     send_connect_email)
+
 
 class UtilsTest(TestCase):
     def test_can_generate_standard_salt(self):
@@ -42,6 +44,7 @@ class UtilsTest(TestCase):
                                     html_template, template_vars)
 
         expected_string = 'you are a registered user at My Site.'
+        expected_header = ''
 
         self.assertEqual(email.subject, subject)
         self.assertEqual(email.from_email, from_address)
@@ -53,8 +56,9 @@ class UtilsTest(TestCase):
         subject = 'Test email'
         template = 'emails/email_base.html'
         recipient = UserFactory(email='recipient@test.test')
-        site = get_current_site(self.client.request)
+        site = SiteFactory(domain='mydomain.com')
         site.config = SiteConfigFactory(site=site)
+
         # Sender != from email, but rather the user who has sent the message
         sender = UserFactory(email='sender@test.test')
         url = 'http://testurl.com'
@@ -66,3 +70,8 @@ class UtilsTest(TestCase):
 
         self.assertEqual(email.subject, subject)
         self.assertEqual(email.to[0], recipient.email)
+
+        expected_header = '<img src="http://{}{}'.format(site.domain,
+                                                site.config.email_header.url)
+        self.assertIn(expected_header, email.alternatives[0][0])
+
