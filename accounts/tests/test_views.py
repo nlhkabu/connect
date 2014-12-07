@@ -22,6 +22,7 @@ from accounts.view_utils import match_link_to_brand, save_links, save_skills
 
 User = get_user_model()
 
+#TODO: Write unit tests for django.auth views
 
 class RequestInvitationTest(TestCase):
     fixtures = ['group_perms']
@@ -77,8 +78,7 @@ class RequestInvitationTest(TestCase):
             self.site.name
         )
 
-        expected_url = ('<a href="http://testserver/moderation/review-applica'
-                        'tions/">review membership applications page</a>')
+        expected_url = ('href="http://testserver/moderation/review-applications/"')
         email = mail.outbox[0]
 
         self.assertEqual(len(mail.outbox), 4) # 3 created as batch, plus original.

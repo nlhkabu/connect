@@ -14,7 +14,11 @@
                 If you wish to reactivate your <em>closed</em> account at this email address, please visit the following page:
             {% endblocktrans %}
         </p>
-        <p>{{ url }}</p>
+        <p>
+            <a href="{{ url }}" style="color: #{{ link_color }};">
+                {{ url }}
+            </a>
+        </p>
 
     {% endblock %}
 

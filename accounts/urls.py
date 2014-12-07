@@ -4,7 +4,9 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from django.utils.translation import ugettext_lazy as _
 
-from accounts import views
+from .forms import CustomPasswordResetForm
+from . import views
+
 
 
 urlpatterns = patterns('',
@@ -33,6 +35,8 @@ urlpatterns = patterns('',
             'current_app': 'accounts',
             'email_template_name': 'accounts/emails/password_reset_email.html',
             'html_email_template_name': 'accounts/emails/password_reset_email.html',
+            'subject_template_name': 'accounts/emails/password_reset_subject.txt',
+            'password_reset_form': CustomPasswordResetForm,
         },
         name="password-reset"
     ),

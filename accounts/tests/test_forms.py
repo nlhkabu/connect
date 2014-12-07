@@ -14,6 +14,8 @@ from accounts.forms import (ActivateAccountForm, BaseLinkFormSet,
 from accounts.models import UserLink, UserSkill
 
 
+#TODO: CustomPasswordResetForm(TestCase):
+
 class CustomUserAdminTest(TestCase):
     def test_user_creation_form_does_not_contain_username_field(self):
         form = CustomUserCreationForm()
