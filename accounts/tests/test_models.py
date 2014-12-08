@@ -1,7 +1,8 @@
 from django.core.exceptions import PermissionDenied
 from django.test import TestCase
 
-from accounts.factories import (BrandFactory, InvitedPendingFactory,
+from accounts.factories import (AbuseReportFactory,
+                                BrandFactory, InvitedPendingFactory,
                                 ModeratorFactory, RequestedPendingFactory,
                                 RoleFactory, SkillFactory,
                                 UserFactory, UserLinkFactory, UserSkillFactory)
@@ -19,6 +20,9 @@ class UserModelTest(TestCase):
         )
         self.invited_pending = InvitedPendingFactory()
         self.requested_pending = RequestedPendingFactory()
+
+    def test_string_method(self):
+        self.assertEqual(self.standard_user.__str__(), 'Firsto Namo')
 
     def test_get_full_name(self):
         full_name = self.standard_user.get_full_name()
@@ -111,7 +115,32 @@ class UserModelTest(TestCase):
             self.assertFalse(self.requested_pending.auth_token)
 
 
+class AbuseReportTest(TestCase):
+    def test_string_method(self):
+        user1 = UserFactory(first_name='a', last_name='b')
+        user2 = UserFactory(first_name='c', last_name='d')
+
+        report = AbuseReportFactory(logged_against=user2,
+                                    logged_by=user1)
+
+        self.assertEqual(report.__str__(), 'Reported by a b against c d')
+
+
+class SkillTest(TestCase):
+    def test_string_method(self):
+        skill = SkillFactory(name='MySkill')
+
+        self.assertEqual(skill.__str__(), 'MySkill')
+
+
 class UserSkillTest(TestCase):
+    def test_string_method(self):
+        user = UserFactory(first_name='a', last_name='b')
+        skill = SkillFactory(name='MySkill')
+        user_skill = UserSkillFactory(user=user, skill=skill)
+
+        self.assertEqual(user_skill.__str__(), 'a b - MySkill')
+
     def test_proficiency_percentage(self):
         user_skill = UserSkillFactory(proficiency=UserSkill.INTERMEDIATE)
         percentage = user_skill.get_proficiency_percentage()
@@ -119,9 +148,21 @@ class UserSkillTest(TestCase):
         self.assertEquals(percentage, 50)
 
 
+class RoleTest(TestCase):
+    def test_string_method(self):
+        role=RoleFactory(name='MyRole')
+
+        self.assertEqual(role.__str__(), 'MyRole')
+
+
 class UserLinkTest(TestCase):
     def setUp(self):
         self.github = BrandFactory() # Github is default brand.
+
+    def test_string_method(self):
+        user_link = UserLinkFactory(anchor='MyLink')
+
+        self.assertEqual(user_link.__str__(), 'MyLink')
 
     def test_custom_save_method_finds_registered_brand(self):
         user_link = UserLinkFactory(url='http://github.com/nlh-kabu')
@@ -147,6 +188,11 @@ class UserLinkTest(TestCase):
 
 
 class LinkBrandTest(TestCase):
+    def test_string_method(self):
+        brand = BrandFactory(name='Brand')
+
+        self.assertEqual(brand.__str__(), 'Brand')
+
     def test_custom_save_method_applies_new_brand_to_existing_userlinks(self):
         UserLinkFactory(url='http://facebook.com/myusername')
 

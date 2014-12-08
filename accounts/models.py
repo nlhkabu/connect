@@ -150,6 +150,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    def __str__(self):
+        return self.get_full_name()
+
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
@@ -378,7 +381,7 @@ class UserSkill(models.Model):
         unique_together = ('user', 'skill')
 
     def __str__(self):
-        return '{} - {}'.format(self.user, self.skill)
+        return '{} - {}'.format(self.user.get_full_name(), self.skill.name)
 
 
 class Role(models.Model):
