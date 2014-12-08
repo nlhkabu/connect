@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <title></title>
         <style type="text/css">
@@ -106,7 +106,7 @@
             .bodyContent div a[href],
             .bodyContent div a:visited,
             /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */ {
-                color:#e51e41;
+                color:#{{ link_color }};
                 font-weight:normal;
                 text-decoration:underline;
             }
@@ -134,7 +134,7 @@
             .footerContent div a:link,
             .footerContent div a:visited,
             /* Yahoo! Mail Override */ .footerContent div a .yshortcuts /* Yahoo! Mail Override */ {
-                color:#e51e41;
+                color:#{{ link_color }};
                 font-weight:normal;
                 text-decoration:underline;
             }
@@ -147,19 +147,19 @@
 
         </style>
     </head>
-    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="-webkit-text-size-adjust: none;margin: 0;padding: 0;background-color: #FAFAFA;width: 100% !important;">
         <center>
-            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable" style="margin: 0;padding: 0;background-color: #FAFAFA;height: 100% !important;width: 100% !important;">
                 <tr>
-                    <td align="center" valign="top">
-                        <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" style="border:1px solid #DDDDDD;">
+                    <td align="center" valign="top" style="border-collapse: collapse;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" style="border: 1px solid #DDDDDD;background-color: #FFFFFF;">
                             <tr>
-                                <td align="center" valign="top">
+                                <td align="center" valign="top" style="border-collapse: collapse;">
                                     <!-- Begin Template Header -->
                                     <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
                                         <tr>
-                                            <td class="headerContent">
-                                                <img src="{% block header_image %}{{ email_header }}{% endblock %}" alt="{% block header_alt %}{{ site_name }} Email Header{% endblock %}" style="max-width:600px;" />
+                                            <td class="headerContent" style="border-collapse: collapse;">
+                                                <img src="{% block header_image %}{{ email_header }}{% endblock %}" alt="{% block header_alt %}{{ site_name }} Email Header{% endblock %}" style="max-width: 600px;border: 0;height: auto;line-height: 100%;outline: none;text-decoration: none;">
                                             </td>
                                         </tr>
                                     </table>
@@ -167,15 +167,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td align="center" valign="top">
+                                <td align="center" valign="top" style="border-collapse: collapse;">
                                     <!--  Begin Template Body  -->
                                     <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
                                         <tr>
-                                            <td valign="top" class="bodyContent">
+                                            <td valign="top" class="bodyContent" style="border-collapse: collapse;background-color: #FFFFFF;">
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                                     <tr>
-                                                        <td valign="top">
-                                                            <div>
+                                                        <td valign="top" style="border-collapse: collapse;">
+                                                            <div style="color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;text-align: left;">
                                                                 {% block intro %}
                                                                     <p>
                                                                         {% blocktrans with name=recipient.first_name trimmed %}
@@ -188,8 +188,10 @@
 
                                                                 {% block signoff %}
                                                                     {% blocktrans with site=site_name trimmed %}
-                                                                        <p>Thanks,</p>
-                                                                        <p>The {{ site }} team</p>
+                                                                        <p>
+                                                                            Thanks,<br/>
+                                                                            The {{ site }} team
+                                                                        </p>
                                                                     {% endblocktrans %}
                                                                 {% endblock %}
 
@@ -205,15 +207,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td align="center" valign="top">
+                                <td align="center" valign="top" style="border-collapse: collapse;">
                                     <!-- Begin Template Footer -->
-                                    <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateFooter">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateFooter" style="background-color: #FFFFFF;border-top: 0;">
                                         <tr>
-                                            <td valign="top" class="footerContent">
+                                            <td valign="top" class="footerContent" style="border-collapse: collapse;">
                                                 <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                                     <tr>
-                                                        <td colspan="2" valign="middle" id="utility" style="background-color:#ececec; text-align:center;">
-                                                            <div>
+                                                        <td colspan="2" valign="middle" id="utility" style="background-color: #ececec;text-align: center;border-collapse: collapse;border: 0;">
+                                                            <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align: left;">
                                                                 <p>
                                                                     {% block email_footer %}
                                                                         {% blocktrans with site=site_name trimmed %}
@@ -232,7 +234,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <br />
+                        <br>
                     </td>
                 </tr>
             </table>
