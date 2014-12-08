@@ -25,7 +25,7 @@ class SiteConfig(models.Model):
         verbose_name_plural = _('site configurations')
 
     def __str__(self):
-        return _('Site configuration for {}'.format(self.site.name, self.tagline))
+        return _('Site configuration for {}'.format(self.site.name))
 
 
 
