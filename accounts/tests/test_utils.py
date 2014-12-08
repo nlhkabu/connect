@@ -85,7 +85,7 @@ class AccountUtilsTest(TestCase):
         unregistered = validate_email_availability('unregistered.user@test.test')
         self.assertTrue(unregistered)
 
-    def test_registered_email_should_not_be_available(self):
+    def test_registered_email(self):
         """
         Test that an email registered to another user is returned as False.
         i.e. It is NOT available for another user to use.

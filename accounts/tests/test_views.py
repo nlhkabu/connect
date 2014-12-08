@@ -75,12 +75,12 @@ class RequestInvitationTest(TestCase):
             },
         )
 
-    def test_request_invitation_url_and_template(self):
+    def test_url_and_template(self):
         self.check_url('/accounts/request-invitation/', request_invitation)
         self.check_template('accounts:request-invitation',
                             'accounts/request_invitation.html')
 
-    def test_requested_account_registration_recorded(self):
+    def test_account_registration_recorded(self):
         """
         Test that the request has been saved as a new user.
         """
@@ -91,7 +91,7 @@ class RequestInvitationTest(TestCase):
         self.assertIsNotNone(user.applied_datetime)
         self.assertEqual(user.application_comments, 'Please give me an account')
 
-    def test_notification_emails_are_sent_to_moderators(self):
+    def test_notification_emails_sent_to_moderators(self):
         # Setup moderators to receive emails
         factory.create_batch(
             ModeratorFactory,
@@ -116,9 +116,9 @@ class RequestInvitationTest(TestCase):
         self.assertIn(expected_content, email.body)
         self.assertIn(expected_url, email.alternatives[0][0])
 
-    def test_request_invitation_redirect(self):
+    def test_redirect(self):
         """
-        Test that we redirect to the done URL.
+        Test that we redirect to the done URL if we have passed valid data.
         """
         response = self.post_valid_data()
         self.assertRedirects(response, '/accounts/request-invitation/done/')
@@ -130,12 +130,12 @@ class ActivateAccountTest(TestCase):
             email='validuser@test.test',
             auth_token='mytoken',
         )
-        self.invalid_invited_user = InvitedPendingFactory(
-            auth_token='invalid',
+        self.activated_user = InvitedPendingFactory(
+            auth_token='used',
             auth_token_is_used=True,
         )
 
-    def test_activate_account_url_and_template(self):
+    def test_url_and_template(self):
         self.check_url('/accounts/activate/mytoken', activate_account)
         response = self.client.get(reverse('accounts:activate-account',
                                             kwargs={'token': 'mytoken'}))
@@ -147,22 +147,22 @@ class ActivateAccountTest(TestCase):
         self.assertInHTML(expected_html, response.content.decode())
 
 
-    def test_raises_404_if_given_token_not_attached_to_a_user(self):
+    def test_invalid_taken(self):
         """
         Test view raises a 404 if we try to visit the page by
-        entering a random token.
+        entering a random token (i.e. a token not attached to a user).
         """
         response = self.client.get('/accounts/activate/notoken')
 
         self.assertEqual(response.status_code, 404)
 
 
-    def test_error_shows_if_token_is_used(self):
+    def test_used_token(self):
         """
-        Test that a user with an invalid (used) token is shown a
+        Test that a user with an used token is shown a
         'token is used' message.
         """
-        response = self.client.get('/accounts/activate/invalid')
+        response = self.client.get('/accounts/activate/used')
         expected_html = '<h3 class="lined">Token is Used</h3>'
 
         self.assertInHTML(expected_html, response.content.decode())
@@ -204,7 +204,14 @@ class ProfileSettingsTest(TestCase):
     def test_profile_url(self):
         self.check_url('/accounts/profile/', profile_settings)
 
-    def test_profile_is_not_available_to_unauthenticated_users(self):
+    def test_unauthenticated_user_cannot_see_page(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:profile-settings'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/profile_settings.html')
+
+    def test_unauthenticated_user_can_see_page(self):
         response = self.client.get(reverse('accounts:profile-settings'))
 
         #Unauthenticated user is redirected to login page
@@ -213,13 +220,6 @@ class ProfileSettingsTest(TestCase):
             '/accounts/login/?next=/accounts/profile/',
             status_code=302
         )
-
-    def test_profile_is_available_to_authenticated_users(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.get(reverse('accounts:profile-settings'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'accounts/profile_settings.html')
 
     def test_can_update_profile(self):
         # Setup skills and roles
@@ -280,7 +280,17 @@ class UpdateEmailTest(TestCase):
     def test_update_email_url(self):
         self.check_url('/accounts/update/email/', update_email)
 
-    def test_authenticated_users_can_update_email(self):
+    def test_unautheticated_user_cannot_update_email(self):
+        response = self.post_valid_data()
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/update/email/',
+            status_code=302
+        )
+
+    def test_authenticated_user_can_update_email(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.post_valid_data()
 
@@ -290,16 +300,6 @@ class UpdateEmailTest(TestCase):
         # Check that we see success message
         expected_message = 'email has been updated.'
         self.assertIn(expected_message, response.content.decode())
-
-    def test_update_email_not_available_to_unautheticated_users(self):
-        response = self.post_valid_data()
-
-        #Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/update/email/',
-            status_code=302
-        )
 
 
 class UpdatePasswordTest(TestCase):
@@ -318,7 +318,17 @@ class UpdatePasswordTest(TestCase):
     def test_update_password_url(self):
         self.check_url('/accounts/update/password/', update_password)
 
-    def test_authenticated_users_can_update_password(self):
+    def test_unauthenticated_user_cannot_update_password(self):
+        response = self.post_valid_data()
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/update/password/',
+            status_code=302
+        )
+
+    def test_authenticated_user_can_update_password(self):
         self.client.login(username=self.standard_user.email, password='pass')
         old_pass = self.standard_user.password
         response = self.post_valid_data()
@@ -329,16 +339,6 @@ class UpdatePasswordTest(TestCase):
         # Check that we see success message
         expected_message = 'password has been updated.'
         self.assertIn(expected_message, response.content.decode())
-
-    def test_update_password_not_available_to_unautheticated_users(self):
-        response = self.post_valid_data()
-
-        #Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/update/password/',
-            status_code=302
-        )
 
 
 class CloseAccountTest(TestCase):
@@ -356,7 +356,17 @@ class CloseAccountTest(TestCase):
     def test_close_account_url(self):
         self.check_url('/accounts/close/', close_account)
 
-    def test_authenticated_users_can_close_account(self):
+    def test_unautheticated_user_cannot_close_account(self):
+        response = self.post_valid_data()
+
+        #Unauthenticated user is redirected to login page
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/accounts/close/',
+            status_code=302
+        )
+
+    def test_authenticated_user_can_close_account(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.post_valid_data()
 
@@ -370,13 +380,3 @@ class CloseAccountTest(TestCase):
 
         self.assertFalse(user.is_active)
         self.assertTrue(user.is_closed)
-
-    def test_close_account_not_available_to_unautheticated_users(self):
-        response = self.post_valid_data()
-
-        #Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/close/',
-            status_code=302
-        )

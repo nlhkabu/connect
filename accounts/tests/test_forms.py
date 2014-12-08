@@ -325,7 +325,7 @@ class SkillFormsetTest(TestCase):
 
         self.raise_formset_error(response, 'All skills must have a proficiency.')
 
-    def test_validation_fails_when_skill_is_submitted_without_skill_name(self):
+    def test_proficiency_without_skill_name(self):
         """
         Test validation fails when a proficiency is passed without being
         attached to a skill.
@@ -492,7 +492,7 @@ class UpdatePasswordFormTest(TestCase):
 
         self.assertTrue(form.is_valid())
 
-    def test_no_new_password(self):
+    def test_missing_new_password(self):
         form = self.form_data('')
         errors = form['new_password'].errors.as_data()
 
