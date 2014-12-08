@@ -58,6 +58,7 @@ class DashboardTest(TestCase):
         response = self.get_dashboard()
 
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'discover/list.html')
 
     def test_can_filter_users_by_skill(self):
         self.client.login(username=self.standard_user.email, password='pass')

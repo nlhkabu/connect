@@ -224,14 +224,14 @@ class ProfileFormTest(TestCase):
 
         self.assertTrue(form.is_valid())
 
-    def test_first_name_missing(self):
+    def test_missing_first_name(self):
         form = self.form_data('', 'Last')
         errors = form['first_name'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'required')
 
-    def test_last_name_missing(self):
+    def test_missing_last_name(self):
         form = self.form_data('First', '')
         errors = form['last_name'].errors.as_data()
 
