@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.template import loader
 from django.utils.encoding import force_bytes
@@ -26,8 +27,8 @@ class CustomPasswordResetForm(forms.Form):
     email = forms.EmailField(label=_("Email"), max_length=254)
 
     def save(self, domain_override=None,
-             subject_template_name='registration/password_reset_subject.txt',
-             email_template_name='registration/password_reset_email.html',
+             subject_template_name='accounts/emails/password_reset_subject.txt',
+             email_template_name='accounts/emails/password_reset_email.html',
              use_https=False, token_generator=default_token_generator,
              from_email=None, request=None, html_email_template_name=None):
         """
@@ -38,6 +39,7 @@ class CustomPasswordResetForm(forms.Form):
         email = self.cleaned_data["email"]
         active_users = User._default_manager.filter(
             email__iexact=email, is_active=True)
+
         for user in active_users:
             # Make sure that no email is sent to a user that actually has
             # a password marked as unusable
@@ -47,7 +49,9 @@ class CustomPasswordResetForm(forms.Form):
                 site = get_current_site(request)
                 domain = site.domain
             else:
-                site = domain = domain_override
+                site = Site(name=domain_override,
+                            domain=domain_override)
+                domain = site.domain
 
             context = {
                 'email': user.email,
@@ -58,7 +62,6 @@ class CustomPasswordResetForm(forms.Form):
                 'token': token_generator.make_token(user),
                 'protocol': 'https' if use_https else 'http',
                 'link_color': 'e51e41', # TODO: dynamically retrieve color from CSS
-
             }
 
             subject = loader.render_to_string(subject_template_name, context)

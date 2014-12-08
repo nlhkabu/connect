@@ -1,6 +1,12 @@
+import os
+import re
+
 from django.contrib.sites.shortcuts import get_current_site
+from django.core import mail
+from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.utils.translation import ugettext as _
 
 from connect_config.factories import SiteConfigFactory
 
@@ -9,12 +15,76 @@ from accounts.factories import (InvitedPendingFactory, RoleFactory,
 from accounts.forms import (ActivateAccountForm, BaseLinkFormSet,
                             BaseSkillFormSet, CloseAccountForm,
                             CustomUserCreationForm, CustomUserChangeForm,
-                            LinkForm, ProfileForm, RequestInvitationForm,
-                            SkillForm, UpdateEmailForm, UpdatePasswordForm)
+                            CustomPasswordResetForm, LinkForm, ProfileForm,
+                            RequestInvitationForm, SkillForm, UpdateEmailForm,
+                            UpdatePasswordForm)
 from accounts.models import UserLink, UserSkill
 
 
-#TODO: CustomPasswordResetForm(TestCase):
+class CustomCustomPasswordResetFormTest(TestCase):
+    """
+    Tests for cutomised reset password form.
+    These are a modified version of those found at
+    django.contrib.auth.tests.testforms
+    """
+    def setUp(self):
+        self.user = UserFactory(email='test@test.test')
+
+    def test_invalid_email(self):
+        form = CustomPasswordResetForm({'email': 'not valid'})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form['email'].errors, [_('Enter a valid email address.')])
+
+    def test_nonexistent_email(self):
+        """
+        Test nonexistent email address. This should not fail because it would
+        expose information about registered users.
+        """
+        form = CustomPasswordResetForm({'email': 'foo@bar.com'})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_cleaned_data(self):
+        form = CustomPasswordResetForm({'email': self.user.email})
+        self.assertTrue(form.is_valid())
+        form.save(domain_override='example.com')
+        self.assertEqual(form.cleaned_data['email'], self.user.email)
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_custom_email_subject(self):
+        data = {'email': 'test@test.test'}
+        form = CustomPasswordResetForm(data)
+        self.assertTrue(form.is_valid())
+        # Since we're not providing a request object, we must provide a
+        # domain_override to prevent the save operation from failing in the
+        # potential case where contrib.sites is not installed. Refs #16412.
+        form.save(domain_override='example.com')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Reset your example.com password')
+
+    def test_inactive_user(self):
+        """
+        Test that inactive user cannot receive password reset email.
+        """
+        self.user.is_active = False
+        self.user.save()
+        form = CustomPasswordResetForm({'email': self.user.email})
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_unusable_password(self):
+        data = {"email": "test@example.com"}
+        form = CustomPasswordResetForm(data)
+        self.assertTrue(form.is_valid())
+        self.user.set_unusable_password()
+        self.user.save()
+        form = CustomPasswordResetForm(data)
+        # The form itself is valid, but no email is sent
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(len(mail.outbox), 0)
+
 
 class CustomUserAdminTest(TestCase):
     def test_user_creation_form_does_not_contain_username_field(self):
