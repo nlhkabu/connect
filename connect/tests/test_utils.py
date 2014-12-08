@@ -4,8 +4,8 @@ from django.test import TestCase
 
 from accounts.factories import UserFactory
 from connect_config.factories import SiteFactory, SiteConfigFactory
-from .settings import MEDIA_ROOT
-from .utils import (generate_salt, generate_html_email, hash_time,
+from connect.settings import MEDIA_ROOT
+from connect.utils import (generate_salt, generate_html_email, hash_time,
                     send_connect_email)
 
 
