@@ -2,6 +2,7 @@ import factory
 
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import views as auth_views
 from django.core import mail
 from django.core.urlresolvers import resolve, reverse
 from django.forms.formsets import formset_factory
@@ -22,7 +23,63 @@ from accounts.view_utils import match_link_to_brand, save_links, save_skills
 
 User = get_user_model()
 
-#TODO: Write unit tests for django.auth views
+
+class AuthenticationTest(TestCase):
+    """
+    Test our implementation of django.contrib.auths built in authentication
+    views.
+    """
+    def test_login(self):
+        # Test URL resolves correctly
+        url = resolve('/accounts/login/')
+        self.assertEqual(url.func, auth_views.login)
+        # Test template
+        response = self.client.post(reverse('accounts:login'))
+        self.assertTemplateUsed(response, 'accounts/login.html')
+
+    def test_logout(self):
+        # Test URL resolves correctly
+        url = resolve('/accounts/logout/')
+        self.assertEqual(url.func, auth_views.logout)
+
+
+class ResetPasswordTest(TestCase):
+    """
+    Test our impementation of the password reset views from django.contrib.auth
+    """
+    def test_password_reset(self):
+        # Test URL resolves correctly
+        url = resolve('/accounts/password/reset/')
+        self.assertEqual(url.func, auth_views.password_reset)
+        # Test template
+        response = self.client.post(reverse('accounts:password-reset'))
+        self.assertTemplateUsed(response, 'accounts/password_reset.html')
+
+    def test_password_reset_done(self):
+        # Test URL resolves correctly
+        url = resolve('/accounts/password/reset/done/')
+        self.assertEqual(url.func, auth_views.password_reset_done)
+        # Test template
+        response = self.client.post(reverse('accounts:password-reset-done'))
+        self.assertTemplateUsed(response, 'accounts/password_reset_done.html')
+
+    def test_password_reset_confirm(self):
+        # Test URL resolves correctly
+        url = resolve('/accounts/password/reset/MMMM/fjdklafjsl/')
+        self.assertEqual(url.func, auth_views.password_reset_confirm)
+        # Test template
+        response = self.client.post(reverse('accounts:password-reset-confirm', kwargs={'uidb64': 'MMM',
+                                                                                       'token': 'fsaljfkdl'}))
+        self.assertTemplateUsed(response, 'accounts/password_reset_confirm.html')
+
+    def test_password_reset_complete(self):
+        # Test URL resolves correctly
+        url = resolve('/accounts/password/reset/complete/')
+        self.assertEqual(url.func, auth_views.password_reset_complete)
+        # Test template
+        response = self.client.post(reverse('accounts:password-reset-complete'))
+        self.assertTemplateUsed(response, 'accounts/password_reset_complete.html')
+
 
 class RequestInvitationTest(TestCase):
     fixtures = ['group_perms']

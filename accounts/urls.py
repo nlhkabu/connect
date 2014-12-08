@@ -64,10 +64,10 @@ urlpatterns = patterns('',
     ),
 
     # page confirming password has been reset
-    url(_(r'^password/done/$'),
+    url(_(r'^password/reset/complete/$'),
         auth_views.password_reset_complete,
         {'template_name': 'accounts/password_reset_complete.html',},
-        name="pasword-reset-complete"
+        name="password-reset-complete"
     ),
 
     # Request and activate account
