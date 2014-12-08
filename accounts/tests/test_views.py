@@ -321,7 +321,6 @@ class UpdatePasswordTest(TestCase):
     def test_authenticated_users_can_update_password(self):
         self.client.login(username=self.standard_user.email, password='pass')
         old_pass = self.standard_user.password
-
         response = self.post_valid_data()
 
         user = User.objects.get(id=self.standard_user.id)

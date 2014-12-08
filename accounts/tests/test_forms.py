@@ -226,7 +226,6 @@ class ProfileFormTest(TestCase):
 
     def test_first_name_missing(self):
         form = self.form_data('', 'Last')
-
         errors = form['first_name'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
@@ -234,7 +233,6 @@ class ProfileFormTest(TestCase):
 
     def test_last_name_missing(self):
         form = self.form_data('First', '')
-
         errors = form['last_name'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
