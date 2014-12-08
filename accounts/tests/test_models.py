@@ -1,11 +1,11 @@
 from django.core.exceptions import PermissionDenied
 from django.test import TestCase
 
-from accounts.factories import (AbuseReportFactory,
-                                BrandFactory, InvitedPendingFactory,
-                                ModeratorFactory, RequestedPendingFactory,
-                                RoleFactory, SkillFactory,
-                                UserFactory, UserLinkFactory, UserSkillFactory)
+from accounts.factories import (AbuseReportFactory, BrandFactory,
+                                InvitedPendingFactory, ModeratorFactory,
+                                RequestedPendingFactory, RoleFactory,
+                                SkillFactory, UserFactory, UserLinkFactory,
+                                UserSkillFactory)
 from accounts.models import CustomUser, UserLink, UserSkill
 
 
