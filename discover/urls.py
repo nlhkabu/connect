@@ -4,5 +4,5 @@ from django.utils.translation import ugettext_lazy as _
 from . import views
 
 urlpatterns = patterns('',
-    url(_(r'^map/$'), views.map, name='map'),
+    url(_(r'^map/$'), views.member_map, name='map'),
 )

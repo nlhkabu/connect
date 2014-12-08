@@ -70,7 +70,7 @@ def dashboard(request):
 
 
 @login_required
-def map(request):
+def member_map(request):
     """
     Shows all members on a world map.
     """
