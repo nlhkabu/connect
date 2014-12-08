@@ -52,7 +52,7 @@ class LogMessageTest(TestCase):
         self.assertEqual(start, expected_start)
         self.assertEqual(end, expected_end)
 
-    def test_date_limits_passing_non_UTC_timezone(self):
+    def test_date_limits_with_non_UTC_timezone(self):
         london = pytz.timezone('Europe/London')
         # 1st August in London is equal to UTC+1 due to DST
         day = london.localize(datetime.datetime(2014, 8, 1, 8, 15, 12, 0))
