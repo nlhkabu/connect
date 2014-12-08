@@ -39,6 +39,10 @@ class AccountUtilsTest(TestCase):
         self.assertNotIn(moderators, user.groups.all())
 
     def test_reactivated_account_token_is_reset(self):
+        """
+        Test that when a closed account is reactivated, their auth token
+        is reset.
+        """
         initial_token = self.standard_user.auth_token
         request = self.factory.get(reverse('accounts:request-invitation'))
         user = invite_user_to_reactivate_account(self.standard_user, request)
@@ -47,6 +51,10 @@ class AccountUtilsTest(TestCase):
         self.assertFalse(user.auth_token_is_used)
 
     def test_reactivation_email_sent_to_user(self):
+        """
+        Test that when a closed account is reactivated, they are sent an
+        activation email.
+        """
         request = self.factory.get('/')
         invite_user_to_reactivate_account(self.closed_user, request)
 
@@ -69,10 +77,18 @@ class AccountUtilsTest(TestCase):
 
         self.assertEqual(user, self.standard_user)
 
-    def test_unregistered_email_should_be_available(self):
+    def test_unregistered_email(self):
+        """
+        Test that an email not registered to another user is returned as True.
+        i.e. It is available for another user to use.
+        """
         unregistered = validate_email_availability('unregistered.user@test.test')
         self.assertTrue(unregistered)
 
     def test_registered_email_should_not_be_available(self):
+        """
+        Test that an email registered to another user is returned as False.
+        i.e. It is NOT available for another user to use.
+        """
         with self.assertRaises(ValidationError):
             validate_email_availability('my.user@test.test')

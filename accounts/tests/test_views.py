@@ -5,80 +5,55 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import views as auth_views
 from django.core import mail
 from django.core.urlresolvers import resolve, reverse
-from django.forms.formsets import formset_factory
-from django.test import TestCase
 
-from connect_config.factories import SiteConfigFactory
-
-from accounts.factories import (BrandFactory, InvitedPendingFactory,
-                                ModeratorFactory, UserLinkFactory,
-                                UserFactory, RoleFactory, SkillFactory)
-from accounts.forms import (BaseLinkFormSet, BaseSkillFormSet,
-                            LinkForm, SkillForm)
+from accounts.factories import (InvitedPendingFactory, ModeratorFactory,
+                                RoleFactory, SkillFactory, UserFactory)
 from accounts.models import UserLink, UserSkill
 from accounts.views import (activate_account, close_account, profile_settings,
                             request_invitation, update_email, update_password)
-from accounts.view_utils import match_link_to_brand, save_links, save_skills
+from connect_config.factories import SiteConfigFactory
+from django_boost import BoostedTestCase as TestCase
 
 
 User = get_user_model()
 
 
 class AuthenticationTest(TestCase):
-    """
-    Test our implementation of django.contrib.auths built in authentication
-    views.
-    """
-    def test_login(self):
-        # Test URL resolves correctly
-        url = resolve('/accounts/login/')
-        self.assertEqual(url.func, auth_views.login)
-        # Test template
-        response = self.client.post(reverse('accounts:login'))
-        self.assertTemplateUsed(response, 'accounts/login.html')
+    def test_login_url_and_template(self):
+        self.check_url('/accounts/login/', auth_views.login)
+        self.check_template('accounts:login', 'accounts/login.html')
 
-    def test_logout(self):
-        # Test URL resolves correctly
-        url = resolve('/accounts/logout/')
-        self.assertEqual(url.func, auth_views.logout)
+    def test_logout_url(self):
+        self.check_url('/accounts/logout/', auth_views.logout)
 
 
 class ResetPasswordTest(TestCase):
-    """
-    Test our impementation of the password reset views from django.contrib.auth
-    """
-    def test_password_reset(self):
-        # Test URL resolves correctly
-        url = resolve('/accounts/password/reset/')
-        self.assertEqual(url.func, auth_views.password_reset)
-        # Test template
-        response = self.client.post(reverse('accounts:password-reset'))
-        self.assertTemplateUsed(response, 'accounts/password_reset.html')
+    def test_password_reset_url_and_template(self):
+        self.check_url('/accounts/password/reset/', auth_views.password_reset)
+        self.check_template('accounts:password-reset',
+                            'accounts/password_reset.html')
 
-    def test_password_reset_done(self):
-        # Test URL resolves correctly
-        url = resolve('/accounts/password/reset/done/')
-        self.assertEqual(url.func, auth_views.password_reset_done)
-        # Test template
-        response = self.client.post(reverse('accounts:password-reset-done'))
-        self.assertTemplateUsed(response, 'accounts/password_reset_done.html')
+    def test_password_reset_done_url_and_template(self):
+        self.check_url('/accounts/password/reset/done/',
+                       auth_views.password_reset_done)
+        self.check_template('accounts:password-reset-done',
+                            'accounts/password_reset_done.html')
 
-    def test_password_reset_confirm(self):
-        # Test URL resolves correctly
-        url = resolve('/accounts/password/reset/MMMM/fjdklafjsl/')
-        self.assertEqual(url.func, auth_views.password_reset_confirm)
-        # Test template
-        response = self.client.post(reverse('accounts:password-reset-confirm', kwargs={'uidb64': 'MMM',
-                                                                                       'token': 'fsaljfkdl'}))
+    def test_password_reset_confirm_url_and_template(self):
+        self.check_url('/accounts/password/reset/MMMM/fjdklafjsl/',
+                       auth_views.password_reset_confirm)
+        response = self.client.post(reverse('accounts:password-reset-confirm',
+                                             kwargs={
+                                                'uidb64': 'MMM',
+                                                'token': 'fsaljfkdl'
+                                            }))
         self.assertTemplateUsed(response, 'accounts/password_reset_confirm.html')
 
-    def test_password_reset_complete(self):
-        # Test URL resolves correctly
-        url = resolve('/accounts/password/reset/complete/')
-        self.assertEqual(url.func, auth_views.password_reset_complete)
-        # Test template
-        response = self.client.post(reverse('accounts:password-reset-complete'))
-        self.assertTemplateUsed(response, 'accounts/password_reset_complete.html')
+    def test_password_reset_complete_url_and_template(self):
+        self.check_url('/accounts/password/reset/complete/',
+                       auth_views.password_reset_complete)
+        self.check_template('accounts:password-reset-complete',
+                            'accounts/password_reset_complete.html')
 
 
 class RequestInvitationTest(TestCase):
@@ -89,13 +64,8 @@ class RequestInvitationTest(TestCase):
         self.site.config = SiteConfigFactory(site=self.site)
         self.moderator = ModeratorFactory()
 
-    def test_request_invitation_url_resolves_to_request_invitation_view(self):
-        url = resolve('/accounts/request-invitation/')
-
-        self.assertEqual(url.func, request_invitation)
-
-    def test_requested_account_registration_recorded(self):
-        response = self.client.post(
+    def post_valid_data(self):
+        return self.client.post(
             reverse('accounts:request-invitation'),
             data={
                 'first_name': 'First',
@@ -105,6 +75,16 @@ class RequestInvitationTest(TestCase):
             },
         )
 
+    def test_request_invitation_url_and_template(self):
+        self.check_url('/accounts/request-invitation/', request_invitation)
+        self.check_template('accounts:request-invitation',
+                            'accounts/request_invitation.html')
+
+    def test_requested_account_registration_recorded(self):
+        """
+        Test that the request has been saved as a new user.
+        """
+        response = self.post_valid_data()
         user = User.objects.get(email='new_test@test.test')
 
         self.assertEqual(user.registration_method, 'REQ')
@@ -119,15 +99,7 @@ class RequestInvitationTest(TestCase):
             moderator=self.moderator
         )
 
-        response = self.client.post(
-            reverse('accounts:request-invitation'),
-            data={
-                'first_name': 'First',
-                'last_name': 'Last',
-                'email': 'new_test@test.test',
-                'comments': 'Please give me an account',
-            },
-        )
+        response = self.post_valid_data()
 
         expected_subject = 'New account request at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Moderator')
@@ -145,16 +117,10 @@ class RequestInvitationTest(TestCase):
         self.assertIn(expected_url, email.alternatives[0][0])
 
     def test_request_invitation_redirect(self):
-        response = self.client.post(
-            reverse('accounts:request-invitation'),
-            data={
-                'first_name': 'First',
-                'last_name': 'Last',
-                'email': 'new_test@test.test',
-                'comments': 'Please give me an account',
-            },
-        )
-
+        """
+        Test that we redirect to the done URL.
+        """
+        response = self.post_valid_data()
         self.assertRedirects(response, '/accounts/request-invitation/done/')
 
 
@@ -169,34 +135,43 @@ class ActivateAccountTest(TestCase):
             auth_token_is_used=True,
         )
 
-    def test_activate_account_url_resolves_to_activate_account_view(self):
-        url = resolve('/accounts/activate/mytoken')
+    def test_activate_account_url_and_template(self):
+        self.check_url('/accounts/activate/mytoken', activate_account)
+        response = self.client.get(reverse('accounts:activate-account',
+                                            kwargs={'token': 'mytoken'}))
 
-        self.assertEqual(url.func, activate_account)
-
-    def test_activate_account_view_with_valid_token(self):
-        response = self.client.get('/accounts/activate/mytoken')
-
+        self.assertTemplateUsed(response, 'accounts/activate_account.html')
         self.assertEqual(response.status_code, 200)
+        # Test we see appropriate form
+        expected_html = '<legend>Activate Account</legend>'
+        self.assertInHTML(expected_html, response.content.decode())
 
 
     def test_raises_404_if_given_token_not_attached_to_a_user(self):
+        """
+        Test view raises a 404 if we try to visit the page by
+        entering a random token.
+        """
         response = self.client.get('/accounts/activate/notoken')
 
         self.assertEqual(response.status_code, 404)
 
-    def test_form_shows_if_token_is_valid(self):
-        response = self.client.get('/accounts/activate/mytoken')
-        expected_html = '<legend>Activate Account</legend>'
-        self.assertInHTML(expected_html, response.content.decode())
 
-    def test_error_shows_if_token_is_invalid(self):
+    def test_error_shows_if_token_is_used(self):
+        """
+        Test that a user with an invalid (used) token is shown a
+        'token is used' message.
+        """
         response = self.client.get('/accounts/activate/invalid')
         expected_html = '<h3 class="lined">Token is Used</h3>'
 
         self.assertInHTML(expected_html, response.content.decode())
 
     def test_account_activation(self):
+        """
+        Given a valid token, and valid data,
+        test we see the appropriate response.
+        """
         user = User.objects.get(email='validuser@test.test')
         old_pass = user.password
 
@@ -210,8 +185,8 @@ class ActivateAccountTest(TestCase):
             },
         )
 
+        # And that the user is activated
         user = User.objects.get(email='validuser@test.test')
-
         self.assertEqual(user.first_name, 'Hello')
         self.assertEqual(user.last_name, 'There')
         self.assertNotEqual(user.password, old_pass)
@@ -226,10 +201,8 @@ class ProfileSettingsTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_profile_url_resolves_to_profile_settings_view(self):
-        url = resolve('/accounts/profile/')
-
-        self.assertEqual(url.func, profile_settings)
+    def test_profile_url(self):
+        self.check_url('/accounts/profile/', profile_settings)
 
     def test_profile_is_not_available_to_unauthenticated_users(self):
         response = self.client.get(reverse('accounts:profile-settings'))
@@ -246,6 +219,7 @@ class ProfileSettingsTest(TestCase):
         response = self.client.get(reverse('accounts:profile-settings'))
 
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/profile_settings.html')
 
     def test_can_update_profile(self):
         # Setup skills and roles
@@ -294,20 +268,21 @@ class UpdateEmailTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_update_email_url_resolves_to_update_email_view(self):
-        url = resolve('/accounts/update/email/')
-
-        self.assertEqual(url.func, update_email)
-
-    def test_authenticated_users_can_update_email_with_POST_data(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.post(
+    def post_valid_data(self):
+        return self.client.post(
             reverse('accounts:update-email'),
             data={
                 'email': 'my.new.email@test.test',
                 'password': 'pass',
             },
         )
+
+    def test_update_email_url(self):
+        self.check_url('/accounts/update/email/', update_email)
+
+    def test_authenticated_users_can_update_email(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_valid_data()
 
         user = User.objects.get(id=self.standard_user.id)
         self.assertEqual(user.email, 'my.new.email@test.test')
@@ -317,13 +292,7 @@ class UpdateEmailTest(TestCase):
         self.assertIn(expected_message, response.content.decode())
 
     def test_update_email_not_available_to_unautheticated_users(self):
-        response = self.client.post(
-            reverse('accounts:update-email'),
-            data={
-                'email': 'my.new.email@test.test',
-                'password': 'pass',
-            },
-        )
+        response = self.post_valid_data()
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
@@ -337,22 +306,23 @@ class UpdatePasswordTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_update_password_url_resolves_to_update_password_view(self):
-        url = resolve('/accounts/update/password/')
-
-        self.assertEqual(url.func, update_password)
-
-    def test_authenticated_users_can_update_password(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        old_pass = self.standard_user.password
-
-        response = self.client.post(
+    def post_valid_data(self):
+        return self.client.post(
             reverse('accounts:update-password'),
             data={
                 'new_password': 'newpass',
                 'current_password': 'pass',
             },
         )
+
+    def test_update_password_url(self):
+        self.check_url('/accounts/update/password/', update_password)
+
+    def test_authenticated_users_can_update_password(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        old_pass = self.standard_user.password
+
+        response = self.post_valid_data()
 
         user = User.objects.get(id=self.standard_user.id)
         self.assertNotEqual(user.password, old_pass)
@@ -362,13 +332,7 @@ class UpdatePasswordTest(TestCase):
         self.assertIn(expected_message, response.content.decode())
 
     def test_update_password_not_available_to_unautheticated_users(self):
-        response = self.client.post(
-            reverse('accounts:update-password'),
-            data={
-                'new_password': 'newpass',
-                'current_password': 'pass',
-            },
-        )
+        response = self.post_valid_data()
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
@@ -382,19 +346,20 @@ class CloseAccountTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_close_account_url_resolves_to_close_account_view(self):
-        url = resolve('/accounts/close/')
-
-        self.assertEqual(url.func, close_account)
-
-    def test_authenticated_users_can_close_account(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-        response = self.client.post(
+    def post_valid_data(self):
+        return self.client.post(
             reverse('accounts:close-account'),
             data={
                 'password': 'pass',
             },
         )
+
+    def test_close_account_url(self):
+        self.check_url('/accounts/close/', close_account)
+
+    def test_authenticated_users_can_close_account(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_valid_data()
 
         # Sending valid data should result in this view redirecting to done
         self.assertRedirects(
@@ -408,12 +373,7 @@ class CloseAccountTest(TestCase):
         self.assertTrue(user.is_closed)
 
     def test_close_account_not_available_to_unautheticated_users(self):
-        response = self.client.post(
-            reverse('accounts:close-account'),
-            data={
-                'password': 'pass',
-            },
-        )
+        response = self.post_valid_data()
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
@@ -421,86 +381,3 @@ class CloseAccountTest(TestCase):
             '/accounts/login/?next=/accounts/close/',
             status_code=302
         )
-
-
-# View_utils.py
-
-class ViewUtilsTest(TestCase):
-    def setUp(self):
-        self.standard_user = UserFactory()
-
-    def test_can_save_skills(self):
-        django = SkillFactory(name='django')
-        python = SkillFactory(name='python')
-
-        SkillFormSet = formset_factory(SkillForm, max_num=None,
-                                       formset=BaseSkillFormSet)
-
-        formset = SkillFormSet(
-            data={
-                'form-TOTAL_FORMS': 2,
-                'form-INITIAL_FORMS': 0,
-                'form-0-skill': django.id,
-                'form-0-proficiency': UserSkill.BEGINNER,
-                'form-1-skill': python.id,
-                'form-1-proficiency': UserSkill.INTERMEDIATE,
-            }
-        )
-
-        save_skills(self.standard_user, formset)
-
-        user = User.objects.get(id=self.standard_user.id)
-        user_skills = UserSkill.objects.filter(user=user)
-
-        skill_names = [skill.skill for skill in user_skills]
-        skill_proficencies = [skill.proficiency for skill in user_skills]
-
-        self.assertEqual(len(user_skills), 2)
-        self.assertIn(django, skill_names)
-        self.assertIn(python, skill_names)
-        self.assertIn(UserSkill.BEGINNER, skill_proficencies)
-        self.assertIn(UserSkill.INTERMEDIATE, skill_proficencies)
-
-    def test_can_save_links(self):
-        LinkFormSet = formset_factory(LinkForm, max_num=None,
-                                      formset=BaseLinkFormSet)
-
-        formset = LinkFormSet(
-            data={
-                'form-TOTAL_FORMS': 2,
-                'form-INITIAL_FORMS': 0,
-                'form-0-anchor': 'Anchor 1',
-                'form-0-url': 'http://link1.com',
-                'form-1-anchor': 'Anchor 2',
-                'form-1-url': 'http://link2.com',
-            }
-        )
-
-        save_links(self.standard_user, formset)
-
-        user = User.objects.get(id=self.standard_user.id)
-        user_links = UserLink.objects.filter(user=user)
-
-        link_anchors = [link.anchor for link in user_links]
-        link_urls = [link.url for link in user_links]
-
-        self.assertEqual(len(user_links), 2)
-        self.assertIn('Anchor 1', link_anchors)
-        self.assertIn('Anchor 2', link_anchors)
-        self.assertIn('http://link1.com/', link_urls)
-        self.assertIn('http://link2.com/', link_urls)
-
-    def test_can_match_link_to_brand(self):
-        github = BrandFactory()
-        link_user = UserFactory()
-        link = UserLinkFactory(
-            user=link_user,
-            anchor='Github',
-            url='http://github.com/myaccount/',
-        )
-        userlinks = [link,]
-
-        match_link_to_brand(userlinks)
-        link = UserLink.objects.get(user=link_user)
-
-        self.assertEqual(link.icon, github)

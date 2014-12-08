@@ -112,7 +112,7 @@ class UserModelTest(TestCase):
 
 
 class UserSkillTest(TestCase):
-    def test_proficiency_percentage_calculates_correctly(self):
+    def test_proficiency_percentage(self):
         user_skill = UserSkillFactory(proficiency=UserSkill.INTERMEDIATE)
         percentage = user_skill.get_proficiency_percentage()
 

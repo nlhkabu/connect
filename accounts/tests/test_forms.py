@@ -23,8 +23,8 @@ from accounts.models import UserLink, UserSkill
 
 class CustomCustomPasswordResetFormTest(TestCase):
     """
-    Tests for cutomised reset password form.
-    These are a modified version of those found at
+    Test our cutomised reset password form.
+    These tests are a modified version of those found at
     django.contrib.auth.tests.testforms
     """
     def setUp(self):
@@ -87,11 +87,17 @@ class CustomCustomPasswordResetFormTest(TestCase):
 
 
 class CustomUserAdminTest(TestCase):
-    def test_user_creation_form_does_not_contain_username_field(self):
+    def test_user_creation_form(self):
+        """
+        Test that user creation form does not include a username.
+        """
         form = CustomUserCreationForm()
         self.assertNotIn('username', form.fields)
 
-    def test_user_change_form_does_not_contain_username_field(self):
+    def test_user_change_form(self):
+        """
+        Test that user change form does not include a username
+        """
         form = CustomUserChangeForm()
         self.assertNotIn('username', form.fields)
 
@@ -109,16 +115,23 @@ class RequestInvitationFormTest(TestCase):
             email='existing.user@test.test',
         )
 
-    def test_closed_account_prompts_custom_validation(self):
-        response = self.client.post(
+    def post_data(self, email):
+        return self.client.post(
             reverse('accounts:request-invitation'),
             data={
                 'first_name': 'First',
                 'last_name': 'Last',
-                'email': 'closed.user@test.test',
-                'comments': 'I would like an account',
+                'email': email,
+                'comments': 'Comments',
             }
         )
+
+    def test_closed_account(self):
+        """
+        Test that an email address attached to a closed account prompts a
+        custom validation message.
+        """
+        response = self.post_data(email='closed.user@test.test')
 
         self.assertFormError(
             response,
@@ -130,16 +143,12 @@ class RequestInvitationFormTest(TestCase):
             'account, please use a different email address.'
         )
 
-    def test_registered_email_prompts_custom_validation(self):
-        response = self.client.post(
-            reverse('accounts:request-invitation'),
-            data={
-                'first_name': 'First',
-                'last_name': 'Last',
-                'email': 'existing.user@test.test',
-                'comments': 'I would like an account',
-            }
-        )
+    def test_registered_email(self):
+        """
+        Test that an email address registered to another user
+        prompts an error.
+        """
+        response = self.post_data(email='existing.user@test.test')
 
         self.assertFormError(
             response,
@@ -149,6 +158,7 @@ class RequestInvitationFormTest(TestCase):
                     'registered to another user')
         )
 
+
 class ActivateAccountFormTest(TestCase):
     def setUp(self):
         site = get_current_site(self.client.request)
@@ -156,7 +166,7 @@ class ActivateAccountFormTest(TestCase):
 
         self.pending_user = InvitedPendingFactory()
 
-    def test_password_validation_fails_when_passwords_do_not_match(self):
+    def test_unmatched_passwords(self):
         response = self.client.post(
             reverse('accounts:activate-account',
                      args=(self.pending_user.auth_token,)),
@@ -175,7 +185,7 @@ class ActivateAccountFormTest(TestCase):
             errors='Your passwords do not match. Please try again.'
         )
 
-    def test_password_validation_passes_when_passwords_match(self):
+    def test_matching_passwords(self):
         form = ActivateAccountForm(
             user=self.pending_user,
             data={
@@ -198,30 +208,32 @@ class ProfileFormTest(TestCase):
         self.standard_user = UserFactory()
         self.client.login(username=self.standard_user.email, password='pass')
 
-    def test_validation_fails_if_first_name_not_provided(self):
-        form = ProfileForm(
+    def form_data(self, first, last):
+        return ProfileForm(
             user=self.standard_user,
             data={
-                'last_name': 'Last',
+                'first_name': first,
+                'last_name': last,
                 'bio': 'My bio',
                 'roles': [self.mentor.id, self.mentee.id],
             }
         )
+
+    def test_valid_data(self):
+        form = self.form_data('First', 'Last')
+
+        self.assertTrue(form.is_valid())
+
+    def test_first_name_missing(self):
+        form = self.form_data('', 'Last')
 
         errors = form['first_name'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'required')
 
-    def test_validation_fails_if_last_name_not_provided(self):
-        form = ProfileForm(
-            user=self.standard_user,
-            data={
-                'first_name': 'First',
-                'bio': 'My bio',
-                'roles': [self.mentor.id, self.mentee.id],
-            }
-        )
+    def test_last_name_missing(self):
+        form = self.form_data('First', '')
 
         errors = form['last_name'].errors.as_data()
 
@@ -243,8 +255,8 @@ class SkillFormsetTest(TestCase):
 
         self.client.login(username=self.standard_user.email, password='pass')
 
-    def test_skill_formset_validation_passes_with_correct_data(self):
-        form = ProfileForm(
+    def form_data(self, skill, proficiency):
+        return ProfileForm(
             user=self.standard_user,
             data={
                 'first_name': 'First',
@@ -253,98 +265,77 @@ class SkillFormsetTest(TestCase):
                 'link-INITIAL_FORMS': 0,
                 'skill-TOTAL_FORMS': 1,
                 'skill-INITIAL_FORMS': 0,
-                'skill-0-skill': self.django.id,
-                'skill-0-proficiency': UserSkill.BEGINNER,
+                'skill-0-skill': skill,
+                'skill-0-proficiency': proficiency,
             }
         )
 
-        self.assertTrue(form.is_valid())
-
-    def test_skill_formset_validation_passes_with_empty_fields(self):
-        form = ProfileForm(
-            user=self.standard_user,
-            data={
-                'first_name': 'First',
-                'last_name': 'Last',
-                'link-TOTAL_FORMS': 0,
-                'link-INITIAL_FORMS': 0,
-                'skill-TOTAL_FORMS': 1,
-                'skill-INITIAL_FORMS': 0,
-                'skill-0-skill': '',
-                'skill-0-proficiency': '',
-            }
-        )
-
-        self.assertTrue(form.is_valid())
-
-    def test_validation_fails_when_skill_is_listed_more_than_once(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-
-        response = self.client.post(
+    def post_data(self, skill1, proficiency1, skill2='', proficiency2=''):
+        return self.client.post(
             reverse('accounts:profile-settings'),
             data={
                 'link-TOTAL_FORMS': 0,
                 'link-INITIAL_FORMS': 0,
                 'skill-TOTAL_FORMS': 2,
                 'skill-INITIAL_FORMS': 0,
-                'skill-0-skill': self.django.id,
-                'skill-0-proficiency': UserSkill.BEGINNER,
-                'skill-1-skill': self.django.id,
-                'skill-1-proficiency': UserSkill.INTERMEDIATE,
+                'skill-0-skill': skill1,
+                'skill-0-proficiency': proficiency1,
+                'skill-1-skill': skill2,
+                'skill-1-proficiency': proficiency2,
             }
         )
 
-        self.assertFormsetError(
+    def raise_formset_error(self, response, error):
+        return self.assertFormsetError(
             response,
             formset='skill_formset',
             form_index=None,
             field=None,
-            errors='Each skill can only be entered once.'
+            errors=error
         )
 
-    def test_validation_fails_when_skill_submitted_without_proficiency(self):
+    def test_valid_data(self):
+        form = self.form_data(self.django.id, UserSkill.BEGINNER)
+
+        self.assertTrue(form.is_valid())
+
+    def test_empty_fields(self):
+        """
+        Test validation passes when no data is provided
+        (data is not required).
+        """
+        form = self.form_data('', '')
+
+        self.assertTrue(form.is_valid())
+
+    def test_duplicate_skills(self):
+        """
+        Test validation fails when skill is listed more than once.
+        """
         self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data(self.django.id, UserSkill.BEGINNER,
+                                  self.django.id, UserSkill.INTERMEDIATE)
 
-        response = self.client.post(
-            reverse('accounts:profile-settings'),
-            data={
-                'link-TOTAL_FORMS': 0,
-                'link-INITIAL_FORMS': 0,
-                'skill-TOTAL_FORMS': 1,
-                'skill-INITIAL_FORMS': 0,
-                'skill-0-skill': self.django.id,
-                'skill-0-proficiency': '',
-            }
-        )
-        self.assertFormsetError(
-            response,
-            formset='skill_formset',
-            form_index=None,
-            field=None,
-            errors='All skills must have a proficiency.'
-        )
+        self.raise_formset_error(response, 'Each skill can only be entered once.')
+
+    def test_skill_without_proficiency(self):
+        """
+        Test validation fails when a skill is passed without a proficiency.
+        """
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data(self.django.id, '')
+
+        self.raise_formset_error(response, 'All skills must have a proficiency.')
 
     def test_validation_fails_when_skill_is_submitted_without_skill_name(self):
+        """
+        Test validation fails when a proficiency is passed without being
+        attached to a skill.
+        """
         self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data('', UserSkill.BEGINNER)
 
-        response = self.client.post(
-            reverse('accounts:profile-settings'),
-            data={
-                'link-TOTAL_FORMS': 0,
-                'link-INITIAL_FORMS': 0,
-                'skill-TOTAL_FORMS': 1,
-                'skill-INITIAL_FORMS': 0,
-                'skill-0-skill': '',
-                'skill-0-proficiency': UserSkill.BEGINNER,
-            }
-        )
-        self.assertFormsetError(
-            response,
-            formset='skill_formset',
-            form_index=None,
-            field=None,
-            errors='All skills must have a skill name.'
-        )
+        self.raise_formset_error(response, 'All skills must have a skill name.')
 
 
 class LinkFormsetTest(TestCase):
@@ -355,135 +346,96 @@ class LinkFormsetTest(TestCase):
         self.standard_user = UserFactory()
         self.client.login(username=self.standard_user.email, password='pass')
 
-    def test_link_formset_validation_passes_with_correct_data(self):
-        form = ProfileForm(
+    def form_data(self, anchor, url):
+        return ProfileForm(
             user=self.standard_user,
             data={
                 'first_name': 'First',
                 'last_name': 'Last',
                 'link-TOTAL_FORMS': 1,
                 'link-INITIAL_FORMS': 0,
-                'link-0-anchor': 'My Link',
-                'link-0-url': 'http://mylink.com',
                 'skill-TOTAL_FORMS': 0,
                 'skill-INITIAL_FORMS': 0,
+                'link-0-anchor': anchor,
+                'link-0-url': url,
             }
         )
 
-        self.assertTrue(form.is_valid())
-
-    def test_link_formset_validation_passes_with_empty_fields(self):
-        form = ProfileForm(
-            user=self.standard_user,
-            data={
-                'first_name': 'First',
-                'last_name': 'Last',
-                'link-TOTAL_FORMS': 1,
-                'link-INITIAL_FORMS': 0,
-                'link-0-anchor': '',
-                'link-0-url': '',
-                'skill-TOTAL_FORMS': 0,
-                'skill-INITIAL_FORMS': 0,
-            }
-        )
-
-        self.assertTrue(form.is_valid())
-
-    def test_validation_fails_when_anchor_is_submitted_more_than_once(self):
-        self.client.login(username=self.standard_user.email, password='pass')
-
-        response = self.client.post(
+    def post_data(self, anchor1, url1, anchor2='', url2=''):
+        return self.client.post(
             reverse('accounts:profile-settings'),
             data={
                 'link-TOTAL_FORMS': 2,
                 'link-INITIAL_FORMS': 0,
-                'link-0-anchor': 'My Link',
-                'link-0-url': 'http://mylink.com',
-                'link-1-anchor': 'My Link',
-                'link-1-url': 'http://mylink2.com',
                 'skill-TOTAL_FORMS': 0,
                 'skill-INITIAL_FORMS': 0,
+                'link-0-anchor': anchor1,
+                'link-0-url': url1,
+                'link-1-anchor': anchor2,
+                'link-1-url': url2,
             }
         )
 
+    def raise_formset_error(self, response,error):
         self.assertFormsetError(
             response,
             formset='link_formset',
             form_index=None,
             field=None,
-            errors='Links must have unique anchors and URLs.'
+            errors=error
         )
 
-    def test_validation_fails_when_url_is_submitted_more_than_once(self):
+    def test_valid_data(self):
+        form = self.form_data('My Link', 'http://mylink.com')
+
+        self.assertTrue(form.is_valid())
+
+    def test_empty_fields(self):
+        """
+        Test validation passes when no data is provided
+        (data is not required).
+        """
+        form = self.form_data('', '')
+
+        self.assertTrue(form.is_valid())
+
+    def test_duplicate_anchors(self):
+        """
+        Test validation fails when an anchor is submitted more than once.
+        """
         self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data('My Link', 'http://mylink.com',
+                                  'My Link', 'http://mylink2.com')
 
-        response = self.client.post(
-            reverse('accounts:profile-settings'),
-            data={
-                'link-TOTAL_FORMS': 2,
-                'link-INITIAL_FORMS': 0,
-                'link-0-anchor': 'My Link',
-                'link-0-url': 'http://mylink.com',
-                'link-1-anchor': 'My Link 2',
-                'link-1-url': 'http://mylink.com',
-                'skill-TOTAL_FORMS': 0,
-                'skill-INITIAL_FORMS': 0,
-            }
-        )
+        self.raise_formset_error(response, 'Links must have unique anchors and URLs.')
 
-        self.assertFormsetError(
-            response,
-            formset='link_formset',
-            form_index=None,
-            field=None,
-            errors='Links must have unique anchors and URLs.'
-        )
-
-    def test_validation_fails_when_link_has_anchor_but_no_url(self):
+    def test_duplicate_url(self):
+        """
+        Test validation fails when a URL is submitted more than once.
+        """
         self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data('My Link', 'http://mylink.com',
+                                  'My Link2', 'http://mylink.com')
 
-        response = self.client.post(
-            reverse('accounts:profile-settings'),
-            data={
-                'link-TOTAL_FORMS': 1,
-                'link-INITIAL_FORMS': 0,
-                'link-0-anchor': 'My Link',
-                'link-0-url': '',
-                'skill-TOTAL_FORMS': 0,
-                'skill-INITIAL_FORMS': 0,
-            }
-        )
+        self.raise_formset_error(response, 'Links must have unique anchors and URLs.')
 
-        self.assertFormsetError(
-            response,
-            formset='link_formset',
-            form_index=None,
-            field=None,
-            errors='All links must have a URL.'
-        )
-
-    def test_validation_fails_when_link_has_url_but_no_anchor(self):
+    def test_anchor_without_url(self):
+        """
+        Test validation fails when a link is submitted without a URL.
+        """
         self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data('My Link', '')
 
-        response = self.client.post(
-            reverse('accounts:profile-settings'),
-            data={
-                'link-TOTAL_FORMS': 1,
-                'link-INITIAL_FORMS': 0,
-                'link-0-anchor': '',
-                'link-0-url': 'http://mylink.com',
-                'skill-TOTAL_FORMS': 0,
-                'skill-INITIAL_FORMS': 0,
-            }
-        )
+        self.raise_formset_error(response, 'All links must have a URL.')
 
-        self.assertFormsetError(
-            response,
-            formset='link_formset',
-            form_index=None,
-            field=None,
-            errors='All links must have an anchor.'
-        )
+    def test_url_without_anchor(self):
+        """
+        Test validation fails when a link is submitted without an anchor.
+        """
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.post_data('', 'http://mylink.com')
+
+        self.raise_formset_error(response, 'All links must have an anchor.')
 
 
 class UpdateEmailFormTest(TestCase):
@@ -491,40 +443,33 @@ class UpdateEmailFormTest(TestCase):
         self.standard_user = UserFactory(email='standard.user@test.test')
         self.existing_user = UserFactory(email='existing.email@test.test')
 
-    def test_validation_passes_if_all_data_is_valid(self):
-        form = UpdateEmailForm(
+    def form_data(self, email='new.email@test.test', password='pass'):
+        return UpdateEmailForm(
             user=self.standard_user,
             data={
-                'email': 'new.email@test.test',
-                'password': 'pass',
+                'email': email,
+                'password': password,
             }
         )
+
+    def test_valid_data(self):
+        form = self.form_data()
 
         self.assertTrue(form.is_valid())
 
-    def test_validation_fails_if_user_submits_incorrect_password(self):
-        form = UpdateEmailForm(
-            user=self.standard_user,
-            data={
-                'email': 'new.email@test.test',
-                'password': 'wrongpass',
-            }
-        )
-
+    def test_incorrect_password(self):
+        form = self.form_data(password='wrongpass')
         errors = form['password'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'incorrect_pass')
 
-    def test_validation_fails_if_email_is_already_registered_to_another_user(self):
-        form = UpdateEmailForm(
-            user=self.standard_user,
-            data={
-                'email': 'existing.email@test.test',
-                'password': 'pass',
-            }
-        )
-
+    def test_registered_email(self):
+        """
+        Test validation fails if the submitted email is already registered
+        to another user.
+        """
+        form = self.form_data('existing.email@test.test')
         errors = form['email'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
@@ -535,36 +480,29 @@ class UpdatePasswordFormTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory(email='standard.user@test.test')
 
-    def test_validation_passes_if_all_data_is_valid(self):
-        form = UpdatePasswordForm(
+    def form_data(self, new='newpass', current='pass'):
+        return UpdatePasswordForm(
             user=self.standard_user,
             data={
-                'new_password': 'newpass',
-                'current_password': 'pass',
+                'new_password': new,
+                'current_password': current,
             }
         )
 
+    def test_valid_data(self):
+        form = self.form_data()
+
         self.assertTrue(form.is_valid())
 
-    def test_validation_fails_with_no_new_password(self):
-        form = UpdatePasswordForm(
-            user=self.standard_user,
-            data={}
-        )
-
+    def test_no_new_password(self):
+        form = self.form_data('')
         errors = form['new_password'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'required')
 
-    def test_validation_fails_if_user_submits_incorrect_current_password(self):
-        form = UpdatePasswordForm(
-            user=self.standard_user,
-            data={
-                'new_password': 'newpass',
-                'current_password': 'wrongpass',
-            }
-        )
+    def test_incorrect_current_password(self):
+        form = self.form_data(current='wrongpass')
 
         errors = form['current_password'].errors.as_data()
 
@@ -576,36 +514,31 @@ class CloseAccountFormTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_validation_fails_with_no_password(self):
-        form = CloseAccountForm(
-            user=self.standard_user,
-            data={}
+    def form_data(self, password='pass'):
+        return CloseAccountForm(
+            user = self.standard_user,
+            data = {
+                'password': password,
+            }
         )
 
+    def test_valid_data(self):
+        form = self.form_data()
+
+        self.assertTrue(form.is_valid())
+
+    def test_no_password(self):
+        form = self.form_data('')
         errors = form['password'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'required')
 
-    def test_validation_fails_with_incorrect_password(self):
-        form = CloseAccountForm(
-            user=self.standard_user,
-            data={
-                'password': 'wrongpass',
-            }
-        )
-
+    def test_incorrect_password(self):
+        form = self.form_data('wrongpass')
         errors = form['password'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'incorrect_pass')
 
-    def test_validation_passes_with_correct_password(self):
-        form = CloseAccountForm(
-            user = self.standard_user,
-            data = {
-                'password': 'pass',
-            }
-        )
 
-        self.assertTrue(form.is_valid())
