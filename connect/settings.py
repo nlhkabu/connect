@@ -18,14 +18,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['CONNECT_SECRET_KEY']
+SECRET_KEY = os.environ.get('CONNECT_SECRET_KEY',
+                            'jj4ie+#b4h=ovjrma7ad*0vhuu8j4fi@8beksc-f+pa_co')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('CONNECT_DEBUG', 'on') == 'on'
 TEMPLATE_DEBUG = DEBUG
 
 # Allow all host headers
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('CONNECT_ALLOWED_HOSTS', 'localhost').split(',')
 
 
 # Application definition
@@ -170,4 +171,3 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
