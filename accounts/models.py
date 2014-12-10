@@ -263,7 +263,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         if self.is_moderator and self.has_perm('accounts.approve_user_application'):
             user.moderator = self
-            user.moderator_decision=user.APPROVED
+            user.moderator_decision=User.APPROVED
             user.decision_datetime = timezone.now()
             user.auth_token = hash_time(generate_salt())
             user.save()
