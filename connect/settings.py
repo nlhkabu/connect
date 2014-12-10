@@ -45,7 +45,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django_extensions',
     'django_gravatar',
     'endless_pagination',
     'django_boost',
@@ -59,6 +58,7 @@ INSTALLED_APPS = (
 if DEBUG:
     INSTALLED_APPS += (
         'debug_toolbar',
+        'django_extensions',
     )
 
 MIDDLEWARE_CLASSES = (
