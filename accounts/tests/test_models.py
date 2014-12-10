@@ -67,7 +67,6 @@ class UserModelTest(TestCase):
                 first_name='standard_user',
                 last_name='user'
             )
-            self.assertIsNone(user)
 
     def test_moderator_can_reinvite_user(self):
         decision_datetime = self.invited_pending.decision_datetime
@@ -88,10 +87,6 @@ class UserModelTest(TestCase):
             self.standard_user.reinvite_user(user=self.invited_pending,
                                         email='reset_email@test.test')
 
-            self.assertNotEqual(self.invited_pending.email, 'reset_email@test.test')
-            self.assertEqual(self.invited_pending.decision_datetime, decision_datetime)
-            self.assertEqual(self.invited_pending.auth_token, auth_token)
-
     def test_moderator_can_approve_user_application(self):
         self.moderator.approve_user_application(self.requested_pending)
 
@@ -104,11 +99,6 @@ class UserModelTest(TestCase):
         with self.assertRaises(PermissionDenied):
             self.standard_user.approve_user_application(self.requested_pending)
 
-            self.assertIsNone(self.requested_pending.moderator)
-            self.assertFalse(self.requested_pending.moderator_decision)
-            self.assertIsNone(self.requested_pending.decision_datetime)
-            self.assertFalse(self.requested_pending.auth_token)
-
     def test_moderator_can_reject_user_application(self):
         self.moderator.reject_user_application(self.requested_pending)
 
@@ -120,11 +110,6 @@ class UserModelTest(TestCase):
     def test_standard_user_user_cannot_reject_user_application(self):
         with self.assertRaises(PermissionDenied):
             self.standard_user.reject_user_application(self.requested_pending)
-
-            self.assertIsNone(self.requested_pending.moderator)
-            self.assertFalse(self.requested_pending.moderator_decision)
-            self.assertIsNone(self.requested_pending.decision_datetime)
-            self.assertFalse(self.requested_pending.auth_token)
 
 
 class AbuseReportTest(TestCase):
