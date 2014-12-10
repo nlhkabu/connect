@@ -64,11 +64,11 @@ class RequestInvitationTest(TestCase):
         self.site.config = SiteConfigFactory(site=self.site)
         self.moderator = ModeratorFactory()
 
-    def post_valid_data(self):
+    def post_data(self, first='First'):
         return self.client.post(
             reverse('accounts:request-invitation'),
             data={
-                'first_name': 'First',
+                'first_name': first,
                 'last_name': 'Last',
                 'email': 'new_test@test.test',
                 'comments': 'Please give me an account',
@@ -84,7 +84,7 @@ class RequestInvitationTest(TestCase):
         """
         Test that the request has been saved as a new user.
         """
-        response = self.post_valid_data()
+        response = self.post_data()
         user = User.objects.get(email='new_test@test.test')
 
         self.assertEqual(user.registration_method, 'REQ')
@@ -99,7 +99,7 @@ class RequestInvitationTest(TestCase):
             moderator=self.moderator
         )
 
-        response = self.post_valid_data()
+        response = self.post_data()
 
         expected_subject = 'New account request at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Moderator')
@@ -120,7 +120,7 @@ class RequestInvitationTest(TestCase):
         """
         Test that we redirect to the done URL if we have passed valid data.
         """
-        response = self.post_valid_data()
+        response = self.post_data()
         self.assertRedirects(response, '/accounts/request-invitation/done/')
 
 
@@ -147,7 +147,7 @@ class ActivateAccountTest(TestCase):
         self.assertInHTML(expected_html, response.content.decode())
 
 
-    def test_invalid_taken(self):
+    def test_invalid_token(self):
         """
         Test view raises a 404 if we try to visit the page by
         entering a random token (i.e. a token not attached to a user).
@@ -201,17 +201,17 @@ class ProfileSettingsTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def test_profile_url(self):
+    def test_url(self):
         self.check_url('/accounts/profile/', profile_settings)
 
-    def test_unauthenticated_user_cannot_see_page(self):
+    def test_authenticated_user_can_access_page(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('accounts:profile-settings'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/profile_settings.html')
 
-    def test_unauthenticated_user_can_see_page(self):
+    def test_unauthenticated_user_cannot_access_page(self):
         response = self.client.get(reverse('accounts:profile-settings'))
 
         #Unauthenticated user is redirected to login page
@@ -245,6 +245,8 @@ class ProfileSettingsTest(TestCase):
             },
         )
 
+        self.assertEqual(response.status_code, 200)
+
         user = User.objects.get(id=self.standard_user.id)
         user_link = UserLink.objects.get(user=user)
         user_skill = UserSkill.objects.get(user=user)
@@ -268,7 +270,7 @@ class UpdateEmailTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def post_valid_data(self):
+    def post_data(self):
         return self.client.post(
             reverse('accounts:update-email'),
             data={
@@ -277,11 +279,11 @@ class UpdateEmailTest(TestCase):
             },
         )
 
-    def test_update_email_url(self):
+    def test_url(self):
         self.check_url('/accounts/update/email/', update_email)
 
     def test_unautheticated_user_cannot_update_email(self):
-        response = self.post_valid_data()
+        response = self.post_data()
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
@@ -290,9 +292,15 @@ class UpdateEmailTest(TestCase):
             status_code=302
         )
 
+    def test_authenticated_user_can_access_page(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:update-email'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/update_email.html')
+
     def test_authenticated_user_can_update_email(self):
         self.client.login(username=self.standard_user.email, password='pass')
-        response = self.post_valid_data()
+        response = self.post_data()
 
         user = User.objects.get(id=self.standard_user.id)
         self.assertEqual(user.email, 'my.new.email@test.test')
@@ -306,7 +314,7 @@ class UpdatePasswordTest(TestCase):
     def setUp(self):
         self.standard_user = UserFactory()
 
-    def post_valid_data(self):
+    def post_data(self):
         return self.client.post(
             reverse('accounts:update-password'),
             data={
@@ -315,11 +323,11 @@ class UpdatePasswordTest(TestCase):
             },
         )
 
-    def test_update_password_url(self):
+    def test_url(self):
         self.check_url('/accounts/update/password/', update_password)
 
     def test_unauthenticated_user_cannot_update_password(self):
-        response = self.post_valid_data()
+        response = self.post_data()
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
@@ -328,10 +336,16 @@ class UpdatePasswordTest(TestCase):
             status_code=302
         )
 
+    def test_authenticated_user_can_access_page(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:update-password'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/update_password.html')
+
     def test_authenticated_user_can_update_password(self):
         self.client.login(username=self.standard_user.email, password='pass')
         old_pass = self.standard_user.password
-        response = self.post_valid_data()
+        response = self.post_data()
 
         user = User.objects.get(id=self.standard_user.id)
         self.assertNotEqual(user.password, old_pass)
@@ -353,7 +367,7 @@ class CloseAccountTest(TestCase):
             },
         )
 
-    def test_close_account_url(self):
+    def test_url(self):
         self.check_url('/accounts/close/', close_account)
 
     def test_unautheticated_user_cannot_close_account(self):
@@ -365,6 +379,12 @@ class CloseAccountTest(TestCase):
             '/accounts/login/?next=/accounts/close/',
             status_code=302
         )
+
+    def test_authenticated_user_can_access_page(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.get(reverse('accounts:close-account'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/close_account.html')
 
     def test_authenticated_user_can_close_account(self):
         self.client.login(username=self.standard_user.email, password='pass')

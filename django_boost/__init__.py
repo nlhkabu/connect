@@ -11,5 +11,5 @@ class BoostedTestCase(TestCase):
         self.assertEqual(url.func, view)
 
     def check_template(self, url, template):
-        response = self.client.post(reverse(url))
+        response = self.client.get(reverse(url))
         self.assertTemplateUsed(response, template)

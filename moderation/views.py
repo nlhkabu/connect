@@ -54,7 +54,7 @@ def moderation_home(request,
         reinvitation_form = ReInviteMemberForm(moderator=request.user)
 
     if not revocation_form:
-        revocation_form = RevokeInvitationForm(moderator=request.user)
+        revocation_form = RevokeInvitationForm()
 
     context = {
         'invitation_form': invitation_form,
@@ -135,6 +135,8 @@ def reinvite_user(request):
 
         user_id = reinvitation_form.cleaned_data['user_id']
         user = User.objects.get(id=user_id)
+        # We don't need to get_object_or_404 here as we've already checked
+        # this in our form's clean method.
 
         if not user.auth_token_is_used:
 
@@ -187,23 +189,26 @@ def revoke_invitation(request):
     moderator = request.user
     site = get_current_site(request)
 
-    revocation_form = RevokeInvitationForm(request.POST, moderator=request.user)
+    revocation_form = RevokeInvitationForm(request.POST)
 
     if revocation_form.is_valid():
 
         user_id = revocation_form.cleaned_data['user_id']
-        user = User.objects.get(id=user_id)
+        user = get_object_or_404(User, id=user_id)
 
-        messages.success(request, _('{} has been uninvited from {}.'.format(
-                         user.get_full_name(), site.name)))
+        if user.is_invited_pending_activation and user.moderator == request.user:
+            messages.success(request, _('{} has been uninvited from {}.'.format(
+                             user.get_full_name(), site.name)))
 
-        # Delete the user rather than deactivate it.
-        # Removing the email address from the system altogether means
-        # that the same email can later be used to create a new account
-        # (e.g. if the user applies or is invited by another moderator).
-        # Logs related to this user are also removed,
-        # resulting in less junk to filter in that view.
-        user.delete()
+            # Delete the user rather than deactivate it.
+            # Removing the email address from the system altogether means
+            # that the same email can later be used to create a new account
+            # (e.g. if the user applies or is invited by another moderator).
+            # Logs related to this user are also removed,
+            # resulting in less junk to filter in that view.
+            user.delete()
+        else:
+            raise PermissionDenied
 
         return redirect('moderation:moderators')
 
@@ -231,11 +236,7 @@ def review_applications(request):
     if request.method == 'POST':
 
         form = ModerateApplicationForm(request.POST)
-
-        try:
-            user = User.objects.get(id=request.POST['user_id'])
-        except User.DoesNotExist:
-            raise PermissionDenied
+        user = get_object_or_404(User, id=request.POST['user_id'])
 
         if form.is_valid():
             decision = form.cleaned_data['decision']
@@ -391,11 +392,9 @@ def review_abuse(request):
                                  if warning.logged_against == accused_user]
 
     if request.POST:
-        try:
-            abuse_report = AbuseReport.objects.get(id=request.POST['report_id'])
-        except AbuseReport.DoesNotExist:
-            raise PermissionDenied
 
+        abuse_report = get_object_or_404(AbuseReport,
+                                         id=request.POST['report_id'])
         form = ModerateAbuseForm(request.POST)
 
         if form.is_valid():

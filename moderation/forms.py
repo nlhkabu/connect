@@ -74,27 +74,8 @@ class RevokeInvitationForm(forms.Form):
     Form for moderator to revoke membership invitation.
     Requires moderator to confirm their action.
     """
-    def __init__(self, *args, **kwargs):
-        self.logged_in_moderator = kwargs.pop('moderator', None)
-        super(RevokeInvitationForm, self).__init__(*args, **kwargs)
-
     confirm = forms.BooleanField()
     user_id = forms.IntegerField(widget=forms.HiddenInput)
-
-    def clean(self):
-        """
-        Check that the user id is valid.
-        """
-        cleaned_data = super(RevokeInvitationForm, self).clean()
-        user_id = cleaned_data.get('user_id')
-
-        user = get_object_or_404(User, id=user_id)
-
-        if (user.moderator != self.logged_in_moderator
-        or not user.is_invited_pending_activation()):
-            raise Http404
-
-        return cleaned_data
 
 
 class ModerateApplicationForm(forms.Form):

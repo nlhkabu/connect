@@ -5,7 +5,9 @@ import pytz
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import resolve, reverse
+from django.http import Http404
 from django.utils import timezone
 
 from accounts.factories import (AbuseReportFactory, AbuseWarningFactory,
@@ -304,6 +306,8 @@ class RevokeInvitationTest(TestCase):
             last_name='Moderator',
         )
 
+        self.other_moderator = ModeratorFactory()
+
         self.invited_user = InvitedPendingFactory(
             first_name='Revoke',
             last_name='Me',
@@ -311,30 +315,66 @@ class RevokeInvitationTest(TestCase):
             moderator=self.moderator,
         )
 
+        self.requested_user = RequestedPendingFactory()
+
+        self.user_invited_by_another_moderator = InvitedPendingFactory(
+            moderator=self.other_moderator,
+        )
+
         self.client.login(username=self.moderator.email, password='pass')
 
-    def post_data(self, confirm=False):
+    def post_data(self, confirm=True, user_id=''):
+        if not user_id:
+            user_id = self.invited_user.id
+
         return self.client.post(
             reverse('moderation:revoke-invitation'),
             data={
                 'confirm': confirm,
-                'user_id': self.invited_user.id,
+                'user_id': user_id,
             },
             follow=True,
         )
 
-    def test_invalid_data_returns_to_moderation_home(self):
-        response = self.post_data()
+    def test_missing_confirmation_returns_to_moderation_home(self):
+        """
+        Check that posting the form without confirmation is not valid.
+        """
+        response = self.post_data(confirm=False)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('<legend>Invite a New Member</legend>',
                       response.content.decode())
 
+    def test_invalid_user_id_raises_404(self):
+        """
+        If we post to this view with an invalid (non-existatant) user ID, we
+        should raise a 404.
+        """
+        response = self.post_data(user_id='999999')
+        self.assertEqual(response.status_code, 404)
+
+    def test_user_who_has_not_been_invited_raises_PermissionDenied(self):
+        """
+        If we try to revoke an invitation from a user that has not been invited
+        (i.e. they have requested an account), we should raise a 403.
+        """
+        response = self.post_data(user_id=self.requested_user.id)
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_id_invited_by_another_moderator_raises_PermissionDenied(self):
+        """
+        If we try to revoke an invitation that ANOTHER moderator has sent,
+        i.e. by manually overriding the user_id, we should raise a 403.
+        """
+        response = self.post_data(user_id=self.user_invited_by_another_moderator.id)
+        self.assertEqual(response.status_code, 403)
+
     def test_can_revoke_user_invitation(self):
         user = User.objects.get(id=self.invited_user.id)
         self.assertIsInstance(user, User)
 
-        response = self.post_data(confirm=True)
+        response = self.post_data()
         messages = list(response.context['messages'])
 
         self.assertEqual(len(messages), 1)
@@ -358,11 +398,14 @@ class ReviewApplicationTest(TestCase):
             last_name='Moderator',
         )
 
-    def post_data(self, decision, comments):
+    def post_data(self, decision, comments, user_id=''):
+        if not user_id:
+            user_id = self.applied_user.id
+
         return self.client.post(
             reverse('moderation:review-applications'),
             data={
-                'user_id': self.applied_user.id,
+                'user_id': user_id,
                 'decision': decision,
                 'comments': comments,
             },
@@ -417,6 +460,14 @@ class ReviewApplicationTest(TestCase):
 
         self.assertIn(self.applied_user, context_pending)
         self.assertEqual(len(context_pending), 1)
+
+    def test_invalid_user_id_raises_404(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.post_data(user_id='12312312',
+                                  decision=user.APPROVED,
+                                  comments='comment')
+
+        self.assertEqual(response.status_code, 404)
 
     def test_can_approve_application(self):
         self.assertFalse(self.applied_user.moderator)
@@ -635,11 +686,14 @@ class ReviewAbuseTest(TestCase):
             logged_against=self.accused_user
         )
 
-    def post_data(self, decision, comments):
+    def post_data(self, decision, comments, report_id=''):
+        if not report_id:
+            report_id = self.abuse_report.id
+
         return self.client.post(
             reverse('moderation:review-abuse'),
             data={
-                'report_id': self.abuse_report.id,
+                'report_id': report_id,
                 'decision': decision,
                 'comments': comments,
             },
@@ -719,6 +773,13 @@ class ReviewAbuseTest(TestCase):
 
         self.assertEqual(len(context_reports), 1)
         self.assertIn(self.abuse_report, context_reports)
+
+    def test_invalid_report_id_raises_404(self):
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.post_data(AbuseReport.BAN, 'comment',
+                                  report_id='7777777')
+
+        self.assertEqual(response.status_code, 404)
 
     def test_can_dismiss_abuse_report(self):
         self.client.login(username=self.moderator.email, password='pass')

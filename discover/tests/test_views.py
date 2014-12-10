@@ -60,6 +60,12 @@ class DashboardTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'discover/list.html')
 
+    def test_requesting_view_with_POST_returns_dashboard(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+        response = self.client.post(reverse('dashboard'))
+
+        self.assertEqual(response.status_code, 200)
+
     def test_can_filter_users_by_skill(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.get_dashboard([self.django.id])
