@@ -44,6 +44,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_behave',
+    'bdd_tests',
     'django_extensions',
     'django_gravatar',
     'endless_pagination',
@@ -76,6 +78,8 @@ ROOT_URLCONF = 'connect.urls'
 
 WSGI_APPLICATION = 'connect.wsgi.application'
 
+# Testing
+TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
 # Pagination
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
