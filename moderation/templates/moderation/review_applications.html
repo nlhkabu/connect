@@ -9,10 +9,10 @@
 
     {% if pending %}
         <p class="intro">
-            {% blocktrans count pending_count=pending.count|apnumber trimmed %}
-                There is {{ pending_count }} pending member application:
+            {% blocktrans count c=pending.count with count=pending.count|apnumber trimmed %}
+                There is {{ count }} pending member application:
             {% plural %}
-                There are {{ pending_count }} pending member applications:
+                There are {{ count }} pending member applications:
             {% endblocktrans %}
         <table class="responsive review-app-table">
             <thead>

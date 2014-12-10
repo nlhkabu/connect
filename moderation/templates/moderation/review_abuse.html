@@ -30,10 +30,10 @@
                             <a href="mailto:{{ report.logged_against.email }}" class="wrap">{{ report.logged_against.email }}</a>
                             {% if report.prior_warnings %}
                                 <a href="#" class="show-warnings" data-user="{{ report.logged_against.id }}">
-                                    {% blocktrans count warning_count=report.prior_warnings.count trimmed %}
-                                        {{ warning_count }} prior warning
+                                    {% blocktrans count count=report.prior_warnings.count trimmed %}
+                                        {{ count }} prior warning
                                     {% plural %}
-                                        {{ warning_count }} prior warnings
+                                        {{ count }} prior warnings
                                     {% endblocktrans %}
                                 </a>
                             {% endif %}
@@ -79,10 +79,10 @@
             {% if report.prior_warnings %}
 
                 <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="
-                    {% blocktrans with name=report.logged_against.get_full_name|title count warning_count=report.prior_warnings.count|apnumber|title trimmed %}
-                        {{ warning_count }} prior warning for {{ name }}
+                    {% blocktrans count c=report.prior_warnings.count with name=report.logged_against.get_full_name|title count=report.prior_warnings.count|apnumber|title trimmed %}
+                        {{ count }} prior warning for {{ name }}
                     {% plural %}
-                        {{ warning_count }} prior warnings for {{ name }}
+                        {{ count }} prior warnings for {{ name }}
                     {% endblocktrans %}
                 ">
 

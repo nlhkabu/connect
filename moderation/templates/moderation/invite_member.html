@@ -75,10 +75,10 @@
     {% if pending %}
         <h3 class="lined">{% trans "Invitations pending activation" %}</h3>
         <p class="intro">
-            {% blocktrans count invitation_count=pending.count|apnumber|title trimmed %}
-                {{ invitation_count }} member you have invited has not yet activated their account:
+            {% blocktrans count c=pending.count with count=pending.count|apnumber|title trimmed %}
+                {{ count }} member you have invited has not yet activated their account:
             {% plural %}
-                {{ invitation_count }} members you have invited have not yet activated their account:
+                {{ count }} members you have invited have not yet activated their account:
             {% endblocktrans %}
         </p>
         <table class="responsive invitation-table">
