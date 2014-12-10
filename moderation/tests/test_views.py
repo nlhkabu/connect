@@ -115,7 +115,9 @@ class InviteUserTest(TestCase):
         )
 
         self.client.login(username=self.moderator.email, password='pass')
-        self.response = self.client.post(
+
+    def post_data(self):
+        return self.client.post(
             reverse('moderation:invite-user'),
             data={
                 'first_name': 'Hello',
@@ -125,11 +127,24 @@ class InviteUserTest(TestCase):
             follow=True,
         )
 
-        self.invited_user = user = User.objects.get(
-            email='invite.user@test.test'
+    def test_invalid_data_returns_to_moderation_home(self):
+        response = self.client.post(reverse('moderation:invite-user'),
+            data={
+                'first_name': 'Hello',
+                'last_name': 'There',
+                'email': 'invalid',
+            },
+            follow=True
         )
 
+        first_name_val = 'value="Hello"'
+        last_name_val = 'value="There"'
+
+        self.assertIn(first_name_val, response.content.decode())
+        self.assertIn(last_name_val, response.content.decode())
+
     def test_can_invite_new_user(self):
+        self.post_data()
         user = User.objects.get(email='invite.user@test.test')
 
         self.assertTrue(user)
@@ -137,24 +152,27 @@ class InviteUserTest(TestCase):
         self.assertEqual(user.last_name, 'There')
 
     def test_can_log_invitation(self):
+        self.post_data()
+        invited_user = User.objects.get(email='invite.user@test.test')
         expected_comment = 'My Moderator invited Hello There'
-
         log = ModerationLogMsg.objects.get(comment=expected_comment)
 
         self.assertIsInstance(log, ModerationLogMsg)
         self.assertEqual(log.msg_type, ModerationLogMsg.INVITATION)
-        self.assertEqual(log.pertains_to, self.invited_user)
+        self.assertEqual(log.pertains_to, invited_user)
         self.assertEqual(log.logged_by, self.moderator)
 
     def test_can_email_invited_user(self):
+        self.post_data()
+        invited_user = User.objects.get(email='invite.user@test.test')
         expected_subject = 'Welcome to {}'.format(self.site.name)
         expected_recipient = 'invite.user@test.test'
         expected_intro = 'Hi {},'.format('Hello')
         expected_content = 'created for you at {}'.format(
             self.site.name
         )
-        expected_url = 'http://testserver/accounts/activate/{}'.format(
-            self.invited_user.auth_token
+        expected_url = 'http://testserver/accounts/activate/{}"'.format(
+            invited_user.auth_token
         )
         expected_footer = 'My Moderator registered a new {} account'.format(
             self.site.name
@@ -170,7 +188,8 @@ class InviteUserTest(TestCase):
         self.assertIn(expected_footer, email.body)
 
     def test_confirmation_message(self):
-        messages = list(self.response.context['messages'])
+        response = self.post_data()
+        messages = list(response.context['messages'])
 
         self.assertEqual(len(messages), 1)
         self.assertIn('has been invited to', str(messages[0]))
@@ -188,43 +207,59 @@ class ReInviteUserTest(TestCase):
             last_name='Moderator',
         )
 
-        self.existing = UserFactory(
+        self.invited_user = InvitedPendingFactory(
             first_name='Hello',
             last_name='There',
             email='reinviteme@test.test',
             moderator=self.moderator,
+            auth_token='myauthtoken',
         )
 
         self.client.login(username=self.moderator.email, password='pass')
 
-    def post_data(self, email=''):
+    def post_data(self, user_id='', email=''):
+        if not user_id:
+            user_id = self.invited_user.id
 
         if not email:
-            email = self.existing.email
+            email = self.invited_user.email
 
         return self.client.post(
             reverse('moderation:reinvite-user'),
             data={
-                'user_id': self.existing.id,
+                'user_id': user_id,
                 'email': email,
             },
             follow=True,
         )
+
+    def test_invalid_email_returns_to_moderation_home(self):
+        response = self.post_data(email='invalid')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<legend>Invite a New Member</legend>',
+                      response.content.decode())
+
+    def test_reinvitation_reset_auth_token(self):
+        response = self.post_data()
+        reinvited_user = User.objects.get(id=self.invited_user.id)
+
+        self.assertNotEqual(reinvited_user.auth_token, 'myauthtoken')
 
     def test_reinvitation_resets_email(self):
         """
         Test that when we reinvite a user using  a different email address,
         the new email is saved to the user's profile.
         """
-        self.post_data(email='different.email@test.test');
-        reinvited_user = User.objects.get(id=self.existing.id)
+        response = self.post_data(email='different.email@test.test')
+        reinvited_user = User.objects.get(id=self.invited_user.id)
 
         self.assertEqual(reinvited_user.email, 'different.email@test.test')
 
     def test_can_log_reinvitation(self):
-        self.post_data()
+        response = self.post_data()
         expected_comment = 'My Moderator resent invitation to Hello There'
-        reinvited_user = User.objects.get(id=self.existing.id)
+        reinvited_user = User.objects.get(id=self.invited_user.id)
         log = ModerationLogMsg.objects.get(comment=expected_comment)
 
         self.assertIsInstance(log, ModerationLogMsg)
@@ -233,15 +268,12 @@ class ReInviteUserTest(TestCase):
         self.assertEqual(log.logged_by, self.moderator)
 
     def test_can_email_reinvited_user(self):
-        self.post_data()
+        response = self.post_data()
         expected_subject = 'Activate your {} account'.format(self.site.name)
         expected_recipient = 'invite.user@test.test'
         expected_intro = 'Hi {},'.format('Hello')
         expected_content = 'created for you at {}'.format(
             self.site.name
-        )
-        expected_url = 'http://testserver/accounts/activate/{}'.format(
-            self.existing.auth_token
         )
         expected_footer = 'My Moderator registered a new {} account'.format(
             self.site.name
@@ -250,10 +282,9 @@ class ReInviteUserTest(TestCase):
         email = mail.outbox[0]
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(email.subject, expected_subject)
-        self.assertEqual(email.to[0], self.existing.email)
+        self.assertEqual(email.to[0], self.invited_user.email)
         self.assertIn(expected_intro, email.body)
         self.assertIn(expected_content, email.body)
-        self.assertIn(expected_url, email.alternatives[0][0])
         self.assertIn(expected_footer, email.body)
 
     def test_confirmation_message(self):
@@ -273,7 +304,7 @@ class RevokeInvitationTest(TestCase):
             last_name='Moderator',
         )
 
-        self.existing_user = UserFactory(
+        self.invited_user = InvitedPendingFactory(
             first_name='Revoke',
             last_name='Me',
             email='revokeme@test.test',
@@ -282,26 +313,35 @@ class RevokeInvitationTest(TestCase):
 
         self.client.login(username=self.moderator.email, password='pass')
 
-    def test_can_revoke_user_invitation(self):
-        user = User.objects.get(id=self.existing_user.id)
-        self.assertIsInstance(user, User)
-
-        response = self.client.post(
+    def post_data(self, confirm=False):
+        return self.client.post(
             reverse('moderation:revoke-invitation'),
             data={
-                'confirm': True,
-                'user_id': self.existing_user.id,
+                'confirm': confirm,
+                'user_id': self.invited_user.id,
             },
             follow=True,
         )
 
+    def test_invalid_data_returns_to_moderation_home(self):
+        response = self.post_data()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<legend>Invite a New Member</legend>',
+                      response.content.decode())
+
+    def test_can_revoke_user_invitation(self):
+        user = User.objects.get(id=self.invited_user.id)
+        self.assertIsInstance(user, User)
+
+        response = self.post_data(confirm=True)
         messages = list(response.context['messages'])
 
         self.assertEqual(len(messages), 1)
         self.assertIn('has been uninvited from', str(messages[0]))
 
         with self.assertRaises(User.DoesNotExist):
-            User.objects.get(id=self.existing_user.id)
+            User.objects.get(id=user.id)
 
 
 class ReviewApplicationTest(TestCase):

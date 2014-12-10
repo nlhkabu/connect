@@ -182,6 +182,38 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.first_name
 
 
+    def is_pending_activation(self):
+        """
+        Checks whether the user has activated their account.
+        """
+        if (self.auth_token_is_used and self.is_active):
+            return False
+        else:
+            return True
+
+
+    def is_invited_pending_activation(self):
+        """
+        Checks whether the user is an invited user who has not yet activated
+        their account.
+        """
+        if self.registration_method == self.INVITED and self.is_pending_activation():
+            return True
+        else:
+            return False
+
+
+    def is_pending_approval(self):
+        """
+        Checks whether the user has requested an account and is
+        awaiting a decision.
+        """
+        if self.registration_method == self.REQUESTED and self.is_pending_activation():
+            return True
+        else:
+            return False
+
+
     def invite_new_user(self, email, first_name, last_name):
         """
         Invite an inactive user (who needs to activate their account).

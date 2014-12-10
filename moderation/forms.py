@@ -2,11 +2,14 @@ from datetime import date
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import get_object_or_404
 
 from .models import ModerationLogMsg
 from accounts.models import AbuseReport
 from accounts.forms import validate_email_availability
+
 
 User = get_user_model()
 
@@ -35,18 +38,29 @@ class ReInviteMemberForm(forms.Form):
     Form for moderators to reinvite new users.
     Asks moderator to confirm they have sent the email to the correct address.
     """
+    def __init__(self, *args, **kwargs):
+        self.logged_in_moderator = kwargs.pop('moderator', None)
+        super(ReInviteMemberForm, self).__init__(*args, **kwargs)
+
     email = forms.EmailField()
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
     def clean(self):
         """
-        If the moderator changes the email, make sure the new
+        - Check that the user id is valid.
+
+        - If the moderator changes the email, make sure the new
         email is not already in the system.
         """
         cleaned_data = super(ReInviteMemberForm, self).clean()
         email = cleaned_data.get('email')
         user_id = cleaned_data.get('user_id')
-        user = User.objects.get(id=user_id)
+
+        user = get_object_or_404(User, id=user_id)
+
+        if (user.moderator != self.logged_in_moderator
+        or not user.is_invited_pending_activation()):
+            raise Http404
 
         # If this email is not already registered to this user
         if email != user.email:
@@ -55,13 +69,32 @@ class ReInviteMemberForm(forms.Form):
         return cleaned_data
 
 
-class RevokeMemberForm(forms.Form):
+class RevokeInvitationForm(forms.Form):
     """
     Form for moderator to revoke membership invitation.
     Requires moderator to confirm their action.
     """
+    def __init__(self, *args, **kwargs):
+        self.logged_in_moderator = kwargs.pop('moderator', None)
+        super(RevokeInvitationForm, self).__init__(*args, **kwargs)
+
     confirm = forms.BooleanField()
     user_id = forms.IntegerField(widget=forms.HiddenInput)
+
+    def clean(self):
+        """
+        Check that the user id is valid.
+        """
+        cleaned_data = super(RevokeInvitationForm, self).clean()
+        user_id = cleaned_data.get('user_id')
+
+        user = get_object_or_404(User, id=user_id)
+
+        if (user.moderator != self.logged_in_moderator
+        or not user.is_invited_pending_activation()):
+            raise Http404
+
+        return cleaned_data
 
 
 class ModerateApplicationForm(forms.Form):

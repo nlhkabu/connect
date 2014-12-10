@@ -32,6 +32,8 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = make_password('pass')
     registration_method = CustomUser.INVITED
     is_closed = False
+    auth_token_is_used = True
+    is_active = True
 
     @factory.post_generation
     def groups(self, create, extracted, **kwargs):
@@ -84,6 +86,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
     auth_token = 'abc'
+    auth_token_is_used = False
     is_active = False
 
 
@@ -108,6 +111,7 @@ class RoleFactory(factory.django.DjangoModelFactory):
         model = Role
 
     name = factory.Sequence(lambda n: 'role{}'.format(n))
+
 
 class SkillFactory(factory.django.DjangoModelFactory):
     class Meta:

@@ -34,6 +34,18 @@ class UserModelTest(TestCase):
 
         self.assertEqual(short_name, 'Firsto')
 
+    def test_is_pending_activation(self):
+        self.assertFalse(self.standard_user.is_pending_activation())
+        self.assertTrue(self.invited_pending.is_pending_activation())
+
+    def test_is_invited_pending_activation(self):
+        self.assertFalse(self.standard_user.is_invited_pending_activation())
+        self.assertTrue(self.invited_pending.is_invited_pending_activation())
+
+    def test_is_pending_approval(self):
+        self.assertFalse(self.standard_user.is_pending_approval())
+        self.assertTrue(self.requested_pending.is_pending_approval())
+
     def test_moderator_can_invite_new_user(self):
         user = self.moderator.invite_new_user(email='standard_user@test.test',
                                               first_name='standard_user',

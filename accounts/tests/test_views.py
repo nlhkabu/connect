@@ -140,8 +140,8 @@ class ActivateAccountTest(TestCase):
         response = self.client.get(reverse('accounts:activate-account',
                                             kwargs={'token': 'mytoken'}))
 
-        self.assertTemplateUsed(response, 'accounts/activate_account.html')
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/activate_account.html')
         # Test we see appropriate form
         expected_html = '<legend>Activate Account</legend>'
         self.assertInHTML(expected_html, response.content.decode())

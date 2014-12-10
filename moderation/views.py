@@ -19,7 +19,7 @@ from connect.utils import (generate_html_email, generate_salt,
 from connect import settings
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
-                    ReportAbuseForm, RevokeMemberForm)
+                    ReportAbuseForm, RevokeInvitationForm)
 from .models import ModerationLogMsg
 from .utils import get_date_limits, log_moderator_event
 
@@ -51,10 +51,10 @@ def moderation_home(request,
         invitation_form = InviteMemberForm()
 
     if not reinvitation_form:
-        reinvitation_form = ReInviteMemberForm()
+        reinvitation_form = ReInviteMemberForm(moderator=request.user)
 
     if not revocation_form:
-        revocation_form = RevokeMemberForm()
+        revocation_form = RevokeInvitationForm(moderator=request.user)
 
     context = {
         'invitation_form': invitation_form,
@@ -129,16 +129,12 @@ def reinvite_user(request):
     moderator = request.user
     site = get_current_site(request)
 
-    reinvitation_form = ReInviteMemberForm(request.POST)
+    reinvitation_form = ReInviteMemberForm(request.POST, moderator=request.user)
 
     if reinvitation_form.is_valid():
 
         user_id = reinvitation_form.cleaned_data['user_id']
-
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            raise PermissionDenied
+        user = User.objects.get(id=user_id)
 
         if not user.auth_token_is_used:
 
@@ -191,29 +187,23 @@ def revoke_invitation(request):
     moderator = request.user
     site = get_current_site(request)
 
-    revocation_form = RevokeMemberForm(request.POST)
+    revocation_form = RevokeInvitationForm(request.POST, moderator=request.user)
 
     if revocation_form.is_valid():
 
         user_id = revocation_form.cleaned_data['user_id']
-
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            raise PermissionDenied
+        user = User.objects.get(id=user_id)
 
         messages.success(request, _('{} has been uninvited from {}.'.format(
                          user.get_full_name(), site.name)))
 
-        if not user.auth_token_is_used:
-
-            # Delete the user rather than deactivate it.
-            # Removing the email address from the system altogether means
-            # that the same email can later be used to create a new account
-            # (e.g. if the user applies or is invited by another moderator).
-            # Logs related to this user are also removed,
-            # resulting in less junk to filter in that view.
-            user.delete()
+        # Delete the user rather than deactivate it.
+        # Removing the email address from the system altogether means
+        # that the same email can later be used to create a new account
+        # (e.g. if the user applies or is invited by another moderator).
+        # Logs related to this user are also removed,
+        # resulting in less junk to filter in that view.
+        user.delete()
 
         return redirect('moderation:moderators')
 
