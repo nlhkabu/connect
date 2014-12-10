@@ -464,7 +464,7 @@ class ReviewApplicationTest(TestCase):
     def test_invalid_user_id_raises_404(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.post_data(user_id='12312312',
-                                  decision=user.APPROVED,
+                                  decision=User.APPROVED,
                                   comments='comment')
 
         self.assertEqual(response.status_code, 404)
