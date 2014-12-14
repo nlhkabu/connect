@@ -49,7 +49,6 @@ INSTALLED_APPS = (
     'django_gravatar',
     'endless_pagination',
     'django_boost',
-	'bdd_tests',
     'connect',
     'connect_config',
     'accounts',
