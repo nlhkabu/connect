@@ -299,14 +299,8 @@ def report_abuse(request, user_id):
     logged_by = request.user
 
     if request.POST:
-        form = ReportAbuseForm(request.POST,
-                               logged_by=logged_by,
-                               logged_against=logged_against)
-
+        form = ReportAbuseForm(request.POST)
         if form.is_valid():
-            logged_by = User.objects.get(id=form.cleaned_data['logged_by'])
-            logged_against = User.objects.get(
-                id=form.cleaned_data['logged_against'])
             abuse_comment = form.cleaned_data['comments']
 
             new_report = AbuseReport.objects.create(
@@ -339,8 +333,7 @@ def report_abuse(request, user_id):
             return redirect('moderation:abuse-report-logged')
 
     else:
-        form = ReportAbuseForm(logged_by=logged_by,
-                               logged_against=logged_against)
+        form = ReportAbuseForm()
 
     context = {
         'form': form,

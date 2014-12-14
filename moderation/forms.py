@@ -96,19 +96,6 @@ class ReportAbuseForm(forms.Form):
     """
     Form for a user to report abusive bahaviour of another user.
     """
-    def __init__(self, *args, **kwargs):
-        self.logged_by = kwargs.pop('logged_by', None)
-        self.logged_against = kwargs.pop('logged_against', None)
-        super(ReportAbuseForm, self).__init__(*args, **kwargs)
-
-        self.fields['logged_by'] = forms.IntegerField(
-                                                initial=self.logged_by.id,
-                                                widget=forms.HiddenInput)
-
-        self.fields['logged_against'] = forms.IntegerField(
-                                                initial=self.logged_against.id,
-                                                widget=forms.HiddenInput)
-
     comments = forms.CharField(widget=forms.Textarea())
 
 
