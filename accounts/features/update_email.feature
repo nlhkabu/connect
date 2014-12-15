@@ -6,7 +6,7 @@ Feature: Update Email
         Then I see the update email form
         And the form is populated with my email
 
-    Scenario: User submits invalid data to the update email form
+    Scenario Outline: User submits invalid data to the update email form
         Given I am an authenticated user
         And my current email is 'my.email@test.test'
         And my current password is 'pass'

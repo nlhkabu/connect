@@ -9,7 +9,7 @@ Feature: Review Applications
         When I visit the review applications page
         Then I see a list of pending applications
 
-    Scenario: Launch modal
+    Scenario Outline: Launch modal
         Given I am an authenticated moderator
         When I click on <link>
         Then a modal containing a <form> pops up
@@ -32,7 +32,7 @@ Feature: Review Applications
         And I submit the form
         Then I see 'This field is required.'
 
-    Scenario: Moderator submits decision
+    Scenario Outline: Moderator submits decision
         Given I am a logged in moderator
         And I have launched the <modal>
         When I input a comment

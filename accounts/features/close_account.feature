@@ -5,7 +5,7 @@ Feature: Close Account
         When I visit the close account page
         Then I see the close account form
 
-    Scenario: User submits invalid data to the close account form
+    Scenario Outline: User submits invalid data to the close account form
         Given I am an authenticated user
         And my current password is 'pass'
         When I input <pass>

@@ -6,7 +6,7 @@ Feature: Login
         And that user's email is 'my.user@test.test'
         And that user's password is 'pass'
 
-    Scenario: Invalid login
+    Scenario Outline: Invalid login
         Given I am a registered user
         When I input <email>
         And I input <password>

@@ -15,7 +15,7 @@ Feature: View Moderation Logs
         When I visit the logs page
         Then I see a table with four logs in it
 
-    Scenario: Filter logs by type and period
+    Scenario Outline: Filter logs by type and period
         Given I am an authenticated moderator
         When I select <type>
         And I select <period>

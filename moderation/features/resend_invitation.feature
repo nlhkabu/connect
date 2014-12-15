@@ -18,7 +18,7 @@ Feature: Resend Invitation
         When I click on the close button
         Then the modal closes
 
-    Scenario: Moderator submits invalid data to the resend invitation form
+    Scenario Outline: Moderator submits invalid data to the resend invitation form
         Given I am a logged in moderator
         And 'taken.email@test.test' is registered to another user
         And I have launched the 'resend invitation' modal

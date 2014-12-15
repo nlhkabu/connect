@@ -5,7 +5,7 @@ Feature: Update Password
         When I visit the update password page
         Then I see the update password form
 
-    Scenario: User submits invalid data to the update password form
+    Scenario Outline: User submits invalid data to the update password form
         Given I am an authenticated user
         And my current password is 'pass'
         When I input <new pass>

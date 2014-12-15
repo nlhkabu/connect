@@ -21,7 +21,7 @@ Feature: Update Profile
         Then I see the profile settings form
         And the form is prepopulated with my data
 
-    Scenario: User submits invalid data to update profile form
+    Scenario Outline: User submits invalid data to update profile form
         Given I am an authenticated user
         When I input <first name>
         And I input <last name>

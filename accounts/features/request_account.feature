@@ -7,7 +7,7 @@ Feature: Request Account
             |   User        |   Two         |   user.two@test.test  |   true    |
 
 
-    Scenario: User submits invalid data to the request account form
+    Scenario Outline: User submits invalid data to the request account form
         Given I am an unauthenticated user
         When I input <first name>
         And I input <last name>

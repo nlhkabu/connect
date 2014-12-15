@@ -6,7 +6,7 @@ Feature: Activate Account
         Then I see the activate account form
         And the form is prepopulated with my first name and last name
 
-    Scenario: Invited user submits invalid data to the activate account form
+    Scenario Outline: Invited user submits invalid data to the activate account form
         Given I am an invited user
         And I input <first name>
         And I input <last name>

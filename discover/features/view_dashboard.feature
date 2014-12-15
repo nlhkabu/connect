@@ -29,7 +29,7 @@ Feature: View Dashboard
         Then I see the application name, logo and tagline
         And I see a list of all active members, with information on each one
 
-    Scenario: Filter members
+    Scenario Outline: Filter members
         Given I am an authenticated user
         And I filter members by <skills>
         And I filter members by <roles>

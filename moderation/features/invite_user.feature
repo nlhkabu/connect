@@ -5,7 +5,7 @@ Feature: Invite User
         When I view the 'invite users' page
         Then I see a form for inviting users
 
-    Scenario: Moderator submits invalid data to the invite user form
+    Scenario Outline: Moderator submits invalid data to the invite user form
         Given I am a logged in moderator
         And 'taken.email@test.test' is already registered with another user
         And I input <first name>

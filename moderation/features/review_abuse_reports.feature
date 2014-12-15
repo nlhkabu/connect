@@ -12,7 +12,7 @@ Feature: Review Abuse Reports
         And I can see existing warnings
         But I cannot see reports relating to myself
 
-    Scenario: Launch modal
+    Scenario Outline: Launch modal
         Given I am a logged in moderator
         When I click on <link>
         Then a modal containing a <form> pops up
@@ -36,7 +36,7 @@ Feature: Review Abuse Reports
         And I submit the form
         Then I see 'This field is required.'
 
-    Scenario: Moderator submits decision
+    Scenario Outline: Moderator submits decision
         Given I am a logged in moderator
         And I have launched the <modal> for the report logged against User One
         When I input a comment
