@@ -156,6 +156,17 @@ $(document).ready(function(){
     // MODERATION - REVIEW APPLICATIONS
     // --------------------------------
 
+    function applicationDialog(title){
+        $('#review-application-dialog').dialog({
+            autoOpen: false,
+            modal: true,
+            width: 400,
+            title: title || 'Review Application'
+        });
+    };
+
+    applicationDialog();
+
     $('.decision-link').click(function(e){
         e.preventDefault();
 
@@ -163,13 +174,7 @@ $(document).ready(function(){
         decision = $(this).data('decision');
         title = $(this).html();
 
-        $('#review-application-dialog').dialog({
-            autoOpen: false,
-            modal: true,
-            width: 400,
-            title: title
-        });
-
+        applicationDialog(title);
         $('#review-application-dialog').dialog('open');
         $('.review-application-form #id_user_id').val(user);
         $('.review-application-form #id_decision').val(decision);
@@ -198,6 +203,16 @@ $(document).ready(function(){
 
 
     // Enable form on review abuse reports page
+    function reportDialog(title){
+        $('#review-abuse-dialog').dialog({
+            autoOpen: false,
+            modal: true,
+            width: 400,
+            title: title || 'Moderate Abuse Report'
+        });
+    };
+
+    reportDialog();
 
     var report, decision, title;
 
@@ -208,13 +223,7 @@ $(document).ready(function(){
         decision = $(this).data('decision');
         title = $(this).data('title');
 
-        $('#review-abuse-dialog').dialog({
-            autoOpen: false,
-            modal: true,
-            width: 400,
-            title: title
-        });
-
+        reportDialog(title);
         $('#review-abuse-dialog').dialog('open');
         $('.review-abuse-form #id_report_id').val(report);
         $('.review-abuse-form #id_decision').val(decision);
