@@ -578,7 +578,7 @@ class ReportAbuseTest(TestCase):
         return self.client.post(
             reverse(
                 'moderation:report-abuse',
-                kwargs={'user_id': self.accused_user.id},
+                kwargs={'user_id': logged_against},
             ),
             data={
                 'logged_by': self.reporting_user.id,
@@ -662,7 +662,7 @@ class ReportAbuseTest(TestCase):
         for email in mail.outbox:
             recipients.append(email.to[0])
 
-        self.assertEqual(len(mail.outbox), 10)
+        self.assertEqual(len(mail.outbox), 10) # There are 10 other moderators
         self.assertNotIn(self.moderator.email, recipients)
 
 
