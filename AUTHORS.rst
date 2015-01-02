@@ -1,22 +1,22 @@
 =======
-Credits
+Authors
 =======
 
 Developers
 ----------
 
-**`Nicole Harris <http://github.com/nlhkabu>`_**
-* Lead developer
+`Nicole Harris`_
+    * Lead developer
 
-**`Olivier Harris <http://github.com/ojh>`_**
-* Code review and mentoring
-* Deployment
-* CI integration
+`Olivier Harris`_
+    * Code review and mentoring
+    * Deployment
+    * CI integration
 
+.. _`Nicole Harris`: http://whoisnicoleharris.com
+.. _`Olivier Harris`: http://github.com/ojh
 
-Thanks to
+Thank-you
 ---------
 * Folks on #django IRC for feedback and bug smashing
-* Idan Gazit for mentoring
-
-
+* Idan Gazit for additional mentoring
