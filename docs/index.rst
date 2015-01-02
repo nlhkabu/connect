@@ -29,7 +29,6 @@ ________
    installation
    configuration
    deployment
-   packages
    users
    authors
    roadmap

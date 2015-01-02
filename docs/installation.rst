@@ -58,14 +58,14 @@ The following settings should be configured:
 
 
 .. ~todo
-* secret key
-* admins
-* database settings
-* timezone
-* language
-* gravatar settings
-* site settings
-* email settings
+    * secret key
+    * admins
+    * database settings
+    * timezone
+    * language
+    * gravatar settings
+    * site settings
+    * email settings
 
 
 Sync the DB and run the server
@@ -75,7 +75,6 @@ ______________________________
 
     $ ./manage.py migrate
     $ ./manage.py runserver
-
 
 
 .. important::
