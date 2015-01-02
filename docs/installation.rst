@@ -71,6 +71,10 @@ The following settings should be configured:
 Setting up the Database
 _______________________
 
+.. note::
+    To use the ``./`` shortcut you will need to change your ``manage.py``
+    permissions to ``rwxrw-r--``.
+
 First sync the database:
 
 .. code-block:: bash
@@ -81,18 +85,21 @@ First sync the database:
 Then create a superuser:
 
 .. code-block:: bash
+
     $ ./manage.py createsuperuser
 
 
 Then you can run your local sever:
 
 .. code-block:: bash
+
     $ ./manage.py runserver
 
 
 .. important::
     Now that your site is up and running, you will need to:
-    #. Set is_moderator to True for your superuser.
+
+    #. Set ``is_moderator`` to ``True`` for your superuser.
     #. Set up some additional data in your database. (See :doc:`configuration` for more information.)
 
 
