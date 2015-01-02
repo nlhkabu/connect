@@ -68,18 +68,32 @@ The following settings should be configured:
     * email settings
 
 
-Sync the DB and run the server
-______________________________
+Setting up the Database
+_______________________
+
+First sync the database:
 
 .. code-block:: bash
 
     $ ./manage.py migrate
+
+
+Then create a superuser:
+
+.. code-block:: bash
+    $ ./manage.py createsuperuser
+
+
+Then you can run your local sever:
+
+.. code-block:: bash
     $ ./manage.py runserver
 
 
 .. important::
-    Now that your site is up and running, you need to set up some
-    data in your database. See :doc:`configuration` for more information.
+    Now that your site is up and running, you will need to:
+    #. Set is_moderator to True for your superuser.
+    #. Set up some additional data in your database. (See :doc:`configuration` for more information.)
 
 
 Changing the Color
