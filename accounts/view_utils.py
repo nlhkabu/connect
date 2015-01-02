@@ -1,8 +1,15 @@
 from urllib.parse import urlsplit
+
+from django.core.urlresolvers import reverse
+from django.db import IntegrityError, transaction
+from django.shortcuts import redirect
+from django.utils.translation import ugettext as _
+
 from .models import UserLink, UserSkill, LinkBrand
 
 
-def save_paired_items(user, formset, Model, item_name, counterpart_name):
+def save_paired_items(request, user, formset, Model,
+                      item_name, counterpart_name):
     """
     Handle saving skills or links to the database.
     """
@@ -20,18 +27,25 @@ def save_paired_items(user, formset, Model, item_name, counterpart_name):
                 paired_items.append(model_instance)
 
     # Replace old pairs with new
-    Model.objects.filter(user=user).delete()
-    Model.objects.bulk_create(paired_items)
+    # Do this in a transaction to avoid a case where we delete the old
+    # but cannot save the new
+    try:
+        with transaction.atomic():
+            Model.objects.filter(user=user).delete()
+            Model.objects.bulk_create(paired_items)
+    except IntegrityError:
+        messages.error(request, _('There was an error updating your profile.'))
+        return redirect(reverse('accounts:profile-settings'))
 
 
-def save_skills(user, formset):
+def save_skills(request, user, formset):
     """Wrapper function to save paired skills and proficiencies."""
-    save_paired_items(user, formset, UserSkill, 'skill', 'proficiency')
+    save_paired_items(request, user, formset, UserSkill, 'skill', 'proficiency')
 
 
-def save_links(user, formset):
+def save_links(request, user, formset):
     """Wrapper function to save paired link anchors and URLs."""
-    save_paired_items(user, formset, UserLink, 'anchor', 'url')
+    save_paired_items(request, user, formset, UserLink, 'anchor', 'url')
 
 
 def match_link_to_brand(user_links):

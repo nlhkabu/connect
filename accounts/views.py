@@ -138,15 +138,13 @@ def profile_settings(request):
     has_skills = Skill.objects.count() > 0
     has_roles = Role.objects.count() > 0
 
-    SkillFormSet = formset_factory(SkillForm, extra=1, max_num=None,
-                                   formset=BaseSkillFormSet)
+    SkillFormSet = formset_factory(SkillForm, formset=BaseSkillFormSet)
 
     user_skills = UserSkill.objects.filter(user=user).order_by('skill__name')
     skill_data = [{'skill': s.skill, 'proficiency': s.proficiency}
                     for s in user_skills]
 
-    LinkFormSet = formset_factory(LinkForm, extra=1, max_num=None,
-                                  formset=BaseLinkFormSet)
+    LinkFormSet = formset_factory(LinkForm, formset=BaseLinkFormSet)
 
     user_links = UserLink.objects.filter(user=user).order_by('anchor')
     link_data = [{'anchor': l.anchor, 'url': l.url}
@@ -166,8 +164,8 @@ def profile_settings(request):
 
             user.save()
 
-            save_skills(user, skill_formset)
-            save_links(user, link_formset)
+            save_skills(request, user, skill_formset)
+            save_links(request, user, link_formset)
 
             user_links = UserLink.objects.filter(user=user)
             match_link_to_brand(user_links)

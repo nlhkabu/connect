@@ -35,7 +35,7 @@ class ViewUtilsTest(TestCase):
             }
         )
 
-        save_skills(self.standard_user, formset)
+        save_skills(self.client.request, self.standard_user, formset)
 
         user = User.objects.get(id=self.standard_user.id)
         user_skills = UserSkill.objects.filter(user=user)
@@ -64,7 +64,7 @@ class ViewUtilsTest(TestCase):
             }
         )
 
-        save_links(self.standard_user, formset)
+        save_links(self.client.request, self.standard_user, formset)
 
         user = User.objects.get(id=self.standard_user.id)
         user_links = UserLink.objects.filter(user=user)
