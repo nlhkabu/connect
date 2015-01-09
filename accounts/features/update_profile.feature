@@ -1,92 +1,85 @@
 Feature: Update Profile
 
-    Background: The database is configured and contains skills and roles
-        Given that the site details have been configured
-        And the following skills are in the database:
-            |   role    |
-            |   role1   |
-            |   role2   |
-
-        And the following roles are in the database:
-            |   skill   |
-            |   skill1  |
-            |   skill2  |
-
-        And the profile form includes two link forms
-        And the profile form includes two skill forms
-
     Scenario: User views page
-        Given I am an authenticated user
-        When I visit the profile page
+        Given I am an active authenticated user
+        When I visit my profile page
         Then I see the profile settings form
-        And the form is prepopulated with my data
+        And the profile form is prepopulated with my data
 
     Scenario Outline: User submits invalid data to update profile form
-        Given I am an authenticated user
-        When I input <first name>
-        And I input <last name>
-        And I input <link 1 anchor>
-        And I input <link 1 url>
-        And I input <link 2 anchor>
-        And I input <link 2 url>
-        And I select <skill 1 name>
-        And I select <skill 1 proficiency>
-        And I select <skill 2 name>
-        And I select <skill 2 proficiency>
+        Given I am an active authenticated user
+        When I visit my profile page
+        And there are two link formsets showing
+        And there are two skill formsets showing
+        And I input <first name> into the first name field
+        And I input <last name> into the last name field
+        And I input <link 1 anchor> into the first anchor field
+        And I input <link 1 url> into the first url field
+        And I input <link 2 anchor> into the second anchor field
+        And I input <link 2 url> into the second url field
+        And I select <skill 1 name> for the first skill name field
+        And I select <skill 1 proficiency> for the first skill proficiency field
+        And I select <skill 2 name> for the second skill name field
+        And I select <skill 2 proficiency> for the second skill proficiency field
         And I submit the form
         Then I see <error>
 
         Examples:
             |   first name  |   last name   |   link 1 anchor   |   link 1 url          |   link 2 anchor   |   link 2 url          |   skill 1 name    |   skill 1 proficiency |   skill 2 name    |   skill 2 proficiency |   error                                       |
-            |   ''          |   Last        |   My link         |   http://myurl.com    |   My link2        |   http://myurl2.com   |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   This field is required.                     |
-            |   First       |   ''          |   My link         |   http://myurl.com    |   My link2        |   http://myurl2.com   |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   This field is required.                     |
-            |   First       |   Last        |   ''              |   http://myurl.com    |   My link2        |   http://myurl2.com   |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   All links must have an anchor.              |
-            |   First       |   Last        |   My link1        |   ''                  |   My link2        |   http://myurl2.com   |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   All links must have a url.                  |
-            |   First       |   Last        |   My link1        |   http://myurl.com    |   My link1        |   http://myurl2.com   |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl.com    |   My link2        |   http://myurl.com    |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl.com    |   My link2        |   http://myurl.com    |   skill1          |   BEGINNER            |   skill2          |   EXPERT              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link         |   http://myurl.com    |   My link2        |   http://myurl2.com   |   ''              |   BEGINNER            |   skill2          |   EXPERT              |   All skills must have a skill name.          |
-            |   First       |   Last        |   My link         |   http://myurl.com    |   My link2        |   http://myurl2.com   |   skill1          |   ''                  |   skill2          |   EXPERT              |   All skills must have a proficiency.         |
-            |   First       |   Last        |   My link         |   http://myurl.com    |   My link2        |   http://myurl2.com   |   skill1          |   BEGINNER            |   skill1          |   EXPERT              |   Each skill can only be entered once.        |
+            |   ""          |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "This field is required."                   |
+            |   "First"     |   ""          |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "This field is required."                   |
+            |   "First"     |   "Last"      |   ""              |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "All links must have an anchor."            |
+            |   "First"     |   "Last"      |   "My link1"      |   ""                  |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "All links must have a url."                |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link1"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl1.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   ""              |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "All skills must have a skill name."        |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   ""                  |   "skill2"        |   "EXPERT"            |   "All skills must have a proficiency."       |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill1"        |   "EXPERT"            |   "Each skill can only be entered once."      |
 
     Scenario: Biography field expands
-        Given I am an authenticated user
-        When I add more than three lines to the biography field
-        Then the field 'grows' to accommodate the text
+        Given I am an active authenticated user
+        When I visit my profile page
+        And I add more than three lines to the biography field
+        Then the field grows to accommodate the text
 
     Scenario: Remove a form from the skills list
-        Given I am an authenticated user
-        When I click on 'remove' next to a skill form
-        Then this form is removed from the list
+        Given I am an active authenticated user
+        When I visit my profile page
+        And I click on remove next to a skill form
+        Then this skills formset is removed from the list
 
     Scenario: Add another form to the skills list
-        Given I am an authenticated user
-        When I click on 'add skill'
+        Given I am an active authenticated user
+        When I visit my profile page
+        And I click on add skill
         Then another skill formset is added to the bottom of the form
 
-    Scenario: Remove a form from the links list
-        Given I am an authenticated user
-        When I click on 'remove' next to a link form
-        Then this form is removed from the list
+    Scenario: Remove a form form the links list
+        Given I am an active authenticated user
+        When I visit my profile page
+        And I click on remove next to a link form
+        Then this links formset is removed from the list
 
     Scenario: Add another form to the links list
-        Given I am an authenticated user
-        When I click on 'add link'
+        Given I am an active authenticated user
+        When I visit my profile page
+        And I click on add link
         Then another link formset is added to the bottom of the form
 
     Scenario: Update user's profile
-        Given I am an authenticated user
-        When I input 'First'
-        And I input 'Last'
-        And I input 'my bio'
-        And I input 'My Anchor 1'
-        And I input 'http://myurl1.com'
-        And I input 'My Anchor 2'
-        And I input 'http://myurl2.com'
-        And I check 'role1'
-        And I select 'skill1'
-        And I select 'BEGINNER'
-        And I select 'skill2'
-        And I select 'INTERMEDIATE'
+        Given I am an active authenticated user
+        When I visit my profile page
+        And I input "First" into the first name field
+        And I input "Last" into the last name field
+        And I input "my bio" into the bio field
+        And I input "My link1" into the first anchor field
+        And I input "http://myurl1.com" into the first url field
+        And I input "My link2" into the second anchor field
+        And I input "http://myurl2.com" into the second url field
+        And I check "role1"
+        And I select "skill1" for the first skill name field
+        And I select "BEGINNER" for the first skill proficiency field
+        And I select "skill2" for the second skill name field
+        And I select "EXPERT" for the second skill proficiency field
         And I submit the form
-        Then I see 'Your profile has been updated'
+        Then I see "Your profile has been updated"

@@ -1,24 +1,25 @@
 Feature: Close Account
 
-    Scenario: User views page
-        Given I am an authenticated user
+    # Unique to Scenario: User views page
+        Given I am an active authenticated user
         When I visit the close account page
         Then I see the close account form
 
-    Scenario Outline: User submits invalid data to the close account form
-        Given I am an authenticated user
-        And my current password is 'pass'
-        When I input <pass>
+    # Unique to Scenario Outline: User submits invalid data to the close account form
+        Given I am an active authenticated user
+        When I visit the close account page
+        And I input <pass> into the password field
         And I submit the form
-        Then I should see <error>
+        Then I see <error>
 
         Examples:
-            |   pass        |   error                                  |
-            |   ''          |   This field is required.                |
-            |   wrongpass   |   Incorrect password. Please try again.  |
+            |   pass        |   error                                   |
+            |   ""          |   "This field is required."               |
+            |   "wrongpass" |   "Incorrect password. Please try again." |
 
-    Scenario: User submits valid data
-        Given I am an authenticated user
-        When I input my password
+    # Unique to Scenario: User submits valid data
+        Given I am an active authenticated user
+        When I visit the close account page
+    And I input "pass" into the password field
         And I submit the form
-        Then I should be redirected to a confirmation page
+        Then I am redirected to a confirmation page
