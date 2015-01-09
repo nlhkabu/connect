@@ -162,11 +162,11 @@ SITE_URL = 'http://localhost:8000' #TODO: change for production
 
 # Set 'from' email address for system emails
 
-EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
-EMAIL_PORT = int(os.environ['CONNECT_EMAIL_PORT'])
+EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
-EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS'] == "True"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
