@@ -10,7 +10,7 @@
 
     {% trans "Close Account" as title %}
 
-    <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form" novalidate>
+    <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form close-account" novalidate>
         {% csrf_token %}
         <fieldset>
             <legend>{{ title }}</legend>
@@ -36,7 +36,7 @@
             <dl>
                 <dt></dt>
                 <dd>
-                    <input type="submit" value="{{ title }}" class="button"/>
+                    <input type="submit" value="{{ title }}" class="button submit"/>
                 </dd>
                 <span class="clearfix"></span>
             </dl>

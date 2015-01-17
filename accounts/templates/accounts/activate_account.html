@@ -19,7 +19,7 @@
             </p>
 
         {% else %}
-            <form action="" method="post" class="horizontal-form">
+            <form action="" method="post" class="horizontal-form activate-account">
                 {% csrf_token %}
                 <fieldset>
                     <legend>{{ title }}</legend>
@@ -94,7 +94,7 @@
                     <dl>
                         <dt></dt>
                         <dd>
-                            <input type="submit" value="{{ title }}" class="button"/>
+                            <input type="submit" value="{{ title }}" class="button submit"/>
                         </dd>
                         <span class="clearfix"></span>
                     </dl>

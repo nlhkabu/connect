@@ -3,24 +3,26 @@ from behave import *
 # Common to this feature
 @when('I visit the update email page')
 def impl(context):
-    pass
+    context.browser.visit(context.server_url + 'accounts/update/email/')
 
 @when('I input "a.new.email@test.test" into the email field')
 def impl(context):
-    pass
+    context.browser.fill('email', 'a.new.email@test.test')
 
 
 # Unique to Scenario: User views page
 @then('I see the update email form')
 def impl(context):
-    pass
+    assert context.browser.find_by_css('.update-email').visible
 
 @then('the email field is prepopulated with my email ("active.user1@test.test")')
 def impl(context):
-    pass
+    assert context.browser.find_by_name('email').value is 'active.user1@test.test'
 
 
 # Unique to Scenario: User updates their email
 @then('I see "Your Connect email has been updated."')
 def impl(context):
-    pass
+    assert context.browser.is_text_present(
+        "Your Connect email has been updated.")
+

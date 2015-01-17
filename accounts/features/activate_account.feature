@@ -1,13 +1,13 @@
 Feature: Activate Account
 
-    # Unique to Scenario: Invited user visits page to activate account
+    Scenario: Invited user visits page to activate account
         Given I am an inactive unauthenticated user
         When I visit my activation page (/7891011)
         Then I see the activate account form
         And the first name field is prepopulated with my first name
         And the last name field is prepopulated with my last name
 
-    # Unique to Scenario Outline: Invited user submits invalid data to the activate account form
+    Scenario Outline: Invited user submits invalid data to the activate account form
         Given I am an inactive unauthenticated user
         When I visit my activation page (/7891011)
         And I input <first name> into the first name field
@@ -25,7 +25,7 @@ Feature: Activate Account
             |   "First"     |   "Last"      |    "pass"     |   ""              |   "This field is required."                           |
             |   "First"     |   "Last"      |    "pass"     |   "notmatching"   |   "Your passwords do not match. Please try again."    |
 
-    # Unique to Scenario: Invited user activates their account
+    Scenario: Invited user activates their account
         Given I am an inactive unauthenticated user
         When I visit my activation page (/7891011)
         And I input "First" into the first name field
@@ -36,7 +36,7 @@ Feature: Activate Account
         Then I am redirected to my dashboard
         And I see a welcome modal
 
-    # Unique to Scenario: Active user revisits page to activate account
+    Scenario: Active user revisits page to activate account
         Given I am an active unauthenticated user
         When I visit my activation page (/123456)
         Then I see "We're sorry, this activation token has already been used."

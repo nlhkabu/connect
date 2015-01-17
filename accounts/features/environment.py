@@ -1,39 +1,38 @@
 # Used with Behave to define code to run before and after certain events during BDD testing.
-
+import factory
 from behave import *
 from splinter.browser import Browser
 
-from accounts.factories import UserFactory, RoleFactory, SkillFactory
+from accounts.factories import (InvitedPendingFactory, UserFactory, RoleFactory,
+                                SkillFactory)
 from connect_config.factories import SiteConfigFactory
 
 def before_all(context):
     context.browser = Browser()
-    context.server_url = 'http://localhost:8000/' #TODO: make this dynamic using site.url
+    context.server_url = 'http://localhost:8081/' # Django's default LiveServerTestCase port
 
-    # Now I need to setup a local database and launch a local server....
+    # Setup roles
+    factory.create_batch(RoleFactory, 3)
 
-    # Setup Users:
+    # Setup skills
+    factory.create_batch(SkillFactory, 3)
 
-    #~|   first name  |   last name     |    email                      |   pass    |   is_active   |   is_closed   |   auth_token  |
-    #~|   Active      |   User1         |    active.user1@test.test     |   pass    |   true        |   false       |   123456      |
-    #~|   Inactive    |   User2         |    inactive.user@test.test    |   pass    |   false       |   false       |   7891011     |
-    #~|   Closed      |   User3         |    closed.user3@test.test     |   pass    |   false       |   true        |   4563543     |
+    # Setup Users
+    active_user = UserFactory(first_name='Active',
+                              last_name='User1',
+                              email='active.user1@test.test')
 
+    inactive_user = InvitedPendingFactory(first_name='Inactive',
+                                          last_name='User2',
+                                          email='inactive.user2@test.test',
+                                          auth_token='7891011')
 
-    # Setup Roles:
-    #~|   role    |
-    #~|   role1   |
-    #~|   role2   |
-
-
-    # Setup Skills
-    #~|   skill   |
-    #~|   skill1  |
-    #~|   skill2  |
+    closed_user = UserFactory(first_name='Closed',
+                              last_name='User3',
+                              email='closed.user2@test.test',
+                              is_closed=True)
 
 def after_all(context):
     context.browser.quit()
     context.browser = None
-
-
 
