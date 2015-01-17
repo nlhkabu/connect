@@ -26,15 +26,15 @@ Feature: Update Profile
 
         Examples:
             |   first name  |   last name   |   link 1 anchor   |   link 1 url          |   link 2 anchor   |   link 2 url          |   skill 1 name    |   skill 1 proficiency |   skill 2 name    |   skill 2 proficiency |   error                                       |
-            |   ""          |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "This field is required."                   |
-            |   "First"     |   ""          |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "This field is required."                   |
-            |   "First"     |   "Last"      |   ""              |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "All links must have an anchor."            |
-            |   "First"     |   "Last"      |   "My link1"      |   ""                  |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "All links must have a url."                |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link1"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl1.com" |   "skill1"        |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   ""              |   "BEGINNER"          |   "skill2"        |   "EXPERT"            |   "All skills must have a skill name."        |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   ""                  |   "skill2"        |   "EXPERT"            |   "All skills must have a proficiency."       |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "skill1"        |   "BEGINNER"          |   "skill1"        |   "EXPERT"            |   "Each skill can only be entered once."      |
+            |   ""          |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "This field is required."                   |
+            |   "First"     |   ""          |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "This field is required."                   |
+            |   "First"     |   "Last"      |   ""              |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "All links must have an anchor."            |
+            |   "First"     |   "Last"      |   "My link1"      |   ""                  |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "All links must have a url."                |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link1"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl1.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   ""              |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "All skills must have a skill name."        |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   ""                  |   "testskill2"    |   "EXPERT"            |   "All skills must have a proficiency."       |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill1"    |   "EXPERT"            |   "Each skill can only be entered once."      |
 
     Scenario: Biography field expands
         Given I am an active authenticated user
@@ -76,10 +76,10 @@ Feature: Update Profile
         And I input "http://myurl1.com" into the first url field
         And I input "My link2" into the second anchor field
         And I input "http://myurl2.com" into the second url field
-        And I check "role1"
-        And I select "skill1" for the first skill name field
+        And I check "testrole1"
+        And I select "testskill1" for the first skill name field
         And I select "BEGINNER" for the first skill proficiency field
-        And I select "skill2" for the second skill name field
+        And I select "testskill2" for the second skill name field
         And I select "EXPERT" for the second skill proficiency field
         And I submit the form
         Then I see "Your profile has been updated"

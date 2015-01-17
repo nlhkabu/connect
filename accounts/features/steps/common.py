@@ -111,8 +111,8 @@ def impl(context):
 # Common Redirects
 @then('I am redirected to my dashboard')
 def impl(context):
-    assert 'dashboard' in context.browser.title
+    assert b'Dashboard' in context.browser.title
 
 @then('I am redirected to the login page')
 def impl(context):
-    pass
+    assert b'Login' in context.browser.title

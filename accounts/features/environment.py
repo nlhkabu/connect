@@ -12,10 +12,13 @@ def before_all(context):
     context.server_url = 'http://localhost:8081/' # Django's default LiveServerTestCase port
 
     # Setup roles
-    factory.create_batch(RoleFactory, 3)
+    role = RoleFactory(name='testrole1')
 
     # Setup skills
-    factory.create_batch(SkillFactory, 3)
+    skill1 = SkillFactory(name='testskill1')
+    skill2 = SkillFactory(name='testskill2')
+    skill3 = SkillFactory(name='testskill3')
+    #factory.create_batch(SkillFactory, 3)
 
     # Setup Users
     active_user = UserFactory(first_name='Active',

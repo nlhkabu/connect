@@ -169,8 +169,9 @@ EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
 
 
+# Auth Settings
 AUTH_USER_MODEL = 'accounts.CustomUser'
-
+LOGIN_REDIRECT_URL = '/'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

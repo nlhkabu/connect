@@ -1,6 +1,5 @@
 Feature: Login
 
-    @wip
     Scenario Outline: Invalid login
         Given I am an active unauthenticated user
         When I visit the login page
@@ -16,7 +15,6 @@ Feature: Login
             |   "active.user1@test.test"    |   "wrongpass" |
             |   "invalidemail"              |   "pass"      |
 
-    @wip
     Scenario: Valid Login
         Given I am an active unauthenticated user
         When I visit the login page

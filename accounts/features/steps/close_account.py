@@ -16,4 +16,4 @@ def impl(context):
 # Unique to Scenario: User submits valid data
 @then('I am redirected to a confirmation page')
 def impl(context):
-    pass
+    assert b'Account Closed' in context.browser.title

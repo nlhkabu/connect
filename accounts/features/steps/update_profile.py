@@ -24,17 +24,17 @@ def impl(context):
 def impl(context):
     context.browser.fill('link-1-url', 'http://myurl2.com')
 
-@when('I select "skill1" for the first skill name field')
+@when('I select "testskill1" for the first skill name field')
 def impl(context):
-    context.browser.select('skill-0-skill', 'skill1')
+    context.browser.select('skill-0-skill', 'testskill1')
 
 @when('I select "BEGINNER" for the first skill proficiency field')
 def impl(context):
     context.browser.select('skill-0-proficiency', 'beginner')
 
-@when('I select "skill2" for the second skill name field')
+@when('I select "testskill2" for the second skill name field')
 def impl(context):
-    context.browser.select('skill-1-skill', 'skill2')
+    context.browser.select('skill-1-skill', 'testskill2')
 
 @when('I select "EXPERT" for the second skill proficiency field')
 def impl(context):
@@ -85,9 +85,9 @@ def impl(context):
 def impl(context):
     context.browser.select('skill-0-proficiency', '')
 
-@when('I select "skill1" for the second skill name field')
+@when('I select "testskill1" for the second skill name field')
 def impl(context):
-    context.browser.select('skill-1-skill', 'skill1')
+    context.browser.select('skill-1-skill', 'testskill1')
 
 @then('I see "All links must have an anchor."')
 def impl(context):
@@ -177,9 +177,9 @@ def impl(context):
 def impl(context):
     context.browser.fill('bio', 'my bio')
 
-@when('I check "role1"')
+@when('I check "testrole1"')
 def impl(context):
-    context.browser.check('role1')
+    context.browser.check('testrole1')
 
 @then('I see "Your profile has been updated"')
 def impl(context):
