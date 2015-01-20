@@ -146,7 +146,7 @@ class RequestInvitationForm(forms.Form):
             else:
                 raise forms.ValidationError(
                     _('Sorry, this email address is already '
-                        'registered to another user'),
+                        'registered to another user.'),
 
                     code='email_already_registered'
                 )

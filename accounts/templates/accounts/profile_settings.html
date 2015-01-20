@@ -164,14 +164,16 @@
             prefix: '{{ skill_formset.prefix }}',
             formCssClass: 'dynamic-skill-formset',
             addText: '{% trans "add skill" %}',
-            deleteText: '{% trans "remove" %}'
+            deleteText: '{% trans "remove" %}',
+            deleteCssClass: 'delete-skill'
         });
 
         $('.link-formset').formset({
             prefix: '{{ link_formset.prefix }}',
             formCssClass: 'dynamic-link-formset',
             addText: '{% trans "add link" %}',
-            deleteText: '{% trans "remove" %}'
+            deleteText: '{% trans "remove" %}',
+            deleteCssClass: 'delete-link'
         });
 
         // Fancy vertical resizing

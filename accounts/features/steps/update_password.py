@@ -5,9 +5,9 @@ from behave import *
 def impl(context):
     context.browser.visit(context.server_url + 'accounts/update/password/')
 
-@when('I input "newpass" into the new password field')
+@when('I input "pass" into the new password field')
 def impl(context):
-    context.browser.fill('new_password', 'newpass')
+    context.browser.fill('new_password', 'pass')
 
 @when('I input "pass" into the current password field')
 def impl(context):
@@ -36,8 +36,8 @@ def impl(context):
 
 
 # Unique to Scenario: User updates their password
-@then('I see "Your Connect password has been updated."')
+@then('I see "Your example.com password has been updated."')
 def impl(context):
     assert context.browser.is_text_present(
-        "Your Connect password has been updated.")
+        "Your example.com password has been updated.")
 

@@ -1,12 +1,12 @@
 Feature: Close Account
 
     Scenario: User views page
-        Given I am an active authenticated user
+        Given I am an authenticated user wanting to close my account
         When I visit the close account page
         Then I see the close account form
 
     Scenario Outline: User submits invalid data to the close account form
-        Given I am an active authenticated user
+        Given I am an authenticated user wanting to close my account
         When I visit the close account page
         And I input <pass> into the password field
         And I submit the form
@@ -18,7 +18,7 @@ Feature: Close Account
             |   "wrongpass" |   "Incorrect password. Please try again." |
 
     Scenario: User submits valid data
-        Given I am an active authenticated user
+        Given I am an authenticated user wanting to close my account
         When I visit the close account page
         And I input "pass" into the password field
         And I submit the form

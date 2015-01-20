@@ -2,7 +2,7 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-/* line 17, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -24,46 +24,46 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../../../../usr/local/share/gems/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+/* line 116, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
 
@@ -83,7 +83,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /**
  * Correct `block` display not defined in IE 8/9.
  */
-/* line 22, ../sass/ribs/normalize/_normalize.scss */
+/* line 11, ../sass/ribs/normalize/_normalize.scss */
 article,
 aside,
 details,
@@ -102,7 +102,7 @@ summary {
 /**
  * Correct `inline-block` display not defined in IE 8/9.
  */
-/* line 32, ../sass/ribs/normalize/_normalize.scss */
+/* line 30, ../sass/ribs/normalize/_normalize.scss */
 audio,
 canvas,
 video {
@@ -123,7 +123,7 @@ audio:not([controls]) {
  * Address `[hidden]` styling not present in IE 8/9.
  * Hide the `template` element in IE, Safari, and Firefox < 22.
  */
-/* line 52, ../sass/ribs/normalize/_normalize.scss */
+/* line 51, ../sass/ribs/normalize/_normalize.scss */
 [hidden],
 template {
   display: none;
@@ -198,7 +198,7 @@ abbr[title] {
 /**
  * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
  */
-/* line 127, ../sass/ribs/normalize/_normalize.scss */
+/* line 126, ../sass/ribs/normalize/_normalize.scss */
 b,
 strong {
   font-weight: bold;
@@ -234,7 +234,7 @@ mark {
 /**
  * Correct font family set oddly in Safari 5 and Chrome.
  */
-/* line 165, ../sass/ribs/normalize/_normalize.scss */
+/* line 162, ../sass/ribs/normalize/_normalize.scss */
 code,
 kbd,
 pre,
@@ -270,7 +270,7 @@ small {
 /**
  * Prevent `sub` and `sup` affecting `line-height` in all browsers.
  */
-/* line 199, ../sass/ribs/normalize/_normalize.scss */
+/* line 198, ../sass/ribs/normalize/_normalize.scss */
 sub,
 sup {
   font-size: 75%;
@@ -349,7 +349,7 @@ legend {
  * 2. Correct font size not being inherited in all browsers.
  * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
  */
-/* line 279, ../sass/ribs/normalize/_normalize.scss */
+/* line 276, ../sass/ribs/normalize/_normalize.scss */
 button,
 input,
 select,
@@ -366,7 +366,7 @@ textarea {
  * Address Firefox 4+ setting `line-height` on `input` using `!important` in
  * the UA stylesheet.
  */
-/* line 291, ../sass/ribs/normalize/_normalize.scss */
+/* line 290, ../sass/ribs/normalize/_normalize.scss */
 button,
 input {
   line-height: normal;
@@ -378,7 +378,7 @@ input {
  * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
  * Correct `select` style inheritance in Firefox 4+ and Opera.
  */
-/* line 303, ../sass/ribs/normalize/_normalize.scss */
+/* line 302, ../sass/ribs/normalize/_normalize.scss */
 button,
 select {
   text-transform: none;
@@ -391,7 +391,7 @@ select {
  * 3. Improve usability and consistency of cursor style between image-type
  *    `input` and others.
  */
-/* line 318, ../sass/ribs/normalize/_normalize.scss */
+/* line 315, ../sass/ribs/normalize/_normalize.scss */
 button,
 html input[type="button"],
 input[type="reset"],
@@ -405,7 +405,7 @@ input[type="submit"] {
 /**
  * Re-set default cursor for disabled elements.
  */
-/* line 328, ../sass/ribs/normalize/_normalize.scss */
+/* line 327, ../sass/ribs/normalize/_normalize.scss */
 button[disabled],
 html input[disabled] {
   cursor: default;
@@ -415,7 +415,7 @@ html input[disabled] {
  * 1. Address box sizing set to `content-box` in IE 8/9/10.
  * 2. Remove excess padding in IE 8/9/10.
  */
-/* line 338, ../sass/ribs/normalize/_normalize.scss */
+/* line 337, ../sass/ribs/normalize/_normalize.scss */
 input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
@@ -443,7 +443,7 @@ input[type="search"] {
  * Remove inner padding and search cancel button in Safari 5 and Chrome
  * on OS X.
  */
-/* line 362, ../sass/ribs/normalize/_normalize.scss */
+/* line 361, ../sass/ribs/normalize/_normalize.scss */
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
@@ -452,7 +452,7 @@ input[type="search"]::-webkit-search-decoration {
 /**
  * Remove inner padding and border in Firefox 4+.
  */
-/* line 371, ../sass/ribs/normalize/_normalize.scss */
+/* line 370, ../sass/ribs/normalize/_normalize.scss */
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
@@ -494,7 +494,7 @@ body {
 
 /* line 26, ../sass/ribs/_ribs.scss */
 hr {
-  border: solid #dddddd;
+  border: solid #ddd;
   border-width: 1px 0 0;
   clear: both;
   margin: 10px 0 30px;
@@ -1112,7 +1112,7 @@ hr {
   .container {
     width: 90%;
   }
-  /* line 97, ../sass/ribs/_grid.scss */
+  /* line 76, ../sass/ribs/_grid.scss */
   .container .one, .container .two, .container .three, .container .four, .container .five, .container .six, .container .seven, .container .eight, .container .nine, .container .ten, .container .eleven, .container .twelve, .container .thirteen, .container .fourteen, .container .fifteen, .container .sixteen, .container .one-third, .container .two-thirds, .container .one-half, .container .one-quarter, .container .three-quarters {
     width: 100%;
   }
@@ -1120,7 +1120,7 @@ hr {
   .container .column, .container .columns {
     margin: 0;
   }
-  /* line 117, ../sass/ribs/_grid.scss */
+  /* line 103, ../sass/ribs/_grid.scss */
   .container .offset-by-one,
   .container .offset-by-two,
   .container .offset-by-three,
@@ -1161,7 +1161,7 @@ hr {
  Use this clearfix class on parent to clear nested columns, or:
  wrap each row of columns in a ```<div class="row">...</div>```
 */
-/* line 147, ../sass/ribs/_grid.scss */
+/* line 144, ../sass/ribs/_grid.scss */
 .clearfix:before,
 .clearfix:after,
 .row:before,
@@ -1181,7 +1181,7 @@ hr {
     This element has clearfix applied in browsers that support the :after css selector
   </div>```
 */
-/* line 163, ../sass/ribs/_grid.scss */
+/* line 162, ../sass/ribs/_grid.scss */
 .row:after,
 .clearfix:after {
   clear: both;
@@ -1213,7 +1213,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 
 /* line 7, ../sass/ribs/_typography.scss */
 h1 {
-  color: #555555;
+  color: #555;
   font-family: "Bree Serif", sans-serif;
   font-weight: normal;
   font-size: 35px;
@@ -1223,7 +1223,7 @@ h1 {
 
 /* line 16, ../sass/ribs/_typography.scss */
 h2 {
-  color: #555555;
+  color: #555;
   font-family: "Bree Serif", sans-serif;
   font-weight: normal;
   font-size: 28px;
@@ -1233,7 +1233,7 @@ h2 {
 
 /* line 25, ../sass/ribs/_typography.scss */
 h3 {
-  color: #555555;
+  color: #555;
   font-family: "Bree Serif", sans-serif;
   font-weight: normal;
   font-size: 21px;
@@ -1243,7 +1243,7 @@ h3 {
 
 /* line 34, ../sass/ribs/_typography.scss */
 h4 {
-  color: #555555;
+  color: #555;
   font-family: "Bree Serif", sans-serif;
   font-weight: normal;
   font-size: 17px;
@@ -1253,7 +1253,7 @@ h4 {
 
 /* line 43, ../sass/ribs/_typography.scss */
 h5 {
-  color: #555555;
+  color: #555;
   font-family: "Bree Serif", sans-serif;
   font-weight: normal;
   font-size: 14px;
@@ -1262,7 +1262,7 @@ h5 {
 
 /* line 51, ../sass/ribs/_typography.scss */
 h6 {
-  color: #555555;
+  color: #555;
   font-family: "Bree Serif", sans-serif;
   font-weight: normal;
   font-size: 13px;
@@ -1271,7 +1271,7 @@ h6 {
 
 /* line 59, ../sass/ribs/_typography.scss */
 .subheader {
-  color: #777777;
+  color: #777;
 }
 
 /* line 63, ../sass/ribs/_typography.scss */
@@ -1289,7 +1289,7 @@ p img {
 .lead {
   font-size: 21px;
   line-height: 31.5px;
-  color: #777777;
+  color: #777;
 }
 
 /* line 78, ../sass/ribs/_typography.scss */
@@ -1300,7 +1300,7 @@ em {
 /* line 82, ../sass/ribs/_typography.scss */
 strong {
   font-weight: bold;
-  color: #333333;
+  color: #333;
 }
 
 /* line 87, ../sass/ribs/_typography.scss */
@@ -1312,7 +1312,7 @@ small {
 blockquote, blockquote p {
   font-size: 13px;
   line-height: 24px;
-  color: #777777;
+  color: #777;
   font-style: italic;
 }
 
@@ -1320,14 +1320,14 @@ blockquote, blockquote p {
 blockquote {
   margin: 0 0 0px;
   padding: 0px 20px 0 19px;
-  border-left: 1px solid #dddddd;
+  border-left: 1px solid #ddd;
 }
 
 /* line 104, ../sass/ribs/_typography.scss */
 blockquote cite {
   display: block;
   font-size: 12px;
-  color: #555555;
+  color: #555;
 }
 
 /* line 110, ../sass/ribs/_typography.scss */
@@ -1337,18 +1337,18 @@ blockquote cite:before {
 
 /* line 114, ../sass/ribs/_typography.scss */
 blockquote cite a, blockquote cite a:visited, blockquote cite a:visited {
-  color: #555555;
+  color: #555;
 }
 
 /* line 2, ../sass/ribs/_links.scss */
 a, a:visited {
-  color: #333333;
+  color: #333;
   text-decoration: underline;
 }
 
 /* line 7, ../sass/ribs/_links.scss */
 a:hover, a:focus {
-  color: black;
+  color: #000;
   text-decoration: none;
 }
 
@@ -1392,7 +1392,7 @@ ul.disc {
   list-style: disc outside;
 }
 
-/* line 31, ../sass/ribs/_lists.scss */
+/* line 30, ../sass/ribs/_lists.scss */
 ul ul, ul ol,
 ol ol, ol ul {
   margin: 4px 0 5px 30px;
@@ -1415,13 +1415,13 @@ li p {
   line-height: 21px;
 }
 
-/* line 7, ../sass/ribs/_forms.scss */
+/* line 3, ../sass/ribs/_forms.scss */
 .button,
 button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-  background-color: #cccccc;
+  background-color: #CCC;
   background-color: rgba(153, 153, 153, 0.2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.2)), to(rgba(0, 0, 0, 0.2)));
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
@@ -1429,13 +1429,13 @@ input[type="button"] {
   background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
   background-repeat: repeat-x;
-  border: 1px solid #aaaaaa;
-  border-top: 1px solid #cccccc;
-  border-left: 1px solid #cccccc;
+  border: 1px solid #aaa;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  color: #444444;
+  color: #444;
   display: inline-block;
   font-size: 11px;
   font-weight: bold;
@@ -1448,13 +1448,13 @@ input[type="button"] {
   font-family: "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-/* line 29, ../sass/ribs/_forms.scss */
+/* line 25, ../sass/ribs/_forms.scss */
 .button:hover,
 button:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover {
-  background-color: #cccccc;
+  background-color: #CCC;
   background-color: rgba(153, 153, 153, 0.3);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.3)), to(rgba(0, 0, 0, 0.3)));
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
@@ -1462,19 +1462,19 @@ input[type="button"]:hover {
   background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
   background-repeat: repeat-x;
-  color: #222222;
-  border: 1px solid #888888;
-  border-top: 1px solid #aaaaaa;
-  border-left: 1px solid #aaaaaa;
+  color: #222;
+  border: 1px solid #888;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
 }
 
-/* line 40, ../sass/ribs/_forms.scss */
+/* line 36, ../sass/ribs/_forms.scss */
 .button:active,
 button:active,
 input[type="submit"]:active,
 input[type="reset"]:active,
 input[type="button"]:active {
-  background-color: #cccccc;
+  background-color: #CCC;
   background-color: rgba(153, 153, 153, 0.2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.2)), to(rgba(0, 0, 0, 0.2)));
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
@@ -1482,10 +1482,10 @@ input[type="button"]:active {
   background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
   background-repeat: repeat-x;
-  border: 1px solid #666666;
+  border: 1px solid #666;
 }
 
-/* line 50, ../sass/ribs/_forms.scss */
+/* line 46, ../sass/ribs/_forms.scss */
 .button .full-width,
 button.full-width,
 input[type="submit"].full-width,
@@ -1497,7 +1497,7 @@ input[type="button"].full-width {
   text-align: center;
 }
 
-/* line 59, ../sass/ribs/_forms.scss */
+/* line 58, ../sass/ribs/_forms.scss */
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
@@ -1522,7 +1522,7 @@ fieldset {
   ##Search/URL fields
   Make these behave as text fields
 */
-/* line 83, ../sass/ribs/_forms.scss */
+/* line 82, ../sass/ribs/_forms.scss */
 input[type="search"],
 input[type="url"] {
   -webkit-appearance: textfield;
@@ -1533,7 +1533,7 @@ input[type="url"] {
   ##General form element styles, border etc.
   Applied to all except checkboxes
 */
-/* line 100, ../sass/ribs/_forms.scss */
+/* line 92, ../sass/ribs/_forms.scss */
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -1543,18 +1543,18 @@ input[type="number"],
 input[type="tel"],
 textarea,
 select {
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   padding: 6px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   font: 13px "Cantarell", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #777777;
+  color: #777;
   width: 210px;
   max-width: 100%;
   display: block;
   margin: 0 0 20px 0;
-  background: white;
+  background: #fff;
 }
 
 /*
@@ -1571,7 +1571,7 @@ select {
   ##Form element focus styles
   Applied to all except checkboxes and selects
 */
-/* line 134, ../sass/ribs/_forms.scss */
+/* line 126, ../sass/ribs/_forms.scss */
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
@@ -1582,7 +1582,7 @@ input[type="tel"]:focus,
 textarea:focus,
 select:focus {
   border: 1px solid #ed6c81;
-  color: #444444;
+  color: #444;
   -moz-box-shadow: 0 0 3px rgba(229, 30, 65, 0.6);
   -webkit-box-shadow: 0 0 3px rgba(229, 30, 65, 0.6);
   box-shadow: 0 0 3px rgba(229, 30, 65, 0.6);
@@ -1593,7 +1593,7 @@ textarea {
   min-height: 60px;
 }
 
-/* line 147, ../sass/ribs/_forms.scss */
+/* line 146, ../sass/ribs/_forms.scss */
 label,
 legend {
   display: block;
@@ -1610,12 +1610,12 @@ input[type="checkbox"] {
   ##Spans inside legends, or labels
   Alters font size, weight and colour based on variables
 */
-/* line 163, ../sass/ribs/_forms.scss */
+/* line 162, ../sass/ribs/_forms.scss */
 label span,
 legend span {
   font-weight: normal;
   font-size: 13px;
-  color: #444444;
+  color: #444;
 }
 
 /*
@@ -1655,13 +1655,13 @@ legend span {
 /* line 29, ../sass/ribs/_tables.scss */
 table {
   max-width: 100%;
-  background: white;
+  background: #FFF;
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
   margin: 10px 0;
 }
-/* line 37, ../sass/ribs/_tables.scss */
+/* line 36, ../sass/ribs/_tables.scss */
 table th,
 table td {
   padding: 8px 35px 8px 0;
@@ -1678,7 +1678,7 @@ table th {
 table thead th {
   vertical-align: bottom;
 }
-/* line 57, ../sass/ribs/_tables.scss */
+/* line 52, ../sass/ribs/_tables.scss */
 table caption thead tr:first-child th,
 table caption thead tr:first-child td,
 table colgroup thead tr:first-child th,
@@ -1693,7 +1693,7 @@ table tbody tbody {
 }
 /* line 65, ../sass/ribs/_tables.scss */
 table table {
-  background: white;
+  background: #FFF;
 }
 
 /*
@@ -1718,7 +1718,7 @@ table table {
   </tbody>
 </table>
 */
-/* line 94, ../sass/ribs/_tables.scss */
+/* line 93, ../sass/ribs/_tables.scss */
 .table-condensed th,
 .table-condensed td {
   padding: 4px 5px;
@@ -1755,12 +1755,12 @@ table table {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 127, ../sass/ribs/_tables.scss */
+/* line 126, ../sass/ribs/_tables.scss */
 .table-bordered th,
 .table-bordered td {
   border-left: 1px solid #ececec;
 }
-/* line 139, ../sass/ribs/_tables.scss */
+/* line 131, ../sass/ribs/_tables.scss */
 .table-bordered caption thead tr:first-child th,
 .table-bordered caption tbody tr:first-child th,
 .table-bordered caption tbody tr:first-child td,
@@ -1772,7 +1772,7 @@ table table {
 .table-bordered tbody:first-child tr:first-child td {
   border-top: 0;
 }
-/* line 145, ../sass/ribs/_tables.scss */
+/* line 143, ../sass/ribs/_tables.scss */
 .table-bordered thead:first-child tr:first-child > th:first-child,
 .table-bordered tbody:first-child tr:first-child > td:first-child,
 .table-bordered tbody:first-child tr:first-child > th:first-child {
@@ -1780,7 +1780,7 @@ table table {
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
 }
-/* line 151, ../sass/ribs/_tables.scss */
+/* line 149, ../sass/ribs/_tables.scss */
 .table-bordered thead:first-child tr:first-child > th:last-child,
 .table-bordered tbody:first-child tr:first-child > td:last-child,
 .table-bordered tbody:first-child tr:first-child > th:last-child {
@@ -1788,7 +1788,7 @@ table table {
   -moz-border-radius-topright: 3px;
   border-top-right-radius: 3px;
 }
-/* line 159, ../sass/ribs/_tables.scss */
+/* line 155, ../sass/ribs/_tables.scss */
 .table-bordered thead:last-child tr:last-child > th:first-child,
 .table-bordered tbody:last-child tr:last-child > td:first-child,
 .table-bordered tbody:last-child tr:last-child > th:first-child,
@@ -1798,7 +1798,7 @@ table table {
   -moz-border-radius-bottomleft: 3px;
   border-bottom-left-radius: 3px;
 }
-/* line 167, ../sass/ribs/_tables.scss */
+/* line 163, ../sass/ribs/_tables.scss */
 .table-bordered thead:last-child tr:last-child > th:last-child,
 .table-bordered tbody:last-child tr:last-child > td:last-child,
 .table-bordered tbody:last-child tr:last-child > th:last-child,
@@ -1820,7 +1820,7 @@ table table {
   -moz-border-radius-bottomright: 0;
   border-bottom-right-radius: 0;
 }
-/* line 181, ../sass/ribs/_tables.scss */
+/* line 178, ../sass/ribs/_tables.scss */
 .table-bordered caption thead tr:first-child th:first-child,
 .table-bordered caption tbody tr:first-child td:first-child,
 .table-bordered colgroup thead tr:first-child th:first-child,
@@ -1829,7 +1829,7 @@ table table {
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
 }
-/* line 187, ../sass/ribs/_tables.scss */
+/* line 184, ../sass/ribs/_tables.scss */
 .table-bordered caption thead tr:first-child th:last-child,
 .table-bordered caption tbody tr:first-child td:last-child,
 .table-bordered colgroup thead tr:first-child th:last-child,
@@ -1861,10 +1861,10 @@ table table {
   </tbody>
 </table>
 */
-/* line 218, ../sass/ribs/_tables.scss */
+/* line 217, ../sass/ribs/_tables.scss */
 .table-striped tbody > tr:nth-child(odd) > td,
 .table-striped tbody > tr:nth-child(odd) > th {
-  background-color: #efefef;
+  background-color: #EFEFEF;
 }
 
 /*
@@ -1889,10 +1889,10 @@ table table {
   </tbody>
 </table>
 */
-/* line 249, ../sass/ribs/_tables.scss */
+/* line 248, ../sass/ribs/_tables.scss */
 .table-hover tbody tr:hover > td,
 .table-hover tbody tr:hover > th {
-  background-color: #999999;
+  background-color: #999;
 }
 
 /* line 3, ../sass/_site_structure.scss */
@@ -1919,13 +1919,13 @@ table table {
 .badge {
   background-color: #e51e41;
   padding: 3px 5px;
-  color: white;
+  color: #fff;
   font-size: 12px;
 }
 
 /* line 26, ../sass/_site_structure.scss */
 .badge-grey {
-  background-color: #333333;
+  background-color: #333;
 }
 
 /* line 30, ../sass/_site_structure.scss */
@@ -1951,19 +1951,19 @@ p.intro {
 /* line 48, ../sass/_site_structure.scss */
 ::selection {
   background: #e51e41;
-  color: white;
+  color: #fff;
 }
 
 /* line 52, ../sass/_site_structure.scss */
 ::-moz-selection {
   background: #e51e41;
-  color: white;
+  color: #fff;
 }
 
-/* line 60, ../sass/_site_structure.scss */
+/* line 59, ../sass/_site_structure.scss */
 .form-error,
 .notification-messages p {
-  background-color: white;
+  background-color: #fff;
   color: #e51e41;
   border: 1px solid #e51e41;
   font-size: 13px;
@@ -1994,7 +1994,7 @@ p.intro {
 .messages {
   text-align: center;
   background-color: #e51e41;
-  color: white;
+  color: #fff;
   font-weight: bold;
 }
 /* line 94, ../sass/_site_structure.scss */
@@ -2022,7 +2022,7 @@ header a.mobile-icon {
 header nav {
   display: inline-block;
 }
-/* line 118, ../sass/_site_structure.scss */
+/* line 117, ../sass/_site_structure.scss */
 header nav a,
 header nav a:visited {
   display: inline-block;
@@ -2031,12 +2031,12 @@ header nav a:visited {
   margin: 0;
   border-left: 1px solid #ddd;
   float: left;
-  color: #333333;
+  color: #333;
 }
 /* line 127, ../sass/_site_structure.scss */
 header nav a:hover,
 header nav a:visited:hover {
-  color: black;
+  color: #000;
   background-color: #fafafa;
   text-decoration: none;
 }
@@ -2090,7 +2090,7 @@ header .app-title {
     float: none;
     width: 100%;
   }
-  /* line 186, ../sass/_site_structure.scss */
+  /* line 185, ../sass/_site_structure.scss */
   header nav a,
   header nav a:visited {
     float: none;
@@ -2138,20 +2138,20 @@ header .app-title {
 .sidebar-menu .ui-state-hover a {
   background-color: #fafafa;
 }
-/* line 239, ../sass/_site_structure.scss */
+/* line 238, ../sass/_site_structure.scss */
 .sidebar-menu a,
 .sidebar-menu a:visited {
   display: block;
   text-decoration: none;
   padding: 15px 10px;
   border-bottom: 1px solid #ddd;
-  color: #333333;
+  color: #333;
   line-height: 22px;
 }
 /* line 247, ../sass/_site_structure.scss */
 .sidebar-menu a:hover,
 .sidebar-menu a:visited:hover {
-  color: black;
+  color: #000;
   text-decoration: none;
 }
 /* line 252, ../sass/_site_structure.scss */
@@ -2182,11 +2182,11 @@ footer {
 footer .container {
   padding: 20px 0 0 0;
 }
-/* line 284, ../sass/_site_structure.scss */
+/* line 283, ../sass/_site_structure.scss */
 footer a,
 footer a:visited {
   text-decoration: none;
-  color: #333333;
+  color: #333;
 }
 /* line 288, ../sass/_site_structure.scss */
 footer a:hover,
@@ -2266,7 +2266,7 @@ html, body {
   }
 }
 
-/* line 366, ../sass/_site_structure.scss */
+/* line 365, ../sass/_site_structure.scss */
 a,
 a:visited {
   text-decoration: none;
@@ -2280,7 +2280,7 @@ a:visited:hover {
 /* line 374, ../sass/_site_structure.scss */
 a i,
 a:visited i {
-  color: #333333;
+  color: #333;
 }
 
 /* line 379, ../sass/_site_structure.scss */
@@ -2306,7 +2306,7 @@ fieldset legend {
   font-family: 'Bree Serif', sans-serif;
 }
 
-/* line 402, ../sass/_site_structure.scss */
+/* line 401, ../sass/_site_structure.scss */
 input[type='checkbox'],
 input[type='radio'] {
   position: relative;
@@ -2314,7 +2314,7 @@ input[type='radio'] {
   margin-right: 2px;
 }
 
-/* line 414, ../sass/_site_structure.scss */
+/* line 408, ../sass/_site_structure.scss */
 button,
 .button,
 a.button,
@@ -2325,7 +2325,7 @@ input.button:hover {
   background-image: none;
   background-color: #e51e41;
   font-size: 12px;
-  color: white;
+  color: #fff;
   text-shadow: none;
   border: 0;
   padding: 7px 12px 8px 12px;
@@ -2341,9 +2341,9 @@ input.button i.fa,
 button:hover i.fa,
 .button:hover i.fa,
 input.button:hover i.fa {
-  color: white;
+  color: #fff;
 }
-/* line 431, ../sass/_site_structure.scss */
+/* line 430, ../sass/_site_structure.scss */
 button:hover, button:focus,
 .button:hover,
 .button:focus,
@@ -2369,36 +2369,36 @@ input.button:focus,
 button:hover:focus,
 .button:hover:focus,
 input.button:hover:focus {
-  outline: #aaaaaa thin dotted;
+  outline: #aaa thin dotted;
 }
 
-/* line 445, ../sass/_site_structure.scss */
+/* line 443, ../sass/_site_structure.scss */
 button.muted,
 a.button.muted,
 input.button.muted {
   background-color: #e2e2e2;
-  color: #333333;
+  color: #333;
 }
 /* line 449, ../sass/_site_structure.scss */
 button.muted i.fa,
 a.button.muted i.fa,
 input.button.muted i.fa {
-  color: #333333;
+  color: #333;
 }
-/* line 454, ../sass/_site_structure.scss */
+/* line 453, ../sass/_site_structure.scss */
 button.muted:hover, button.muted:focus,
 a.button.muted:hover,
 a.button.muted:focus,
 input.button.muted:hover,
 input.button.muted:focus {
   background-color: #d9d9d9;
-  color: #333333;
+  color: #333;
 }
 /* line 459, ../sass/_site_structure.scss */
 button.muted:focus,
 a.button.muted:focus,
 input.button.muted:focus {
-  outline: #aaaaaa thin dotted;
+  outline: #aaa thin dotted;
 }
 
 /* line 464, ../sass/_site_structure.scss */
@@ -2416,7 +2416,7 @@ p label {
   font-weight: bold;
 }
 
-/* line 480, ../sass/_site_structure.scss */
+/* line 479, ../sass/_site_structure.scss */
 .button.mini,
 .button.mini:hover {
   padding: 5px 7px;
@@ -2424,8 +2424,8 @@ p label {
 
 /* line 484, ../sass/_site_structure.scss */
 .button.grey {
-  background-color: #333333;
-  color: white;
+  background-color: #333;
+  color: #fff;
 }
 
 /* line 489, ../sass/_site_structure.scss */
@@ -2454,7 +2454,7 @@ table .button {
   width: 85%;
   margin-left: 15%;
   border: 1px solid #ddd;
-  background-color: white;
+  background-color: #fff;
 }
 /* line 515, ../sass/_site_structure.scss */
 .skills .ability .ui-progressbar-value {
@@ -2475,7 +2475,7 @@ a.table-link {
     /* Force table to not be like tables anymore */
     /* Hide table headers (but not display: none;, for accessibility) */
   }
-  /* line 538, ../sass/_site_structure.scss */
+  /* line 534, ../sass/_site_structure.scss */
   table.responsive thead,
   table.responsive tbody,
   table.responsive tr,
@@ -2548,7 +2548,7 @@ a.table-link {
 .dialog form label {
   padding-bottom: 10px;
 }
-/* line 624, ../sass/_site_structure.scss */
+/* line 616, ../sass/_site_structure.scss */
 .dialog form input[type=text],
 .dialog form input[type="password"],
 .dialog form input[type="email"],
@@ -2611,7 +2611,7 @@ a.table-link {
   list-style: none;
 }
 
-/* line 40, ../sass/_jquery_ui.scss */
+/* line 39, ../sass/_jquery_ui.scss */
 .ui-helper-clearfix:before,
 .ui-helper-clearfix:after {
   content: "";
@@ -2710,7 +2710,7 @@ a.table-link {
   display: block;
 }
 
-/* line 133, ../sass/_jquery_ui.scss */
+/* line 132, ../sass/_jquery_ui.scss */
 .ui-resizable-disabled .ui-resizable-handle,
 .ui-resizable-autohide .ui-resizable-handle {
   display: none;
@@ -2824,9 +2824,9 @@ a.table-link {
 
 /* line 236, ../sass/_jquery_ui.scss */
 .ui-widget-content {
-  border: 1px solid #aaaaaa;
-  background: white;
-  color: #333333;
+  border: 1px solid #aaa;
+  background: #fff;
+  color: #333;
 }
 
 /* line 242, ../sass/_jquery_ui.scss */
@@ -2839,12 +2839,12 @@ a.table-link {
 
 /* line 249, ../sass/_jquery_ui.scss */
 .ui-widget-header a {
-  color: #333333;
+  color: #333;
 }
 
 /* Interaction states
 ----------------------------------*/
-/* line 258, ../sass/_jquery_ui.scss */
+/* line 256, ../sass/_jquery_ui.scss */
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
@@ -2854,7 +2854,7 @@ a.table-link {
   font-size: 13px;
   line-height: normal;
   border: 1px solid #ccc;
-  border-bottom-color: #aaaaaa;
+  border-bottom-color: #aaa;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -2866,7 +2866,7 @@ a.table-link {
   overflow: visible;
 }
 
-/* line 280, ../sass/_jquery_ui.scss */
+/* line 278, ../sass/_jquery_ui.scss */
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
@@ -2874,7 +2874,7 @@ a.table-link {
   text-decoration: none;
 }
 
-/* line 290, ../sass/_jquery_ui.scss */
+/* line 285, ../sass/_jquery_ui.scss */
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover,
@@ -2886,29 +2886,29 @@ a.table-link {
   text-decoration: none;
 }
 
-/* line 299, ../sass/_jquery_ui.scss */
+/* line 296, ../sass/_jquery_ui.scss */
 .ui-state-hover a,
 .ui-state-hover a:hover,
 .ui-state-hover a:link,
 .ui-state-hover a:visited {
-  color: #333333;
+  color: #333;
   text-decoration: none;
 }
 
-/* line 306, ../sass/_jquery_ui.scss */
+/* line 304, ../sass/_jquery_ui.scss */
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-  border: 1px solid #aaaaaa;
+  border: 1px solid #aaa;
   font-weight: normal;
-  color: #333333;
+  color: #333;
 }
 
-/* line 314, ../sass/_jquery_ui.scss */
+/* line 312, ../sass/_jquery_ui.scss */
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-  color: #333333;
+  color: #333;
   text-decoration: none;
 }
 
@@ -2926,7 +2926,7 @@ a.table-link {
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
   position: relative;
   margin-bottom: 18px;
-  color: #333333;
+  color: #333;
   background-color: #ff3c82;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -2941,20 +2941,20 @@ a.table-link {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-/* line 350, ../sass/_jquery_ui.scss */
+/* line 348, ../sass/_jquery_ui.scss */
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
-  color: #333333;
+  color: #333;
 }
 
-/* line 356, ../sass/_jquery_ui.scss */
+/* line 354, ../sass/_jquery_ui.scss */
 .ui-state-error,
 .ui-widget-content .ui-state-error,
 .ui-widget-header .ui-state-error {
   position: relative;
   margin-bottom: 18px;
-  color: white;
+  color: #fff;
   border-width: 1px;
   border-style: solid;
   -webkit-border-radius: 4px;
@@ -2968,28 +2968,28 @@ a.table-link {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
-/* line 375, ../sass/_jquery_ui.scss */
+/* line 373, ../sass/_jquery_ui.scss */
 .ui-state-error a,
 .ui-widget-content .ui-state-error a,
 .ui-widget-header .ui-state-error a {
   color: #cd0a0a;
 }
 
-/* line 381, ../sass/_jquery_ui.scss */
+/* line 379, ../sass/_jquery_ui.scss */
 .ui-state-error-text,
 .ui-widget-content .ui-state-error-text,
 .ui-widget-header .ui-state-error-text {
   color: #cd0a0a;
 }
 
-/* line 387, ../sass/_jquery_ui.scss */
+/* line 385, ../sass/_jquery_ui.scss */
 .ui-priority-primary,
 .ui-widget-content .ui-priority-primary,
 .ui-widget-header .ui-priority-primary {
   font-weight: bold;
 }
 
-/* line 393, ../sass/_jquery_ui.scss */
+/* line 391, ../sass/_jquery_ui.scss */
 .ui-priority-secondary,
 .ui-widget-content .ui-priority-secondary,
 .ui-widget-header .ui-priority-secondary {
@@ -2998,7 +2998,7 @@ a.table-link {
   font-weight: normal;
 }
 
-/* line 401, ../sass/_jquery_ui.scss */
+/* line 399, ../sass/_jquery_ui.scss */
 .ui-state-disabled,
 .ui-widget-content .ui-state-disabled,
 .ui-widget-header .ui-state-disabled {
@@ -3023,7 +3023,7 @@ a.table-link {
   background-image: url(../../img/ui-icons/ui-icons_222222_256x240.png);
 }
 
-/* line 423, ../sass/_jquery_ui.scss */
+/* line 422, ../sass/_jquery_ui.scss */
 .ui-widget-content .ui-icon,
 .ui-widget-header .ui-icon {
   background-image: url(../../img/ui-icons/ui-icons_222222_256x240.png);
@@ -3034,7 +3034,7 @@ a.table-link {
   background-image: url(../../img/ui-icons/ui-icons_888888_256x240.png);
 }
 
-/* line 432, ../sass/_jquery_ui.scss */
+/* line 430, ../sass/_jquery_ui.scss */
 .ui-state-hover .ui-icon,
 .ui-state-focus .ui-icon,
 .ui-state-active .ui-icon {
@@ -3046,7 +3046,7 @@ a.table-link {
   background-image: url(../../img/ui-icons/ui-icons_2e83ff_256x240.png);
 }
 
-/* line 441, ../sass/_jquery_ui.scss */
+/* line 440, ../sass/_jquery_ui.scss */
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {
   background-image: url(../../img/ui-icons/ui-icons_f6cf3b_256x240.png);
@@ -3927,7 +3927,7 @@ a.table-link {
 /* Misc visuals
 ----------------------------------*/
 /* Corner radius */
-/* line 631, ../sass/_jquery_ui.scss */
+/* line 628, ../sass/_jquery_ui.scss */
 .ui-corner-all,
 .ui-corner-top,
 .ui-corner-left,
@@ -3938,7 +3938,7 @@ a.table-link {
   border-top-left-radius: 4px;
 }
 
-/* line 641, ../sass/_jquery_ui.scss */
+/* line 638, ../sass/_jquery_ui.scss */
 .ui-corner-all,
 .ui-corner-top,
 .ui-corner-right,
@@ -3949,7 +3949,7 @@ a.table-link {
   border-top-right-radius: 4px;
 }
 
-/* line 651, ../sass/_jquery_ui.scss */
+/* line 648, ../sass/_jquery_ui.scss */
 .ui-corner-all,
 .ui-corner-bottom,
 .ui-corner-left,
@@ -3960,7 +3960,7 @@ a.table-link {
   border-bottom-left-radius: 4px;
 }
 
-/* line 660, ../sass/_jquery_ui.scss */
+/* line 657, ../sass/_jquery_ui.scss */
 .ui-corner-all,
 .ui-corner-bottom,
 .ui-corner-right,
@@ -3974,7 +3974,7 @@ a.table-link {
 /* Overlays */
 /* line 670, ../sass/_jquery_ui.scss */
 .ui-widget-overlay {
-  background: #aaaaaa url(../../img/ui-icons/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  background: #aaa url(../../img/ui-icons/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
   opacity: .30;
   filter: Alpha(Opacity=30);
 }
@@ -3983,7 +3983,7 @@ a.table-link {
 .ui-widget-shadow {
   margin: -8px 0 0 -8px;
   padding: 8px;
-  background: #aaaaaa url(../../img/ui-icons/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  background: #aaa url(../../img/ui-icons/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
   opacity: .30;
   filter: Alpha(Opacity=30);
   -moz-border-radius: 8px;
@@ -4004,7 +4004,7 @@ a.table-link {
 /* line 698, ../sass/_jquery_ui.scss */
 .ui-dialog {
   display: none;
-  background-color: white;
+  background-color: #fff;
   position: absolute;
   top: 0;
   left: 0;
@@ -4014,7 +4014,7 @@ a.table-link {
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 6px 6px 6px 6px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-  background-color: white;
+  background-color: #fff;
   position: fixed;
   z-index: 1050;
 }
@@ -4044,7 +4044,7 @@ a.table-link {
 /* line 736, ../sass/_jquery_ui.scss */
 .ui-dialog .ui-dialog-title {
   float: left;
-  color: #333333;
+  color: #333;
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 5px;
@@ -4064,7 +4064,7 @@ a.table-link {
   font-size: 20px;
   font-weight: bold;
   line-height: 13.5px;
-  text-shadow: 0 1px 0 white;
+  text-shadow: 0 1px 0 #fff;
   filter: alpha(opacity=25);
   -khtml-opacity: 0.25;
   -moz-opacity: 0.25;
@@ -4113,9 +4113,9 @@ a.table-link {
   -webkit-border-radius: 0 0 6px 6px;
   -moz-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
-  -webkit-box-shadow: inset 0 1px 0 white;
-  -moz-box-shadow: inset 0 1px 0 white;
-  box-shadow: inset 0 1px 0 white;
+  -webkit-box-shadow: inset 0 1px 0 #fff;
+  -moz-box-shadow: inset 0 1px 0 #fff;
+  box-shadow: inset 0 1px 0 #fff;
   zoom: 1;
   margin-bottom: 0;
 }
@@ -4146,7 +4146,7 @@ a.table-link {
 
 /* line 826, ../sass/_jquery_ui.scss */
 .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
-  color: white;
+  color: #fff;
   background-color: #e51e41;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#ff2d61), to(#e51e41));
@@ -4188,10 +4188,10 @@ a.table-link {
 }
 
 /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-/* line 869, ../sass/_jquery_ui.scss */
+/* line 868, ../sass/_jquery_ui.scss */
 .ui-tabs .ui-tabs-nav li:hover,
 .ui-tabs .ui-tabs-nav li a:hover {
-  background: white;
+  background: #fff;
   border-bottom: 1px solid #ececec;
   padding-bottom: 0px;
   color: #e51e41;
@@ -4219,11 +4219,11 @@ a.table-link {
 
 /* line 894, ../sass/_jquery_ui.scss */
 .ui-tabs-nav .ui-state-default {
-  -webkit-box-shadow: 0px 0px 0px white;
+  -webkit-box-shadow: 0px 0px 0px #fff;
   /* Saf3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow: 0px 0px 0px white;
+  -moz-box-shadow: 0px 0px 0px #fff;
   /* FF3.5 - 3.6 */
-  box-shadow: 0px 0px 0px white;
+  box-shadow: 0px 0px 0px #fff;
   /* Opera 10.5, IE9, FF4+, Chrome 6+, iOS 5 */
 }
 
@@ -4248,37 +4248,37 @@ a.table-link {
   outline: none;
 }
 
-/* line 920, ../sass/_jquery_ui.scss */
+/* line 918, ../sass/_jquery_ui.scss */
 .ui-tabs .ui-tabs-nav li.ui-tabs-active,
 .ui-tabs .ui-tabs-nav li.ui-state-disabled a,
 .ui-tabs .ui-tabs-nav li.ui-state-processing a {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #ececec;
-  border-bottom-color: white;
+  border-bottom-color: #fff;
   cursor: default;
   color: gray;
 }
 
 /* line 928, ../sass/_jquery_ui.scss */
 .ui-tabs .ui-tabs-nav li.ui-tabs-active a {
-  background-color: white;
+  background-color: #fff;
   border: none;
 }
 
 /* line 933, ../sass/_jquery_ui.scss */
 .ui-tabs .ui-tabs-nav li.ui-tabs-active:hover {
-  background: white;
+  background: #fff;
   margin-bottom: 0px;
 }
 
-/* line 940, ../sass/_jquery_ui.scss */
+/* line 938, ../sass/_jquery_ui.scss */
 .ui-tabs .ui-tabs-nav li.ui-tabs-active a,
 .ui-tabs .ui-tabs-nav li.ui-state-disabled a,
 .ui-tabs .ui-tabs-nav li.ui-tabs-loading a {
   cursor: text;
 }
 
-/* line 945, ../sass/_jquery_ui.scss */
+/* line 944, ../sass/_jquery_ui.scss */
 .ui-tabs .ui-tabs-nav li a,
 .ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active a {
   cursor: pointer;
@@ -4328,8 +4328,8 @@ a.table-link {
   z-index: 9999;
   max-width: 300px;
   display: inline-block;
-  background-color: #333333;
-  color: white;
+  background-color: #333;
+  color: #fff;
   padding: 3px 5px;
   font-size: 12px;
   border: 0;
@@ -4361,10 +4361,10 @@ a.table-link {
   width: 100%;
   padding: 4px 0;
   background-color: #f4f4f4;
-  color: #aaaaaa;
+  color: #aaa;
 }
 
-/* line 1026, ../sass/_jquery_ui.scss */
+/* line 1025, ../sass/_jquery_ui.scss */
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next {
   position: absolute;
@@ -4383,7 +4383,7 @@ a.table-link {
   right: 2px;
 }
 
-/* line 1042, ../sass/_jquery_ui.scss */
+/* line 1041, ../sass/_jquery_ui.scss */
 .ui-datepicker .ui-datepicker-prev span,
 .ui-datepicker .ui-datepicker-next span {
   display: block;
@@ -4412,7 +4412,7 @@ a.table-link {
   width: 100%;
 }
 
-/* line 1067, ../sass/_jquery_ui.scss */
+/* line 1066, ../sass/_jquery_ui.scss */
 .ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year {
   width: 49%;
@@ -4440,7 +4440,7 @@ a.table-link {
   padding: 1px;
 }
 
-/* line 1091, ../sass/_jquery_ui.scss */
+/* line 1090, ../sass/_jquery_ui.scss */
 .ui-datepicker td span,
 .ui-datepicker td a {
   display: block;
@@ -4559,8 +4559,8 @@ a.table-link {
 
 /* line 1183, ../sass/_jquery_ui.scss */
 .ui-datepicker-today a:hover {
-  background-color: #aaaaaa;
-  color: white;
+  background-color: #aaa;
+  color: #fff;
 }
 
 /* line 1188, ../sass/_jquery_ui.scss */
@@ -4579,7 +4579,7 @@ a.table-link {
 
 /* line 1200, ../sass/_jquery_ui.scss */
 .ui-datepicker td:hover {
-  color: white;
+  color: #fff;
 }
 
 /* line 1204, ../sass/_jquery_ui.scss */
@@ -4599,7 +4599,7 @@ a.table-link {
   margin-bottom: 0px;
   font-size: normal;
   text-shadow: 0px;
-  color: white;
+  color: #fff;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -4607,7 +4607,7 @@ a.table-link {
 
 /* line 1226, ../sass/_jquery_ui.scss */
 .ui-datepicker td .ui-state-hover {
-  color: white;
+  color: #fff;
   background: #e51e41;
   background-color: #e51e41;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -4638,7 +4638,7 @@ a.table-link {
 .ui-progressbar .ui-progressbar-value {
   margin: -1px;
   height: 100%;
-  color: white;
+  color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   border-color: #d91c3d;
 }
@@ -4653,9 +4653,9 @@ a.table-link {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  -webkit-box-shadow: inset 0 1px 0 white;
-  -moz-box-shadow: inset 0 1px 0 white;
-  box-shadow: inset 0 1px 0 white;
+  -webkit-box-shadow: inset 0 1px 0 #fff;
+  -moz-box-shadow: inset 0 1px 0 #fff;
+  box-shadow: inset 0 1px 0 #fff;
 }
 
 /* Dialog fixes */
@@ -4670,7 +4670,7 @@ a.table-link {
   font-size: 13px;
   line-height: normal;
   border: 1px solid #ccc;
-  border-bottom-color: #aaaaaa;
+  border-bottom-color: #aaa;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -4717,7 +4717,7 @@ a.table-link {
   line-height: 25px;
   margin: 0 0 15px 0;
 }
-/* line 35, ../sass/pages/_profile_and_accounts.scss */
+/* line 33, ../sass/pages/_profile_and_accounts.scss */
 .horizontal-form dl dd input[type="text"],
 .horizontal-form dl dd input[type="email"],
 .horizontal-form dl dd input[type="password"] {
@@ -4746,7 +4746,7 @@ a.table-link {
   box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
 }
 @media only screen and (max-width: 610px) {
-  /* line 65, ../sass/pages/_profile_and_accounts.scss */
+  /* line 62, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd input[type="text"],
   .horizontal-form dl dd input[type="email"],
   .horizontal-form dl dd input[type="password"],
@@ -4820,13 +4820,13 @@ a.table-link {
   background-color: #f4f4f4;
 }
 
-/* line 149, ../sass/pages/_profile_and_accounts.scss */
+/* line 148, ../sass/pages/_profile_and_accounts.scss */
 .horizontal-form dl dd .skill-formset,
 .horizontal-form dl dd .link-formset {
   border-bottom: 1px dotted #d4d4d4;
   margin-bottom: 10px;
 }
-/* line 154, ../sass/pages/_profile_and_accounts.scss */
+/* line 153, ../sass/pages/_profile_and_accounts.scss */
 .horizontal-form dl dd .skill-formset select,
 .horizontal-form dl dd .skill-formset input,
 .horizontal-form dl dd .link-formset select,
@@ -4842,38 +4842,40 @@ a.table-link {
   color: #a5a5a5;
 }
 
-/* line 168, ../sass/pages/_profile_and_accounts.scss */
+/* line 167, ../sass/pages/_profile_and_accounts.scss */
 a.add-row,
-a.delete-row {
+a.delete-link,
+a.delete-skill {
   display: inline-block;
   font-size: 12px;
 }
 
-/* line 173, ../sass/pages/_profile_and_accounts.scss */
-a.delete-row {
+/* line 174, ../sass/pages/_profile_and_accounts.scss */
+a.delete-link,
+a.delete-skill {
   margin-left: 15px;
 }
 
-/* line 177, ../sass/pages/_profile_and_accounts.scss */
+/* line 179, ../sass/pages/_profile_and_accounts.scss */
 fieldset.submit-fieldset {
   margin-top: -30px;
 }
 
 @media only screen and (max-width: 610px) {
-  /* line 184, ../sass/pages/_profile_and_accounts.scss */
+  /* line 185, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset,
   .horizontal-form dl dd .link-formset {
     border-bottom: 1px dotted #d4d4d4;
     margin: 5px 0 20px 0;
   }
-  /* line 188, ../sass/pages/_profile_and_accounts.scss */
+  /* line 190, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset select,
   .horizontal-form dl dd .link-formset select {
     width: 100%;
     padding: 2%;
     margin-bottom: 10px;
   }
-  /* line 197, ../sass/pages/_profile_and_accounts.scss */
+  /* line 196, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset input[type="text"],
   .horizontal-form dl dd .skill-formset input[type="email"],
   .horizontal-form dl dd .skill-formset input[type="password"],
@@ -4886,14 +4888,16 @@ fieldset.submit-fieldset {
     width: 96%;
     margin-bottom: 10px;
   }
-  /* line 203, ../sass/pages/_profile_and_accounts.scss */
+  /* line 205, ../sass/pages/_profile_and_accounts.scss */
   .horizontal-form dl dd .skill-formset .divider,
   .horizontal-form dl dd .link-formset .divider {
     display: none;
   }
-  /* line 207, ../sass/pages/_profile_and_accounts.scss */
-  .horizontal-form dl dd .skill-formset a.delete-row,
-  .horizontal-form dl dd .link-formset a.delete-row {
+  /* line 209, ../sass/pages/_profile_and_accounts.scss */
+  .horizontal-form dl dd .skill-formset a.delete-link,
+  .horizontal-form dl dd .skill-formset a.delete-skill,
+  .horizontal-form dl dd .link-formset a.delete-link,
+  .horizontal-form dl dd .link-formset a.delete-skill {
     margin: 0 0 10px 0;
   }
 }
@@ -4918,7 +4922,7 @@ ul.dash-tabs li a {
   padding: 15px;
   font-size: 14px;
   background-color: #e51e41;
-  color: white;
+  color: #fff;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
@@ -4929,21 +4933,21 @@ ul.dash-tabs li a {
 /* line 34, ../sass/pages/_dashboard.scss */
 ul.dash-tabs li a i {
   margin-right: 7px;
-  color: white;
+  color: #fff;
 }
-/* line 40, ../sass/pages/_dashboard.scss */
+/* line 39, ../sass/pages/_dashboard.scss */
 ul.dash-tabs li a:hover, ul.dash-tabs li a:focus {
-  color: white;
+  color: #fff;
   background-color: #d91c3d;
 }
 /* line 47, ../sass/pages/_dashboard.scss */
 ul.dash-tabs li.active a {
-  background-color: white;
-  color: #333333;
+  background-color: #fff;
+  color: #333;
 }
 /* line 51, ../sass/pages/_dashboard.scss */
 ul.dash-tabs li.active a i {
-  color: #333333;
+  color: #333;
 }
 
 /* line 57, ../sass/pages/_dashboard.scss */
@@ -5029,7 +5033,7 @@ ul.dash-tabs li.active a i {
 }
 /* line 146, ../sass/pages/_dashboard.scss */
 .user-card-content .user-img img {
-  border: 3px solid white;
+  border: 3px solid #fff;
   webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
   max-width: 100%;
@@ -5099,7 +5103,7 @@ ul.dash-tabs li.active a i {
   margin-right: 5px;
 }
 
-/* line 220, ../sass/pages/_dashboard.scss */
+/* line 219, ../sass/pages/_dashboard.scss */
 .roles,
 .user-skills {
   margin: 0;
@@ -5117,12 +5121,12 @@ ul.dash-tabs li.active a i {
   border-left: 1px solid #ddd;
   text-decoration: none;
   font-size: 13px;
-  color: #333333;
+  color: #333;
 }
 /* line 237, ../sass/pages/_dashboard.scss */
 .user-card-footer a:hover {
   background-color: #f4f4f4;
-  color: black;
+  color: #000;
 }
 /* line 243, ../sass/pages/_dashboard.scss */
 .user-card-footer a.report-abuse {
@@ -5137,7 +5141,7 @@ ul.dash-tabs li.active a i {
 /* line 255, ../sass/pages/_dashboard.scss */
 .pagination a {
   display: inline-block;
-  color: #333333;
+  color: #333;
   padding: 7px 12px 8px 12px;
   border-radius: 4px;
 }
@@ -5145,7 +5149,7 @@ ul.dash-tabs li.active a i {
 .pagination a:hover {
   text-decoration: none;
   background-color: #ececec;
-  color: #333333;
+  color: #333;
 }
 /* line 269, ../sass/pages/_dashboard.scss */
 .pagination .endless_page_current {
@@ -5157,7 +5161,7 @@ ul.dash-tabs li.active a i {
 /* line 276, ../sass/pages/_dashboard.scss */
 .pagination .endless_page_current strong {
   font-weight: normal;
-  color: white;
+  color: #fff;
 }
 
 /* line 286, ../sass/pages/_dashboard.scss */
@@ -5179,7 +5183,7 @@ ul.dash-tabs li.active a i {
   margin-left: 15px;
 }
 
-/* line 303, ../sass/pages/_dashboard.scss */
+/* line 302, ../sass/pages/_dashboard.scss */
 .map-name,
 .map-name a {
   font-size: 25px !important;
@@ -5215,12 +5219,12 @@ ul.dash-tabs li.active a i {
 .login-form .field {
   margin-right: 10px;
 }
-/* line 19, ../sass/pages/_login.scss */
+/* line 18, ../sass/pages/_login.scss */
 .login-form label,
 .login-form input {
   margin-bottom: 0;
 }
-/* line 24, ../sass/pages/_login.scss */
+/* line 23, ../sass/pages/_login.scss */
 .login-form input[type='text'],
 .login-form input[type='password'] {
   width: 170px;
@@ -5329,7 +5333,7 @@ ul.dash-tabs li.active a i {
 .invitation-table td.email {
   max-width: 300px;
 }
-/* line 72, ../sass/pages/_moderators.scss */
+/* line 71, ../sass/pages/_moderators.scss */
 .invitation-table th.actions,
 .invitation-table td.actions {
   padding-right: 0;
@@ -5340,7 +5344,7 @@ ul.dash-tabs li.active a i {
 .review-app-table td.email {
   max-width: 150px;
 }
-/* line 84, ../sass/pages/_moderators.scss */
+/* line 83, ../sass/pages/_moderators.scss */
 .review-app-table th.actions,
 .review-app-table td.actions {
   padding-right: 0;
@@ -5351,7 +5355,7 @@ ul.dash-tabs li.active a i {
 .abuse-table td.email {
   max-width: 180px;
 }
-/* line 96, ../sass/pages/_moderators.scss */
+/* line 95, ../sass/pages/_moderators.scss */
 .abuse-table th.actions,
 .abuse-table td.actions {
   padding-right: 0;
@@ -5370,21 +5374,21 @@ ul.dash-tabs li.active a i {
 .logs-table td.comments {
   max-width: 300px;
 }
-/* line 116, ../sass/pages/_moderators.scss */
+/* line 115, ../sass/pages/_moderators.scss */
 .logs-table th.logged-by,
 .logs-table td.logged-by {
   padding-right: 0;
 }
 
 @media (max-device-width: 1060px) {
-  /* line 127, ../sass/pages/_moderators.scss */
+  /* line 124, ../sass/pages/_moderators.scss */
   .invitation-table,
   .review-app-table,
   .abuse-table,
   .logs-table {
     overflow: hidden;
   }
-  /* line 136, ../sass/pages/_moderators.scss */
+  /* line 130, ../sass/pages/_moderators.scss */
   .invitation-table td.email,
   .invitation-table th.actions,
   .invitation-table td.actions,
@@ -5604,7 +5608,7 @@ td.comments .mobile {
   float: left;
   padding-top: 24px;
 }
-/* line 278, ../sass/pages/_moderators.scss */
+/* line 277, ../sass/pages/_moderators.scss */
 .custom-date input,
 .custom-date label {
   float: left;

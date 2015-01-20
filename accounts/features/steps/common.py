@@ -3,15 +3,19 @@ from behave import *
 # Common Users
 @given('I am an inactive unauthenticated user')
 def impl(context):
+    # This user is already set up by our environment.py, so we can pass here
     pass
 
 @given('I am an active authenticated user')
 def impl(context):
-    #TODO
-    pass
+    context.browser.visit(context.server_url + 'accounts/login/')
+    context.browser.fill('username', 'active.user1@test.test')
+    context.browser.fill('password', 'pass')
+    context.browser.find_by_css('.submit').first.click()
 
 @given('I am an active unauthenticated user')
 def impl(context):
+    # This user is already set up by our environment.py, so we can pass here
     pass
 
 @given('I am an unknown user')
@@ -88,9 +92,9 @@ def impl(context):
 def impl(context):
     assert context.browser.is_text_present('This field is required.')
 
-@then('I see "Please enter a valid email address."')
+@then('I see "Enter a valid email address."')
 def impl(context):
-    assert context.browser.is_text_present('Please enter a valid email address.')
+    assert context.browser.is_text_present('Enter a valid email address.')
 
 @then('I see "Sorry, this email address is already registered to another user."')
 def impl(context):

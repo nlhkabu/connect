@@ -2,6 +2,13 @@ from behave import *
 
 
 # Common to this feature
+@given('I am an authenticated user wanting to close my account')
+def impl(context):
+    context.browser.visit(context.server_url + 'accounts/login/')
+    context.browser.fill('username', 'close.my.account@test.test')
+    context.browser.fill('password', 'pass')
+    context.browser.find_by_css('.submit').first.click()
+
 @when('I visit the close account page')
 def impl(context):
     context.browser.visit(context.server_url + 'accounts/close/')

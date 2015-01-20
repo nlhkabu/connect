@@ -155,7 +155,7 @@ class RequestInvitationFormTest(TestCase):
             form='form',
             field='email',
             errors=('Sorry, this email address is already '
-                    'registered to another user')
+                    'registered to another user.')
         )
 
 

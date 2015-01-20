@@ -31,6 +31,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'user.{}@test.test'.format(n))
     password = make_password('pass')
     registration_method = CustomUser.INVITED
+    auth_token = factory.Sequence(lambda n: 'token{}'.format(n))
     auth_token_is_used = True
     is_active = True
     is_closed = False
@@ -85,7 +86,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
     moderator = factory.SubFactory(UserFactory) # TODO: change to moderator factory
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
-    auth_token = 'abc'
+    auth_token = factory.Sequence(lambda n: 'invitedtoken{}'.format(n))
     auth_token_is_used = False
     is_active = False
 

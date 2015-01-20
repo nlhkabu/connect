@@ -29,4 +29,4 @@ def impl(context):
 @then('I see "Your request for an account has been sent"')
 def impl(context):
     assert context.browser.is_text_present(
-        'Your request for an account has been sent.')
+        'Your request for an account has been sent')

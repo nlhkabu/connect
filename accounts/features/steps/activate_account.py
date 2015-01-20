@@ -18,11 +18,11 @@ def impl(context):
 
 @then('the first name field is prepopulated with my first name')
 def impl(context):
-    assert context.browser.find_by_name('first_name').value is 'Inactive'
+    assert context.browser.find_by_name('first_name').value == 'Inactive'
 
 @then('the last name field is prepopulated with my last name')
 def impl(context):
-    assert context.browser.find_by_name('last_name').value is 'User2'
+    assert context.browser.find_by_name('last_name').value == 'User2'
 
 
 # Unique to Scenario Outline: Invited user submits

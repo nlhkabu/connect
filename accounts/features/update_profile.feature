@@ -1,11 +1,13 @@
 Feature: Update Profile
 
+    @logout
     Scenario: User views page
         Given I am an active authenticated user
         When I visit my profile page
         Then I see the profile settings form
         And the profile form is prepopulated with my data
 
+    @logout
     Scenario Outline: User submits invalid data to update profile form
         Given I am an active authenticated user
         When I visit my profile page
@@ -26,15 +28,15 @@ Feature: Update Profile
 
         Examples:
             |   first name  |   last name   |   link 1 anchor   |   link 1 url          |   link 2 anchor   |   link 2 url          |   skill 1 name    |   skill 1 proficiency |   skill 2 name    |   skill 2 proficiency |   error                                       |
-            |   ""          |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "This field is required."                   |
-            |   "First"     |   ""          |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "This field is required."                   |
-            |   "First"     |   "Last"      |   ""              |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "All links must have an anchor."            |
-            |   "First"     |   "Last"      |   "My link1"      |   ""                  |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "All links must have a url."                |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link1"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl1.com" |   "testskill1"    |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "Links must have unique anchors and URLs."  |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   ""              |   "BEGINNER"          |   "testskill2"    |   "EXPERT"            |   "All skills must have a skill name."        |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   ""                  |   "testskill2"    |   "EXPERT"            |   "All skills must have a proficiency."       |
-            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "BEGINNER"          |   "testskill1"    |   "EXPERT"            |   "Each skill can only be entered once."      |
+            |   ""          |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill2"    |   "Expert"            |   "This field is required."                   |
+            |   "First"     |   ""          |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill2"    |   "Expert"            |   "This field is required."                   |
+            |   "First"     |   "Last"      |   ""              |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill2"    |   "Expert"            |   "All links must have an anchor."            |
+            |   "First"     |   "Last"      |   "My link1"      |   ""                  |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill2"    |   "Expert"            |   "All links must have a URL."                |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link1"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill2"    |   "Expert"            |   "Links must have unique anchors and URLs."  |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl1.com" |   "testskill1"    |   "Beginner"          |   "testskill2"    |   "Expert"            |   "Links must have unique anchors and URLs."  |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   ""              |   "Beginner"          |   "testskill2"    |   "Expert"            |   "All skills must have a skill name."        |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   ""                  |   "testskill2"    |   "Expert"            |   "All skills must have a proficiency."       |
+            |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill1"    |   "Expert"            |   "Each skill can only be entered once."      |
 
     Scenario: Biography field expands
         Given I am an active authenticated user
@@ -45,8 +47,8 @@ Feature: Update Profile
     Scenario: Remove a form from the skills list
         Given I am an active authenticated user
         When I visit my profile page
-        And I click on remove next to a skill form
-        Then this skills formset is removed from the list
+        And I click on remove next to the first skill form
+        Then the first skill formset is removed from the list
 
     Scenario: Add another form to the skills list
         Given I am an active authenticated user
@@ -57,8 +59,8 @@ Feature: Update Profile
     Scenario: Remove a form form the links list
         Given I am an active authenticated user
         When I visit my profile page
-        And I click on remove next to a link form
-        Then this links formset is removed from the list
+        And I click on remove next to the first link form
+        Then the first link formset is removed from the list
 
     Scenario: Add another form to the links list
         Given I am an active authenticated user
@@ -69,6 +71,8 @@ Feature: Update Profile
     Scenario: Update user's profile
         Given I am an active authenticated user
         When I visit my profile page
+        And there are two link formsets showing
+        And there are two skill formsets showing
         And I input "First" into the first name field
         And I input "Last" into the last name field
         And I input "my bio" into the bio field
@@ -78,8 +82,8 @@ Feature: Update Profile
         And I input "http://myurl2.com" into the second url field
         And I check "testrole1"
         And I select "testskill1" for the first skill name field
-        And I select "BEGINNER" for the first skill proficiency field
+        And I select "Beginner" for the first skill proficiency field
         And I select "testskill2" for the second skill name field
-        And I select "EXPERT" for the second skill proficiency field
+        And I select "Expert" for the second skill proficiency field
         And I submit the form
-        Then I see "Your profile has been updated"
+        Then I see "Your example.com profile has been updated."

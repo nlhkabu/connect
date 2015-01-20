@@ -16,7 +16,7 @@ Feature: Request Account
             |   "First"     |   ""          |    "request.account@test.test"    |   "comment"   |   "This field is required."                                               |
             |   "First"     |   "Last"      |    ""                             |   "comment"   |   "This field is required."                                               |
             |   "First"     |   "Last"      |    "request.account@test.test"    |   ""          |   "This field is required."                                               |
-            |   "First"     |   "Last"      |    "invalidemail"                 |   "comment"   |   "Please enter a valid email address."                                   |
+            |   "First"     |   "Last"      |    "invalidemail"                 |   "comment"   |   "Enter a valid email address."                                          |
             |   "First"     |   "Last"      |    "active.user1@test.test"       |   "comment"   |   "Sorry, this email address is already registered to another user."      |
             |   "First"     |   "Last"      |    "closed.user3@test.test"       |   "comment"   |   "This email address is already registered to another (closed) account." |
 

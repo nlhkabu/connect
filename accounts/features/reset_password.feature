@@ -8,9 +8,9 @@ Feature: Reset Password
         Then I see <error>
 
         Examples:
-            |   email           |   error                                   |
-            |   ""              |   "This field is required."               |
-            |   "invalidemail"  |   "Please enter a valid email address."   |
+            |   email           |   error                           |
+            |   ""              |   "This field is required."       |
+            |   "invalidemail"  |   "Enter a valid email address."  |
 
     Scenario Outline: User requests password reset
         """
