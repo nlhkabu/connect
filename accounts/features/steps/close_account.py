@@ -2,10 +2,6 @@ from behave import *
 
 
 # Common to this feature
-@given('I am an authenticated user wanting to close my account')
-def impl(context):
-    pass
-
 @when('I visit the close account page')
 def impl(context):
     context.browser.visit(context.server_url + 'accounts/close/')
