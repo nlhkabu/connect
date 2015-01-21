@@ -1,14 +1,6 @@
 from behave import *
 
 # Common to this feature
-@given('I am an active authenticated user wanting to change my email')
-def impl(context):
-    context.browser.visit(context.server_url + 'accounts/login/')
-    context.browser.fill('username', 'update.my.email@test.test')
-    context.browser.fill('password', 'pass')
-    context.browser.find_by_css('.submit').first.click()
-
-
 @when('I visit the update email page')
 def impl(context):
     context.browser.visit(context.server_url + 'accounts/update/email/')

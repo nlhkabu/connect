@@ -1,19 +1,18 @@
 from behave import *
 
 # Common Users
-@given('I am an inactive unauthenticated user')
+@given('I am an invited, but not activated user')
 def impl(context):
     # This user is already set up by our environment.py, so we can pass here
     pass
 
-@given('I am an active authenticated user')
+@given('I am a logged in user')
 def impl(context):
-    context.browser.visit(context.server_url + 'accounts/login/')
-    context.browser.fill('username', 'active.user1@test.test')
-    context.browser.fill('password', 'pass')
-    context.browser.find_by_css('.submit').first.click()
+    # This user is already set up and logged in by our environment.py,
+    # so we can pass here
+    pass
 
-@given('I am an active unauthenticated user')
+@given('I am a logged out user')
 def impl(context):
     # This user is already set up by our environment.py, so we can pass here
     pass
@@ -50,17 +49,17 @@ def impl(context):
 def impl(context):
     context.browser.fill('email', '')
 
-@when('I input "active.user1@test.test" into the email field')
+@when('I input "active.user@test.test" into the email field')
 def impl(context):
-    context.browser.fill('email', 'active.user1@test.test')
+    context.browser.fill('email', 'active.user@test.test')
 
-@when('I input "inactive.user2@test.test" into the email field')
+@when('I input "inactive.user@test.test" into the email field')
 def impl(context):
-    context.browser.fill('email', 'inactive.user2@test.test')
+    context.browser.fill('email', 'inactive.user@test.test')
 
-@when('I input "closed.user3@test.test" into the email field')
+@when('I input "closed.user@test.test" into the email field')
 def impl(context):
-    context.browser.fill('email', 'closed.user3@test.test')
+    context.browser.fill('email', 'closed.user@test.test')
 
 @when('I input "invalidemail" into the email field')
 def impl(context):

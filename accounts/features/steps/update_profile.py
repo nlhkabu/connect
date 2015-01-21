@@ -53,7 +53,7 @@ def impl(context):
 @then('the profile form is prepopulated with my data')
 def impl(context):
     assert context.browser.find_by_name('first_name').value == 'Active'
-    assert context.browser.find_by_name('last_name').value == 'User1'
+    assert context.browser.find_by_name('last_name').value == 'User'
 
 
 # Unique to Scenario Outline: User submits invalid data to update profile form

@@ -1,15 +1,15 @@
+@login_std_user
+@logout
 Feature: Update Profile
 
-    @logout
     Scenario: User views page
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         Then I see the profile settings form
         And the profile form is prepopulated with my data
 
-    @logout
     Scenario Outline: User submits invalid data to update profile form
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And there are two link formsets showing
         And there are two skill formsets showing
@@ -39,37 +39,37 @@ Feature: Update Profile
             |   "First"     |   "Last"      |   "My link1"      |   "http://myurl1.com" |   "My link2"      |   "http://myurl2.com" |   "testskill1"    |   "Beginner"          |   "testskill1"    |   "Expert"            |   "Each skill can only be entered once."      |
 
     Scenario: Biography field expands
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And I add more than three lines to the biography field
         Then the field grows to accommodate the text
 
     Scenario: Remove a form from the skills list
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And I click on remove next to the first skill form
         Then the first skill formset is removed from the list
 
     Scenario: Add another form to the skills list
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And I click on add skill
         Then another skill formset is added to the bottom of the form
 
     Scenario: Remove a form form the links list
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And I click on remove next to the first link form
         Then the first link formset is removed from the list
 
     Scenario: Add another form to the links list
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And I click on add link
         Then another link formset is added to the bottom of the form
 
     Scenario: Update user's profile
-        Given I am an active authenticated user
+        Given I am a logged in user
         When I visit my profile page
         And there are two link formsets showing
         And there are two skill formsets showing

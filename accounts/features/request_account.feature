@@ -17,8 +17,8 @@ Feature: Request Account
             |   "First"     |   "Last"      |    ""                             |   "comment"   |   "This field is required."                                               |
             |   "First"     |   "Last"      |    "request.account@test.test"    |   ""          |   "This field is required."                                               |
             |   "First"     |   "Last"      |    "invalidemail"                 |   "comment"   |   "Enter a valid email address."                                          |
-            |   "First"     |   "Last"      |    "active.user1@test.test"       |   "comment"   |   "Sorry, this email address is already registered to another user."      |
-            |   "First"     |   "Last"      |    "closed.user3@test.test"       |   "comment"   |   "This email address is already registered to another (closed) account." |
+            |   "First"     |   "Last"      |    "active.user@test.test"        |   "comment"   |   "Sorry, this email address is already registered to another user."      |
+            |   "First"     |   "Last"      |    "closed.user@test.test"        |   "comment"   |   "This email address is already registered to another (closed) account." |
 
     Scenario: User cancels attempt to request new account
         Given I am an unknown user

@@ -10,7 +10,7 @@ def before_all(context):
     context.browser = Browser()
     context.server_url = 'http://localhost:8081/' # Django's default LiveServerTestCase port
 
-    # This data is going to be used across multiple scenarios
+    # This data is going to be used across multiple features/scenarios
     # so it's better to set them up once here
 
     # Setup roles
@@ -24,13 +24,13 @@ def before_all(context):
 
     # Setup Users
     active_user = UserFactory(first_name='Active',
-                              last_name='User1',
-                              email='active.user1@test.test',
+                              last_name='User',
+                              email='active.user@test.test',
                               auth_token='123456')
 
     inactive_user = InvitedPendingFactory(first_name='Inactive',
-                                          last_name='User2',
-                                          email='inactive.user2@test.test',
+                                          last_name='User',
+                                          email='inactive.user@test.test',
                                           auth_token='7891011')
 
     user_to_close = UserFactory(first_name='Close',
@@ -43,17 +43,38 @@ def before_all(context):
                                        last_name='My email',
                                        email='update.my.email@test.test')
 
+    user_to_update_password = UserFactory(first_name='Update',
+                                          last_name='My Password',
+                                          email='update.my.password@test.test')
+
     closed_user = UserFactory(first_name='Closed',
-                              last_name='User3',
-                              email='closed.user3@test.test',
+                              last_name='User',
+                              email='closed.user@test.test',
                               is_active=False,
                               is_closed=True)
 
 
-def after_tag(context, tag):
-    if tag == 'logout':
-        context.browser.find_link_by_text('Logout').first.click()
+def before_feature(context, feature):
 
+    def login(email):
+        context.browser.visit(context.server_url + 'accounts/login/')
+        context.browser.fill('username', email)
+        context.browser.fill('password', 'pass')
+        context.browser.find_by_css('.submit').first.click()
+
+    if 'login_close_user' in feature.tags:
+        login('close.my.account@test.test')
+    elif 'login_email_user' in feature.tags:
+        login('update.my.email@test.test')
+    elif 'login_pass_user' in feature.tags:
+        login('update.my.password@test.test')
+    elif 'login_std_user' in feature.tags:
+        login('active.user@test.test')
+
+
+def after_feature(context, feature):
+    if 'logout' in feature.tags:
+        context.browser.find_link_by_text('Logout').first.click()
 
 
 def after_all(context):

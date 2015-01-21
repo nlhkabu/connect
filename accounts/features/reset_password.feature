@@ -1,7 +1,7 @@
 Feature: Reset Password
 
     Scenario Outline: User submits invalid data to reset password form
-        Given I am an active unauthenticated user
+        Given I am a logged out user
         When I visit the reset password page
         And I input <email> into the email field
         And I submit the form
@@ -17,7 +17,7 @@ Feature: Reset Password
         Note that passing in an unregistered email should still result in a
         redirect - as we don't want to expose user information.
         """
-        Given I am an active unauthenticated user
+        Given I am a logged out user
         When I visit the reset password page
         And I input <email> into the email field
         And I submit the form
@@ -25,6 +25,6 @@ Feature: Reset Password
 
         Examples:
             |   email                       |
-            |   "active.user1@test.test"    |
+            |   "active.user@test.test"     |
             |   "not.a.user@test.test"      |
 

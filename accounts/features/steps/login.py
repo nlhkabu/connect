@@ -9,9 +9,9 @@ def impl(context):
 def impl(context):
     context.browser.fill('username', '')
 
-@when('I input "active.user1@test.test" into the username/email field')
+@when('I input "active.user@test.test" into the username/email field')
 def impl(context):
-    context.browser.fill('username', 'active.user1@test.test')
+    context.browser.fill('username', 'active.user@test.test')
 
 @when('I input "invalidemail" into the username/email field')
 def impl(context):

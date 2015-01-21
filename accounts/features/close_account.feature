@@ -1,3 +1,4 @@
+@login_close_user
 Feature: Close Account
 
     Scenario: User views page

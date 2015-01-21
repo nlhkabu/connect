@@ -1,7 +1,7 @@
 Feature: Login
 
     Scenario Outline: Invalid login
-        Given I am an active unauthenticated user
+        Given I am a logged out user
         When I visit the login page
         And I input <email> into the username/email field
         And I input <password> into the password field
@@ -11,14 +11,14 @@ Feature: Login
         Examples:
             |   email                       |   password    |
             |   ""                          |   "pass"      |
-            |   "active.user1@test.test"    |   ""          |
-            |   "active.user1@test.test"    |   "wrongpass" |
+            |   "active.user@test.test"     |   ""          |
+            |   "active.user@test.test"     |   "wrongpass" |
             |   "invalidemail"              |   "pass"      |
 
     Scenario: Valid Login
-        Given I am an active unauthenticated user
+        Given I am a logged out user
         When I visit the login page
-        And I input "active.user1@test.test" into the username/email field
+        And I input "active.user@test.test" into the username/email field
         And I input "pass" into the password field
         And I submit the form
         Then I am redirected to my dashboard
