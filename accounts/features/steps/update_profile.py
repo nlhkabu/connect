@@ -126,13 +126,13 @@ def impl(context):
 # Unique to Scenario: Biography field expands
 @when('I add more than three lines to the biography field')
 def impl(context):
-    context.browser.fill('bio', 'line1\nline2\nline3\nline4\nline5\nline6\n')
+    context.bio_height = context.browser.driver.find_element_by_name('bio').size['height']
+    context.browser.fill('bio', 'line1\n\nline2\nline3\nline4\nline5\nline6\n')
 
 @then('the field grows to accommodate the text')
 def impl(context):
-    field = context.browser.find_by_name('bio')
-    # TODO: we need to assert that the bio height is over 60px
-    pass
+    new_height = context.browser.driver.find_element_by_name('bio').size['height']
+    assert new_height > context.bio_height
 
 
 # Unique to Scenario: Remove a form from the skills list
