@@ -7,8 +7,22 @@ from accounts.factories import (InvitedPendingFactory, UserFactory, RoleFactory,
                                 SkillFactory)
 
 def before_all(context):
-    context.browser = Browser()
-    context.server_url = 'http://localhost:8081/' # Django's default LiveServerTestCase port
+
+    #Unless specified, set our default browser to PhantomJS
+    if context.config.browser:
+        context.browser = Browser(context.config.browser)
+    else:
+        context.browser = Browser('phantomjs')
+
+    # When we're running with PhantomJS we need to specify the window size.
+    # This is a workaround for an issue where PhantomJS cannot find elements
+    # by text - see: https://github.com/angular/protractor/issues/585
+    if context.browser.driver_name == 'PhantomJS':
+        context.browser.driver.set_window_size(1280, 1024)
+
+    # Django's default LiveServerTestCase port
+    context.server_url = 'http://localhost:8081/'
+
 
     # This data is going to be used across multiple features/scenarios
     # so it's better to set them up once here
