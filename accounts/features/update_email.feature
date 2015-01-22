@@ -20,7 +20,7 @@ Feature: Update Email
             |   email                       |   password    |   error                                                               |
             |   ""                          |   "pass"      |   "This field is required."                                           |
             |   "invalidemail"              |   "pass"      |   "Enter a valid email address."                                      |
-            |   "inactive.user@test.test"  |   "pass"      |   "Sorry, this email address is already registered to another user."  |
+            |   "inactive.user@test.test"   |   "pass"      |   "Sorry, this email address is already registered to another user."  |
             |   "a.new.email@test.test"     |   ""          |   "This field is required."                                           |
             |   "a.new.email@test.test"     |   "wrongpass" |   "Incorrect password. Please try again."                             |
 
