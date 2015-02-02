@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib.flatpages import urls as flatpages_urls
 from django.utils.translation import ugettext_lazy as _
 
-#TODO: Remove for production
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -22,4 +21,7 @@ urlpatterns = patterns('',
     url(_(r'^moderation/'), include(moderation_urls, namespace='moderation')),
     url(_(r'^dashboard/'), include(discover_urls, namespace='discover')),
     url(_(r'^pages/'), include(flatpages_urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #TODO: Remove for production
+)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
