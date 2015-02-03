@@ -3,10 +3,10 @@ Feature: Request Account
     Scenario Outline: User submits data to the request account form
         Given I am "an unknown user"
         When I visit the request account page
-        And I input "<first name>" into the "first name" field
-        And I input "<last name>" into the "last name" field
-        And I input "<email>" into the "email" field
-        And I input "<comments>" into the "comments" field
+        And I enter "<first name>" into the "first name" field
+        And I enter "<last name>" into the "last name" field
+        And I enter "<email>" into the "email" field
+        And I enter "<comments>" into the "comments" field
         And I submit the form
         Then I see "<message>"
 

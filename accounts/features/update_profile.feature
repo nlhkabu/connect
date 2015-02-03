@@ -5,8 +5,7 @@ Feature: Update Profile
     Scenario: User views page
         Given I am "a logged in user"
         When I visit my profile page
-        Then I see the profile settings form
-        And the profile form is prepopulated with my data
+        Then I see the profile settings form, prepopulated with my data
 
     Scenario: Biography field expands
         Given I am "a logged in user"
@@ -38,21 +37,21 @@ Feature: Update Profile
         And I click on add link
         Then another link formset is added to the bottom of the form
 
-    Scenario Outline: User submits data to update profile form
+    Scenario Outline: User submits update profile form
         Given I am "a logged in user"
         When I visit my profile page
         And there are two link formsets showing
         And there are two skill formsets showing
-        And I input "<first name>" into the "first name" field
-        And I input "<last name>" into the "last name" field
-        And I input <link 1 anchor> into the first anchor field
-        And I input <link 1 url> into the first url field
-        And I input <link 2 anchor> into the second anchor field
-        And I input <link 2 url> into the second url field
-        And I select <skill 1 name> for the first skill name field
-        And I select <skill 1 proficiency> for the first skill proficiency field
-        And I select <skill 2 name> for the second skill name field
-        And I select <skill 2 proficiency> for the second skill proficiency field
+        And I enter "<first name>" into the "first name" field
+        And I enter "<last name>" into the "last name" field
+        And I enter "<link 1 anchor>" into the "first anchor" field
+        And I enter "<link 1 url>" into the "first url" field
+        And I enter "<link 2 anchor>" into the "second anchor" field
+        And I enter "<link 2 url>" into the "second url" field
+        And I select "<skill 1 name>" from the "first skill name" dropdown
+        And I select "<skill 1 proficiency>" from the "first skill proficiency" dropdown
+        And I select "<skill 2 name>" from the "second skill name" dropdown
+        And I select "<skill 2 proficiency>" from the "second skill proficiency" dropdown
         And I submit the form
         Then I see "<message>"
 
@@ -64,7 +63,7 @@ Feature: Update Profile
             |   First       |   Last        |   My link1        |   ""                  |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   All links must have a URL.                  |
             |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link1        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   Links must have unique anchors and URLs.    |
             |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl1.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   ""              |   Beginner            |   testskill2      |   Expert              |   All skills must have a skill name.          |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   ""                  |   testskill2      |   Expert              |   All skills must have a proficiency.         |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   ---------       |   Beginner            |   testskill2      |   Expert              |   All skills must have a skill name.          |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   ---------           |   testskill2      |   Expert              |   All skills must have a proficiency.         |
             |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill1      |   Expert              |   Each skill can only be entered once.        |
             |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   Your example.com profile has been updated.  |

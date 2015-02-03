@@ -46,9 +46,7 @@ def before_all(context):
 
     user_to_close = UserFactory(first_name='Close',
                                 last_name='Me',
-                                email='close.my.account@test.test',
-                                is_active=False,
-                                is_closed=True)
+                                email='close.my.account@test.test')
 
     user_to_update_email = UserFactory(first_name='Update',
                                        last_name='My email',

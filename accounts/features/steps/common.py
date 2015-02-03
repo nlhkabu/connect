@@ -1,4 +1,5 @@
 from behave import *
+from splinter.exceptions import ElementDoesNotExist
 
 # Users
 @given('I am "{user_type}"')
@@ -7,20 +8,33 @@ def impl(context, user_type):
     # environment.py, so we can pass here
     pass
 
+
 # Common Form Inputs
-@when('I input "{user_input}" into the "{field_name}" field')
+@when('I enter "{user_input}" into the "{field_name}" field')
 def impl(context, user_input, field_name):
-    field_name = field_name.lower().replace(" ", "_")
 
     if user_input == '""':
         user_input = ''
 
-    context.browser.fill(field_name, user_input)
+    LINK_FORMSET = {
+            'first anchor': 'link-0-anchor',
+            'first url': 'link-0-url',
+            'second anchor': 'link-1-anchor',
+            'second url': 'link-1-url'
+    }
+
+    if field_name in LINK_FORMSET:
+        context.browser.fill(LINK_FORMSET[field_name], user_input)
+    else:
+        field_name = field_name.lower().replace(" ", "_")
+        context.browser.fill(field_name, user_input)
+
 
 # Submitting the form
 @when('I submit the form')
 def impl(context):
     context.browser.find_by_css('.submit').first.click()
+
 
 # Form Errors and Confirmation Messages
 @then('I see "{message}"')

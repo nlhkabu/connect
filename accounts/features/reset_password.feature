@@ -7,7 +7,7 @@ Feature: Reset Password
         """
         Given I am "a logged out user"
         When I visit the reset password page
-        And I input "<email>" into the "email" field
+        And I enter "<email>" into the "email" field
         And I submit the form
         Then I see "<message>"
 

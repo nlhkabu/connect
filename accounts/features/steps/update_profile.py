@@ -7,51 +7,10 @@ def impl(context):
     context.browser.visit(context.server_url + 'accounts/profile/')
 
 
-# Common form fields
-@when('I input My link1 into the first anchor field')
-def impl(context):
-    context.browser.fill('link-0-anchor', 'My link1')
-
-@when('I input http://myurl1.com into the first URL field')
-def impl(context):
-    context.browser.fill('link-0-url', 'http://myurl1.com')
-
-@when('I input My link2 into the second anchor field')
-def impl(context):
-    context.browser.fill('link-1-anchor', 'My link2')
-
-@when('I input http://myurl2.com into the second URL field')
-def impl(context):
-    context.browser.fill('link-1-url', 'http://myurl2.com')
-
-@when('I select testskill1 for the first skill name field')
-def impl(context):
-    context.browser.find_by_xpath(
-        "//select[@name='skill-0-skill']/option[text()='testskill1']").click()
-
-@when('I select Beginner for the first skill proficiency field')
-def impl(context):
-    context.browser.find_by_xpath(
-        "//select[@name='skill-0-proficiency']/option[text()='Beginner']").click()
-
-@when('I select testskill2 for the second skill name field')
-def impl(context):
-    context.browser.find_by_xpath(
-        "//select[@name='skill-1-skill']/option[text()='testskill2']").click()
-
-@when('I select Expert for the second skill proficiency field')
-def impl(context):
-    context.browser.find_by_xpath(
-        "//select[@name='skill-1-proficiency']/option[text()='Expert']").click()
-
-
 # Unique to Scenario: User views page
-@then('I see the profile settings form')
+@then('I see the profile settings form, prepopulated with my data')
 def impl(context):
     assert context.browser.find_by_css('.profile-settings').visible
-
-@then('the profile form is prepopulated with my data')
-def impl(context):
     assert context.browser.find_by_name('first_name').value == 'Active'
     assert context.browser.find_by_name('last_name').value == 'User'
 
@@ -112,40 +71,28 @@ def impl(context):
     assert context.browser.is_element_present_by_name('link-1-url')
 
 
-# Unique to Scenario Outline: User submits data to update profile form
+# Unique to Scenario Outline: User submits update profile form
 @when('there are two link formsets showing')
 def impl(context):
-    context.browser.find_link_by_text('add link').first.click()
+    context.execute_steps('when I click on add link')
 
 @when('there are two skill formsets showing')
 def impl(context):
-    context.browser.find_link_by_text('add skill').first.click()
+    context.execute_steps('when I click on add skill')
 
-@when('I input "" into the first anchor field')
-def impl(context):
-    context.browser.fill('link-0-anchor', '')
+@when('I select "{selection}" from the "{field_name}" dropdown')
+def impl(context, selection, field_name):
 
-@when('I input "" into the first URL field')
-def impl(context):
-    context.browser.fill('link-0-url', '')
+    SKILL_FORMSET = {
+        'first skill name': 'skill-0-skill',
+        'first skill proficiency': 'skill-0-proficiency',
+        'second skill name': 'skill-1-skill',
+        'second skill proficiency': 'skill-1-proficiency',
+    }
 
-@when('I input My link1 into the second anchor field')
-def impl(context):
-    context.browser.fill('link-1-anchor', 'My link1')
+    field_name = SKILL_FORMSET[field_name]
 
-@when('I input http://myurl1.com into the second URL field')
-def impl(context):
-    context.browser.fill('link-1-url', 'http://myurl1.com')
+    path = "//select[@name='{}']/option[text()='{}']".format(field_name,
+                                                             selection)
 
-@when('I select "" for the first skill name field')
-def impl(context):
-    context.browser.select('skill-0-skill', '')
-
-@when('I select "" for the first skill proficiency field')
-def impl(context):
-    context.browser.select('skill-0-proficiency', '')
-
-@when('I select testskill1 for the second skill name field')
-def impl(context):
-    context.browser.find_by_xpath(
-        "//select[@name='skill-1-skill']/option[text()='testskill1']").click()
+    context.browser.find_by_xpath(path).click()

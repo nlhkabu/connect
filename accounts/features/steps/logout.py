@@ -2,7 +2,7 @@ from behave import *
 
 
 # Unique to Scenario: User logs out
-@when('I click on the logout link')
+@when('I logout')
 def impl(context):
     context.browser.find_link_by_text('Logout').first.click()
 
