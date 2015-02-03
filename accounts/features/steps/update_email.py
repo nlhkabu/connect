@@ -5,11 +5,6 @@ from behave import *
 def impl(context):
     context.browser.visit(context.server_url + 'accounts/update/email/')
 
-@when('I input "a.new.email@test.test" into the email field')
-def impl(context):
-    context.browser.fill('email', 'a.new.email@test.test')
-
-
 # Unique to Scenario: User views page
 @then('I see the update email form')
 def impl(context):
@@ -19,10 +14,4 @@ def impl(context):
 def impl(context):
     assert context.browser.find_by_name('email').value == 'update.my.email@test.test'
 
-
-# Unique to Scenario: User updates their email
-@then('I see "Your example.com email has been updated."')
-def impl(context):
-    assert context.browser.is_text_present(
-        "Your example.com email has been updated.")
 

@@ -1,114 +1,31 @@
 from behave import *
 
-# Common Users
-@given('I am an invited, but not activated user')
-def impl(context):
-    # This user is already set up by our environment.py, so we can pass here
+# Users
+@given('I am "{user_type}"')
+def impl(context, user_type):
+    # Users are set up (and logged in, if applicable) by our
+    # environment.py, so we can pass here
     pass
-
-@given('I am a logged in user')
-def impl(context):
-    # This user is already set up and logged in by our environment.py,
-    # so we can pass here
-    pass
-
-@given('I am a logged out user')
-def impl(context):
-    # This user is already set up by our environment.py, so we can pass here
-    pass
-
-@given('I am an unknown user')
-def impl(context):
-    pass
-
 
 # Common Form Inputs
+@when('I input "{user_input}" into the "{field_name}" field')
+def impl(context, user_input, field_name):
+    field_name = field_name.lower().replace(" ", "_")
 
-# First Name Fields
-@when('I input "" into the first name field')
-def impl(context):
-    context.browser.fill('first_name', '')
+    if user_input == '""':
+        user_input = ''
 
-@when('I input "First" into the first name field')
-def impl(context):
-    context.browser.fill('first_name', 'First')
-
-
-# Last Name Fields
-@when('I input "" into the last name field')
-def impl(context):
-    context.browser.fill('last_name', '')
-
-@when('I input "Last" into the last name field')
-def impl(context):
-    context.browser.fill('last_name', 'Last')
-
-
-# Email Fields
-@when('I input "" into the email field')
-def impl(context):
-    context.browser.fill('email', '')
-
-@when('I input "active.user@test.test" into the email field')
-def impl(context):
-    context.browser.fill('email', 'active.user@test.test')
-
-@when('I input "inactive.user@test.test" into the email field')
-def impl(context):
-    context.browser.fill('email', 'inactive.user@test.test')
-
-@when('I input "closed.user@test.test" into the email field')
-def impl(context):
-    context.browser.fill('email', 'closed.user@test.test')
-
-@when('I input "invalidemail" into the email field')
-def impl(context):
-    context.browser.fill('email', 'invalidemail')
-
-
-# Password Fields
-@when('I input "" into the password field')
-def impl(context):
-    context.browser.fill('password', '')
-
-@when('I input "pass" into the password field')
-def impl(context):
-    context.browser.fill('password', 'pass')
-
-@when('I input "wrongpass" into the password field')
-def impl(context):
-    context.browser.fill('password', 'wrongpass')
-
+    context.browser.fill(field_name, user_input)
 
 # Submitting the form
 @when('I submit the form')
 def impl(context):
     context.browser.find_by_css('.submit').first.click()
 
-
-# Common Form Errors
-@then('I see "This field is required."')
-def impl(context):
-    assert context.browser.is_text_present('This field is required.')
-
-@then('I see "Enter a valid email address."')
-def impl(context):
-    assert context.browser.is_text_present('Enter a valid email address.')
-
-@then('I see "Sorry, this email address is already registered to another user."')
-def impl(context):
-    assert context.browser.is_text_present(
-        'Sorry, this email address is already registered to another user.')
-
-@then('I see "This email address is already registered to another (closed) account."')
-def impl(context):
-    assert context.browser.is_text_present(
-        'This email address is already registered to another (closed) account.')
-
-@then('I see "Incorrect password. Please try again."')
-def impl(context):
-    assert context.browser.is_text_present(
-        'Incorrect password. Please try again.')
+# Form Errors and Confirmation Messages
+@then('I see "{message}"')
+def impl(context, message):
+    assert context.browser.is_text_present(message, wait_time=30)
 
 
 # Common Redirects

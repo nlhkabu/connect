@@ -8,38 +8,38 @@ def impl(context):
 
 
 # Common form fields
-@when('I input "My link1" into the first anchor field')
+@when('I input My link1 into the first anchor field')
 def impl(context):
     context.browser.fill('link-0-anchor', 'My link1')
 
-@when('I input "http://myurl1.com" into the first URL field')
+@when('I input http://myurl1.com into the first URL field')
 def impl(context):
     context.browser.fill('link-0-url', 'http://myurl1.com')
 
-@when('I input "My link2" into the second anchor field')
+@when('I input My link2 into the second anchor field')
 def impl(context):
     context.browser.fill('link-1-anchor', 'My link2')
 
-@when('I input "http://myurl2.com" into the second URL field')
+@when('I input http://myurl2.com into the second URL field')
 def impl(context):
     context.browser.fill('link-1-url', 'http://myurl2.com')
 
-@when('I select "testskill1" for the first skill name field')
+@when('I select testskill1 for the first skill name field')
 def impl(context):
     context.browser.find_by_xpath(
         "//select[@name='skill-0-skill']/option[text()='testskill1']").click()
 
-@when('I select "Beginner" for the first skill proficiency field')
+@when('I select Beginner for the first skill proficiency field')
 def impl(context):
     context.browser.find_by_xpath(
         "//select[@name='skill-0-proficiency']/option[text()='Beginner']").click()
 
-@when('I select "testskill2" for the second skill name field')
+@when('I select testskill2 for the second skill name field')
 def impl(context):
     context.browser.find_by_xpath(
         "//select[@name='skill-1-skill']/option[text()='testskill2']").click()
 
-@when('I select "Expert" for the second skill proficiency field')
+@when('I select Expert for the second skill proficiency field')
 def impl(context):
     context.browser.find_by_xpath(
         "//select[@name='skill-1-proficiency']/option[text()='Expert']").click()
@@ -54,73 +54,6 @@ def impl(context):
 def impl(context):
     assert context.browser.find_by_name('first_name').value == 'Active'
     assert context.browser.find_by_name('last_name').value == 'User'
-
-
-# Unique to Scenario Outline: User submits invalid data to update profile form
-@when('there are two link formsets showing')
-def impl(context):
-    context.browser.find_link_by_text('add link').first.click()
-
-@when('there are two skill formsets showing')
-def impl(context):
-    context.browser.find_link_by_text('add skill').first.click()
-
-@when('I input "" into the first anchor field')
-def impl(context):
-    context.browser.fill('link-0-anchor', '')
-
-@when('I input "" into the first URL field')
-def impl(context):
-    context.browser.fill('link-0-url', '')
-
-@when('I input "My link1" into the second anchor field')
-def impl(context):
-    context.browser.fill('link-1-anchor', 'My link1')
-
-@when('I input "http://myurl1.com" into the second URL field')
-def impl(context):
-    context.browser.fill('link-1-url', 'http://myurl1.com')
-
-@when('I select "" for the first skill name field')
-def impl(context):
-    context.browser.select('skill-0-skill', '')
-
-@when('I select "" for the first skill proficiency field')
-def impl(context):
-    context.browser.select('skill-0-proficiency', '')
-
-@when('I select "testskill1" for the second skill name field')
-def impl(context):
-    context.browser.find_by_xpath(
-        "//select[@name='skill-1-skill']/option[text()='testskill1']").click()
-
-@then('I see "All links must have an anchor."')
-def impl(context):
-    assert context.browser.is_text_present("All links must have an anchor.")
-
-@then('I see "All links must have a URL."')
-def impl(context):
-    assert context.browser.is_text_present("All links must have a URL.")
-
-@then('I see "Links must have unique anchors and URLs."')
-def impl(context):
-    assert context.browser.is_text_present(
-        "Links must have unique anchors and URLs.")
-
-@then('I see "All skills must have a skill name."')
-def impl(context):
-    assert context.browser.is_text_present(
-        "All skills must have a skill name.")
-
-@then('I see "All skills must have a proficiency."')
-def impl(context):
-    assert context.browser.is_text_present(
-        "All skills must have a proficiency.")
-
-@then('I see "Each skill can only be entered once."')
-def impl(context):
-    assert context.browser.is_text_present(
-        "Each skill can only be entered once.")
 
 
 # Unique to Scenario: Biography field expands
@@ -179,17 +112,40 @@ def impl(context):
     assert context.browser.is_element_present_by_name('link-1-url')
 
 
-# Unique to Scenario: Update user's profile
-@when('I input "my bio" into the bio field')
+# Unique to Scenario Outline: User submits data to update profile form
+@when('there are two link formsets showing')
 def impl(context):
-    context.browser.fill('bio', 'my bio')
+    context.browser.find_link_by_text('add link').first.click()
 
-@when('I check "testrole1"')
+@when('there are two skill formsets showing')
 def impl(context):
-    # This is actually checking all the roles, but as there is only
-    # one in the test DB, this is fine for our purposes.
-    context.browser.check('roles')
+    context.browser.find_link_by_text('add skill').first.click()
 
-@then('I see "Your example.com profile has been updated."')
+@when('I input "" into the first anchor field')
 def impl(context):
-    assert context.browser.is_text_present("Your example.com profile has been updated.")
+    context.browser.fill('link-0-anchor', '')
+
+@when('I input "" into the first URL field')
+def impl(context):
+    context.browser.fill('link-0-url', '')
+
+@when('I input My link1 into the second anchor field')
+def impl(context):
+    context.browser.fill('link-1-anchor', 'My link1')
+
+@when('I input http://myurl1.com into the second URL field')
+def impl(context):
+    context.browser.fill('link-1-url', 'http://myurl1.com')
+
+@when('I select "" for the first skill name field')
+def impl(context):
+    context.browser.select('skill-0-skill', '')
+
+@when('I select "" for the first skill proficiency field')
+def impl(context):
+    context.browser.select('skill-0-proficiency', '')
+
+@when('I select testskill1 for the second skill name field')
+def impl(context):
+    context.browser.find_by_xpath(
+        "//select[@name='skill-1-skill']/option[text()='testskill1']").click()

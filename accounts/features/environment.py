@@ -27,9 +27,6 @@ def before_all(context):
     # This data is going to be used across multiple features/scenarios
     # so it's better to set them up once here
 
-    # Setup roles
-    RoleFactory(name='testrole1')
-
     # Setup skills
     SkillFactory(name='testskill1')
     SkillFactory(name='testskill2')
