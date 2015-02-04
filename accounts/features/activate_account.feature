@@ -1,4 +1,7 @@
 Feature: Activate Account
+    As an invited user
+    I want to activate my account
+    So that I can use this application
 
     Scenario: Invited user visits page to activate account
         Given I am "an invited, but not activated user"

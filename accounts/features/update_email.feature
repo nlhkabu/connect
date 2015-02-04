@@ -1,6 +1,9 @@
 @login_email_user
 @logout
 Feature: Update Email
+    As a registered user
+    I want to change my email address
+    So that I can keep my settings up to date
 
     Scenario: User views page
         Given I am "a logged in user"

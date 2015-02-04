@@ -1,4 +1,8 @@
 Feature: Reset Password
+    As a registered user
+    I want to reset my password
+    So that I can access my account when I've forgotten my password
+
 
     Scenario Outline: User submits data to reset password form
         """

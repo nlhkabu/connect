@@ -1,6 +1,9 @@
 @login_pass_user
 @logout
 Feature: Update Password
+    As a registered user
+    I want to change my password
+    So that I can keep my account secure
 
     Scenario Outline: User submits data to the update password form
         Given I am "a logged in user"

@@ -1,5 +1,8 @@
 @login_close_user
 Feature: Close Account
+    As a registered user
+    I want to close my account
+    So that I can use stop using this application
 
     Scenario Outline: User submits invalid data to the close account form
         Given I am "a logged in user"

@@ -1,4 +1,7 @@
 Feature: Request Account
+    As a member of the public
+    I want to apply for an account
+    So that I can use this application
 
     Scenario Outline: User submits data to the request account form
         Given I am "an unknown user"
@@ -20,7 +23,6 @@ Feature: Request Account
             |   First       |   Last        |   active.user@test.test       |   comment     |   Sorry, this email address is already registered to another user.        |
             |   First       |   Last        |   closed.user@test.test       |   comment     |   This email address is already registered to another (closed) account.   |
             |   First       |   Last        |   request.account@test.test   |   comment     |   Your request for an account has been sent                               |
-
 
     Scenario: User cancels attempt to request new account
         Given I am "an unknown user"

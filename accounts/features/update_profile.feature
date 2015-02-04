@@ -1,6 +1,9 @@
 @login_std_user
 @logout
 Feature: Update Profile
+    As a registered user
+    I want to update my profile
+    So that I can share my information with others
 
     Scenario: User views page
         Given I am "a logged in user"

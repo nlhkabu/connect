@@ -1,4 +1,7 @@
 Feature: Login
+    As a registered user
+    I want to login to my account
+    So that I can use connect with other users
 
     Scenario Outline: Invalid login
         Given I am "a logged out user"
