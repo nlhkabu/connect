@@ -7,12 +7,12 @@ Feature: Update Email
 
     Scenario: User views page
         Given I am "a logged in user"
-        When I visit the update email page
+        When I visit the "update email" page
         Then I see the update email form, prepopulated with my email
 
     Scenario Outline: User submits data to the update email form
         Given I am "a logged in user"
-        When I visit the update email page
+        When I visit the "update email" page
         And I enter "<email>" into the "email" field
         And I enter "<password>" into the "password" field
         And I submit the form

@@ -5,7 +5,7 @@ Feature: Login
 
     Scenario Outline: Invalid login
         Given I am "a logged out user"
-        When I visit the login page
+        When I visit the "login" page
         And I enter "<email>" into the "username" field
         And I enter "<password>" into the "password" field
         And I submit the form

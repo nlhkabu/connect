@@ -5,7 +5,7 @@ Feature: Request Account
 
     Scenario Outline: User submits data to the request account form
         Given I am "an unknown user"
-        When I visit the request account page
+        When I visit the "request account" page
         And I enter "<first name>" into the "first name" field
         And I enter "<last name>" into the "last name" field
         And I enter "<email>" into the "email" field
@@ -26,6 +26,6 @@ Feature: Request Account
 
     Scenario: User cancels attempt to request new account
         Given I am "an unknown user"
-        When I visit the request account page
+        When I visit the "request account" page
         And I cancel the request account form
         Then I am redirected to the login page

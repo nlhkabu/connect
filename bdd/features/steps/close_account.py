@@ -1,12 +1,6 @@
 from behave import *
 
 
-# Common to this feature
-@when('I visit the close account page')
-def impl(context):
-    context.browser.visit(context.server_url + 'accounts/close/')
-
-
 # Unique to Scenario: User submits valid data
 @when('I close my account')
 def impl(context):

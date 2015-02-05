@@ -7,42 +7,42 @@ Feature: Update Profile
 
     Scenario: User views page
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         Then I see the profile settings form, prepopulated with my data
 
     Scenario: Biography field expands
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         And I add more than three lines to the biography field
         Then the field grows to accommodate the text
 
     Scenario: Remove a form from the skills list
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         And I click on remove next to the first skill form
         Then the first skill formset is removed from the list
 
     Scenario: Add another form to the skills list
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         And I click on add skill
         Then another skill formset is added to the bottom of the form
 
     Scenario: Remove a form form the links list
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         And I click on remove next to the first link form
         Then the first link formset is removed from the list
 
     Scenario: Add another form to the links list
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         And I click on add link
         Then another link formset is added to the bottom of the form
 
     Scenario Outline: User submits update profile form
         Given I am "a logged in user"
-        When I visit my profile page
+        When I visit the "profile" page
         And there are two link formsets showing
         And there are two skill formsets showing
         And I enter "<first name>" into the "first name" field

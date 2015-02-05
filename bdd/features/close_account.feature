@@ -6,7 +6,7 @@ Feature: Close Account
 
     Scenario Outline: User submits invalid data to the close account form
         Given I am "a logged in user"
-        When I visit the close account page
+        When I visit the "close account" page
         And I enter "<pass>" into the "password" field
         And I submit the form
         Then I see "<error>"
@@ -18,6 +18,6 @@ Feature: Close Account
 
     Scenario: User submits valid data
         Given I am "a logged in user"
-        When I visit the close account page
+        When I visit the "close account" page
         And I close my account
         Then I am redirected to a confirmation page

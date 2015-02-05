@@ -1,12 +1,6 @@
 from behave import *
 
 
-# Common to this feature
-@when('I visit my profile page')
-def impl(context):
-    context.browser.visit(context.server_url + 'accounts/profile/')
-
-
 # Unique to Scenario: User views page
 @then('I see the profile settings form, prepopulated with my data')
 def impl(context):

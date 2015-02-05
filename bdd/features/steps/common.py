@@ -1,12 +1,30 @@
 from behave import *
 from splinter.exceptions import ElementDoesNotExist
 
+
 # Users
 @given('I am "{user_type}"')
 def impl(context, user_type):
     # Users are set up (and logged in, if applicable) by our
     # environment.py, so we can pass here
     pass
+
+
+# URLs
+@when('I visit the "{page_name}" page')
+def impl(context, page_name):
+
+    PAGE_URLS = {
+        'close account': 'accounts/close/',
+        'login': 'accounts/login/',
+        'request account': 'accounts/request-invitation/',
+        'reset password': 'accounts/password/reset/',
+        'update email': 'accounts/update/email/',
+        'update password': 'accounts/update/password/',
+        'profile': 'accounts/profile/'
+    }
+
+    context.browser.visit(context.server_url + PAGE_URLS[page_name])
 
 
 # Common Form Inputs
@@ -17,10 +35,10 @@ def impl(context, user_input, field_name):
         user_input = ''
 
     LINK_FORMSET = {
-            'first anchor': 'link-0-anchor',
-            'first url': 'link-0-url',
-            'second anchor': 'link-1-anchor',
-            'second url': 'link-1-url'
+        'first anchor': 'link-0-anchor',
+        'first url': 'link-0-url',
+        'second anchor': 'link-1-anchor',
+        'second url': 'link-1-url'
     }
 
     if field_name in LINK_FORMSET:
