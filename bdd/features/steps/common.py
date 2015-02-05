@@ -39,7 +39,7 @@ def impl(context):
 # Form Errors and Confirmation Messages
 @then('I see "{message}"')
 def impl(context, message):
-    assert context.browser.is_text_present(message, wait_time=30)
+    assert context.browser.is_text_present(message, wait_time=10)
 
 
 # Common Redirects

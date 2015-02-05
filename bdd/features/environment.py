@@ -3,8 +3,15 @@ import factory
 from behave import *
 from splinter.browser import Browser
 
+from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
+
 from accounts.factories import (InvitedPendingFactory, UserFactory, RoleFactory,
                                 SkillFactory)
+
+from connect_config.factories import SiteConfigFactory
+from connect_config.models import SiteConfig
+
 
 def before_all(context):
 
@@ -26,6 +33,12 @@ def before_all(context):
 
     # This data is going to be used across multiple features/scenarios
     # so it's better to set them up once here
+    site = Site.objects.get(domain='example.com')
+
+    try:
+        site_config = SiteConfig.objects.get(site=site)
+    except ObjectDoesNotExist:
+        site_config = SiteConfigFactory(site=site)
 
     # Setup skills
     SkillFactory(name='testskill1')

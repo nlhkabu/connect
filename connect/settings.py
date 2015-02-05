@@ -14,9 +14,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('CONNECT_SECRET_KEY',
                             'jj4ie+#b4h=ovjrma7ad*0vhuu8j4fi@8beksc-f+pa_co')
@@ -27,7 +24,6 @@ TEMPLATE_DEBUG = DEBUG
 
 # Allow all host headers
 ALLOWED_HOSTS = os.environ.get('CONNECT_ALLOWED_HOSTS', 'localhost').split(',')
-
 
 # Application definition
 
@@ -54,6 +50,7 @@ INSTALLED_APPS = (
     'accounts',
     'moderation',
     'discover',
+    'bdd'
 )
 
 if DEBUG:
