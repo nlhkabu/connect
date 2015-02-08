@@ -3,7 +3,7 @@ Feature: Login
     I want to login to my account
     So that I can use connect with other users
 
-    Background: There is one active user in the database
+    Background: There is one user in the database
         Given there is a standard, active user in the database
 
     Scenario Outline: Invalid login

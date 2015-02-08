@@ -3,7 +3,7 @@ Feature: Logout
     I want to logout of my account
     So that I can keep my account secure
 
-    Background: There is one active user in the database
+    Background: There is one user in the database
         Given there is a standard, active user in the database
         And I am logged in as that standard user
 
