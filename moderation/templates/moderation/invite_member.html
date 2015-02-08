@@ -8,7 +8,7 @@
 
     {% include "messages.html" %}
 
-    <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form">
+    <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form" novalidate>
         <fieldset>
             <legend>{% trans "Invite a New Member" %}</legend>
             <p class="intro">{% trans "Please provide the details of the member you wish to invite.  Once they have accepted your invitatation, they will be able to edit the details provided here." %}</p>
