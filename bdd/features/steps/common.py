@@ -1,6 +1,7 @@
 from behave import *
 from splinter.exceptions import ElementDoesNotExist
-from accounts.factories import InvitedPendingFactory, UserFactory
+from django.core import management
+from accounts.factories import InvitedPendingFactory, ModeratorFactory, UserFactory
 
 
 # Users
@@ -20,11 +21,26 @@ def impl(context):
                               email='closed.user@test.test',
                               is_active=False, is_closed=True)
 
+@given('there is a moderator in the database')
+def impl(context):
+    management.call_command('loaddata', 'group_perms', verbosity=0)
+    moderator = ModeratorFactory(first_name='Moderator', last_name='User',
+                                 email='moderator@test.test')
+
 @given('I am logged in as that standard user')
 def impl(context):
     context.execute_steps('''
         when I visit the "login" page
         when I enter "standard.user@test.test" into the "username" field
+        when I enter "pass" into the "password" field
+        when I submit the form
+    ''')
+
+@given('I am logged in as that moderator')
+def impl(context):
+    context.execute_steps('''
+        when I visit the "login" page
+        when I enter "moderator@test.test" into the "username" field
         when I enter "pass" into the "password" field
         when I submit the form
     ''')
@@ -50,6 +66,7 @@ def impl(context, page_name):
         'update password': 'accounts/update/password/',
         'profile': 'accounts/profile/',
         'dashboard': '', # root url
+        'invite user': 'moderation',
     }
 
     context.browser.visit(context.server_url + PAGE_URLS[page_name])
@@ -79,7 +96,7 @@ def impl(context, user_input, field_name):
 # Submitting the form
 @when('I submit the form')
 def impl(context):
-    context.browser.find_by_css('.submit').first.click()
+    context.browser.find_by_css('form input[type=submit]').first.click()
 
 
 # Form Errors and Confirmation Messages
