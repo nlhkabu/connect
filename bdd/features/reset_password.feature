@@ -3,6 +3,9 @@ Feature: Reset Password
     I want to reset my password
     So that I can access my account when I've forgotten my password
 
+    Background: There is one user in the database
+        Given there is a standard, active user in the database
+        And I am logged in as that standard user
 
     Scenario Outline: User submits data to reset password form
         """
@@ -19,6 +22,6 @@ Feature: Reset Password
             |   email                   |   message                         |
             |   ""                      |   This field is required.         |
             |   invalidemail            |   Enter a valid email address.    |
-            |   active.user@test.test   |   Please check your email         |
+            |   standard.user@test.test |   Please check your email         |
             |   not.a.user@test.test    |   Please check your email         |
 

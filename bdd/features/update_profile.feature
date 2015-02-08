@@ -1,9 +1,11 @@
-@login_std_user
-@logout
 Feature: Update Profile
     As a registered user
     I want to update my profile
     So that I can share my information with others
+
+    Background: There is one user in the database
+        Given there is a standard, active user in the database
+        And I am logged in as that standard user
 
     Scenario: User views page
         Given I am "a logged in user"
@@ -60,13 +62,13 @@ Feature: Update Profile
 
         Examples:
             |   first name  |   last name   |   link 1 anchor   |   link 1 url          |   link 2 anchor   |   link 2 url          |   skill 1 name    |   skill 1 proficiency |   skill 2 name    |   skill 2 proficiency |   message                                     |
-            |   ""          |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   This field is required.                     |
-            |   First       |   ""          |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   This field is required.                     |
-            |   First       |   Last        |   ""              |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   All links must have an anchor.              |
-            |   First       |   Last        |   My link1        |   ""                  |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   All links must have a URL.                  |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link1        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl1.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   ---------       |   Beginner            |   testskill2      |   Expert              |   All skills must have a skill name.          |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   ---------           |   testskill2      |   Expert              |   All skills must have a proficiency.         |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill1      |   Expert              |   Each skill can only be entered once.        |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   testskill1      |   Beginner            |   testskill2      |   Expert              |   Your example.com profile has been updated.  |
+            |   ""          |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   This field is required.                     |
+            |   First       |   ""          |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   This field is required.                     |
+            |   First       |   Last        |   ""              |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   All links must have an anchor.              |
+            |   First       |   Last        |   My link1        |   ""                  |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   All links must have a URL.                  |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link1        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Links must have unique anchors and URLs.    |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl1.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Links must have unique anchors and URLs.    |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   ---------       |   Beginner            |   skill2          |   Expert              |   All skills must have a skill name.          |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   ---------           |   skill2          |   Expert              |   All skills must have a proficiency.         |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill1          |   Expert              |   Each skill can only be entered once.        |
+            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Your example.com profile has been updated.  |

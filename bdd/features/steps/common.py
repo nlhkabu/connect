@@ -1,12 +1,39 @@
 from behave import *
 from splinter.exceptions import ElementDoesNotExist
+from accounts.factories import InvitedPendingFactory, UserFactory
 
 
 # Users
+@given('there is a standard, active user in the database')
+def impl(context):
+    UserFactory(first_name='Active', last_name='User',
+                email='standard.user@test.test', auth_token='123456')
+
+@given('there is an invited, but not yet active user in the database')
+def impl(context):
+    InvitedPendingFactory(first_name='Inactive', last_name='User',
+                          email='inactive.user@test.test', auth_token='7891011')
+
+@given('there is a closed user in the database')
+def impl(context):
+    closed_user = UserFactory(first_name='Closed', last_name='User',
+                              email='closed.user@test.test',
+                              is_active=False, is_closed=True)
+
+@given('I am logged in as that standard user')
+def impl(context):
+    context.execute_steps('''
+        when I visit the "login" page
+        when I enter "standard.user@test.test" into the "username" field
+        when I enter "pass" into the "password" field
+        when I submit the form
+    ''')
+
+
 @given('I am "{user_type}"')
 def impl(context, user_type):
-    # Users are set up (and logged in, if applicable) by our
-    # environment.py, so we can pass here
+    # Users are created (and logged in, if applicable) during our
+    # background setup, so we can pass here
     pass
 
 
@@ -21,7 +48,8 @@ def impl(context, page_name):
         'reset password': 'accounts/password/reset/',
         'update email': 'accounts/update/email/',
         'update password': 'accounts/update/password/',
-        'profile': 'accounts/profile/'
+        'profile': 'accounts/profile/',
+        'dashboard': '', # root url
     }
 
     context.browser.visit(context.server_url + PAGE_URLS[page_name])

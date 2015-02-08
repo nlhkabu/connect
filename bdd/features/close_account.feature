@@ -1,8 +1,11 @@
-@login_close_user
 Feature: Close Account
     As a registered user
     I want to close my account
     So that I can use stop using this application
+
+    Background: There is one active user in the database
+        Given there is a standard, active user in the database
+        And I am logged in as that standard user
 
     Scenario Outline: User submits invalid data to the close account form
         Given I am "a logged in user"

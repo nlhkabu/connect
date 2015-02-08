@@ -3,6 +3,9 @@ Feature: Login
     I want to login to my account
     So that I can use connect with other users
 
+    Background: There is one active user in the database
+        Given there is a standard, active user in the database
+
     Scenario Outline: Invalid login
         Given I am "a logged out user"
         When I visit the "login" page
@@ -14,8 +17,8 @@ Feature: Login
         Examples:
             |   email                   |   password    |
             |   ""                      |   pass        |
-            |   active.user@test.test   |   ""          |
-            |   active.user@test.test   |   wrongpass   |
+            |   standard.user@test.test |   ""          |
+            |   standard.user@test.test |   wrongpass   |
             |   invalidemail            |   pass        |
 
     Scenario: Valid Login

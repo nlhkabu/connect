@@ -3,13 +3,17 @@ Feature: Activate Account
     I want to activate my account
     So that I can use this application
 
+    Background: There are two users in the database
+        Given there is a standard, active user in the database
+        And there is an invited, but not yet active user in the database
+
     Scenario: Invited user visits page to activate account
-        Given I am "an invited, but not activated user"
+        Given I am "an invited, but not active user"
         When I visit my activation page "7891011"
         Then I see the activate account form, prepopulated with my data
 
     Scenario Outline: Invited user submits invalid data to the activate account form
-        Given I am "an invited, but not activated user"
+        Given I am "an invited, but not active user"
         When I visit my activation page "7891011"
         And I enter "<first name>" into the "first name" field
         And I enter "<last name>" into the "last name" field
@@ -27,7 +31,7 @@ Feature: Activate Account
             |   First       |   Last        |    pass       |   notmatching     |   Your passwords do not match. Please try again.  |
 
     Scenario: Invited user activates their account
-        Given I am "an invited, but not activated user"
+        Given I am "an invited, but not active user"
         When I visit my activation page "7891011"
         And I activate my account
         Then I am redirected to my dashboard

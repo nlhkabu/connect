@@ -1,9 +1,12 @@
-@login_email_user
-@logout
 Feature: Update Email
     As a registered user
     I want to change my email address
     So that I can keep my settings up to date
+
+    Background: There are two users in the database
+        Given there is an invited, but not yet active user in the database
+        And there is a standard, active user in the database
+        And I am logged in as that standard user
 
     Scenario: User views page
         Given I am "a logged in user"

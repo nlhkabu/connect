@@ -1,9 +1,11 @@
-@login_pass_user
-@logout
 Feature: Update Password
     As a registered user
     I want to change my password
     So that I can keep my account secure
+
+    Background: There is one user in the database
+        Given there is a standard, active user in the database
+        And I am logged in as that standard user
 
     Scenario Outline: User submits data to the update password form
         Given I am "a logged in user"

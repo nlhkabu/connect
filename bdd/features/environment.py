@@ -4,11 +4,11 @@ from behave import *
 from splinter.browser import Browser
 
 from django.contrib.sites.models import Site
+from django.core import management
 from django.core.exceptions import ObjectDoesNotExist
 
-from accounts.factories import (InvitedPendingFactory, UserFactory, RoleFactory,
-                                SkillFactory)
-
+from accounts.factories import RoleFactory, SkillFactory
+from accounts.models import CustomUser
 from connect_config.factories import SiteConfigFactory
 from connect_config.models import SiteConfig
 
@@ -31,8 +31,12 @@ def before_all(context):
     context.server_url = 'http://localhost:8081/'
 
 
-    # This data is going to be used across multiple features/scenarios
-    # so it's better to set them up once here
+def before_scenario(context, scenario):
+
+    # Reset the database before each scenario
+    management.call_command('flush', verbosity=0, interactive=False)
+
+    # Then recreate our base data
     site = Site.objects.get(domain='example.com')
 
     try:
@@ -41,62 +45,13 @@ def before_all(context):
         site_config = SiteConfigFactory(site=site)
 
     # Setup skills
-    SkillFactory(name='testskill1')
-    SkillFactory(name='testskill2')
-    SkillFactory(name='testskill3')
-    #factory.create_batch(SkillFactory, 3)
+    SkillFactory(name='skill1')
+    SkillFactory(name='skill2')
 
-    # Setup Users
-    active_user = UserFactory(first_name='Active',
-                              last_name='User',
-                              email='active.user@test.test',
-                              auth_token='123456')
-
-    inactive_user = InvitedPendingFactory(first_name='Inactive',
-                                          last_name='User',
-                                          email='inactive.user@test.test',
-                                          auth_token='7891011')
-
-    user_to_close = UserFactory(first_name='Close',
-                                last_name='Me',
-                                email='close.my.account@test.test')
-
-    user_to_update_email = UserFactory(first_name='Update',
-                                       last_name='My email',
-                                       email='update.my.email@test.test')
-
-    user_to_update_password = UserFactory(first_name='Update',
-                                          last_name='My Password',
-                                          email='update.my.password@test.test')
-
-    closed_user = UserFactory(first_name='Closed',
-                              last_name='User',
-                              email='closed.user@test.test',
-                              is_active=False,
-                              is_closed=True)
-
-
-def before_feature(context, feature):
-
-    def login(email):
-        context.browser.visit(context.server_url + 'accounts/login/')
-        context.browser.fill('username', email)
-        context.browser.fill('password', 'pass')
-        context.browser.find_by_css('.submit').first.click()
-
-    if 'login_close_user' in feature.tags:
-        login('close.my.account@test.test')
-    elif 'login_email_user' in feature.tags:
-        login('update.my.email@test.test')
-    elif 'login_pass_user' in feature.tags:
-        login('update.my.password@test.test')
-    elif 'login_std_user' in feature.tags:
-        login('active.user@test.test')
-
-
-def after_feature(context, feature):
-    if 'logout' in feature.tags:
-        context.browser.find_link_by_text('Logout').first.click()
+    # Setup roles
+    RoleFactory(name='role1')
+    RoleFactory(name='role2')
+    RoleFactory(name='role3')
 
 
 def after_all(context):
