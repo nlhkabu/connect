@@ -13,6 +13,7 @@ selenium
 behave==1.2.4
 git+https://github.com/django-behave/django-behave.git@4a0cc1a985d1a9e445da98f6c5ccbee23d69a91b
 parse
+splinter
 
 # Deployment
 uWSGI==2.0.7
