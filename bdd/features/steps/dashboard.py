@@ -1,4 +1,6 @@
+import factory
 from behave import *
+from django.conf import settings
 from accounts.factories import UserFactory, UserSkillFactory
 from accounts.models import Role, Skill
 
@@ -69,16 +71,37 @@ def impl(context, count):
 # Unique to Scenario: View full profile
 @when('I click on "View Full Profile" on a member card')
 def impl(context):
-    # Wait for the other users to load (check for the report abuse link)
-    if context.browser.is_element_present_by_css('a.report-abuse', wait_time=20):
-        context.browser.find_link_by_text('View Full Profile').last.click()
+    context.browser.find_by_css('.not-me .full-profile').first.click()
 
-@then('I see more information about the member')
+@then('the member card expands')
 def impl(context):
-    pass
+    assert context.browser.is_element_present_by_css('table.skills',
+                                                     wait_time=5)
 
 @then('"View Full Profile" turns into "Collapse"')
 def impl(context):
-    pass
+    assert context.browser.is_text_present('Collapse', wait_time=5)
+
+
+# Unique to Scenario: Report Abuse
+@when('I click on "Report Abuse" on another member\'s card')
+def impl(context):
+    context.browser.find_by_css('.not-me .report-abuse').first.click()
+
+@then('I am taken to a new page to report that member')
+def impl(context):
+    assert context.browser.is_text_present('Log an abuse report against',
+                                           wait_time=5)
+
+
+# Unique to Scenario: Many users prompt pagination
+@given('pagination is set to start at 3 users')
+def impl(context):
+    factory.create_batch(UserFactory, 5)
+
+@then('I see that the list of members is paginated')
+def impl(context):
+    assert context.browser.is_element_present_by_css('.pagination')
+
 
 

@@ -65,7 +65,7 @@
                     </div>
                 </fieldset>
                 <input type="submit" class="button muted" value="{% trans 'Clear' %}" />
-                <input type="submit" class="button" value="{% trans 'Refine Results' %}" />
+                <input type="submit" class="button submit" value="{% trans 'Refine Results' %}" />
             </form>
         </div>
         <div class="twelve columns omega">
@@ -73,7 +73,7 @@
                 {% paginate listed_users %}
                 {% for user in listed_users %}
                     <!-- start card -->
-                    <div class="user-card">
+                    <div class="user-card {% if user != logged_in_user %} not-me{% endif %}">
                         <div class="user-card-content">
                             <div class="image">
                                 <a href="#" class="user-img toggle-user-expand">
@@ -168,7 +168,7 @@
                 </div>
 
             {% else %}
-                <div class="no-results user-card">
+                <div class="no-results">
                     <h4>{% trans "Sorry!" %}</h4>
                     <p>{% trans "There are no users matching your selected search.  Please try again." %}</p>
                 </div>
