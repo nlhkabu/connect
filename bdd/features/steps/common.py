@@ -5,10 +5,18 @@ from accounts.factories import InvitedPendingFactory, ModeratorFactory, UserFact
 
 
 # Users
-@given('there is a standard, active user in the database')
+@given('there is a standard user in the database')
 def impl(context):
-    UserFactory(first_name='Active', last_name='User',
+    UserFactory(first_name='Standard', last_name='User',
                 email='standard.user@test.test', auth_token='123456')
+
+@given('there are two standard users in the database')
+def impl(context):
+    context.execute_steps('''
+        given there is a standard user in the database
+    ''')
+    UserFactory(first_name='Another', last_name='User',
+                email='standard.user2@test.test')
 
 @given('there is an invited, but not yet active user in the database')
 def impl(context):
@@ -45,6 +53,11 @@ def impl(context):
         when I submit the form
     ''')
 
+@given('I am logged in as the first standard user')
+def impl(context):
+    context.execute_steps('''
+        given I am logged in as that standard user
+    ''')
 
 @given('I am "{user_type}"')
 def impl(context, user_type):

@@ -5,7 +5,7 @@ Feature: Update Email
 
     Background: There are two users in the database
         Given there is an invited, but not yet active user in the database
-        And there is a standard, active user in the database
+        And there is a standard user in the database
         And I am logged in as that standard user
 
     Scenario: User views page

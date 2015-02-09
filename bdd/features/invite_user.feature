@@ -4,7 +4,7 @@ Feature: Invite User
     So that they can join the community
 
     Background: There are two users in the database, one of whom is a moderator
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
         And there is a moderator in the database
         And I am logged in as that moderator
 

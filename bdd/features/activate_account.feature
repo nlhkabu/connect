@@ -4,7 +4,7 @@ Feature: Activate Account
     So that I can use this application
 
     Background: There are two users in the database
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
         And there is an invited, but not yet active user in the database
 
     Scenario: Invited user visits page to activate account

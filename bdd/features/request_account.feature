@@ -4,7 +4,7 @@ Feature: Request Account
     So that I can use this application
 
     Background: There are two users in the database
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
         And there is a closed user in the database
 
     Scenario Outline: User submits data to the request account form

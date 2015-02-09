@@ -4,7 +4,7 @@ Feature: View Dashboard
     So that I find interesting people to connect with
 
     Background: There are many members with a variety of skills and roles
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
         And I am logged in as that standard user
         And the following users exist:
             |    email              |   skills          |   roles           |

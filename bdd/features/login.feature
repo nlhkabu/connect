@@ -4,7 +4,7 @@ Feature: Login
     So that I can use connect with other users
 
     Background: There is one user in the database
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
 
     Scenario Outline: Invalid login
         Given I am "a logged out user"

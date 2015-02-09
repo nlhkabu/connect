@@ -4,7 +4,7 @@ Feature: Reset Password
     So that I can access my account when I've forgotten my password
 
     Background: There is one user in the database
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
         And I am logged in as that standard user
 
     Scenario Outline: User submits data to reset password form

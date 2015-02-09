@@ -4,7 +4,7 @@ Feature: Update Profile
     So that I can share my information with others
 
     Background: There is one user in the database
-        Given there is a standard, active user in the database
+        Given there is a standard user in the database
         And I am logged in as that standard user
 
     Scenario: User views page
