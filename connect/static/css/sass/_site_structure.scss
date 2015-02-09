@@ -56,7 +56,11 @@ p.intro {
 
 // Validation and Messages
 
-.form-error,
+.form-error:not(.filled) .fa {
+    display: none;
+}
+
+.form-error.filled,
 .notification-messages p {
     background-color: $white;
     color: $highlight;
@@ -70,6 +74,7 @@ p.intro {
 
     span {
         display: block;
+        float: right;
     }
 
     .fa {

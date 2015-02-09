@@ -243,6 +243,7 @@ def review_applications(request):
             comments = form.cleaned_data['comments']
 
             if decision == 'APP':
+                decision = 'approved'
                 moderator.approve_user_application(user)
 
                 # Set log and email settings
@@ -254,6 +255,7 @@ def review_applications(request):
                 template = 'moderation/emails/approve_user.html'
 
             elif decision == 'REJ':
+                decision = 'rejected'
                 moderator.reject_user_application(user)
 
                 # Set log and email settings
@@ -278,6 +280,10 @@ def review_applications(request):
                                sender=moderator,
                                site=site,
                                url=url)
+
+            messages.success(request,
+                _("{}'s account application has been {}.".format(
+                    user.get_full_name().title(), decision)))
 
             return redirect('moderation:review-applications')
 

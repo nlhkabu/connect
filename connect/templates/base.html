@@ -83,6 +83,13 @@
         <script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.10.1.min.js' %}"><\/script>')</script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
         <script src="{% static 'js/vendor/jquery.dialogOptions.js' %}"></script>
+        <script>
+            window.ParsleyConfig = {
+              errorsWrapper: '<span class="form-error"><i class="fa fa-exclamation-triangle"></i></span>',
+              errorTemplate: '<span></span>'
+            };
+        </script>
+        <script src="{% static 'js/vendor/parsley.min.js' %}"></script>
         <script src="{% static 'js/main.js' %}"></script>
 
         {% block extra_js %}{% endblock %}

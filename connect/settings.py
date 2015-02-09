@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django_behave',
     'django_gravatar',
     'endless_pagination',
+    'parsley',
     'django_boost',
     'connect',
     'connect_config',
@@ -158,12 +159,14 @@ SITE_ID = 1
 SITE_URL = 'http://localhost:8000' #TODO: change for production
 
 # Set 'from' email address for system emails
-
-EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
-EMAIL_PORT = os.environ['CONNECT_EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
-EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
+    EMAIL_PORT = os.environ['CONNECT_EMAIL_PORT']
+    EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
+    EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
 
 
 # Auth Settings

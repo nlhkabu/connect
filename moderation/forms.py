@@ -1,4 +1,5 @@
 from datetime import date
+from parsley.decorators import parsleyfy
 
 from django import forms
 from django.contrib.auth import get_user_model
@@ -13,7 +14,7 @@ from accounts.forms import validate_email_availability
 
 User = get_user_model()
 
-
+@parsleyfy
 class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member.
@@ -78,6 +79,7 @@ class RevokeInvitationForm(forms.Form):
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
+@parsleyfy
 class ModerateApplicationForm(forms.Form):
     """
     Form for moderators to approve or reject an account application.

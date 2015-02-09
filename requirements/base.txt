@@ -5,6 +5,7 @@ django-gravatar2==1.1.3
 Pillow==2.5.3
 psycopg2==2.5.3
 pytz==2014.4
+django-parsley==0.5
 
 # Testing
 factory-boy==2.4.1 # Mocks

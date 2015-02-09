@@ -1,7 +1,9 @@
+import factory
 from behave import *
 from splinter.exceptions import ElementDoesNotExist
 from django.core import management
-from accounts.factories import InvitedPendingFactory, ModeratorFactory, UserFactory
+from accounts.factories import (InvitedPendingFactory, ModeratorFactory,
+                                RequestedPendingFactory, UserFactory)
 
 
 # Users
@@ -35,6 +37,13 @@ def impl(context):
     moderator = ModeratorFactory(first_name='Moderator', last_name='User',
                                  email='moderator@test.test')
 
+@given('there is a pending user in the database')
+def impl(context):
+    RequestedPendingFactory(first_name='Pending', last_name='Approval',
+                            email='pending.approval@test.test')
+
+
+#Logged in
 @given('I am logged in as that standard user')
 def impl(context):
     context.execute_steps('''
@@ -80,6 +89,7 @@ def impl(context, page_name):
         'profile': 'accounts/profile/',
         'dashboard': '', # root url
         'invite user': 'moderation',
+        'review applications': 'moderation/review-applications/',
     }
 
     context.browser.visit(context.server_url + PAGE_URLS[page_name])
@@ -105,17 +115,25 @@ def impl(context, user_input, field_name):
         field_name = field_name.lower().replace(" ", "_")
         context.browser.fill(field_name, user_input)
 
+@when('I leave the "{field}" field blank')
+def impl(context):
+    pass
+
 
 # Submitting the form
 @when('I submit the form')
 def impl(context):
     context.browser.find_by_css('form input[type=submit]').first.click()
 
+@when('I submit the modal form')
+def impl(context):
+    context.browser.find_by_css('.ui-dialog form input[type=submit]').first.click()
+
 
 # Form Errors and Confirmation Messages
 @then('I see "{message}"')
 def impl(context, message):
-    assert context.browser.is_text_present(message, wait_time=10)
+    assert context.browser.is_text_present(message, wait_time=30)
 
 
 # Common Redirects
