@@ -95,7 +95,7 @@ def impl(context):
 
 
 # Unique to Scenario: Many users prompt pagination
-@given('pagination is set to start at 3 users')
+@given('there are more than ten users')
 def impl(context):
     factory.create_batch(UserFactory, 5)
 

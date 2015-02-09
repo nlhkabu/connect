@@ -55,6 +55,6 @@ Feature: View Dashboard
 
     Scenario: Many users prompt pagination
         Given I am "a logged in user"
-        And pagination is set to start at 3 users
+        And there are more than ten users
         When I visit the "dashboard" page
         Then I see that the list of members is paginated
