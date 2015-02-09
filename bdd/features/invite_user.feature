@@ -22,7 +22,7 @@ Feature: Invite User
             |   ""          |   Last        |    new.user@test.test         |   This field is required.                                             |
             |   First       |   ""          |    new.user@test.test         |   This field is required.                                             |
             |   First       |   Last        |    ""                         |   This field is required.                                             |
-            |   First       |   Last        |    invalidemail               |   Enter a valid email address.                                        |
+            |   First       |   Last        |    invalidemail               |   Please enter a valid email address.                                 |
             |   First       |   Last        |    standard.user@test.test    |   Sorry, this email address is already registered to another user.    |
 
     Scenario: Moderator invites new user

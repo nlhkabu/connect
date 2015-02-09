@@ -10,7 +10,7 @@
 
     {% trans "Close Account" as title %}
 
-    <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form close-account" novalidate>
+    <form action="{% url 'accounts:close-account' %}" method="post" class="horizontal-form close-account" novalidate data-parsley-validate>
         {% csrf_token %}
         <fieldset>
             <legend>{{ title }}</legend>

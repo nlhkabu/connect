@@ -5,7 +5,7 @@
 
 {% block page_content %}
     <div class="container">
-        <form action="" method="post" class="horizontal-form" id="request-account" novalidate>
+        <form action="" method="post" class="horizontal-form" id="request-account" novalidate data-parsley-validate>
             {% csrf_token %}
             <fieldset>
                 <legend>{% trans "Request an Invitation" %}</legend>

@@ -116,7 +116,7 @@ def impl(context, user_input, field_name):
         context.browser.fill(field_name, user_input)
 
 @when('I leave the "{field}" field blank')
-def impl(context):
+def impl(context, field):
     pass
 
 

@@ -33,7 +33,7 @@ class CustomCustomPasswordResetFormTest(TestCase):
     def test_invalid_email(self):
         form = CustomPasswordResetForm({'email': 'not valid'})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form['email'].errors, [_('Enter a valid email address.')])
+        self.assertEqual(form['email'].errors, [_('Please enter a valid email address.')])
 
     def test_nonexistent_email(self):
         """

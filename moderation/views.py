@@ -169,7 +169,7 @@ def reinvite_user(request):
                                url=url)
 
         messages.success(request, _('{} has been reinvited to {}.'.format(
-                         user.get_full_name(), site.name)))
+                         user.get_full_name().title(), site.name)))
 
         return redirect('moderation:moderators')
 

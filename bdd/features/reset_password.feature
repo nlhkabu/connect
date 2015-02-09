@@ -19,9 +19,9 @@ Feature: Reset Password
         Then I see "<message>"
 
         Examples:
-            |   email                   |   message                         |
-            |   ""                      |   This field is required.         |
-            |   invalidemail            |   Enter a valid email address.    |
-            |   standard.user@test.test |   Please check your email         |
-            |   not.a.user@test.test    |   Please check your email         |
+            |   email                   |   message                             |
+            |   ""                      |   This field is required.             |
+            |   invalidemail            |   Please enter a valid email address. |
+            |   standard.user@test.test |   Please check your email             |
+            |   not.a.user@test.test    |   Please check your email             |
 

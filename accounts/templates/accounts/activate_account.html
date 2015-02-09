@@ -19,7 +19,7 @@
             </p>
 
         {% else %}
-            <form action="" method="post" class="horizontal-form activate-account">
+            <form action="" method="post" class="horizontal-form activate-account" data-parsley-validate>
                 {% csrf_token %}
                 <fieldset>
                     <legend>{{ title }}</legend>

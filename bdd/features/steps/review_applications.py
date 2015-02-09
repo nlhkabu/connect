@@ -8,16 +8,13 @@ def impl(context, modal_name):
     context.execute_steps('when I visit the "review applications" page')
     context.browser.click_link_by_text(modal_name)
 
-
 # Unique to Scenario: View applications
 @then('I see a list of pending applications')
 def impl(context):
     assert context.browser.is_element_present_by_css('.review-app-table')
-    assert context.browser.is_text_present('First', wait_time=10)
-    assert context.browser.is_text_present('Second', wait_time=10)
     assert context.browser.is_text_present('Pending', wait_time=10)
-    assert context.browser.is_text_present('requested1@test.test', wait_time=10)
-    assert context.browser.is_text_present('requested2@test.test', wait_time=10)
+    assert context.browser.is_text_present('Approval', wait_time=10)
+    assert context.browser.is_text_present('pending.approval@test.test', wait_time=10)
 
 
 # Unique to Scenario Outline: Launch modal

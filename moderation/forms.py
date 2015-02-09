@@ -21,7 +21,8 @@ class InviteMemberForm(forms.Form):
     """
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
-    email = forms.EmailField()
+    email = forms.EmailField(error_messages={
+            'invalid': _('Please enter a valid email address.')})
 
     def clean(self):
         """
@@ -43,7 +44,8 @@ class ReInviteMemberForm(forms.Form):
         self.logged_in_moderator = kwargs.pop('moderator', None)
         super(ReInviteMemberForm, self).__init__(*args, **kwargs)
 
-    email = forms.EmailField()
+    email = forms.EmailField(error_messages={
+            'invalid': _('Please enter a valid email address.')})
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
     def clean(self):

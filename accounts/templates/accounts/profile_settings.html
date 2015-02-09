@@ -9,7 +9,7 @@
 
     {% include "messages.html" %}
 
-    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form profile-settings" novalidate>
+    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form profile-settings" novalidate data-parsley-validate>
         {% csrf_token %}
         <fieldset>
             <legend>{% trans "Your Biography" %}</legend>
