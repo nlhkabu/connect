@@ -7,6 +7,13 @@
 {% block moderators_content %}
 
     {% include "messages.html" %}
+    {% if reinvitation_form.non_field_errors %}
+        <span class="form-error">
+            {% for error in reinvitation_form.non_field_errors %}
+                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
+            {% endfor %}
+        </span>
+    {% endif %}
 
     <form action="{% url 'moderation:invite-user' %}" method="post" class="horizontal-form" novalidate data-parsley-validate>
         <fieldset>
@@ -106,15 +113,17 @@
         </table>
 
         <div class="dialog" id="reinvite-member-dialog" title="{% trans 'Resend Invitation' %}">
-            <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form">
+            <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form" data-parsley-validate>
                 {% csrf_token %}
-                {{ reinvitation_form.as_p }}
+                <label><strong>{% trans "Email:" %}</strong></label>
+                {{ reinvitation_form.email }}
+                {{ reinvitation_form.user_id }}
                 <input type="submit" value="{% trans 'Resend Invitation' %}" class="button"/>
             </form>
         </div>
 
         <div class="dialog" id="revoke-member-dialog" title="{% trans 'Revoke Invitation' %}">
-            <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form">
+            <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form" data-parsley-validate>
                 {% csrf_token %}
                 <label class="revoke-label">
                     {{ revocation_form.confirm }}

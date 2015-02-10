@@ -35,6 +35,7 @@ class InviteMemberForm(forms.Form):
         return cleaned_data
 
 
+@parsleyfy
 class ReInviteMemberForm(forms.Form):
     """
     Form for moderators to reinvite new users.
@@ -72,6 +73,7 @@ class ReInviteMemberForm(forms.Form):
         return cleaned_data
 
 
+@parsleyfy
 class RevokeInvitationForm(forms.Form):
     """
     Form for moderator to revoke membership invitation.

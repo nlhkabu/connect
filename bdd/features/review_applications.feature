@@ -17,7 +17,7 @@ Feature: Review Applications
         Given I am "a logged in moderator"
         When I visit the "review applications" page
         When I click on "<link>"
-        Then a modal containing a "<form>" pops up
+        Then the "<form>" modal pops up
 
         Examples:
             |   link                |   form                |
@@ -37,7 +37,6 @@ Feature: Review Applications
         And I submit the modal form
         Then I see "This field is required."
 
-    @wip
     Scenario Outline: Moderator submits decision
         Given I am "a logged in moderator"
         And I have launched the "<modal name>" modal

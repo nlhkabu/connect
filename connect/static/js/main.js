@@ -83,7 +83,13 @@ $(document).ready(function(){
 
     $('#welcome-dialog').dialog({
         modal: true,
-        width: 600
+        width: 600,
+        open: function( event, ui ) {
+            $(this).closest('.ui-dialog').addClass('active');
+        },
+        close: function( event, ui ) {
+            $(this).closest('.ui-dialog').removeClass('active');
+        }
     });
 
 
@@ -98,6 +104,12 @@ $(document).ready(function(){
         modal: true,
         width: 600,
         maxHeight: 600,
+        open: function( event, ui ) {
+            $(this).closest('.ui-dialog').addClass('active');
+        },
+        close: function( event, ui ) {
+            $(this).closest('.ui-dialog').removeClass('active');
+        }
     });
 
     $('.read-more').click(function(e){
@@ -115,13 +127,25 @@ $(document).ready(function(){
     $('#reinvite-member-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 300
+        width: 300,
+        open: function( event, ui ) {
+            $(this).closest('.ui-dialog').addClass('active');
+        },
+        close: function( event, ui ) {
+            $(this).closest('.ui-dialog').removeClass('active');
+        }
     });
 
     $('#revoke-member-dialog').dialog({
         autoOpen: false,
         modal: true,
-        width: 450
+        width: 450,
+        open: function( event, ui ) {
+            $(this).closest('.ui-dialog').addClass('active');
+        },
+        close: function( event, ui ) {
+            $(this).closest('.ui-dialog').removeClass('active');
+        }
     });
 
     var user, email;
@@ -161,7 +185,13 @@ $(document).ready(function(){
             autoOpen: false,
             modal: true,
             width: 400,
-            title: title || 'Review Application'
+            title: title || 'Review Application',
+            open: function( event, ui ) {
+                $(this).closest('.ui-dialog').addClass('active');
+            },
+            close: function( event, ui ) {
+                $(this).closest('.ui-dialog').removeClass('active');
+            }
         });
     };
 
@@ -191,7 +221,13 @@ $(document).ready(function(){
         autoOpen: false,
         modal: true,
         width: 600,
-        maxHeight: 600
+        maxHeight: 600,
+        open: function( event, ui ) {
+            $(this).closest('.ui-dialog').addClass('active');
+        },
+        close: function( event, ui ) {
+            $(this).closest('.ui-dialog').removeClass('active');
+        }
     });
 
     $('.show-warnings').click(function(e){
@@ -208,7 +244,13 @@ $(document).ready(function(){
             autoOpen: false,
             modal: true,
             width: 400,
-            title: title || 'Moderate Abuse Report'
+            title: title || 'Moderate Abuse Report',
+            open: function( event, ui ) {
+                $(this).closest('.ui-dialog').addClass('active');
+            },
+            close: function( event, ui ) {
+                $(this).closest('.ui-dialog').removeClass('active');
+            }
         });
     };
 

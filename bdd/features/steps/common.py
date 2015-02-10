@@ -6,7 +6,7 @@ from accounts.factories import (InvitedPendingFactory, ModeratorFactory,
                                 RequestedPendingFactory, UserFactory)
 
 
-# Users
+# Setting up our users
 @given('there is a standard user in the database')
 def impl(context):
     UserFactory(first_name='Standard', last_name='User',
@@ -34,16 +34,27 @@ def impl(context):
 @given('there is a moderator in the database')
 def impl(context):
     management.call_command('loaddata', 'group_perms', verbosity=0)
-    moderator = ModeratorFactory(first_name='Moderator', last_name='User',
-                                 email='moderator@test.test')
+    context.moderator = ModeratorFactory(first_name='Moderator',
+                                         last_name='User',
+                                         email='moderator@test.test')
 
 @given('there is a pending user in the database')
 def impl(context):
     RequestedPendingFactory(first_name='Pending', last_name='Approval',
                             email='pending.approval@test.test')
 
+@given('I have invited a new member to the application')
+def impl(context):
+    context.execute_steps('''
+        When I visit the "invite user" page
+        And I enter "Invited" into the "first name" field
+        And I enter "User" into the "last name" field
+        And I enter "invited.user@test.test" into the "email" field
+        And I submit the form
+    ''')
 
-#Logged in
+
+# Authentication
 @given('I am logged in as that standard user')
 def impl(context):
     context.execute_steps('''
@@ -88,7 +99,7 @@ def impl(context, page_name):
         'update password': 'accounts/update/password/',
         'profile': 'accounts/profile/',
         'dashboard': '', # root url
-        'invite user': 'moderation',
+        'invite user': 'moderation/',
         'review applications': 'moderation/review-applications/',
     }
 
@@ -102,22 +113,31 @@ def impl(context, user_input, field_name):
     if user_input == '""':
         user_input = ''
 
-    LINK_FORMSET = {
+    FORMSET_FIELDS = {
         'first anchor': 'link-0-anchor',
         'first url': 'link-0-url',
         'second anchor': 'link-1-anchor',
         'second url': 'link-1-url'
     }
 
-    if field_name in LINK_FORMSET:
-        context.browser.fill(LINK_FORMSET[field_name], user_input)
+    if field_name in FORMSET_FIELDS:
+        context.browser.fill(FORMSET_FIELDS[field_name], user_input)
     else:
         field_name = field_name.lower().replace(" ", "_")
         context.browser.fill(field_name, user_input)
 
+@when('I enter "{user_input}" into the modal "{field_name}" field')
+def impl(context, user_input, field_name):
+
+    if user_input == '""':
+        user_input = ''
+
+    context.browser.find_by_css('.ui-dialog').find_by_name(field_name).fill(user_input)
+
 @when('I leave the "{field}" field blank')
 def impl(context, field):
     pass
+
 
 
 # Submitting the form
@@ -127,13 +147,48 @@ def impl(context):
 
 @when('I submit the modal form')
 def impl(context):
-    context.browser.find_by_css('.ui-dialog form input[type=submit]').first.click()
+    context.browser.find_by_css('.ui-dialog.active form input[type=submit]').first.click()
+
+
+# Modals
+@then('the "{modal_name}" modal pops up')
+def impl(context, modal_name):
+    title = context.browser.find_by_css('.active .ui-dialog-title').value
+    assert title == modal_name
+
+@given('I have launched the "{modal_name}" modal')
+def impl(context, modal_name):
+    modal_name = modal_name.title()
+
+    MODAL_PAGE_URLS = {
+        'Approve Application': 'moderation/review-applications/',
+        'Reject Application': 'moderation/review-applications/',
+        'Resend Invitation': 'moderation/',
+        'Revoke Invitation': 'moderation/'
+    }
+
+    context.browser.visit(context.server_url + MODAL_PAGE_URLS[modal_name])
+    context.browser.click_link_by_text(modal_name)
+
+@when('I click on the close button')
+def impl(context):
+    context.browser.find_by_css('.active .ui-dialog-titlebar-close').click()
+
+@then('the modal closes')
+def impl(context):
+    context.browser.is_element_not_present_by_css('.ui-dialog.active')
 
 
 # Form Errors and Confirmation Messages
 @then('I see "{message}"')
 def impl(context, message):
     assert context.browser.is_text_present(message, wait_time=30)
+
+
+# Clicking on an link by text
+@when('I click on "{link_text}"')
+def impl(context, link_text):
+    context.browser.click_link_by_text(link_text)
 
 
 # Common Redirects

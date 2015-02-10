@@ -2549,15 +2549,19 @@ a.table-link {
     position: static;
   }
 }
-/* line 615, ../sass/_site_structure.scss */
+/* line 614, ../sass/_site_structure.scss */
+.dialog {
+  display: none;
+}
+/* line 617, ../sass/_site_structure.scss */
 .dialog form {
   margin: 10px 0 15px 0;
 }
-/* line 618, ../sass/_site_structure.scss */
+/* line 620, ../sass/_site_structure.scss */
 .dialog form label {
   padding-bottom: 10px;
 }
-/* line 622, ../sass/_site_structure.scss */
+/* line 624, ../sass/_site_structure.scss */
 .dialog form input[type=text],
 .dialog form input[type="password"],
 .dialog form input[type="email"],
@@ -2570,12 +2574,12 @@ a.table-link {
   width: 96%;
   padding: 2%;
 }
-/* line 635, ../sass/_site_structure.scss */
+/* line 637, ../sass/_site_structure.scss */
 .dialog form textarea {
   height: 120px;
   margin-bottom: 10px;
 }
-/* line 640, ../sass/_site_structure.scss */
+/* line 642, ../sass/_site_structure.scss */
 .dialog form .button {
   margin-bottom: 0;
 }
