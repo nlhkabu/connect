@@ -9,27 +9,32 @@ from accounts.factories import (InvitedPendingFactory, ModeratorFactory,
 # Setting up our users
 @given('there is a standard user in the database')
 def impl(context):
-    UserFactory(first_name='Standard', last_name='User',
-                email='standard.user@test.test', auth_token='123456')
+    context.standard_user = UserFactory(first_name='Standard',
+                                        last_name='User',
+                                        email='standard.user@test.test',
+                                        auth_token='123456')
 
 @given('there are two standard users in the database')
 def impl(context):
     context.execute_steps('''
         given there is a standard user in the database
     ''')
-    UserFactory(first_name='Another', last_name='User',
-                email='standard.user2@test.test')
+    context.standard_user2 = UserFactory(first_name='Another',
+                                         last_name='User',
+                                         email='standard.user2@test.test')
 
 @given('there is an invited, but not yet active user in the database')
 def impl(context):
-    InvitedPendingFactory(first_name='Inactive', last_name='User',
-                          email='inactive.user@test.test', auth_token='7891011')
+    context.invited_user = InvitedPendingFactory(first_name='Inactive',
+                                                 last_name='User',
+                                                 email='inactive.user@test.test',
+                                                 auth_token='7891011')
 
 @given('there is a closed user in the database')
 def impl(context):
-    closed_user = UserFactory(first_name='Closed', last_name='User',
-                              email='closed.user@test.test',
-                              is_active=False, is_closed=True)
+    context.closed_user = UserFactory(first_name='Closed', last_name='User',
+                                      email='closed.user@test.test',
+                                      is_active=False, is_closed=True)
 
 @given('there is a moderator in the database')
 def impl(context):
@@ -40,8 +45,10 @@ def impl(context):
 
 @given('there is a pending user in the database')
 def impl(context):
-    RequestedPendingFactory(first_name='Pending', last_name='Approval',
-                            email='pending.approval@test.test')
+    context.pending_user = RequestedPendingFactory(
+        first_name='Pending',
+        last_name='Approval',
+        email='pending.approval@test.test')
 
 @given('I have invited a new member to the application')
 def impl(context):
@@ -101,6 +108,7 @@ def impl(context, page_name):
         'dashboard': '', # root url
         'invite user': 'moderation/',
         'review applications': 'moderation/review-applications/',
+        'abuse reports': 'moderation/review-abuse-reports/'
     }
 
     context.browser.visit(context.server_url + PAGE_URLS[page_name])
@@ -164,7 +172,10 @@ def impl(context, modal_name):
         'Approve Application': 'moderation/review-applications/',
         'Reject Application': 'moderation/review-applications/',
         'Resend Invitation': 'moderation/',
-        'Revoke Invitation': 'moderation/'
+        'Revoke Invitation': 'moderation/',
+        'Dismiss Report': 'moderation/review-abuse-reports/',
+        'Warn User': 'moderation/review-abuse-reports/',
+        'Ban User': 'moderation/review-abuse-reports/',
     }
 
     context.browser.visit(context.server_url + MODAL_PAGE_URLS[modal_name])

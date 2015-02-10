@@ -5554,7 +5554,7 @@ td.comments .mobile {
 /* line 206, ../sass/pages/_moderators.scss */
 .show-warnings {
   display: block;
-  padding-top: 15px;
+  margin-top: 15px;
 }
 
 /* line 211, ../sass/pages/_moderators.scss */

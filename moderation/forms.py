@@ -98,6 +98,7 @@ class ModerateApplicationForm(forms.Form):
     }))
 
 
+@parsleyfy
 class ReportAbuseForm(forms.Form):
     """
     Form for a user to report abusive bahaviour of another user.
@@ -105,6 +106,7 @@ class ReportAbuseForm(forms.Form):
     comments = forms.CharField(widget=forms.Textarea())
 
 
+@parsleyfy
 class ModerateAbuseForm(forms.Form):
     """
     Form for a moderator to:

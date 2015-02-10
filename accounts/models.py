@@ -343,9 +343,9 @@ class AbuseReport(models.Model):
         verbose_name_plural = _('abuse reports')
 
     def __str__(self):
-        return _('Reported by {} against {}'.format(
+        return 'Reported by {} against {}'.format(
                                         self.logged_by.get_full_name(),
-                                        self.logged_against.get_full_name()))
+                                        self.logged_against.get_full_name())
 
 
 class Skill(models.Model):

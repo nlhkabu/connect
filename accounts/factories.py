@@ -141,6 +141,7 @@ class AbuseReportFactory(factory.django.DjangoModelFactory):
 
     logged_against = factory.SubFactory(UserFactory)
     logged_by = factory.SubFactory(UserFactory)
+    abuse_comment = 'This is a complaint'
 
 
 class AbuseWarningFactory(AbuseReportFactory):
@@ -149,7 +150,7 @@ class AbuseWarningFactory(AbuseReportFactory):
     """
     moderator = factory.SubFactory(UserFactory)
     moderator_decision = AbuseReport.WARN
-    moderator_comment = 'Ths is a formal warning'
+    moderator_comment = 'This is a formal warning'
     decision_datetime = timezone.now()
 
 

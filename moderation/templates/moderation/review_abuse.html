@@ -5,6 +5,9 @@
 {% block review_abuse_active %}active{% endblock %}
 
 {% block moderators_content %}
+
+    {% include "messages.html" %}
+
     <h3 class="lined">{% trans "Review Abuse Reports" %}</h3>
 
     {% if reports %}
@@ -27,10 +30,11 @@
                         <td class="date">{{ report.logged_datetime|date:"M d, Y" }}</td>
                         <td class="email">
                             {{ report.logged_against.get_full_name|title }}<br/>
+
                             <a href="mailto:{{ report.logged_against.email }}" class="wrap">{{ report.logged_against.email }}</a>
                             {% if report.prior_warnings %}
                                 <a href="#" class="show-warnings" data-user="{{ report.logged_against.id }}">
-                                    {% blocktrans count count=report.prior_warnings.count trimmed %}
+                                    {% blocktrans count c=report.prior_warnings|length with count=report.prior_warnings|length|apnumber|title trimmed %}
                                         {{ count }} prior warning
                                     {% plural %}
                                         {{ count }} prior warnings
@@ -79,7 +83,7 @@
             {% if report.prior_warnings %}
 
                 <div class="warning-dialog dialog" id="dialog{{ report.logged_against.id }}" title="
-                    {% blocktrans count c=report.prior_warnings.count with name=report.logged_against.get_full_name|title count=report.prior_warnings.count|apnumber|title trimmed %}
+                    {% blocktrans count c=report.prior_warnings|length with name=report.logged_against.get_full_name|title count=report.prior_warnings|length|apnumber|title trimmed %}
                         {{ count }} prior warning for {{ name }}
                     {% plural %}
                         {{ count }} prior warnings for {{ name }}
@@ -111,7 +115,7 @@
 
         <!-- Form dialog -->
         <div id="review-abuse-dialog" class="dialog">
-            <form action="" method="post" class="review-abuse-form">
+            <form action="" method="post" class="review-abuse-form" data-parsley-validate>
                 {% csrf_token %}
                 {{ form.report_id }}
                 {{ form.decision }}

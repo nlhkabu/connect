@@ -440,6 +440,9 @@ def review_abuse(request):
 
             if decision == 'DISMISS':
                 msg_type = ModerationLogMsg.DISMISSAL
+                confirmation_message = _("The report against {} "
+                                         "has been dismissed.".format(
+                                         user.get_full_name().title()))
 
                 # Send email to the user who made the report
                 subject = _('Your {} Abuse Report has been dismissed'.format(
@@ -450,6 +453,8 @@ def review_abuse(request):
 
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
+                confirmation_message = _("{} has been issued a formal warning.".format(
+                                         user.get_full_name().title()))
 
                 # send email to the user who made the report
                 subject = _('{} has been issued a formal warning from {}'.format(
@@ -466,6 +471,8 @@ def review_abuse(request):
 
             if decision == 'BAN':
                 msg_type = ModerationLogMsg.BANNING
+                confirmation_message = _("{} has been banned from {}.".format(
+                                         user.get_full_name().title(), site.name))
 
                 # send email to the user who made the report
                 subject = _('{} has been banned from {}'.format(
@@ -492,6 +499,7 @@ def review_abuse(request):
                                 comment=comments)
 
 
+            messages.success(request, confirmation_message)
             return redirect('moderation:review-abuse')
 
     context = {
