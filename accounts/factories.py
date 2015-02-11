@@ -31,9 +31,10 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'user.{}@test.test'.format(n))
     password = make_password('pass')
     registration_method = CustomUser.INVITED
-    is_closed = False
+    auth_token = factory.Sequence(lambda n: 'token{}'.format(n))
     auth_token_is_used = True
     is_active = True
+    is_closed = False
 
     @factory.post_generation
     def groups(self, create, extracted, **kwargs):
@@ -85,7 +86,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
     moderator = factory.SubFactory(UserFactory) # TODO: change to moderator factory
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
-    auth_token = 'abc'
+    auth_token = factory.Sequence(lambda n: 'invitedtoken{}'.format(n))
     auth_token_is_used = False
     is_active = False
 
@@ -140,6 +141,7 @@ class AbuseReportFactory(factory.django.DjangoModelFactory):
 
     logged_against = factory.SubFactory(UserFactory)
     logged_by = factory.SubFactory(UserFactory)
+    abuse_comment = 'This is a complaint'
 
 
 class AbuseWarningFactory(AbuseReportFactory):
@@ -148,7 +150,7 @@ class AbuseWarningFactory(AbuseReportFactory):
     """
     moderator = factory.SubFactory(UserFactory)
     moderator_decision = AbuseReport.WARN
-    moderator_comment = 'Ths is a formal warning'
+    moderator_comment = 'This is a formal warning'
     decision_datetime = timezone.now()
 
 

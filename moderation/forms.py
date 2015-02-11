@@ -1,4 +1,5 @@
 from datetime import date
+from parsley.decorators import parsleyfy
 
 from django import forms
 from django.contrib.auth import get_user_model
@@ -13,14 +14,15 @@ from accounts.forms import validate_email_availability
 
 User = get_user_model()
 
-
+@parsleyfy
 class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member.
     """
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
-    email = forms.EmailField()
+    email = forms.EmailField(error_messages={
+            'invalid': _('Please enter a valid email address.')})
 
     def clean(self):
         """
@@ -33,6 +35,7 @@ class InviteMemberForm(forms.Form):
         return cleaned_data
 
 
+@parsleyfy
 class ReInviteMemberForm(forms.Form):
     """
     Form for moderators to reinvite new users.
@@ -42,7 +45,8 @@ class ReInviteMemberForm(forms.Form):
         self.logged_in_moderator = kwargs.pop('moderator', None)
         super(ReInviteMemberForm, self).__init__(*args, **kwargs)
 
-    email = forms.EmailField()
+    email = forms.EmailField(error_messages={
+            'invalid': _('Please enter a valid email address.')})
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
     def clean(self):
@@ -69,6 +73,7 @@ class ReInviteMemberForm(forms.Form):
         return cleaned_data
 
 
+@parsleyfy
 class RevokeInvitationForm(forms.Form):
     """
     Form for moderator to revoke membership invitation.
@@ -78,6 +83,7 @@ class RevokeInvitationForm(forms.Form):
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
+@parsleyfy
 class ModerateApplicationForm(forms.Form):
     """
     Form for moderators to approve or reject an account application.
@@ -92,6 +98,7 @@ class ModerateApplicationForm(forms.Form):
     }))
 
 
+@parsleyfy
 class ReportAbuseForm(forms.Form):
     """
     Form for a user to report abusive bahaviour of another user.
@@ -99,6 +106,7 @@ class ReportAbuseForm(forms.Form):
     comments = forms.CharField(widget=forms.Textarea())
 
 
+@parsleyfy
 class ModerateAbuseForm(forms.Form):
     """
     Form for a moderator to:
@@ -184,7 +192,7 @@ class FilterLogsForm(forms.Form):
             if not start_date or not end_date:
                 raise forms.ValidationError(
                     _('To filter by date, please provide a '
-                      'start and end date'),
+                      'start and end date.'),
                     code='missing_date')
 
         return cleaned_data

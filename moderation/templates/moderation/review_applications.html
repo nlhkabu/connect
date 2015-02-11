@@ -5,11 +5,14 @@
 {% block review_member_active %}active{% endblock %}
 
 {% block moderators_content %}
+
+    {% include "messages.html" %}
+
     <h3 class="lined">{% trans "Review Membership Applications" %}</h3>
 
     {% if pending %}
         <p class="intro">
-            {% blocktrans count c=pending.count with count=pending.count|apnumber trimmed %}
+            {% blocktrans count c=pending|length with count=pending|length|apnumber trimmed %}
                 There is {{ count }} pending member application:
             {% plural %}
                 There are {{ count }} pending member applications:
@@ -52,7 +55,7 @@
         </table>
 
         <div class="dialog" id="review-application-dialog">
-            <form action="" method="post" class="review-application-form">
+            <form action="" method="post" class="review-application-form" data-parsley-validate>
                 {% csrf_token %}
                 {{ form.user_id }}
                 {{ form.decision }}

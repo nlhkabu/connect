@@ -169,7 +169,7 @@ def reinvite_user(request):
                                url=url)
 
         messages.success(request, _('{} has been reinvited to {}.'.format(
-                         user.get_full_name(), site.name)))
+                         user.get_full_name().title(), site.name)))
 
         return redirect('moderation:moderators')
 
@@ -243,6 +243,7 @@ def review_applications(request):
             comments = form.cleaned_data['comments']
 
             if decision == 'APP':
+                decision = 'approved'
                 moderator.approve_user_application(user)
 
                 # Set log and email settings
@@ -254,6 +255,7 @@ def review_applications(request):
                 template = 'moderation/emails/approve_user.html'
 
             elif decision == 'REJ':
+                decision = 'rejected'
                 moderator.reject_user_application(user)
 
                 # Set log and email settings
@@ -278,6 +280,10 @@ def review_applications(request):
                                sender=moderator,
                                site=site,
                                url=url)
+
+            messages.success(request,
+                _("{}'s account application has been {}.".format(
+                    user.get_full_name().title(), decision)))
 
             return redirect('moderation:review-applications')
 
@@ -434,6 +440,9 @@ def review_abuse(request):
 
             if decision == 'DISMISS':
                 msg_type = ModerationLogMsg.DISMISSAL
+                confirmation_message = _("The report against {} "
+                                         "has been dismissed.".format(
+                                         user.get_full_name().title()))
 
                 # Send email to the user who made the report
                 subject = _('Your {} Abuse Report has been dismissed'.format(
@@ -444,6 +453,8 @@ def review_abuse(request):
 
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
+                confirmation_message = _("{} has been issued a formal warning.".format(
+                                         user.get_full_name().title()))
 
                 # send email to the user who made the report
                 subject = _('{} has been issued a formal warning from {}'.format(
@@ -460,6 +471,8 @@ def review_abuse(request):
 
             if decision == 'BAN':
                 msg_type = ModerationLogMsg.BANNING
+                confirmation_message = _("{} has been banned from {}.".format(
+                                         user.get_full_name().title(), site.name))
 
                 # send email to the user who made the report
                 subject = _('{} has been banned from {}'.format(
@@ -486,6 +499,7 @@ def review_abuse(request):
                                 comment=comments)
 
 
+            messages.success(request, confirmation_message)
             return redirect('moderation:review-abuse')
 
     context = {

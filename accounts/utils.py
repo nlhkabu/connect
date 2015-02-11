@@ -77,7 +77,7 @@ def validate_email_availability(email):
     if user:
         raise forms.ValidationError(
             ugettext_lazy('Sorry, this email address is already '
-                'registered to another user'),
+                'registered to another user.'),
             code='email_already_registered'
         )
     else:

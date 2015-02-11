@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block nav_content %}
-    <form method="post" action="{% url 'accounts:login' %}" class="login-form">
+    <form method="post" action="{% url 'accounts:login' %}" class="login-form" novalidate>
         {% csrf_token %}
         <div class="pull-left field">
             <label>{% trans "Email" %}</label>

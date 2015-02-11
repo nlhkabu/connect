@@ -3,34 +3,30 @@ from django.utils.translation import ugettext_lazy as _
 
 """
 Django settings for connect project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('CONNECT_SECRET_KEY',
                             'jj4ie+#b4h=ovjrma7ad*0vhuu8j4fi@8beksc-f+pa_co')
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('CONNECT_DEBUG', 'on') == 'on'
 TEMPLATE_DEBUG = DEBUG
 
+
 # Allow all host headers
 ALLOWED_HOSTS = os.environ.get('CONNECT_ALLOWED_HOSTS', 'localhost').split(',')
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
-
 ADMINS = (
     ('Nicole Harris', 'n.harris@kabucreative.com.au'),
 )
@@ -48,12 +44,14 @@ INSTALLED_APPS = (
     'django_behave',
     'django_gravatar',
     'endless_pagination',
+    'parsley',
     'django_boost',
     'connect',
     'connect_config',
     'accounts',
     'moderation',
     'discover',
+    'bdd'
 )
 
 if DEBUG:
@@ -78,8 +76,10 @@ ROOT_URLCONF = 'connect.urls'
 
 WSGI_APPLICATION = 'connect.wsgi.application'
 
+
 # Testing
 TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
+
 
 # Pagination
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
@@ -90,6 +90,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 
 ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
 ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -114,26 +115,20 @@ else:
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
-
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 TIME_ZONE = 'Australia/Melbourne'
 LANGUAGE_CODE = 'en'
-
 LANGUAGES = (
     ('en', _('English')),
 )
-
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_ROOT = 'connect/static/'
 STATIC_URL = '/static/'
 
@@ -145,31 +140,33 @@ STATICFILES_DIRS = (
     # os.path.join(BASE_DIR, 'static'),
 )
 
+
 # Media files (user uploaded)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# Gravatar Settings
 
+# Gravatar Settings
 GRAVATAR_DEFAULT_IMAGE = 'retro'
 
 
 # Site Settings
-
 SITE_ID = 1
 SITE_URL = 'http://localhost:8000' #TODO: change for production
 
+
+# Email
 # Set 'from' email address for system emails
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+	EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
+	EMAIL_PORT = os.environ['CONNECT_EMAIL_PORT']
+	EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
+	EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
+	EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
 
-EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
 
-
+# Auth Settings
 AUTH_USER_MODEL = 'accounts.CustomUser'
-
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+LOGIN_REDIRECT_URL = '/'

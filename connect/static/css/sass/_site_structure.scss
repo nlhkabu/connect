@@ -56,7 +56,12 @@ p.intro {
 
 // Validation and Messages
 
+.parsley-form-error:not(.filled) .fa {
+    display: none;
+}
+
 .form-error,
+.parsley-form-error.filled,
 .notification-messages p {
     background-color: $white;
     color: $highlight;
@@ -70,6 +75,7 @@ p.intro {
 
     span {
         display: block;
+        float: right;
     }
 
     .fa {
@@ -606,6 +612,8 @@ a.table-link {
 // Dialog forms
 
 .dialog {
+    display: none;
+
     form {
         margin: 10px 0 15px 0;
 

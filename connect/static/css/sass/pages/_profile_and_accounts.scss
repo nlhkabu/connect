@@ -165,12 +165,14 @@
 }
 
 a.add-row,
-a.delete-row {
+a.delete-link,
+a.delete-skill {
     display: inline-block;
     font-size: 12px;
 }
 
-a.delete-row {
+a.delete-link,
+a.delete-skill {
     margin-left: 15px;
 }
 
@@ -204,7 +206,8 @@ fieldset.submit-fieldset {
                 display: none;
             }
 
-            a.delete-row {
+            a.delete-link,
+            a.delete-skill {
                 margin: 0 0 10px 0;
             }
         }

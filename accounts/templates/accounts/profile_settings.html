@@ -9,7 +9,7 @@
 
     {% include "messages.html" %}
 
-    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form" novalidate>
+    <form action="" method="post" enctype="multipart/form-data" class="horizontal-form profile-settings" novalidate data-parsley-validate>
         {% csrf_token %}
         <fieldset>
             <legend>{% trans "Your Biography" %}</legend>
@@ -147,7 +147,7 @@
             <dl>
                 <dt></dt>
                 <dd>
-                    <input type="submit" value="{% trans 'Update Profile Settings' %}" class="button"/>
+                    <input type="submit" value="{% trans 'Update Profile Settings' %}" class="button submit"/>
                 </dd>
                 <span class="clearfix"></span>
             </dl>
@@ -164,14 +164,16 @@
             prefix: '{{ skill_formset.prefix }}',
             formCssClass: 'dynamic-skill-formset',
             addText: '{% trans "add skill" %}',
-            deleteText: '{% trans "remove" %}'
+            deleteText: '{% trans "remove" %}',
+            deleteCssClass: 'delete-skill'
         });
 
         $('.link-formset').formset({
             prefix: '{{ link_formset.prefix }}',
             formCssClass: 'dynamic-link-formset',
             addText: '{% trans "add link" %}',
-            deleteText: '{% trans "remove" %}'
+            deleteText: '{% trans "remove" %}',
+            deleteCssClass: 'delete-link'
         });
 
         // Fancy vertical resizing

@@ -121,3 +121,16 @@ _____________
 
     $ ./manage.py test #to test the entire project.
     $ ./manage.py test <appname> #to test a specific app
+
+
+To run Connect's behavioural tests, you will need to have PhantomJS_ installed.
+
+Alternatively you can use any other `supported browser`_ (e.g. Chrome, Firefox)
+by installing it on your system and specifying it when you run your tests:
+
+.. code-block:: bash
+
+    $ ./manage.py test <appname> --behave_browser <browser>
+
+.. _PhantomJS: http://phantomjs.org/
+.. _`supported browser`: http://splinter.cobrateam.info/en/latest/index.html#drivers

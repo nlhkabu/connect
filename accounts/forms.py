@@ -1,3 +1,5 @@
+from parsley.decorators import parsleyfy
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.forms.formsets import BaseFormSet
@@ -18,13 +20,19 @@ from .utils import (get_user, invite_user_to_reactivate_account,
 
 User = get_user_model()
 
+@parsleyfy
 class CustomPasswordResetForm(forms.Form):
     """
     Customised form based on django.contrib.auth.PasswordResetForm.
     Passes additional parameters to attach an email header and link color to
     html template.
     """
-    email = forms.EmailField(label=_("Email"), max_length=254)
+    email = forms.EmailField(
+        label=_("Email"),
+        max_length=254,
+        error_messages={
+            'invalid': _('Please enter a valid email address.')
+        })
 
     def save(self, domain_override=None,
              subject_template_name='accounts/emails/password_reset_subject.txt',
@@ -108,6 +116,7 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ("email",)
 
 
+@parsleyfy
 class RequestInvitationForm(forms.Form):
     """
     Form for member of the public to request an invitation.
@@ -118,7 +127,9 @@ class RequestInvitationForm(forms.Form):
 
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
-    email = forms.EmailField()
+    email = forms.EmailField(error_messages={
+        'invalid': _('Please enter a valid email address.')
+    })
     comments = forms.CharField(widget=forms.Textarea(attrs={
         'placeholder': _('Please explain why you would like to join this site'),
     }))
@@ -146,7 +157,7 @@ class RequestInvitationForm(forms.Form):
             else:
                 raise forms.ValidationError(
                     _('Sorry, this email address is already '
-                        'registered to another user'),
+                        'registered to another user.'),
 
                     code='email_already_registered'
                 )
@@ -154,6 +165,7 @@ class RequestInvitationForm(forms.Form):
         return email
 
 
+@parsleyfy
 class ActivateAccountForm(forms.Form):
     """
     Form for a user to activate their account
@@ -229,6 +241,7 @@ class BaseSkillFormSet(BaseFormSet):
                     )
 
 
+@parsleyfy
 class SkillForm(forms.Form):
     """
     Form for individual user skills
@@ -290,6 +303,7 @@ class BaseLinkFormSet(BaseFormSet):
                     )
 
 
+@parsleyfy
 class LinkForm(forms.Form):
     """
     Form for individual user links
@@ -315,6 +329,7 @@ class RoleModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         return mark_safe(label)
 
 
+@parsleyfy
 class ProfileForm(forms.Form):
     """
     Form for user to update their own profile details
@@ -356,6 +371,7 @@ class ProfileForm(forms.Form):
                                    required=False)
 
 
+@parsleyfy
 class UpdateEmailForm(forms.Form):
     """
     Form for user to update their password.
@@ -365,15 +381,18 @@ class UpdateEmailForm(forms.Form):
         super(UpdateEmailForm, self).__init__(*args, **kwargs)
 
         self.fields['email'] = forms.EmailField(
-                                        initial = self.user.email,
-                                        widget=forms.EmailInput(attrs={
-                                            'placeholder': _('Email')
-                                        }))
+            initial = self.user.email,
+            widget=forms.EmailInput(attrs={
+                'placeholder': _('Email')
+            }),
+            error_messages={
+                'invalid': _('Please enter a valid email address.')
+            })
 
         self.fields['password'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'placeholder': _('Password')
-                                        }))
+            widget=forms.PasswordInput(attrs={
+                'placeholder': _('Password')
+            }))
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -395,6 +414,7 @@ class UpdateEmailForm(forms.Form):
             pass
 
 
+@parsleyfy
 class UpdatePasswordForm(forms.Form):
     """
     Form for user to update their password
@@ -425,6 +445,7 @@ class UpdatePasswordForm(forms.Form):
             pass
 
 
+@parsleyfy
 class CloseAccountForm(forms.Form):
     """
     Form for user to close their account

@@ -9,7 +9,7 @@
 
     {% include "messages.html" %}
 
-    <form action="{% url 'accounts:update-email' %}" method="post" class="horizontal-form" novalidate>
+    <form action="{% url 'accounts:update-email' %}" method="post" class="horizontal-form update-email" novalidate data-parsley-validate>
         {% csrf_token %}
         <fieldset>
             <legend>{% trans "Update Email Address" %}</legend>
@@ -50,7 +50,7 @@
             <dl>
                 <dt></dt>
                 <dd>
-                    <input type="submit" value="{% trans 'Update Email' %}" class="button"/>
+                    <input type="submit" value="{% trans 'Update Email' %}" class="button submit"/>
                 </dd>
                 <span class="clearfix"></span>
             </dl>
