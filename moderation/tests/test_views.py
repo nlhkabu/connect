@@ -40,22 +40,14 @@ class ModerationHomeTest(TestCase):
         response = self.client.get(reverse('moderation:moderators'))
 
         # Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/moderation/',
-            status_code=302
-        )
+        self.assertRedirects(response, '/accounts/login/?next=/moderation/')
 
     def test_authenticated_standard_users_cannot_access_page(self):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.get(reverse('moderation:moderators'))
 
         # User lacking relevant permissions is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/moderation/',
-            status_code=302
-        )
+        self.assertRedirects(response, '/accounts/login/?next=/moderation/')
 
     def test_authenticated_moderators_can_access_page(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -438,10 +430,7 @@ class ReviewApplicationTest(TestCase):
 
         # User lacking relevant permissions is redirected to login page
         self.assertRedirects(
-            response,
-            '/accounts/login/?next=/moderation/review-applications/',
-            status_code=302
-        )
+            response, '/accounts/login/?next=/moderation/review-applications/')
 
     def test_authenticated_moderators_can_review_application(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -602,9 +591,7 @@ class ReportAbuseTest(TestCase):
             response,
             '/accounts/login/?next=/moderation/{}/report-abuse/'.format(
                 self.accused_user.id
-            ),
-            status_code=302
-        )
+            ))
 
     def test_authenticated_users_can_report_abuse(self):
         self.client.login(username=self.reporting_user.email, password='pass')
@@ -728,9 +715,7 @@ class ReviewAbuseTest(TestCase):
         # User lacking relevant permissions is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/review-abuse-reports/',
-            status_code=302
-        )
+            '/accounts/login/?next=/moderation/review-abuse-reports/')
 
     def test_authenticated_moderators_can_access_reports(self):
         self.client.login(username=self.moderator.email, password='pass')
@@ -1000,9 +985,7 @@ class ViewLogsTest(TestCase):
 
         # Unauthenticated user is redirected to login page
         self.assertRedirects(
-            response,
-            '/accounts/login/?next=/moderation/logs/',
-            status_code=302
+            response, '/accounts/login/?next=/moderation/logs/',
         )
 
     def test_authenticated_standard_users_cannot_view_logs(self):
@@ -1012,9 +995,7 @@ class ViewLogsTest(TestCase):
         # User lacking relevant permissions is redirected to login page
         self.assertRedirects(
             response,
-            '/accounts/login/?next=/moderation/logs/',
-            status_code=302
-        )
+            '/accounts/login/?next=/moderation/logs/')
 
     def test_authenticated_moderators_can_view_logs(self):
         self.client.login(username=self.moderator.email, password='pass')

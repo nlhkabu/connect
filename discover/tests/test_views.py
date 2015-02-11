@@ -47,11 +47,7 @@ class DashboardTest(TestCase):
     def test_unauthenticated_user_cannot_view_dashboard(self):
         response = self.get_dashboard()
         # Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/',
-            status_code=302
-        )
+        self.assertRedirects(response, '/accounts/login/?next=/')
 
     def test_authenticated_user_can_view_dashboard(self):
         self.client.login(username=self.standard_user.email, password='pass')
@@ -146,11 +142,7 @@ class MapTest(TestCase):
         response = self.client.get(reverse('discover:map'))
 
         # Unauthenticated user is redirected to login page
-        self.assertRedirects(
-            response,
-            '/accounts/login/?next=/dashboard/map/',
-            status_code=302
-        )
+        self.assertRedirects(response, '/accounts/login/?next=/dashboard/map/')
 
     def test_authenticated_user_can_view_map(self):
         self.client.login(username=self.standard_user.email, password='pass')

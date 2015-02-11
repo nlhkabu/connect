@@ -216,10 +216,7 @@ class ProfileSettingsTest(TestCase):
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/profile/',
-            status_code=302
-        )
+            response, '/accounts/login/?next=/accounts/profile/')
 
     def test_can_update_profile(self):
         # Setup skills and roles
@@ -287,10 +284,7 @@ class UpdateEmailTest(TestCase):
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/update/email/',
-            status_code=302
-        )
+            response, '/accounts/login/?next=/accounts/update/email/')
 
     def test_authenticated_user_can_access_page(self):
         self.client.login(username=self.standard_user.email, password='pass')
@@ -331,10 +325,7 @@ class UpdatePasswordTest(TestCase):
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/update/password/',
-            status_code=302
-        )
+            response, '/accounts/login/?next=/accounts/update/password/')
 
     def test_authenticated_user_can_access_page(self):
         self.client.login(username=self.standard_user.email, password='pass')
@@ -375,10 +366,7 @@ class CloseAccountTest(TestCase):
 
         #Unauthenticated user is redirected to login page
         self.assertRedirects(
-            response,
-            '/accounts/login/?next=/accounts/close/',
-            status_code=302
-        )
+            response, '/accounts/login/?next=/accounts/close/')
 
     def test_authenticated_user_can_access_page(self):
         self.client.login(username=self.standard_user.email, password='pass')
@@ -391,11 +379,7 @@ class CloseAccountTest(TestCase):
         response = self.post_valid_data()
 
         # Sending valid data should result in this view redirecting to done
-        self.assertRedirects(
-            response,
-            '/accounts/close/done/',
-            status_code=302
-        )
+        self.assertRedirects(response, '/accounts/close/done/')
         user = User.objects.get(id=self.standard_user.id)
 
         self.assertFalse(user.is_active)
