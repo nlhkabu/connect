@@ -5,14 +5,14 @@ django-gravatar2==1.1.3
 Pillow==2.5.3
 psycopg2==2.5.3
 pytz==2014.4
-git+http://github.com/nlhkabu/Django-parsley@master
+git+git://github.com/nlhkabu/Django-parsley.git@master
 
 # Testing
 factory-boy==2.4.1 # Mocks
 PyYAML==3.11 # Fixtures
 selenium
 behave==1.2.4
-git+http://github.com/rwillmer/django-behave@master
+git+git://github.com/rwillmer/django-behave.git@master
 parse
 splinter
 
