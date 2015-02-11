@@ -73,20 +73,3 @@ def impl(context):
 @when('there are two skill formsets showing')
 def impl(context):
     context.execute_steps('when I click on add skill')
-
-@when('I select "{selection}" from the "{field_name}" dropdown')
-def impl(context, selection, field_name):
-
-    SKILL_FORMSET = {
-        'first skill name': 'skill-0-skill',
-        'first skill proficiency': 'skill-0-proficiency',
-        'second skill name': 'skill-1-skill',
-        'second skill proficiency': 'skill-1-proficiency',
-    }
-
-    field_name = SKILL_FORMSET[field_name]
-
-    path = "//select[@name='{}']/option[text()='{}']".format(field_name,
-                                                             selection)
-
-    context.browser.find_by_xpath(path).click()

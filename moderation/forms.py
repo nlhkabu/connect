@@ -192,7 +192,7 @@ class FilterLogsForm(forms.Form):
             if not start_date or not end_date:
                 raise forms.ValidationError(
                     _('To filter by date, please provide a '
-                      'start and end date'),
+                      'start and end date.'),
                     code='missing_date')
 
         return cleaned_data

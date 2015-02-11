@@ -108,7 +108,8 @@ def impl(context, page_name):
         'dashboard': '', # root url
         'invite user': 'moderation/',
         'review applications': 'moderation/review-applications/',
-        'abuse reports': 'moderation/review-abuse-reports/'
+        'abuse reports': 'moderation/review-abuse-reports/',
+        'logs': 'moderation/logs/'
     }
 
     context.browser.visit(context.server_url + PAGE_URLS[page_name])
@@ -133,6 +134,26 @@ def impl(context, user_input, field_name):
     else:
         field_name = field_name.lower().replace(" ", "_")
         context.browser.fill(field_name, user_input)
+
+
+@when('I select "{selection}" from the "{field_name}" dropdown')
+def impl(context, selection, field_name):
+
+    SKILL_FORMSET = {
+        'first skill name': 'skill-0-skill',
+        'first skill proficiency': 'skill-0-proficiency',
+        'second skill name': 'skill-1-skill',
+        'second skill proficiency': 'skill-1-proficiency',
+    }
+
+    if field_name in SKILL_FORMSET:
+        field_name = SKILL_FORMSET[field_name]
+
+    path = "//select[@name='{}']/option[text()='{}']".format(field_name,
+                                                             selection)
+    context.browser.find_by_xpath(path).click()
+
+
 
 @when('I enter "{user_input}" into the modal "{field_name}" field')
 def impl(context, user_input, field_name):
