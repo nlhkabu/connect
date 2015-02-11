@@ -1,4 +1,4 @@
-Feature: Review Abuse Reports
+Feature: Moderate Abuse Reports
     As a moderator
     I want to review the abuse reports
     So that I can ensure the safety of all of the site's users
@@ -49,7 +49,6 @@ Feature: Review Abuse Reports
         And I submit the modal form
         Then I see "This field is required."
 
-    @wip
     Scenario Outline: Moderator submits decision
         Given I am "a logged in moderator"
         And I have launched the "<modal>" modal
