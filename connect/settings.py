@@ -15,12 +15,13 @@ SECRET_KEY = os.environ.get('CONNECT_SECRET_KEY',
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('CONNECT_DEBUG', 'on') == 'on'
+DEBUG = os.environ.get('CONNECT_DEBUG', 'off') == 'on'
 TEMPLATE_DEBUG = DEBUG
 
 
 # Allow all host headers
 ALLOWED_HOSTS = os.environ.get('CONNECT_ALLOWED_HOSTS', 'localhost').split(',')
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -160,11 +161,11 @@ SITE_URL = 'http://localhost:8000' #TODO: change for production
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-	EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
-	EMAIL_PORT = os.environ['CONNECT_EMAIL_PORT']
-	EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
-	EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
-	EMAIL_USE_TLS = os.environ['CONNECT_EMAIL_USE_TLS']
+    EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
+    EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
 
 
 # Auth Settings
