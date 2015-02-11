@@ -89,8 +89,8 @@ def invite_user(request):
 
         # Log moderation event
         msg_type = ModerationLogMsg.INVITATION
-        log_comment = '{} invited {}'.format(moderator.get_full_name(),
-                                             new_user.get_full_name())
+        log_comment = _('{} invited {}'.format(moderator.get_full_name(),
+                                             new_user.get_full_name()))
         log_moderator_event(msg_type=msg_type,
                             user=new_user,
                             moderator=moderator,
@@ -243,7 +243,10 @@ def review_applications(request):
             comments = form.cleaned_data['comments']
 
             if decision == 'APP':
-                decision = 'approved'
+                confirmation_message = _("{}'s account application "
+                                         "has been approved.".format()
+                                         user.get_full_name().title())
+
                 moderator.approve_user_application(user)
 
                 # Set log and email settings
@@ -255,7 +258,10 @@ def review_applications(request):
                 template = 'moderation/emails/approve_user.html'
 
             elif decision == 'REJ':
-                decision = 'rejected'
+                confirmation_message = _("{}'s account application "
+                                         "has been rejected.".format()
+                                         user.get_full_name().title())
+
                 moderator.reject_user_application(user)
 
                 # Set log and email settings
@@ -281,9 +287,7 @@ def review_applications(request):
                                site=site,
                                url=url)
 
-            messages.success(request,
-                _("{}'s account application has been {}.".format(
-                    user.get_full_name().title(), decision)))
+            messages.success(request, confirmation_message)
 
             return redirect('moderation:review-applications')
 
