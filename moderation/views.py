@@ -244,8 +244,8 @@ def review_applications(request):
 
             if decision == 'APP':
                 confirmation_message = _("{}'s account application "
-                                         "has been approved.".format()
-                                         user.get_full_name().title())
+                                         "has been approved.".format(
+                                         user.get_full_name().title()))
 
                 moderator.approve_user_application(user)
 
@@ -259,8 +259,8 @@ def review_applications(request):
 
             elif decision == 'REJ':
                 confirmation_message = _("{}'s account application "
-                                         "has been rejected.".format()
-                                         user.get_full_name().title())
+                                         "has been rejected.".format(
+                                         user.get_full_name().title()))
 
                 moderator.reject_user_application(user)
 

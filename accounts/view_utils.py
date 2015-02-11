@@ -1,5 +1,6 @@
 from urllib.parse import urlsplit
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError, transaction
 from django.shortcuts import redirect
@@ -62,7 +63,7 @@ def match_link_to_brand(user_links):
             link.icon = brand
             link.save()
 
-        except:
+        except ObjectDoesNotExist:
             pass
 
     return user_links

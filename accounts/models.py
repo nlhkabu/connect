@@ -4,7 +4,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         Group, Permission, PermissionsMixin)
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
@@ -452,7 +453,7 @@ class UserLink(models.Model):
         """
         try:
             icon = self.icon.fa_icon
-        except:
+        except AttributeError:
             icon = 'fa-globe'
 
         return icon
@@ -473,7 +474,7 @@ class UserLink(models.Model):
 
         try:
             self.icon = LinkBrand.objects.get(domain=domain)
-        except:
+        except ObjectDoesNotExist:
             pass
 
         super(UserLink, self).save(*args, **kwargs)
