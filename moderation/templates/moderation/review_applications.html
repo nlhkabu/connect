@@ -59,7 +59,7 @@
                 {% csrf_token %}
                 {{ form.user_id }}
                 {{ form.decision }}
-                <p>
+                <div class="modal-form-group">
                     <label>{% trans "Comments" %}</label>
                     {{ form.comments }}
                     {% if form.comments.errors %}
@@ -69,7 +69,7 @@
                             {% endfor %}
                         </span>
                     {% endif %}
-                </p>
+                </div>
                 <input type="submit" value="{% trans 'Moderate User Application' %}" class="button" />
             </form>
         </div>

@@ -16,20 +16,26 @@
             <label for="id_period">{% trans "Period" %}</label>
             {{ form.period }}
         </div>
+        <span class="clear-me"></span>
         <div class="custom-date">
-            {{ form.start_date }}
-            <label><i class="fa fa-arrow-right"></i></label>
-            {{ form.end_date }}
-
-            {% if form.non_field_errors %}
-                <br />
+            <div class="filter-input">
+                <label for="id_start_date">Start Date</label>
+                {{ form.start_date }}
+            </div>
+            <div class="filter-input last">
+                <label for="id_end_date">End Date</label>
+                {{ form.end_date }}
+            </div>
+        </div>
+        {% if form.non_field_errors %}
+            <div>
                 <span class="form-error">
                     {% for error in form.non_field_errors %}
                         <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
                     {% endfor %}
                 </span>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
         <div class="clearfix"></div>
         <input type="submit" class="button filter-submit" value="{% trans 'Filter Logs' %}" />
     </form>

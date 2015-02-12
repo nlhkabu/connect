@@ -60,6 +60,16 @@ p.intro {
     display: none;
 }
 
+.parsley-form-error span:before {
+    content: '\f071';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    text-decoration: inherit;
+    margin: 0 3px 0 0;
+}
+
 .form-error,
 .parsley-form-error.filled,
 .notification-messages p {
@@ -617,8 +627,13 @@ a.table-link {
     form {
         margin: 10px 0 15px 0;
 
+        .modal-form-group {
+            margin-bottom: 20px;
+        }
+
         label {
             padding-bottom: 10px;
+            font-weight: bold;
         }
 
         input[type=text],
@@ -632,6 +647,7 @@ a.table-link {
         select {
             width:96%;
             padding: 2%;
+            margin-bottom: 5px;
         }
 
         textarea {

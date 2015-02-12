@@ -28,18 +28,18 @@
             float: left;
             width: 600px;
             line-height: 25px;
-            margin:0 0 15px 0;
+            margin:0 0 10px 0;
 
             input[type="text"],
             input[type="email"],
             input[type="password"] {
                 padding: 7px;
-                margin: 0;
+                margin: 0 0 5px 0;
             }
 
             textarea {
                 padding: 2%;
-                margin: 0;
+                margin: 0 0 5px 0;
                 width: 96%;
 
                 p:last-child {
@@ -149,17 +149,23 @@
     .link-formset {
         border-bottom: 1px dotted $light-grey * .9;
         margin-bottom: 10px;
+        padding-bottom: 10px;
+        position: relative;
 
         select,
         input {
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             padding: 5px;
         }
 
         .divider {
             margin: 0 10px;
             color: $light-grey * .7;
+        }
+
+        .parsley-form-error.filled {
+            display: inline-block;
         }
     }
 }
@@ -173,7 +179,9 @@ a.delete-skill {
 
 a.delete-link,
 a.delete-skill {
-    margin-left: 15px;
+    position: absolute;
+    right: 10px;
+    top: 2px;
 }
 
 fieldset.submit-fieldset {
@@ -208,6 +216,8 @@ fieldset.submit-fieldset {
 
             a.delete-link,
             a.delete-skill {
+                position: static;
+                display: block;
                 margin: 0 0 10px 0;
             }
         }

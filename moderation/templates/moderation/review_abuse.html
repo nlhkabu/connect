@@ -119,7 +119,7 @@
                 {% csrf_token %}
                 {{ form.report_id }}
                 {{ form.decision }}
-                <p>
+                <div class="modal-form-group">
                     <label>{% trans "Comments" %}</label>
                     {{ form.comments }}
                     {% if form.comments.errors %}
@@ -129,7 +129,7 @@
                             {% endfor %}
                         </span>
                     {% endif %}
-                </p>
+                </div>
                 <input type="submit" value="{% trans 'Moderate Abuse Report' %}" class="button" />
             </form>
         </div>

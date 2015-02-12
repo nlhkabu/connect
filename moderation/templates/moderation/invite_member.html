@@ -115,8 +115,10 @@
         <div class="dialog" id="reinvite-member-dialog" title="{% trans 'Resend Invitation' %}">
             <form action="{% url 'moderation:reinvite-user' %}" method="post" class="reinvite-member-form" data-parsley-validate>
                 {% csrf_token %}
-                <label><strong>{% trans "Email:" %}</strong></label>
-                {{ reinvitation_form.email }}
+                <div class="modal-form-group">
+                    <label><strong>{% trans "Email:" %}</strong></label>
+                    {{ reinvitation_form.email }}
+                </div>
                 {{ reinvitation_form.user_id }}
                 <input type="submit" value="{% trans 'Resend Invitation' %}" class="button"/>
             </form>
@@ -125,13 +127,15 @@
         <div class="dialog" id="revoke-member-dialog" title="{% trans 'Revoke Invitation' %}">
             <form action="{% url 'moderation:revoke-invitation' %}" method="post" class="revoke-invitation-form" data-parsley-validate>
                 {% csrf_token %}
-                <label class="revoke-label">
-                    {{ revocation_form.confirm }}
-                    {% blocktrans trimmed %}
-                        Revoke my invitation to <span class="name">this user</span> at <span class="email">this email address</span>.
-                    {% endblocktrans %}
-                </label>
-                <p class="intro">{% trans "This action will also remove logs related to inviting this user" %}.</p>
+                <div class="modal-form-group">
+                    <label class="revoke-label">
+                        {{ revocation_form.confirm }}
+                        {% blocktrans trimmed %}
+                            Revoke my invitation to <span class="name">this user</span> at <span class="email">this email address</span>.
+                        {% endblocktrans %}
+                    </label>
+                    <p class="intro">{% trans "This action will also remove logs related to inviting this user" %}.</p>
+                </div>
 
                 {{ revocation_form.user_id }}
                 <input type="submit" value="{% trans 'Revoke Invitation' %}" class="button" />

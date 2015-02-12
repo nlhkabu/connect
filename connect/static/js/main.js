@@ -132,6 +132,7 @@ $(document).ready(function(){
             $(this).closest('.ui-dialog').addClass('active');
         },
         close: function( event, ui ) {
+            $(this).find('form').parsley().reset();
             $(this).closest('.ui-dialog').removeClass('active');
         }
     });
@@ -144,6 +145,7 @@ $(document).ready(function(){
             $(this).closest('.ui-dialog').addClass('active');
         },
         close: function( event, ui ) {
+            $(this).find('form').parsley().reset();
             $(this).closest('.ui-dialog').removeClass('active');
         }
     });
@@ -190,6 +192,7 @@ $(document).ready(function(){
                 $(this).closest('.ui-dialog').addClass('active');
             },
             close: function( event, ui ) {
+                $(this).find('form').parsley().reset();
                 $(this).closest('.ui-dialog').removeClass('active');
             }
         });
@@ -226,6 +229,7 @@ $(document).ready(function(){
             $(this).closest('.ui-dialog').addClass('active');
         },
         close: function( event, ui ) {
+            $(this).find('form').parsley().reset();
             $(this).closest('.ui-dialog').removeClass('active');
         }
     });
@@ -249,6 +253,7 @@ $(document).ready(function(){
                 $(this).closest('.ui-dialog').addClass('active');
             },
             close: function( event, ui ) {
+                $(this).find('form').parsley().reset();
                 $(this).closest('.ui-dialog').removeClass('active');
             }
         });
@@ -283,11 +288,13 @@ $(document).ready(function(){
     function toggleDateRange(period){
         var custom = $('.custom-date');
         var customInputs = $('.custom-date input');
+        var error = $('.filter-logs .form-error');
 
         if (period == 'CUSTOM'){
             custom.show();
             customInputs.attr('disabled', false);
         } else {
+            error.hide();
             custom.hide();
             customInputs.attr('disabled', true);
         }

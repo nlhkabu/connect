@@ -235,11 +235,25 @@ td.comments .mobile {
 
 // Revoke invitation form label
 
-.revoke-label {
-    font-weight: normal;
+.revoke-invitation-form {
+    label.revoke-label {
+        font-weight: normal;
+        word-break: break-all;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        line-height: 1.2;
 
-    span {
-        font-weight: bold;
+        input[type='checkbox']{
+            margin-left:-20px;
+        }
+
+        span {
+            font-weight: bold;
+        }
+    }
+
+    .parsley-form-error {
+        margin-bottom: 10px;
     }
 }
 
@@ -249,54 +263,71 @@ td.comments .mobile {
 .filter-logs {
     padding-bottom: 25px;
     border-bottom: 1px solid $light-grey;
-}
 
-
-.filter-input {
-    display: inline-block;
-    margin-right: 14.5px;
-    float: left;
-
-    label {
-        font-weight: bold;
-        padding-bottom: 3px;
-    }
-
-    select {
-        padding: 5px;
-        max-width: 210px;
-        margin-bottom: 0;
-    }
-}
-
-.custom-date {
-    display: none;
-    float: left;
-    padding-top: 24px;
-
-    input,
-    label {
+    .filter-input {
+        display: inline-block;
+        margin-bottom: 15px;
+        margin-right: 14.5px;
         float: left;
+
+        @media only screen and (max-width: 610px) {
+            float: none;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            padding-bottom: 3px;
+        }
+
+        select {
+            padding: 5px;
+            width: 182px;
+            margin-bottom: 0;
+        }
+
+        input {
+            width: 172px;
+            margin-bottom: 0;
+        }
+
+        @media only screen and (max-width: 610px) {
+            input,
+            select {
+                padding: 2%;
+                width: 96%;
+            }
+
+            select {
+                width: 100%;
+            }
+
+        }
+    }
+
+    span.clear-me {
+        display: none;
+        @media only screen and (max-width: 770px) {
+            display: block;
+            clear: both;
+        }
+    }
+
+    .custom-date {
+        display: none;
+    }
+
+    .filter-input.last {
+        margin-right: 0;
+    }
+
+    .form-error {
+        margin-bottom: 15px;
+    }
+
+    input.filter-submit {
         margin: 0;
     }
-
-    input {
-        max-width: 137px;
-    }
-
-    label {
-        padding: 6px 10px 0 10px;
-        font-weight: bold;
-    }
-
-    @media (max-device-width: 1060px) {
-        padding-top: 15px;
-    }
-
-}
-
-input.filter-submit {
-    margin: 15px 0 0 0;
 }
 
 
