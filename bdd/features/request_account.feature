@@ -19,10 +19,10 @@ Feature: Request Account
 
         Examples:
             |   first name  |   last name   |   email                       |   comments    |   message                                                                 |
-            |   ""          |   Last        |   request.account@test.test   |   comment     |   This field is required.                                                 |
-            |   First       |   ""          |   request.account@test.test   |   comment     |   This field is required.                                                 |
-            |   First       |   Last        |   ""                          |   comment     |   This field is required.                                                 |
-            |   First       |   Last        |   request.account@test.test   |   ""          |   This field is required.                                                 |
+            |   ""          |   Last        |   request.account@test.test   |   comment     |   Please enter your first name.                                           |
+            |   First       |   ""          |   request.account@test.test   |   comment     |   Please enter your last name.                                            |
+            |   First       |   Last        |   ""                          |   comment     |   Please enter your email address.                                        |
+            |   First       |   Last        |   request.account@test.test   |   ""          |   Please describe why you would like to create an account.                |
             |   First       |   Last        |   invalidemail                |   comment     |   Please enter a valid email address.                                     |
             |   First       |   Last        |   standard.user@test.test     |   comment     |   Sorry, this email address is already registered to another user.        |
             |   First       |   Last        |   closed.user@test.test       |   comment     |   This email address is already registered to another (closed) account.   |

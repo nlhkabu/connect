@@ -16,5 +16,5 @@ Feature: Report Abuse
 
         Examples:
             |   comment     |   message                             |
-            |   ""          |   This field is required.             |
+            |   ""          |   Please describe your complaint.     |
             |   comments    |   Your Abuse Report has been logged   |

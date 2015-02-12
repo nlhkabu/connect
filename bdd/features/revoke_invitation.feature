@@ -25,7 +25,7 @@ Feature: Revoke Invitation
         And I have launched the "revoke invitation" modal
         When I do not check the confirmation box
         And I submit the modal form
-        Then I see "This field is required."
+        Then I see "Please confirm that you wish to revoke this invitation."
 
     Scenario: Moderator confirms revocation
         Given I am "a logged in moderator"

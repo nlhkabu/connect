@@ -16,7 +16,7 @@ Feature: Close Account
 
         Examples:
             |   pass        |   error                                   |
-            |   ""          |   This field is required.                 |
+            |   ""          |   Please enter your password.             |
             |   wrongpass   |   Incorrect password. Please try again.   |
 
     Scenario: User submits valid data

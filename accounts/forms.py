@@ -31,6 +31,7 @@ class CustomPasswordResetForm(forms.Form):
         label=_("Email"),
         max_length=254,
         error_messages={
+            'required': _('Please enter your email address.'),
             'invalid': _('Please enter a valid email address.')
         })
 
@@ -125,14 +126,30 @@ class RequestInvitationForm(forms.Form):
         self.request = kwargs.pop('request', None)
         super(RequestInvitationForm, self).__init__(*args, **kwargs)
 
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    email = forms.EmailField(error_messages={
-        'invalid': _('Please enter a valid email address.')
-    })
-    comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': _('Please explain why you would like to join this site'),
-    }))
+    first_name = forms.CharField(
+        max_length=30,
+        error_messages={'required': _('Please enter your first name.')}
+    )
+
+    last_name = forms.CharField(
+        max_length=30,
+        error_messages={'required': _('Please enter your last name.')}
+    )
+
+    email = forms.EmailField(
+        error_messages={
+            'required': _('Please enter your email address.'),
+            'invalid': _('Please enter a valid email address.')
+        })
+
+    comments = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': _('Please explain why you would like to join this site'),
+        }),
+        error_messages={
+            'required': _('Please describe why you would like to create an account.')
+        }
+    )
 
     def clean_email(self):
         """
@@ -175,11 +192,29 @@ class ActivateAccountForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(ActivateAccountForm, self).__init__(*args, **kwargs)
 
-        self.fields['first_name'] = forms.CharField(initial=self.user.first_name)
-        self.fields['last_name'] = forms.CharField(initial=self.user.last_name)
+        self.fields['first_name'] = forms.CharField(
+            initial=self.user.first_name,
+            error_messages={
+                'required': _('Please enter your first name.')
+            })
 
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+        self.fields['last_name'] = forms.CharField(
+            initial=self.user.last_name,
+            error_messages={
+                'required': _('Please enter your last name.')
+            })
+
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        error_messages={
+            'required': _('Please select a password.')
+        })
+
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput,
+        error_messages={
+            'required': _('Please confirm your password.')
+        })
 
     def clean(self):
         """
@@ -320,6 +355,9 @@ class LinkForm(forms.Form):
                     widget=forms.URLInput(attrs={
                         'placeholder': _('URL'),
                     }),
+                    error_messages={
+                        'invalid': _('Please enter a valid URL.')
+                    },
                     required=False)
 
 
@@ -341,18 +379,24 @@ class ProfileForm(forms.Form):
 
 
         self.fields['first_name'] = forms.CharField(
-                                        max_length=30,
-                                        initial = self.user.first_name,
-                                        widget=forms.TextInput(attrs={
-                                            'placeholder': _('First Name'),
-                                        }))
+            max_length=30,
+            initial = self.user.first_name,
+            widget=forms.TextInput(attrs={
+                'placeholder': _('First Name'),
+            }),
+            error_messages={
+                'required': _('Please enter your first name.')
+            })
 
         self.fields['last_name'] = forms.CharField(
-                                        max_length=30,
-                                        initial = self.user.last_name,
-                                        widget=forms.TextInput(attrs={
-                                            'placeholder': _('Last Name'),
-                                        }))
+            max_length=30,
+            initial = self.user.last_name,
+            widget=forms.TextInput(attrs={
+                'placeholder': _('Last Name'),
+            }),
+            error_messages={
+                'required': _('Please enter your last name.')
+            })
 
         self.fields['bio'] = forms.CharField(
                         initial = self.user.bio,
@@ -386,13 +430,17 @@ class UpdateEmailForm(forms.Form):
                 'placeholder': _('Email')
             }),
             error_messages={
+                'required': _('Please enter your new email address.'),
                 'invalid': _('Please enter a valid email address.')
             })
 
         self.fields['password'] = forms.CharField(
             widget=forms.PasswordInput(attrs={
                 'placeholder': _('Password')
-            }))
+            }),
+            error_messages={
+                'required': _('Please enter your password.'),
+            })
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -424,14 +472,20 @@ class UpdatePasswordForm(forms.Form):
         super(UpdatePasswordForm, self).__init__(*args, **kwargs)
 
         self.fields['new_password'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'placeholder': _('New Password')
-                                        }))
+            widget=forms.PasswordInput(attrs={
+                'placeholder': _('New Password')
+            }),
+            error_messages={
+                'required': _('Please enter your new password.')
+            })
 
         self.fields['current_password'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'placeholder': _('Current Password')
-                                        }))
+            widget=forms.PasswordInput(attrs={
+                'placeholder': _('Current Password')
+            }),
+            error_messages={
+                'required': _('Please enter your current password.')
+            })
 
     def clean_current_password(self):
         current_password = self.cleaned_data['current_password']
@@ -455,9 +509,12 @@ class CloseAccountForm(forms.Form):
         super(CloseAccountForm, self).__init__(*args, **kwargs)
 
         self.fields['password'] = forms.CharField(
-                                        widget=forms.PasswordInput(attrs={
-                                            'placeholder': _('Password')
-                                        }))
+            widget=forms.PasswordInput(attrs={
+                'placeholder': _('Password')
+            }),
+            error_messages={
+                'required': _('Please enter your password.')
+            })
 
     def clean_password(self):
         """

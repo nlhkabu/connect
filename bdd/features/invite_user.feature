@@ -19,9 +19,9 @@ Feature: Invite User
 
         Examples:
             |   first name  |   last name   |    email                      |   error                                                               |
-            |   ""          |   Last        |    new.user@test.test         |   This field is required.                                             |
-            |   First       |   ""          |    new.user@test.test         |   This field is required.                                             |
-            |   First       |   Last        |    ""                         |   This field is required.                                             |
+            |   ""          |   Last        |    new.user@test.test         |   Please enter a first name.                                          |
+            |   First       |   ""          |    new.user@test.test         |   Please enter a last name.                                           |
+            |   First       |   Last        |    ""                         |   Please enter an email address.                                      |
             |   First       |   Last        |    invalidemail               |   Please enter a valid email address.                                 |
             |   First       |   Last        |    standard.user@test.test    |   Sorry, this email address is already registered to another user.    |
 

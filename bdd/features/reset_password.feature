@@ -20,7 +20,7 @@ Feature: Reset Password
 
         Examples:
             |   email                   |   message                             |
-            |   ""                      |   This field is required.             |
+            |   ""                      |   Please enter your email address.    |
             |   invalidemail            |   Please enter a valid email address. |
             |   standard.user@test.test |   Please check your email             |
             |   not.a.user@test.test    |   Please check your email             |

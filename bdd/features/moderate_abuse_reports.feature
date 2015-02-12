@@ -47,7 +47,7 @@ Feature: Moderate Abuse Reports
         And I have launched the "Dismiss Report" modal
         When I enter nothing in the comments field
         And I submit the modal form
-        Then I see "This field is required."
+        Then I see "Please explain your decision."
 
     Scenario Outline: Moderator submits decision
         Given I am "a logged in moderator"

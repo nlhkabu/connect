@@ -35,7 +35,7 @@ Feature: Review Applications
         And I have launched the "approve application" modal
         When I leave the "comments" field blank
         And I submit the modal form
-        Then I see "This field is required."
+        Then I see "Please explain your decision."
 
     Scenario Outline: Moderator submits decision
         Given I am "a logged in moderator"

@@ -32,7 +32,7 @@ Feature: Resend Invitation
 
         Examples:
             |   email                   |   message                                                             |
-            |   ""                      |   This field is required.                                             |
+            |   ""                      |   Please enter an email address.                                      |
             |   notanemail              |   Please enter a valid email address.                                 |
             |   standard.user@test.test |   Sorry, this email address is already registered to another user.    |
             |   new.email@test.test     |   Invited User has been reinvited to example.com.                     |

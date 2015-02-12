@@ -23,10 +23,10 @@ Feature: Update Email
 
         Examples:
             |   email                   |   password    |   message                                                             |
-            |   ""                      |   pass        |   This field is required.                                             |
+            |   ""                      |   pass        |   Please enter your new email address.                                |
             |   invalidemail            |   pass        |   Please enter a valid email address.                                 |
             |   inactive.user@test.test |   pass        |   Sorry, this email address is already registered to another user.    |
-            |   a.new.email@test.test   |   ""          |   This field is required.                                             |
+            |   a.new.email@test.test   |   ""          |   Please enter your password.                                         |
             |   a.new.email@test.test   |   wrongpass   |   Incorrect password. Please try again.                               |
             |   a.new.email@test.test   |   pass        |   Your example.com email has been updated.                            |
 

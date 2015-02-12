@@ -24,10 +24,10 @@ Feature: Activate Account
 
         Examples:
             |   first name  |   last name   |    new pass   |   confirm pass    |   error                                           |
-            |   ""          |   Last        |    pass       |   pass            |   This field is required.                         |
-            |   First       |   ""          |    pass       |   pass            |   This field is required.                         |
-            |   First       |   Last        |    ""         |   pass            |   This field is required.                         |
-            |   First       |   Last        |    pass       |   ""              |   This field is required.                         |
+            |   ""          |   Last        |    pass       |   pass            |   Please enter your first name.                   |
+            |   First       |   ""          |    pass       |   pass            |   Please enter your last name.                    |
+            |   First       |   Last        |    ""         |   pass            |   Please select a password.                       |
+            |   First       |   Last        |    pass       |   ""              |   Please confirm your password.                   |
             |   First       |   Last        |    pass       |   notmatching     |   Your passwords do not match. Please try again.  |
 
     Scenario: Invited user activates their account

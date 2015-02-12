@@ -19,10 +19,23 @@ class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member.
     """
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    email = forms.EmailField(error_messages={
-            'invalid': _('Please enter a valid email address.')})
+    first_name = forms.CharField(
+        max_length=30,
+        error_messages={
+            'required': _('Please enter a first name.')
+        })
+
+    last_name = forms.CharField(
+        max_length=30,
+        error_messages={
+            'required': _('Please enter a last name.')
+        })
+
+    email = forms.EmailField(
+        error_messages={
+            'required': _('Please enter an email address.'),
+            'invalid': _('Please enter a valid email address.')
+        })
 
     def clean(self):
         """
@@ -45,8 +58,12 @@ class ReInviteMemberForm(forms.Form):
         self.logged_in_moderator = kwargs.pop('moderator', None)
         super(ReInviteMemberForm, self).__init__(*args, **kwargs)
 
-    email = forms.EmailField(error_messages={
-            'invalid': _('Please enter a valid email address.')})
+    email = forms.EmailField(
+        error_messages={
+            'required': _('Please enter an email address.'),
+            'invalid': _('Please enter a valid email address.')
+        })
+
     user_id = forms.IntegerField(widget=forms.HiddenInput)
 
     def clean(self):
@@ -79,8 +96,11 @@ class RevokeInvitationForm(forms.Form):
     Form for moderator to revoke membership invitation.
     Requires moderator to confirm their action.
     """
-    confirm = forms.BooleanField()
     user_id = forms.IntegerField(widget=forms.HiddenInput)
+    confirm = forms.BooleanField(
+        error_messages = {
+            'required': _('Please confirm that you wish to revoke this invitation.'),
+        })
 
 
 @parsleyfy
@@ -91,11 +111,15 @@ class ModerateApplicationForm(forms.Form):
     user_id = forms.IntegerField(widget=forms.HiddenInput)
     decision = forms.ChoiceField(choices=User.MODERATOR_CHOICES[1:],
                                  widget=forms.HiddenInput)
-    comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': _('Please explain your decision. '
-                         'This information will not be sent to the user, '
-                         'but will be recorded in the moderation logs.'),
-    }))
+    comments = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': _('Please explain your decision. '
+                             'This information will not be sent to the user, '
+                             'but will be recorded in the moderation logs.'),
+        }),
+        error_messages = {
+            'required': _('Please explain your decision.'),
+        })
 
 
 @parsleyfy
@@ -103,7 +127,11 @@ class ReportAbuseForm(forms.Form):
     """
     Form for a user to report abusive bahaviour of another user.
     """
-    comments = forms.CharField(widget=forms.Textarea())
+    comments = forms.CharField(
+        widget=forms.Textarea(),
+        error_messages = {
+            'required': _('Please describe your complaint.'),
+        })
 
 
 @parsleyfy
@@ -117,11 +145,15 @@ class ModerateAbuseForm(forms.Form):
     report_id = forms.IntegerField(widget=forms.HiddenInput)
     decision = forms.ChoiceField(choices=AbuseReport.ABUSE_REPORT_CHOICES,
                                  widget=forms.HiddenInput)
-    comments = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': _('Please explain your decision. '
-                         'This information will be sent to both users '
-                         'and recorded in the moderation logs.'),
-    }))
+    comments = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': _('Please explain your decision. '
+                             'This information will be sent to both users '
+                             'and recorded in the moderation logs.'),
+        }),
+        error_messages = {
+            'required': _('Please explain your decision.'),
+        })
 
 
 class FilterLogsForm(forms.Form):

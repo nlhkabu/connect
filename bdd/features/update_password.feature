@@ -17,8 +17,8 @@ Feature: Update Password
 
         Examples:
             |   new pass    |   current pass    |   message                                     |
-            |   ""          |   pass            |   This field is required.                     |
-            |   newpass     |   ""              |   This field is required.                     |
+            |   ""          |   pass            |   Please enter your new password.             |
+            |   newpass     |   ""              |   Please enter your current password.         |
             |   newpass     |   wrongpass       |   Incorrect password. Please try again.       |
             |   newpass     |   pass            |   Your example.com password has been updated. |
 
