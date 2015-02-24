@@ -5,8 +5,7 @@ from django.test import TestCase
 from accounts.factories import UserFactory
 from connect_config.factories import SiteFactory, SiteConfigFactory
 from connect.settings import MEDIA_ROOT
-from connect.utils import (generate_salt, generate_html_email, hash_time,
-                    send_connect_email)
+from connect.utils import generate_salt, hash_time, send_connect_email
 
 
 class UtilsTest(TestCase):
@@ -30,28 +29,6 @@ class UtilsTest(TestCase):
         self.assertRegexpMatches(hash_1, '\w')
         self.assertNotEqual(hash_1, hash_2)
 
-    def test_can_send_html_email(self):
-        subject = 'Test email'
-        from_address = 'from@test.test'
-        recipients = ['to@test.test']
-        site_name = 'My Site'
-        html_template = 'emails/email_base.html'
-        template_vars = {
-            'site_name': site_name,
-        }
-
-        email = generate_html_email(subject, from_address, recipients,
-                                    html_template, template_vars)
-
-        expected_string = 'you are a registered user at My Site.'
-        expected_header = ''
-
-        self.assertEqual(email.subject, subject)
-        self.assertEqual(email.from_email, from_address)
-        self.assertEqual(email.to, recipients)
-        self.assertIn(expected_string, email.body)
-        self.assertIn('<html>', email.alternatives[0][0])
-
     def test_can_send_connect_email(self):
         subject = 'Test email'
         template = 'emails/email_base.html'
@@ -68,10 +45,4 @@ class UtilsTest(TestCase):
         email = send_connect_email(subject, template, recipient, site, sender,
                                    url, comments, logged_against)
 
-        self.assertEqual(email.subject, subject)
-        self.assertEqual(email.to[0], recipient.email)
-
-        expected_header = '<img src="http://{}{}'.format(site.domain,
-                                                site.config.email_header.url)
-        self.assertIn(expected_header, email.alternatives[0][0])
-
+        self.assertEqual(email, 1) # send_email returns no. of emails sent

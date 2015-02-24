@@ -4,9 +4,9 @@
 {% autoescape off %}
     {% block email_content %}
         {% blocktrans with site=site_name trimmed %}
-            <p>You have been sent this email as a new account has been created for you at {{ site }}.</p>
+            <p>We've noticed that you have not yet activated your {{ site }} account.</p>
         {% endblocktrans %}
-        <p>{% trans "To activate this account, please click on the following link (or copy it into a web browser)" %}:</p>
+        <p>{% trans "To get started with {{ site }}, please click on the following link (or copy it into a web browser)" %}:</p>
         <p>
             <a href="{{ url }}" style="color: #{{ link_color }};">{{ url }}</a>
         </p>

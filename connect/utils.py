@@ -1,7 +1,7 @@
 import crypt, random, re, string, time
 
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
@@ -31,52 +31,11 @@ def hash_time(salt='O2xqbWD9'):
     return hashed
 
 
-def generate_html_email(subject, from_address, recipients,
-                        html_template, template_vars={}, txt_template=None):
-    '''
-    Generate and return a HTML email with plain text counterpart. Recipients
-    should be passed in as a list.
-    '''
-    # Render HTML email:
-    html_body = render_to_string(html_template, template_vars)
-
-    # Render plain text email:
-    if not txt_template and html_template[-5:] == '.html':
-        txt_template = html_template.replace('.html', '.txt')
-
-    try:
-        text_body = render_to_string(txt_template, template_vars)
-    except:
-        text_body = html_body
-
-        # Strip out HTML head section:
-        p = re.compile('<head>(.|\s)*?</head>')
-        text_body = p.sub('', text_body)
-
-    # Strip out excessive whitespace:
-    text_body = strip_tags(text_body).strip()
-    p = re.compile('(\r|\n)(\x20|\t)+')
-    text_body = p.sub('\n', text_body)
-    p = re.compile('(\r|\n)(\r|\n)+')
-    text_body = p.sub('\n\n', text_body)
-
-    # Create email, and attach HTML alternative version:
-    email = EmailMultiAlternatives(
-        subject,
-        text_body,
-        from_address,
-        recipients,
-    )
-    email.attach_alternative(html_body, "text/html")
-
-    return email
-
-
 def send_connect_email(subject, template, recipient, site, sender='',
-                       url='', comments='', logged_against=''):
+                      url='', comments='', logged_against=''):
     """
     Sends an email to notify users and moderators of relevant events.
-    e.g. account activation, abuse decisions, new account applications, etc.
+    Generates a plain text email from html template counterpart.
     """
 
     email_header_url = site.config.email_header.url
@@ -94,15 +53,26 @@ def send_connect_email(subject, template, recipient, site, sender='',
         'link_color': 'e51e41', # TODO: dynamically retrieve color from CSS
     }
 
-    email = generate_html_email(
-        subject,
-        settings.EMAIL_HOST_USER,
-        [recipient.email],
-        template,
-        template_vars,
-    )
+    # Render HTML email:
+    html_body = render_to_string(template, template_vars)
 
-    email.send()
+    # Render plain text email:
+    text_body = html_body
+
+    # Strip out HTML head section:
+    p = re.compile('<head>(.|\s)*?</head>')
+    text_body = p.sub('', text_body)
+    # Strip out excessive whitespace:
+    text_body = strip_tags(text_body).strip()
+    p = re.compile('(\r|\n)(\x20|\t)+')
+    text_body = p.sub('\n', text_body)
+    p = re.compile('(\r|\n)(\r|\n)+')
+    text_body = p.sub('\n\n', text_body)
+
+    email = send_mail(subject=subject,
+                      message=text_body,
+                      from_email=site.config.email,
+                      recipient_list=[recipient.email,],
+                      html_message=html_body)
 
     return email
-

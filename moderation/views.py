@@ -14,8 +14,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from accounts.models import AbuseReport
-from connect.utils import (generate_html_email, generate_salt,
-                           hash_time, send_connect_email)
+from connect.utils import generate_salt, hash_time, send_connect_email
 from connect import settings
 from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,

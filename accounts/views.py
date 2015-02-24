@@ -13,7 +13,7 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
-from connect.utils import generate_html_email, hash_time, send_connect_email
+from connect.utils import hash_time, send_connect_email
 
 from .forms import (ActivateAccountForm, BaseLinkFormSet, BaseSkillFormSet,
                     CloseAccountForm, LinkForm, ProfileForm,

@@ -46,7 +46,7 @@ INSTALLED_APPS = (
     'django_gravatar',
     'endless_pagination',
     'parsley',
-    'djrill',
+    'djrill', # move this into production only installed apps
     'django_boost',
     'connect',
     'connect_config',

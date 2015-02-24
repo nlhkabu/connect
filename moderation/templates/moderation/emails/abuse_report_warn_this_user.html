@@ -13,7 +13,7 @@
             {{ comments }}
         </blockquote>
         {% blocktrans with email=contact_email trimmed %}
-            <p>If you wish to appeal this decision, please contact <a href="mailto:{{ email }}" style="color: #{{ link_color }};">{{ email }}</a>.</p>
+            <p>If you wish to appeal this decision, please contact <a href="mailto:{{ contact_email }}" style="color: #{{ link_color }};">{{ contact_email }}</a>.</p>
         {% endblocktrans %}
     {% endblock %}
 
