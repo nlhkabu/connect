@@ -266,9 +266,7 @@ class ReInviteUserTest(TestCase):
         expected_subject = 'Activate your {} account'.format(self.site.name)
         expected_recipient = 'invite.user@test.test'
         expected_intro = 'Hi {},'.format('Hello')
-        expected_content = 'created for you at {}'.format(
-            self.site.name
-        )
+        expected_content = 'you have not yet activated your'
         expected_footer = 'My Moderator registered a new {} account'.format(
             self.site.name
         )
