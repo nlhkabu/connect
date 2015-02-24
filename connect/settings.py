@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django_gravatar',
     'endless_pagination',
     'parsley',
+    'djrill',
     'django_boost',
     'connect',
     'connect_config',
@@ -161,12 +162,9 @@ SITE_URL = 'http://localhost:8000' #TODO: change for production
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    EMAIL_HOST = os.environ['CONNECT_EMAIL_HOST']
-    EMAIL_HOST_USER = os.environ['CONNECT_EMAIL_HOST_USER']
-    EMAIL_HOST_PASSWORD = os.environ['CONNECT_EMAIL_HOST_PASSWORD']
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-
+    EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
+    MANDRILL_API_KEY = os.environ['CONNECT_MANDRILL_API_KEY']
+    EMAIL_HOST_USER = os.environ['CONNECT_DEFAULT_FROM_EMAIL']
 
 # Auth Settings
 AUTH_USER_MODEL = 'accounts.CustomUser'

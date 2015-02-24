@@ -1,3 +1,4 @@
 -r ./base.txt
 
 dj-database-url==0.3.0
+djrill==1.3.0
