@@ -1,171 +1,219 @@
 import os
+import cbs
+from cbs import BaseSettings as DefaultSettings
 from django.utils.translation import ugettext_lazy as _
 
-"""
-Django settings for connect project.
-"""
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('CONNECT_SECRET_KEY',
-                            'jj4ie+#b4h=ovjrma7ad*0vhuu8j4fi@8beksc-f+pa_co')
+class BaseSettings(DefaultSettings):
+    # REQUIRED FOR DJANGO CLASSY SETTINGS
+    PROJECT_NAME = 'connect'
 
+    # DEBUG
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
+    DEBUG = False
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('CONNECT_DEBUG', 'off') == 'on'
-TEMPLATE_DEBUG = DEBUG
+    # SITE CONFIGURATION
+    SITE_ID = 1
 
-
-# Allow all host headers
-ALLOWED_HOSTS = os.environ.get('CONNECT_ALLOWED_HOSTS', 'localhost').split(',')
-
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-
-# Application definition
-ADMINS = (
-    ('Nicole Harris', 'n.harris@kabucreative.com.au'),
-)
-
-INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.flatpages',
-    'django.contrib.humanize',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'django_behave',
-    'django_gravatar',
-    'endless_pagination',
-    'parsley',
-    'djrill', # move this into production only installed apps
-    'django_boost',
-    'connect',
-    'connect_config',
-    'accounts',
-    'moderation',
-    'discover',
-    'bdd'
-)
-
-if DEBUG:
-    INSTALLED_APPS += (
-        'debug_toolbar',
-        'django_extensions',
+    ADMINS = (
+        ('Nicole Harris', 'n.harris@kabucreative.com.au'),
     )
 
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.sites.middleware.CurrentSiteMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+    ROOT_URLCONF = 'connect.urls'
 
-ROOT_URLCONF = 'connect.urls'
+    # APPS
+    @property
+    def INSTALLED_APPS(self):
+        return super().INSTALLED_APPS + (
+            'django.contrib.sites',
+            'django.contrib.flatpages',
+            'django.contrib.humanize',
+            'django_behave',
+            'django_gravatar',
+            'endless_pagination',
+            'parsley',
+            'django_boost',
+            'connect',
+            'connect_config',
+            'accounts',
+            'moderation',
+            'discover',
+            'bdd',
+        )
 
-WSGI_APPLICATION = 'connect.wsgi.application'
+    # MIDDLEWARE
+    @property
+    def MIDDLEWARE_CLASSES(self):
+        return super().MIDDLEWARE_CLASSES + (
+            'django.contrib.sites.middleware.CurrentSiteMiddleware',
+            'django.middleware.locale.LocaleMiddleware',
+            'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+        )
 
+    # SECURITY
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+    SECRET_KEY = os.getenv('SECRET_KEY',
+                           'jj4ie+#b4h=ovjrma7ad*0vhuu8j4fi@8beksc-f+pa_co')
 
-# Testing
-TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
+    # Allow all host headers
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
+    # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Pagination
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+    # TESTING
+    TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'django.core.context_processors.request',
-)
-
-ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
-ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-# Parse database configuration from $DATABASE_URL, if it is set
-if 'DATABASE_URL' in os.environ:
-    import dj_database_url
-    DATABASES = {'default': dj_database_url.config()}
-
-else:
+    # DATABASE
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['CONNECT_DB_NAME'],
-            'USER': os.environ['CONNECT_DB_USER'],
-            'PASSWORD': os.environ['CONNECT_DB_PASSWORD'],
-            'HOST': os.environ['CONNECT_DB_HOST'],
-            'PORT': os.environ['CONNECT_DB_PORT'],
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DB_PORT', '5432'),
         },
     }
 
+    # TIME / LOCATION CONFIGURATION
+    TIME_ZONE = 'Australia/Melbourne'
+    LANGUAGE_CODE = 'en'
+    LANGUAGES = (
+        ('en', _('English')),
+    )
+    LOCALE_PATHS = (
+        os.path.join(BASE_DIR, 'locale'),
+    )
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-TIME_ZONE = 'Australia/Melbourne'
-LANGUAGE_CODE = 'en'
-LANGUAGES = (
-    ('en', _('English')),
-)
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
+    # MEDIA
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
 
+    # AUTH
+    AUTH_USER_MODEL = 'accounts.CustomUser'
+    LOGIN_REDIRECT_URL = '/'
 
-# Static files (CSS, JavaScript, Images)
-STATIC_ROOT = 'connect/static/'
-STATIC_URL = '/static/'
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    # os.path.join(BASE_DIR, 'static'),
-)
-
-
-# Media files (user uploaded)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-
-# Gravatar Settings
-GRAVATAR_DEFAULT_IMAGE = 'retro'
-
-
-# Site Settings
-SITE_ID = 1
-SITE_URL = 'http://localhost:8000' #TODO: change for production
-
-
-# Email
-# Set 'from' email address for system emails
-if DEBUG:
+    # EMAIL
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
-    MANDRILL_API_KEY = os.environ['CONNECT_MANDRILL_API_KEY']
-    EMAIL_HOST_USER = os.environ['CONNECT_DEFAULT_FROM_EMAIL']
+    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
-# Auth Settings
-AUTH_USER_MODEL = 'accounts.CustomUser'
-LOGIN_REDIRECT_URL = '/'
+    # CACHING
+    # Do this here because thanks to django-pylibmc-sasl and pylibmc
+    # memcacheify (used on heroku) is painful to install on windows.
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': ''
+        }
+    }
+
+    # LOGGING
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
+    # A sample logging configuration. The only tangible logging
+    # performed by this configuration is to send an email to
+    # the site admins on every HTTP 500 error when DEBUG=False.
+    # See http://docs.djangoproject.com/en/dev/topics/logging for
+    # more details on how to customize your logging configuration.
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'filters': {
+            'require_debug_false': {
+                '()': 'django.utils.log.RequireDebugFalse'
+            }
+        },
+        'handlers': {
+            'mail_admins': {
+                'level': 'ERROR',
+                'filters': ['require_debug_false'],
+                'class': 'django.utils.log.AdminEmailHandler'
+            }
+        },
+        'loggers': {
+            'django.request': {
+                'handlers': ['mail_admins'],
+                'level': 'ERROR',
+                'propagate': True,
+            },
+        }
+    }
+
+    ## --- BEGIN CONFIGURATIONS FOR THIRD-PARTY APPS --- ##
+
+    # ENDLESS PAGINATION
+    from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
+    TEMPLATE_CONTEXT_PROCESSORS += (
+        'django.core.context_processors.request',
+    )
+
+    ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
+    ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
+
+    # GRAVATAR
+    # See: https://github.com/twaddington/django-gravatar/#configuring
+    GRAVATAR_DEFAULT_IMAGE = 'retro'
+
+
+class LocalSettings(BaseSettings):
+    # DEBUG
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
+    DEBUG = True
+
+    # APPS / DEBUG TOOLBAR
+    @property
+    def INSTALLED_APPS(self):
+        return super().INSTALLED_APPS + (
+            'debug_toolbar',
+            'django_extensions',
+        )
+
+    @property
+    def MIDDLEWARE_CLASSES(self):
+        return super().MIDDLEWARE_CLASSES + (
+            'debug_toolbar.middleware.DebugToolbarMiddleware',
+        )
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'DISABLE_PANELS': [
+            'debug_toolbar.panels.redirects.RedirectsPanel',
+        ],
+        'SHOW_TEMPLATE_CONTEXT': True,
+    }
+
+
+class StagingSettings(BaseSettings):
+    # EMAIL
+    @property
+    def INSTALLED_APPS(self):
+        return super().INSTALLED_APPS + ('djrill',)
+
+    EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
+    MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY')
+
+    # WSGI
+    WSGI_APPLICATION = 'connect.wsgi.application'
+
+    # STATIC
+    STATIC_ROOT = os.path.join(BASE_DIR, 'connect/static/')
+
+
+class ProductionSettings(StagingSettings):
+    # DATABASE
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}
+
+
+# Now, let's activate our settings
+MODE = os.getenv('DJANGO_MODE', 'Local')
+cbs.apply('{}Settings'.format(MODE.title()), globals())
+
+
+
+
+

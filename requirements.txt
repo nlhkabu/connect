@@ -1,5 +1,5 @@
-# Heroku expects a "requirements.txt" file, located in 
+# Some platforms expect a "requirements.txt" file, located in 
 # the repository's base dir.
-# This file simply imports the actual Heroku requirements
+# This file simply imports the actual production requirements
 # from the project's requirements directory.
--r ./requirements/heroku.txt
+-r ./requirements/production.txt

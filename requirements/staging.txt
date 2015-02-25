@@ -1,0 +1,3 @@
+-r base.txt
+
+djrill==1.3.0 # Send email from Mandrill

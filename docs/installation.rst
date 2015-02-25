@@ -25,11 +25,11 @@ You will also need to install a YAML parser:
     $ sudo yum install libyaml-devel
 
 
-Next setup your environment with:
+Next setup your virtualenv with:
 
 .. code-block:: bash
 
-    $ mkvirtualenv --python=/bin/python3 connect
+    $ mkvirtualenv --python=/bin/python3 <appname>
     $ pip install -r requirements/dev.txt
 
 
@@ -51,21 +51,34 @@ Using PostgreSQL:
     $ \q # (or Ctrl-D) Exit from psql
 
 
-Settings.py
-___________
+Configuring your environment
+____________________________
 
-The following settings should be configured:
+In your ``postactivate`` virtualenv hook, set the following environment variables:
 
+.. code-block:: bash
 
-.. ~todo
-    * secret key
-    * admins
-    * database settings
-    * timezone
-    * language
-    * gravatar settings
-    * site settings
-    * email settings
+    export SECRET_KEY="<a long random string>"
+    export DB_NAME="<appname>"
+    export DB_USER="<appname>"
+    export DB_PASSWORD="<database password>"
+    export DEFAULT_FROM_EMAIL="<email you want to send in-app emails from>"
+
+In you ``predeactivate`` virtualenv hook:
+
+.. code-block:: bash
+
+    unset SECRET_KEY
+    unset DB_NAME
+    unset DB_USER
+    unset DB_PASSWORD
+    unset DEFAULT_FROM_EMAIL
+
+In ``settings.py``, you may also wish to override:
+
+    * Admins
+    * Timezone
+    * Gravatar Settings
 
 
 Setting up the Database
@@ -89,7 +102,7 @@ Then create a superuser:
     $ ./manage.py createsuperuser
 
 
-Then you can run your local sever:
+Now you can run your local sever:
 
 .. code-block:: bash
 
@@ -97,7 +110,7 @@ Then you can run your local sever:
 
 
 .. important::
-    Now that your site is up and running, you will need to:
+    Now that your site is up and running, you will need to login to the admin and:
 
     #. Set ``is_moderator`` to ``True`` for your superuser.
     #. Set up some additional data in your database. (See :doc:`configuration` for more information.)
@@ -123,7 +136,7 @@ _____________
     $ ./manage.py test <appname> #to test a specific app
 
 
-To run Connect's behavioural tests, you will need to have PhantomJS_ installed.
+To run Connect's `Behave`_ tests, you will need to have PhantomJS_ installed.
 
 Alternatively you can use any other `supported browser`_ (e.g. Chrome, Firefox)
 by installing it on your system and specifying it when you run your tests:
@@ -132,5 +145,6 @@ by installing it on your system and specifying it when you run your tests:
 
     $ ./manage.py test <appname> --behave_browser <browser>
 
+.. _Behave: http://pythonhosted.org/behave/
 .. _PhantomJS: http://phantomjs.org/
 .. _`supported browser`: http://splinter.cobrateam.info/en/latest/index.html#drivers
