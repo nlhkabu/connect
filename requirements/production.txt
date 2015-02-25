@@ -1,3 +1,4 @@
 -r staging.txt
 
 dj-database-url==0.3.0
+uWSGI==2.0.7
