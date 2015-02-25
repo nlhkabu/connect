@@ -1,0 +1,11 @@
+[run]
+
+source = .
+
+branch = True
+
+omit =
+    conftest.py
+    manage.py
+    connect/wsgi.py
+
