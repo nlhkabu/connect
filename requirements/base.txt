@@ -13,6 +13,7 @@ pytz==2014.4
 
 # Database / Fixtures
 psycopg2==2.5.3
+dj-database-url==0.3.0 # Use DB_URL environment variable
 PyYAML==3.11 # Fixtures
 
 # Testing
