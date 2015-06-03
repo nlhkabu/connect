@@ -86,7 +86,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
         lambda username: 'invited.pending.{}@test.test'.format(username))
 
     registration_method = CustomUser.INVITED
-    moderator = ModeratorFactory()
+    moderator = factory.SubFactory(UserFactory)
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
     auth_token = factory.Sequence(lambda n: 'invitedtoken{}'.format(n))

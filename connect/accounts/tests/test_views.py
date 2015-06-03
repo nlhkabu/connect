@@ -85,6 +85,7 @@ class RequestInvitationTest(TestCase):
         """
         Test that the request has been saved as a new user.
         """
+        self.post_data()
         user = User.objects.get(email='new_test@test.test')
 
         self.assertEqual(user.registration_method, 'REQ')
@@ -99,7 +100,7 @@ class RequestInvitationTest(TestCase):
             3,
             moderator=self.moderator
         )
-
+        self.post_data()
         expected_subject = 'New account request at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Moderator')
         expected_content = (
