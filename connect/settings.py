@@ -36,13 +36,11 @@ class BaseSettings(DefaultSettings):
             'django_gravatar',
             'endless_pagination',
             'parsley',
-            'django_boost',
             'connect',
-            'connect_config',
-            'accounts',
-            'moderation',
-            'discover',
-            'bdd',
+            'connect.config',
+            'connect.accounts',
+            'connect.moderation',
+            'connect.discover',
         )
 
     # MIDDLEWARE
