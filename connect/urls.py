@@ -8,10 +8,10 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-from accounts import urls as accounts_urls
-from moderation import urls as moderation_urls
-from discover import urls as discover_urls
-from discover.views import dashboard
+from connect.accounts import urls as accounts_urls
+from connect.moderation import urls as moderation_urls
+from connect.discover import urls as discover_urls
+from connect.discover.views import dashboard
 
 
 urlpatterns = patterns('',

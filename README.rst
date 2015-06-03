@@ -2,12 +2,15 @@
 Connect
 =======
 
-Connect is a moderated web application that helps members connect with each other based on skills, interests and location.
+Connect is a moderated web application that helps members connect with
+each other based on skills, interests and location.
 
-Connect is in active development and is not yet feature complete.  Please see ``TODO.rst`` for major planned features.
+Connect is in active development and is not yet feature complete.
+Please see ``TODO.rst`` for major planned features.
 
 .. image::
     https://codeship.com/projects/86e14520-1ec8-0132-5410-3e0b0834453b/status?branch=master
+
 
 Documentation
 _____________
@@ -19,6 +22,7 @@ Demo
 ____
 
 A demo version of Connect is available to try at http://kabu-connect.herokuapp.com
+
 Use the following authentication details to login:
 
 | **Standard User:**

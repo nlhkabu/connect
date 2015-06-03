@@ -1,5 +1,4 @@
 # Some platforms expect a "requirements.txt" file, located in 
 # the repository's base dir.
-# This file simply imports the actual production requirements
-# from the project's requirements directory.
--r ./requirements/production.txt
+# This file simply deploys the project for production.
+-r requirements/production.txt

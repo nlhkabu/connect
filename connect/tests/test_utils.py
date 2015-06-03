@@ -2,9 +2,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail
 from django.test import TestCase
 
-from accounts.factories import UserFactory
-from connect_config.factories import SiteFactory, SiteConfigFactory
-from connect.settings import MEDIA_ROOT
+from connect.accounts.factories import UserFactory
+from connect.config.factories import SiteFactory, SiteConfigFactory
 from connect.utils import generate_salt, hash_time, send_connect_email
 
 
