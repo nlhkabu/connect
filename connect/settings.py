@@ -141,7 +141,7 @@ class BaseSettings(DefaultSettings):
         }
     }
 
-    ## --- BEGIN CONFIGURATIONS FOR THIRD-PARTY APPS --- ##
+    # --- BEGIN CONFIGURATIONS FOR THIRD-PARTY APPS --- #
 
     # ENDLESS PAGINATION
     from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
@@ -210,8 +210,3 @@ class ProductionSettings(StagingSettings):
 # Now, let's activate our settings
 MODE = os.getenv('DJANGO_MODE', 'Local')
 cbs.apply('{}Settings'.format(MODE.title()), globals())
-
-
-
-
-
