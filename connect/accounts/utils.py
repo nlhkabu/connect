@@ -1,7 +1,7 @@
 from django import forms
 
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy

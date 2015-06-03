@@ -25,8 +25,11 @@ $(PYTHON):
 	$(VIRTUALENV) $(VENV)
 	@echo "Don't forget to set configuration environment variables."
 
-tests: install-dev
+tests-once: install-dev
 	$(VENV)/bin/python manage.py test
+
+tests:
+	tox
 
 clean:
 	find . -name '*.pyc' -delete

@@ -58,9 +58,9 @@ class ViewUtilsTest(TestCase):
                 'form-TOTAL_FORMS': 2,
                 'form-INITIAL_FORMS': 0,
                 'form-0-anchor': 'Anchor 1',
-                'form-0-url': 'http://link1.com',
+                'form-0-url': 'http://link1.com/',
                 'form-1-anchor': 'Anchor 2',
-                'form-1-url': 'http://link2.com',
+                'form-1-url': 'http://link2.com/',
             }
         )
 

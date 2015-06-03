@@ -234,7 +234,7 @@ class ProfileSettingsTest(TestCase):
                 'link-TOTAL_FORMS': 1,
                 'link-INITIAL_FORMS': 0,
                 'link-0-anchor': 'My Link',
-                'link-0-url': 'http://mylink.com',
+                'link-0-url': 'http://mylink.com/',
                 'skill-TOTAL_FORMS': 1,
                 'skill-INITIAL_FORMS': 0,
                 'skill-0-skill': django.id,

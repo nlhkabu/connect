@@ -9,3 +9,4 @@ sphinx-rtd-theme
 django-debug-toolbar
 django-extensions
 coverage
+tox

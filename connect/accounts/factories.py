@@ -35,6 +35,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     auth_token_is_used = True
     is_active = True
     is_closed = False
+    last_login = timezone.now()
 
     @factory.post_generation
     def groups(self, create, extracted, **kwargs):
@@ -89,6 +90,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
     auth_token = factory.Sequence(lambda n: 'invitedtoken{}'.format(n))
     auth_token_is_used = False
     is_active = False
+    last_login = timezone.now()
 
 
 class RequestedPendingFactory(factory.django.DjangoModelFactory):
@@ -105,6 +107,7 @@ class RequestedPendingFactory(factory.django.DjangoModelFactory):
     registration_method = CustomUser.REQUESTED
     application_comments = 'Please give me an account'
     is_active = False
+    last_login = timezone.now()
 
 
 class RoleFactory(factory.django.DjangoModelFactory):
