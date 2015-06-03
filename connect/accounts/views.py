@@ -3,25 +3,25 @@ from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, redirect, render
-from django_gravatar.helpers import get_gravatar_url, has_gravatar
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
-from django.views.decorators.http import require_POST
 
-from connect.utils import hash_time, send_connect_email
+from connect.utils import send_connect_email
 
-from connect.accounts.forms import (ActivateAccountForm, BaseLinkFormSet, BaseSkillFormSet,
-                    CloseAccountForm, LinkForm, ProfileForm,
-                    RequestInvitationForm, SkillForm, UpdateEmailForm,
-                    UpdatePasswordForm)
-from connect.accounts.models import CustomUser, LinkBrand, Role, Skill, UserLink, UserSkill
+from connect.accounts.forms import (
+    ActivateAccountForm, BaseLinkFormSet, BaseSkillFormSet, CloseAccountForm,
+    LinkForm, ProfileForm, RequestInvitationForm, SkillForm, UpdateEmailForm,
+    UpdatePasswordForm
+)
+from connect.accounts.models import Role, Skill, UserLink, UserSkill
+
 from connect.accounts.utils import create_inactive_user
-from connect.accounts.view_utils import match_link_to_brand, save_links, save_skills
+from connect.accounts.view_utils import (
+    match_link_to_brand, save_links, save_skills
+)
 
 
 User = get_user_model()
@@ -51,14 +51,17 @@ def request_invitation(request):
             new_user.application_comments = comments
             new_user.save()
 
-            # Send email(s) to moderator(s) alerting them of new account application
+            # Send email(s) to moderator(s) alerting them of new
+            # account application
             moderators = User.objects.filter(is_moderator=True, is_active=True)
 
-            url = request.build_absolute_uri(
-                                reverse('moderation:review-applications'))
+            url = request.build_absolute_uri(reverse(
+                'moderation:review-applications'))
 
             subject = _('New account request at {}'.format(site.name))
-            template = 'moderation/emails/notify_moderators_of_new_application.html'
+            template = (
+                'moderation/emails/notify_moderators_of_new_application.html'
+            )
 
             for moderator in moderators:
                 send_connect_email(subject=subject,
@@ -142,20 +145,21 @@ def profile_settings(request):
 
     user_skills = UserSkill.objects.filter(user=user).order_by('skill__name')
     skill_data = [{'skill': s.skill, 'proficiency': s.proficiency}
-                    for s in user_skills]
+                  for s in user_skills]
 
     LinkFormSet = formset_factory(LinkForm, formset=BaseLinkFormSet)
 
     user_links = UserLink.objects.filter(user=user).order_by('anchor')
     link_data = [{'anchor': l.anchor, 'url': l.url}
-                    for l in user_links]
+                 for l in user_links]
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, user=user)
         skill_formset = SkillFormSet(request.POST, prefix='skill')
         link_formset = LinkFormSet(request.POST, prefix='link')
 
-        if form.is_valid() and skill_formset.is_valid() and link_formset.is_valid():
+        if form.is_valid() and skill_formset.is_valid() \
+           and link_formset.is_valid():
             # Save user info
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
@@ -171,14 +175,13 @@ def profile_settings(request):
             match_link_to_brand(user_links)
 
             site = get_current_site(request)
-            messages.success(request,
-                _('Your {} profile has been updated.'.format(site.name)))
+            messages.success(request, _(
+                'Your {} profile has been updated.'.format(site.name)))
 
     else:
         form = ProfileForm(user=user)
         skill_formset = SkillFormSet(initial=skill_data, prefix='skill')
         link_formset = LinkFormSet(initial=link_data, prefix='link')
-
 
     context = {
         'form': form,
@@ -206,8 +209,8 @@ def update_email(request):
             user.save()
 
             site = get_current_site(request)
-            messages.success(request,
-                _('Your {} email has been updated.'.format(site.name)))
+            messages.success(request, _(
+                'Your {} email has been updated.'.format(site.name)))
 
     else:
         form = UpdateEmailForm(user=user)
@@ -235,8 +238,8 @@ def update_password(request):
             user.save()
 
             site = get_current_site(request)
-            messages.success(request,
-                _('Your {} password has been updated.'.format(site.name)))
+            messages.success(request, _(
+                'Your {} password has been updated.'.format(site.name)))
 
     else:
         form = UpdatePasswordForm(user=user)

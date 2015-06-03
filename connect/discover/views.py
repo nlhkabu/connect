@@ -1,13 +1,8 @@
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect, render
-
-from django_gravatar.helpers import get_gravatar_url, has_gravatar
+from django.shortcuts import render
 
 from connect.discover.forms import FilterMemberForm
-from connect.accounts.models import UserSkill
-
 
 User = get_user_model()
 
@@ -75,5 +70,3 @@ def member_map(request):
     Shows all members on a world map.
     """
     return render(request, 'discover/map.html')
-
-

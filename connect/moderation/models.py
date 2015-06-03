@@ -21,7 +21,6 @@ class ModerationLogMsg(models.Model):
     WARNING = 'WARNING'
     BANNING = 'BANNING'
 
-
     MSG_TYPE_CHOICES = [
         (INVITATION, _('Invitation')),
         (REINVITATION, _('Invitation Resent')),

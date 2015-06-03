@@ -32,14 +32,14 @@ def invite_user_to_reactivate_account(user, request):
     their account.
     """
     # Build and send a reactivation link for closed account
-    user.auth_token = hash_time(generate_salt()) # Reset token
+    user.auth_token = hash_time(generate_salt())  # Reset token
     user.auth_token_is_used = False
     user.save()
 
     site = get_current_site(request)
     url = request.build_absolute_uri(
-                    reverse('accounts:activate-account',
-                    args=[user.auth_token]))
+        reverse('accounts:activate-account',
+                args=[user.auth_token]))
 
     # Send email
     subject = _('Reactivate your {} account'.format(site.name))
@@ -77,7 +77,7 @@ def validate_email_availability(email):
     if user:
         raise forms.ValidationError(
             ugettext_lazy('Sorry, this email address is already '
-                'registered to another user.'),
+                          'registered to another user.'),
             code='email_already_registered'
         )
     else:

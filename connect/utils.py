@@ -1,7 +1,10 @@
-import crypt, random, re, string, time
+import crypt
+import random
+import re
+import string
+import time
 
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
@@ -32,7 +35,7 @@ def hash_time(salt='O2xqbWD9'):
 
 
 def send_connect_email(subject, template, recipient, site, sender='',
-                      url='', comments='', logged_against=''):
+                       url='', comments='', logged_against=''):
     """
     Sends an email to notify users and moderators of relevant events.
     Generates a plain text email from html template counterpart.
@@ -50,7 +53,8 @@ def send_connect_email(subject, template, recipient, site, sender='',
         'logged_against': logged_against,
         'contact_email':  site.config.email,
         'email_header': email_header,
-        'link_color': 'e51e41', # TODO: dynamically retrieve color from CSS
+        # TODO: dynamically retrieve color from CSS
+        'link_color': 'e51e41'
     }
 
     # Render HTML email:
@@ -72,7 +76,7 @@ def send_connect_email(subject, template, recipient, site, sender='',
     email = send_mail(subject=subject,
                       message=text_body,
                       from_email=site.config.email,
-                      recipient_list=[recipient.email,],
+                      recipient_list=[recipient.email],
                       html_message=html_body)
 
     return email

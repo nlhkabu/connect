@@ -4,8 +4,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.utils import timezone
 
-from connect.accounts.models import (AbuseReport, CustomUser, LinkBrand,
-                     Skill, Role, UserLink, UserSkill)
+from connect.accounts.models import (
+    AbuseReport, CustomUser, LinkBrand, Skill, Role, UserLink, UserSkill
+)
 
 
 class GroupFactory(factory.django.DjangoModelFactory):
@@ -81,10 +82,11 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
 
     first_name = 'Invited Pending'
     last_name = 'User'
-    email = factory.Sequence(lambda n: 'invited.pending.{}@test.test'.format(n))
+    email = factory.Sequence(
+        lambda username: 'invited.pending.{}@test.test'.format(username))
 
     registration_method = CustomUser.INVITED
-    moderator = factory.SubFactory(UserFactory) # TODO: change to moderator factory
+    moderator = factory.SubFactory(UserFactory)
     moderator_decision = CustomUser.PRE_APPROVED
     decision_datetime = timezone.now()
     auth_token = factory.Sequence(lambda n: 'invitedtoken{}'.format(n))
@@ -103,7 +105,8 @@ class RequestedPendingFactory(factory.django.DjangoModelFactory):
 
     first_name = 'Requested Pending'
     last_name = 'User'
-    email = factory.Sequence(lambda n: 'requested.pending.{}@test.test'.format(n))
+    email = factory.Sequence(
+        lambda username: 'requested.pending.{}@test.test'.format(username))
     registration_method = CustomUser.REQUESTED
     application_comments = 'Please give me an account'
     is_active = False

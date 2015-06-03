@@ -8,9 +8,10 @@ from django.test import TestCase, RequestFactory
 from connect.config.factories import SiteConfigFactory
 
 from connect.accounts.factories import UserFactory
-from connect.accounts.utils import (create_inactive_user, get_user,
-                            invite_user_to_reactivate_account,
-                            validate_email_availability)
+from connect.accounts.utils import (
+    create_inactive_user, get_user, invite_user_to_reactivate_account,
+    validate_email_availability
+)
 
 
 class AccountUtilsTest(TestCase):
@@ -60,7 +61,8 @@ class AccountUtilsTest(TestCase):
 
         expected_subject = 'Reactivate your {} account'.format(self.site.name)
         expected_intro = 'Hi {},'.format(self.closed_user.first_name)
-        expected_content = '{} using this email address.'.format(self.site.name)
+        expected_content = '{} using this email address.'.format(
+            self.site.name)
         expected_url = 'http://testserver/accounts/activate/{}'.format(
             self.closed_user.auth_token
         )
@@ -82,7 +84,8 @@ class AccountUtilsTest(TestCase):
         Test that an email not registered to another user is returned as True.
         i.e. It is available for another user to use.
         """
-        unregistered = validate_email_availability('unregistered.user@test.test')
+        unregistered = validate_email_availability(
+            'unregistered.user@test.test')
         self.assertTrue(unregistered)
 
     def test_registered_email(self):

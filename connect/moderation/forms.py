@@ -14,6 +14,7 @@ from connect.accounts.forms import validate_email_availability
 
 User = get_user_model()
 
+
 @parsleyfy
 class InviteMemberForm(forms.Form):
     """
@@ -80,7 +81,7 @@ class ReInviteMemberForm(forms.Form):
         user = get_object_or_404(User, id=user_id)
 
         if (user.moderator != self.logged_in_moderator
-        or not user.is_invited_pending_activation()):
+                or not user.is_invited_pending_activation()):
             raise Http404
 
         # If this email is not already registered to this user
@@ -97,10 +98,10 @@ class RevokeInvitationForm(forms.Form):
     Requires moderator to confirm their action.
     """
     user_id = forms.IntegerField(widget=forms.HiddenInput)
-    confirm = forms.BooleanField(
-        error_messages = {
-            'required': _('Please confirm that you wish to revoke this invitation.'),
-        })
+    confirm = forms.BooleanField(error_messages={
+        'required': _(
+            'Please confirm that you wish to revoke this invitation.')
+    })
 
 
 @parsleyfy
@@ -116,8 +117,7 @@ class ModerateApplicationForm(forms.Form):
             'placeholder': _('Please explain your decision. '
                              'This information will not be sent to the user, '
                              'but will be recorded in the moderation logs.'),
-        }),
-        error_messages = {
+        }), error_messages={
             'required': _('Please explain your decision.'),
         })
 
@@ -129,7 +129,7 @@ class ReportAbuseForm(forms.Form):
     """
     comments = forms.CharField(
         widget=forms.Textarea(),
-        error_messages = {
+        error_messages={
             'required': _('Please describe your complaint.'),
         })
 
@@ -151,7 +151,7 @@ class ModerateAbuseForm(forms.Form):
                              'This information will be sent to both users '
                              'and recorded in the moderation logs.'),
         }),
-        error_messages = {
+        error_messages={
             'required': _('Please explain your decision.'),
         })
 
@@ -182,31 +182,31 @@ class FilterLogsForm(forms.Form):
                                  required=False)
     period = forms.ChoiceField(choices=DATE_CHOICES)
 
-    start_date = forms.DateTimeField(required=False,
-                            initial=lambda: date.today().replace(
-                                year=date.today().year - 1),
-                            input_formats=('%d/%m/%Y',),
-                            widget=forms.DateInput(
-                                format='%d/%m/%Y',
-                                attrs={
-                                    'class': 'start-date',
-                                    'placeholder': _('Start Date'),
-                                    #~# Disable by default (unless shown)
-                                    'disabled': 'True',
-                            }))
+    start_date = forms.DateTimeField(
+        required=False,
+        initial=lambda: date.today().replace(
+            year=date.today().year - 1),
+        input_formats=('%d/%m/%Y',),
+        widget=forms.DateInput(
+            format='%d/%m/%Y',
+            attrs={
+                'class': 'start-date',
+                'placeholder': _('Start Date'),
+                # Disable by default (unless shown)
+                'disabled': 'True',
+            }))
 
     end_date = forms.DateTimeField(required=False,
-                        initial=date.today,
-                        input_formats=('%d/%m/%Y',),
-                        widget=forms.DateInput(
-                            format='%d/%m/%Y',
-                            attrs={
-                                'class': 'end-date',
-                                'placeholder': _('End Date'),
-                                # Disable by default (unless shown)
-                                'disabled': 'True',
-                        }))
-
+                                   initial=date.today,
+                                   input_formats=('%d/%m/%Y',),
+                                   widget=forms.DateInput(
+                                       format='%d/%m/%Y',
+                                       attrs={
+                                           'class': 'end-date',
+                                           'placeholder': _('End Date'),
+                                           # Disable by default (unless shown)
+                                           'disabled': 'True',
+                                       }))
 
     def clean(self):
         """

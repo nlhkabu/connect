@@ -1,12 +1,8 @@
-import datetime
-import pytz
-
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
-from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -14,11 +10,12 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from connect.accounts.models import AbuseReport
-from connect.utils import generate_salt, hash_time, send_connect_email
-from connect import settings
-from connect.moderation.forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
-                    ModerateAbuseForm, ReInviteMemberForm,
-                    ReportAbuseForm, RevokeInvitationForm)
+from connect.utils import send_connect_email
+from connect.moderation.forms import (
+    FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
+    ModerateAbuseForm, ReInviteMemberForm,
+    ReportAbuseForm, RevokeInvitationForm
+)
 from connect.moderation.models import ModerationLogMsg
 from connect.moderation.utils import get_date_limits, log_moderator_event
 
@@ -31,9 +28,9 @@ User = get_user_model()
                       'accounts.invite_user',
                       'accounts.uninvite_user'])
 def moderation_home(request,
-               invitation_form=None,
-               reinvitation_form=None,
-               revocation_form=None):
+                    invitation_form=None,
+                    reinvitation_form=None,
+                    revocation_form=None):
     """
     Show forms that allow  a moderator to:
      - Issue a membership invitation
@@ -89,7 +86,7 @@ def invite_user(request):
         # Log moderation event
         msg_type = ModerationLogMsg.INVITATION
         log_comment = _('{} invited {}'.format(moderator.get_full_name(),
-                                             new_user.get_full_name()))
+                                               new_user.get_full_name()))
         log_moderator_event(msg_type=msg_type,
                             user=new_user,
                             moderator=moderator,
@@ -100,7 +97,7 @@ def invite_user(request):
         template = 'moderation/emails/invite_new_user.html'
         token = new_user.auth_token
         url = request.build_absolute_uri(
-                    reverse('accounts:activate-account', args=[token]))
+            reverse('accounts:activate-account', args=[token]))
         send_connect_email(subject=subject,
                            template=template,
                            recipient=new_user,
@@ -108,7 +105,7 @@ def invite_user(request):
                            site=site,
                            url=url)
 
-        messages.success(request,_('{} has been invited to {}.'.format(
+        messages.success(request, _('{} has been invited to {}.'.format(
                          new_user.get_full_name(), site.name)))
 
         return redirect('moderation:moderators')
@@ -128,7 +125,8 @@ def reinvite_user(request):
     moderator = request.user
     site = get_current_site(request)
 
-    reinvitation_form = ReInviteMemberForm(request.POST, moderator=request.user)
+    reinvitation_form = ReInviteMemberForm(request.POST,
+                                           moderator=request.user)
 
     if reinvitation_form.is_valid():
 
@@ -145,8 +143,8 @@ def reinvite_user(request):
             # Log moderation event
             msg_type = ModerationLogMsg.REINVITATION
             log_comment = _('{} resent invitation to {}'.format(
-                                moderator.get_full_name(),
-                                user.get_full_name()))
+                moderator.get_full_name(),
+                user.get_full_name()))
             log_moderator_event(msg_type=msg_type,
                                 user=user,
                                 moderator=moderator,
@@ -154,8 +152,8 @@ def reinvite_user(request):
 
             # Send email
             url = request.build_absolute_uri(
-                        reverse('accounts:activate-account',
-                                args=[user.auth_token]))
+                reverse('accounts:activate-account',
+                        args=[user.auth_token]))
 
             subject = _('Activate your {} account'.format(site.name))
             template = 'moderation/emails/reinvite_user.html'
@@ -176,7 +174,6 @@ def reinvite_user(request):
         return moderation_home(request, reinvitation_form=reinvitation_form)
 
 
-
 @require_POST
 @login_required
 @permission_required(['accounts.access_moderators_section',
@@ -185,7 +182,6 @@ def revoke_invitation(request):
     """
     Revoke a user invitation.
     """
-    moderator = request.user
     site = get_current_site(request)
 
     revocation_form = RevokeInvitationForm(request.POST)
@@ -195,9 +191,11 @@ def revoke_invitation(request):
         user_id = revocation_form.cleaned_data['user_id']
         user = get_object_or_404(User, id=user_id)
 
-        if user.is_invited_pending_activation and user.moderator == request.user:
-            messages.success(request, _('{} has been uninvited from {}.'.format(
-                             user.get_full_name(), site.name)))
+        if user.is_invited_pending_activation \
+           and user.moderator == request.user:
+            messages.success(request, _(
+                '{} has been uninvited from {}.'.format(
+                    user.get_full_name(), site.name)))
 
             # Delete the user rather than deactivate it.
             # Removing the email address from the system altogether means
@@ -244,22 +242,22 @@ def review_applications(request):
             if decision == 'APP':
                 confirmation_message = _("{}'s account application "
                                          "has been approved.".format(
-                                         user.get_full_name().title()))
+                                             user.get_full_name().title()))
 
                 moderator.approve_user_application(user)
 
                 # Set log and email settings
                 msg_type = ModerationLogMsg.APPROVAL
                 url = request.build_absolute_uri(
-                                    reverse('accounts:activate-account',
-                                    args=[user.auth_token]))
+                    reverse('accounts:activate-account',
+                            args=[user.auth_token]))
                 subject = _('Welcome to {}'.format(site.name))
                 template = 'moderation/emails/approve_user.html'
 
             elif decision == 'REJ':
                 confirmation_message = _("{}'s account application "
                                          "has been rejected.".format(
-                                         user.get_full_name().title()))
+                                             user.get_full_name().title()))
 
                 moderator.reject_user_application(user)
 
@@ -269,7 +267,6 @@ def review_applications(request):
                 subject = _(('Unfortunately, your application to {} '
                              'was not successful').format(site.name))
                 template = 'moderation/emails/reject_user.html'
-
 
             # Log moderation event
             log_comment = '{}'.format(comments)
@@ -289,7 +286,6 @@ def review_applications(request):
             messages.success(request, confirmation_message)
 
             return redirect('moderation:review-applications')
-
 
     context = {
         'pending': pending,
@@ -312,7 +308,7 @@ def report_abuse(request, user_id):
         if form.is_valid():
             abuse_comment = form.cleaned_data['comments']
 
-            new_report = AbuseReport.objects.create(
+            AbuseReport.objects.create(
                 logged_by=logged_by,
                 logged_against=logged_against,
                 abuse_comment=abuse_comment,
@@ -327,10 +323,12 @@ def report_abuse(request, user_id):
             site = get_current_site(request)
 
             url = request.build_absolute_uri(
-                                reverse('moderation:review-abuse'))
+                reverse('moderation:review-abuse'))
 
             subject = _('New abuse report at {}'.format(site.name))
-            template = 'moderation/emails/notify_moderators_of_abuse_report.html'
+            template = (
+                'moderation/emails/notify_moderators_of_abuse_report.html'
+            )
 
             for moderator in moderators:
                 send_connect_email(subject=subject,
@@ -373,10 +371,10 @@ def review_abuse(request):
     # - the accused is the logged in user
     # - the accusor is the logged in user
     undecided_reports = (AbuseReport.objects.filter(decision_datetime=None)
-                            .exclude(logged_against__is_active=False)
-                            .exclude(logged_against=request.user)
-                            .exclude(logged_by=request.user)
-                            .select_related('logged_against', 'logged_by'))
+                         .exclude(logged_against__is_active=False)
+                         .exclude(logged_against=request.user)
+                         .exclude(logged_by=request.user)
+                         .select_related('logged_against', 'logged_by'))
 
     reported_users = set([report.logged_against
                           for report in undecided_reports])
@@ -414,7 +412,6 @@ def review_abuse(request):
             logged_by = abuse_report.logged_by
             logged_against = abuse_report.logged_against
 
-
             def send_email_to_reporting_user(subject, template):
                 """
                 Wrapper function for sending email to the user who has made
@@ -426,7 +423,6 @@ def review_abuse(request):
                                    logged_against=logged_against,
                                    site=site,
                                    comments=comments)
-
 
             def send_email_to_offending_user(subject, template):
                 """
@@ -440,30 +436,31 @@ def review_abuse(request):
                                    site=site,
                                    comments=comments)
 
-
             if decision == 'DISMISS':
                 msg_type = ModerationLogMsg.DISMISSAL
                 confirmation_message = _("The report against {} "
                                          "has been dismissed.".format(
-                                         user.get_full_name().title()))
+                                             user.get_full_name().title()))
 
                 # Send email to the user who made the report
                 subject = _('Your {} Abuse Report has been dismissed'.format(
-                                                                    site.name))
+                    site.name))
                 template = 'moderation/emails/abuse_report_dismissed.html'
                 send_email_to_reporting_user(subject, template)
 
-
             elif decision == 'WARN':
                 msg_type = ModerationLogMsg.WARNING
-                confirmation_message = _("{} has been issued a formal warning.".format(
-                                         user.get_full_name().title()))
+                confirmation_message = _(
+                    "{} has been issued a formal warning.".format(
+                        user.get_full_name().title()))
 
                 # send email to the user who made the report
-                subject = _('{} has been issued a formal warning from {}'.format(
-                                                logged_against.get_full_name(),
-                                                site.name))
-                template = 'moderation/emails/abuse_report_warn_other_user.html'
+                subject = _(
+                    '{} has been issued a formal warning from {}'.format(
+                        logged_against.get_full_name(), site.name))
+                template = (
+                    'moderation/emails/abuse_report_warn_other_user.html'
+                )
                 send_email_to_reporting_user(subject, template)
 
                 # send email to the user the report is logged against
@@ -471,23 +468,21 @@ def review_abuse(request):
                 template = 'moderation/emails/abuse_report_warn_this_user.html'
                 send_email_to_offending_user(subject, template)
 
-
             if decision == 'BAN':
                 msg_type = ModerationLogMsg.BANNING
                 confirmation_message = _("{} has been banned from {}.".format(
-                                         user.get_full_name().title(), site.name))
+                    user.get_full_name().title(), site.name))
 
                 # send email to the user who made the report
                 subject = _('{} has been banned from {}'.format(
-                                logged_against.get_full_name(),
-                                site.name))
+                    logged_against.get_full_name(),
+                    site.name))
                 template = 'moderation/emails/abuse_report_ban_other_user.html'
                 send_email_to_reporting_user(subject, template)
 
-
                 # send email to the user the report is logged against
                 subject = _(('Your {} account has been terminated').format(
-                                                                    site.name))
+                    site.name))
                 template = 'moderation/emails/abuse_report_ban_this_user.html'
                 send_email_to_offending_user(subject, template)
 
@@ -500,7 +495,6 @@ def review_abuse(request):
                                 user=user,
                                 moderator=moderator,
                                 comment=comments)
-
 
             messages.success(request, confirmation_message)
             return redirect('moderation:review-abuse')
@@ -531,8 +525,9 @@ def view_logs(request):
 
     # TODO: Get logged in user's timezone
     # TODO: Apply activate() to logged in user's timezone
+    # TODO: Get user's preferred timezone
 
-    local_tz = timezone.get_current_timezone() # TODO: Get user's preferred timezone
+    local_tz = timezone.get_current_timezone()
     today = timezone.now().astimezone(local_tz)
 
     if request.method == 'GET':

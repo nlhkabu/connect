@@ -14,7 +14,8 @@ from connect.discover import urls as discover_urls
 from connect.discover.views import dashboard
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(_(r'^admin/'), include(admin.site.urls)),
     url(r'^$', dashboard, name='dashboard'),
     url(_(r'^accounts/'), include(accounts_urls, namespace='accounts')),
@@ -24,4 +25,5 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
