@@ -16,11 +16,11 @@ from django.views.decorators.http import require_POST
 from connect.accounts.models import AbuseReport
 from connect.utils import generate_salt, hash_time, send_connect_email
 from connect import settings
-from .forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
+from connect.moderation.forms import (FilterLogsForm, InviteMemberForm, ModerateApplicationForm,
                     ModerateAbuseForm, ReInviteMemberForm,
                     ReportAbuseForm, RevokeInvitationForm)
-from .models import ModerationLogMsg
-from .utils import get_date_limits, log_moderator_event
+from connect.moderation.models import ModerationLogMsg
+from connect.moderation.utils import get_date_limits, log_moderator_event
 
 
 User = get_user_model()

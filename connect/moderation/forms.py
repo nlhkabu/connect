@@ -7,7 +7,7 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 
-from .models import ModerationLogMsg
+from connect.moderation.models import ModerationLogMsg
 from connect.accounts.models import AbuseReport
 from connect.accounts.forms import validate_email_availability
 

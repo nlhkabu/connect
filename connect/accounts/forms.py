@@ -13,8 +13,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from .models import CustomUser, Role, Skill, UserSkill
-from .utils import (get_user, invite_user_to_reactivate_account,
+from connect.accounts.models import CustomUser, Role, Skill, UserSkill
+from connect.accounts.utils import (get_user, invite_user_to_reactivate_account,
                     validate_email_availability)
 
 

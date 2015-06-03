@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.utils import timezone
 
-from .models import (AbuseReport, CustomUser, LinkBrand,
+from connect.accounts.models import (AbuseReport, CustomUser, LinkBrand,
                      Skill, Role, UserLink, UserSkill)
 
 

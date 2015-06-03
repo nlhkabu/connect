@@ -2,7 +2,8 @@ import factory
 
 from django.contrib.sites.models import Site
 
-from .models import SiteConfig
+from connect.config.models import SiteConfig
+
 
 class SiteFactory(factory.django.DjangoModelFactory):
     class Meta:

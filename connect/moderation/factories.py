@@ -3,7 +3,7 @@ import factory
 from django.utils import timezone
 
 from connect.accounts.factories import UserFactory, ModeratorFactory
-from .models import ModerationLogMsg
+from connect.moderation.models import ModerationLogMsg
 
 
 class LogFactory(factory.django.DjangoModelFactory):

@@ -3,9 +3,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import (AbuseReport, CustomUser, Role, LinkBrand,
+from connect.accounts.models import (AbuseReport, CustomUser, Role, LinkBrand,
                      Skill, UserLink, UserSkill)
-from .forms import CustomUserChangeForm, CustomUserCreationForm
+from connect.accounts.forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 User = get_user_model()

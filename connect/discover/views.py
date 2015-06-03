@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
 
-from .forms import FilterMemberForm
+from connect.discover.forms import FilterMemberForm
 from connect.accounts.models import UserSkill
 
 

@@ -15,13 +15,13 @@ from django.views.decorators.http import require_POST
 
 from connect.utils import hash_time, send_connect_email
 
-from .forms import (ActivateAccountForm, BaseLinkFormSet, BaseSkillFormSet,
+from connect.accounts.forms import (ActivateAccountForm, BaseLinkFormSet, BaseSkillFormSet,
                     CloseAccountForm, LinkForm, ProfileForm,
                     RequestInvitationForm, SkillForm, UpdateEmailForm,
                     UpdatePasswordForm)
-from .models import CustomUser, LinkBrand, Role, Skill, UserLink, UserSkill
-from .utils import create_inactive_user
-from .view_utils import match_link_to_brand, save_links, save_skills
+from connect.accounts.models import CustomUser, LinkBrand, Role, Skill, UserLink, UserSkill
+from connect.accounts.utils import create_inactive_user
+from connect.accounts.view_utils import match_link_to_brand, save_links, save_skills
 
 
 User = get_user_model()

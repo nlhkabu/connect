@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from django.contrib.sites.admin import SiteAdmin
 
-from .models import SiteConfig
+from connect.config.models import SiteConfig
 
 
 class SiteConfigInline(admin.StackedInline):

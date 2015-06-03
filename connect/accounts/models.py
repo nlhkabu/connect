@@ -13,7 +13,7 @@ from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 
 from connect.utils import generate_salt, hash_time
-from .utils import create_inactive_user
+from connect.accounts.utils import create_inactive_user
 
 
 class CustomUserManager(BaseUserManager):

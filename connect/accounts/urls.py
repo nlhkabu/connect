@@ -4,8 +4,8 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from django.utils.translation import ugettext_lazy as _
 
-from .forms import CustomPasswordResetForm
-from . import views
+from connect.accounts.forms import CustomPasswordResetForm
+from connect.accounts import views
 
 
 

@@ -3,7 +3,7 @@ import pytz
 
 from django.utils import timezone
 
-from .models import ModerationLogMsg
+from connect.moderation.models import ModerationLogMsg
 
 
 def log_moderator_event(msg_type, user, moderator, comment=''):

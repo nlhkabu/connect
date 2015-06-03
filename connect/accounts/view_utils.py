@@ -6,7 +6,7 @@ from django.db import IntegrityError, transaction
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 
-from .models import UserLink, UserSkill, LinkBrand
+from connect.accounts.models import UserLink, UserSkill, LinkBrand
 
 
 def save_paired_items(request, user, formset, Model,
