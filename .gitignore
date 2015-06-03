@@ -109,6 +109,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Virtualenv
+.venv/
+
 # Sass #
 ########
 *.sass-cache
