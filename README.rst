@@ -12,7 +12,7 @@ Connect is in active development and is not yet feature complete.  Please see ``
 Documentation
 _____________
 
-.. ~todo: read the docs link here.
+Beginner documentation is available at http://django-mentor-connect.readthedocs.org/en/latest/
 
 
 Demo
