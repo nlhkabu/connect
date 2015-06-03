@@ -1,5 +1,6 @@
 from urllib.parse import urlsplit
 
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError, transaction
@@ -41,7 +42,8 @@ def save_paired_items(request, user, formset, Model,
 
 def save_skills(request, user, formset):
     """Wrapper function to save paired skills and proficiencies."""
-    save_paired_items(request, user, formset, UserSkill, 'skill', 'proficiency')
+    save_paired_items(request, user, formset, UserSkill, 'skill',
+                      'proficiency')
 
 
 def save_links(request, user, formset):

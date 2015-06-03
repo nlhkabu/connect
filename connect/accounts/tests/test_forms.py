@@ -1,24 +1,21 @@
-import os
-import re
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail
-from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils.translation import ugettext as _
 
 from connect.config.factories import SiteConfigFactory
 
-from connect.accounts.factories import (InvitedPendingFactory, RoleFactory,
-                                SkillFactory, UserFactory)
-from connect.accounts.forms import (ActivateAccountForm, BaseLinkFormSet,
-                            BaseSkillFormSet, CloseAccountForm,
-                            CustomUserCreationForm, CustomUserChangeForm,
-                            CustomPasswordResetForm, LinkForm, ProfileForm,
-                            RequestInvitationForm, SkillForm, UpdateEmailForm,
-                            UpdatePasswordForm)
-from connect.accounts.models import UserLink, UserSkill
+from connect.accounts.factories import (
+    InvitedPendingFactory, RoleFactory, SkillFactory, UserFactory
+)
+from connect.accounts.forms import (
+    ActivateAccountForm, CloseAccountForm,
+    CustomUserCreationForm, CustomUserChangeForm,
+    CustomPasswordResetForm, ProfileForm, UpdateEmailForm,
+    UpdatePasswordForm
+)
+from connect.accounts.models import UserSkill
 
 
 class CustomCustomPasswordResetFormTest(TestCase):
@@ -33,7 +30,8 @@ class CustomCustomPasswordResetFormTest(TestCase):
     def test_invalid_email(self):
         form = CustomPasswordResetForm({'email': 'not valid'})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form['email'].errors, [_('Please enter a valid email address.')])
+        self.assertEqual(form['email'].errors,
+                         [_('Please enter a valid email address.')])
 
     def test_nonexistent_email(self):
         """
@@ -60,7 +58,8 @@ class CustomCustomPasswordResetFormTest(TestCase):
         # potential case where contrib.sites is not installed. Refs #16412.
         form.save(domain_override='example.com')
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, 'Reset your example.com password')
+        self.assertEqual(mail.outbox[0].subject,
+                         'Reset your example.com password')
 
     def test_inactive_user(self):
         """
@@ -169,7 +168,7 @@ class ActivateAccountFormTest(TestCase):
     def test_unmatched_passwords(self):
         response = self.client.post(
             reverse('accounts:activate-account',
-                     args=(self.pending_user.auth_token,)),
+                    args=(self.pending_user.auth_token,)),
             data={
                 'first_name': 'First',
                 'last_name': 'Last',
@@ -314,7 +313,8 @@ class SkillFormsetTest(TestCase):
         response = self.post_data(self.django.id, UserSkill.BEGINNER,
                                   self.django.id, UserSkill.INTERMEDIATE)
 
-        self.raise_formset_error(response, 'Each skill can only be entered once.')
+        self.raise_formset_error(response,
+                                 'Each skill can only be entered once.')
 
     def test_skill_without_proficiency(self):
         """
@@ -323,7 +323,8 @@ class SkillFormsetTest(TestCase):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.post_data(self.django.id, '')
 
-        self.raise_formset_error(response, 'All skills must have a proficiency.')
+        self.raise_formset_error(response,
+                                 'All skills must have a proficiency.')
 
     def test_proficiency_without_skill_name(self):
         """
@@ -333,7 +334,8 @@ class SkillFormsetTest(TestCase):
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.post_data('', UserSkill.BEGINNER)
 
-        self.raise_formset_error(response, 'All skills must have a skill name.')
+        self.raise_formset_error(response,
+                                 'All skills must have a skill name.')
 
 
 class LinkFormsetTest(TestCase):
@@ -374,7 +376,7 @@ class LinkFormsetTest(TestCase):
             }
         )
 
-    def raise_formset_error(self, response,error):
+    def raise_formset_error(self, response, error):
         self.assertFormsetError(
             response,
             formset='link_formset',
@@ -405,7 +407,8 @@ class LinkFormsetTest(TestCase):
         response = self.post_data('My Link', 'http://mylink.com',
                                   'My Link', 'http://mylink2.com')
 
-        self.raise_formset_error(response, 'Links must have unique anchors and URLs.')
+        self.raise_formset_error(response,
+                                 'Links must have unique anchors and URLs.')
 
     def test_duplicate_url(self):
         """
@@ -415,7 +418,8 @@ class LinkFormsetTest(TestCase):
         response = self.post_data('My Link', 'http://mylink.com',
                                   'My Link2', 'http://mylink.com')
 
-        self.raise_formset_error(response, 'Links must have unique anchors and URLs.')
+        self.raise_formset_error(response,
+                                 'Links must have unique anchors and URLs.')
 
     def test_anchor_without_url(self):
         """
@@ -514,10 +518,8 @@ class CloseAccountFormTest(TestCase):
 
     def form_data(self, password='pass'):
         return CloseAccountForm(
-            user = self.standard_user,
-            data = {
-                'password': password,
-            }
+            user=self.standard_user,
+            data={'password': password}
         )
 
     def test_valid_data(self):
@@ -538,5 +540,3 @@ class CloseAccountFormTest(TestCase):
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'incorrect_pass')
-
-

@@ -2,14 +2,13 @@ from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        Group, Permission, PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager, PermissionsMixin
+)
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 
-from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 
 from connect.utils import generate_salt, hash_time
@@ -75,18 +74,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
-    is_staff = models.BooleanField(_('staff status'), default=False,
-                        help_text=_('Designates whether the user can log '
-                                    'into this admin site.'))
+    is_staff = models.BooleanField(
+        _('staff status'), default=False,
+        help_text=_('Designates whether the user can log '
+                    'into this admin site.'))
 
-    is_active = models.BooleanField(_('active'), default=True,
-                        help_text=_('Designates whether this user should be '
-                                    'treated as active. Unselect this instead '
-                                    'of deleting accounts.'))
+    is_active = models.BooleanField(
+        _('active'), default=True,
+        help_text=_('Designates whether this user should be '
+                    'treated as active. Unselect this instead '
+                    'of deleting accounts.'))
 
-    is_closed = models.BooleanField(_('closed'), default=False,
-                        help_text=_('Designates whether the user has closed '
-                                    'their own account.'))
+    is_closed = models.BooleanField(
+        _('closed'), default=False,
+        help_text=_('Designates whether the user has closed '
+                    'their own account.'))
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
@@ -96,55 +98,60 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     roles = models.ManyToManyField('Role', verbose_name=_('role'),
                                    null=True, blank=True)
 
-    is_moderator = models.BooleanField(_('moderator status'), default=False,
-                        help_text=_('Designates whether the user has '
-                                    'moderator privileges.'))
+    is_moderator = models.BooleanField(
+        _('moderator status'), default=False,
+        help_text=_('Designates whether the user has '
+                    'moderator privileges.'))
 
     # Registration details
     registration_method = models.CharField(_('registration method'),
                                            max_length=3,
                                            choices=REGISTRATION_CHOICES)
 
-    applied_datetime = models.DateTimeField(_('date applied'),
-            blank=True, null=True,
-            help_text=_('When user applied for an account (if applicable)'))
+    applied_datetime = models.DateTimeField(
+        _('date applied'),
+        blank=True, null=True,
+        help_text=_('When user applied for an account (if applicable)'))
 
-    application_comments = models.TextField(_('application comments'),
-            blank=True,
-            help_text='Information user supplied when applying '
-                      'for an account (if applicable)')
+    application_comments = models.TextField(
+        _('application comments'),
+        blank=True,
+        help_text='Information user supplied when applying '
+        'for an account (if applicable)')
 
-    moderator = models.ForeignKey('self',
-                verbose_name=_('moderator'),
-                blank=True,
-                null=True,
-                limit_choices_to={'is_moderator': True},
-                help_text=_('Moderator who invited, '
-                            'approved or rejected this user'))
+    moderator = models.ForeignKey(
+        'self', verbose_name=_('moderator'),
+        blank=True, null=True,
+        limit_choices_to={'is_moderator': True},
+        help_text=_('Moderator who invited, '
+                    'approved or rejected this user'))
 
     moderator_decision = models.CharField(_('moderator decision'),
                                           max_length=3,
                                           choices=MODERATOR_CHOICES,
                                           blank=True)
 
-    decision_datetime = models.DateTimeField(_('decision datetime'),
-            blank=True,
-            null=True,
-            help_text=_('When moderator made their decision to invite, approve'
-                        ' or reject this user'))
+    decision_datetime = models.DateTimeField(
+        _('decision datetime'),
+        blank=True,
+        null=True,
+        help_text=_('When moderator made their decision to invite, approve'
+                    ' or reject this user'))
 
-    auth_token = models.CharField(_('authentication token'),
-            max_length=40,
-            blank=True,
-            help_text=_('Token for user to activate their account'))
+    auth_token = models.CharField(
+        _('authentication token'),
+        max_length=40,
+        blank=True,
+        help_text=_('Token for user to activate their account'))
 
     auth_token_is_used = models.BooleanField(_('token is used'),
                                              default=False)
 
-    activated_datetime = models.DateTimeField(_('date account activated'),
-            blank=True,
-            null=True,
-            help_text=_('Date and time when user activated their account'))
+    activated_datetime = models.DateTimeField(
+        _('date account activated'),
+        blank=True,
+        null=True,
+        help_text=_('Date and time when user activated their account'))
 
     objects = CustomUserManager()
 
@@ -175,13 +182,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
-
     def get_short_name(self):
         """
         Returns the short name for the user - required for admin.
         """
         return self.first_name
-
 
     def is_pending_activation(self):
         """
@@ -192,28 +197,27 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         else:
             return True
 
-
     def is_invited_pending_activation(self):
         """
         Checks whether the user is an invited user who has not yet activated
         their account.
         """
-        if self.registration_method == self.INVITED and self.is_pending_activation():
+        if self.registration_method == self.INVITED \
+           and self.is_pending_activation():
             return True
         else:
             return False
-
 
     def is_pending_approval(self):
         """
         Checks whether the user has requested an account and is
         awaiting a decision.
         """
-        if self.registration_method == self.REQUESTED and self.is_pending_activation():
+        if self.registration_method == self.REQUESTED \
+           and self.is_pending_activation():
             return True
         else:
             return False
-
 
     def invite_new_user(self, email, first_name, last_name):
         """
@@ -224,22 +228,20 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
         if self.is_moderator and self.has_perm('accounts.invite_user'):
             try:
-                existing_user = User.objects.get(email=email)
-                return None
-
+                User.objects.get(email=email)
             except User.DoesNotExist:
-                    new_user = create_inactive_user(email, first_name, last_name)
-                    new_user.registration_method = new_user.INVITED
-                    new_user.moderator = self
-                    new_user.moderator_decision = new_user.PRE_APPROVED
-                    new_user.decision_datetime = timezone.now()
-                    new_user.auth_token = hash_time(generate_salt())
-                    new_user.save()
-
-                    return new_user
+                new_user = create_inactive_user(email, first_name, last_name)
+                new_user.registration_method = new_user.INVITED
+                new_user.moderator = self
+                new_user.moderator_decision = new_user.PRE_APPROVED
+                new_user.decision_datetime = timezone.now()
+                new_user.auth_token = hash_time(generate_salt())
+                new_user.save()
+                return new_user
+            else:
+                return None
         else:
             raise PermissionDenied
-
 
     def reinvite_user(self, user, email):
         """
@@ -257,14 +259,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         else:
             raise PermissionDenied
 
-
     def approve_user_application(self, user):
         """
         Approve a user's application
         """
-        if self.is_moderator and self.has_perm('accounts.approve_user_application'):
+        if self.is_moderator and \
+           self.has_perm('accounts.approve_user_application'):
             user.moderator = self
-            user.moderator_decision=user.APPROVED
+            user.moderator_decision = user.APPROVED
             user.decision_datetime = timezone.now()
             user.auth_token = hash_time(generate_salt())
             user.save()
@@ -274,14 +276,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         else:
             raise PermissionDenied
 
-
     def reject_user_application(self, user):
         """
         Reject a user's application
         """
-        if self.is_moderator and self.has_perm('accounts.reject_user_application'):
+        if self.is_moderator \
+           and self.has_perm('accounts.reject_user_application'):
             user.moderator = self
-            user.moderator_decision=user.REJECTED
+            user.moderator_decision = user.REJECTED
             user.decision_datetime = timezone.now()
             user.save()
 
@@ -300,20 +302,22 @@ class AbuseReport(models.Model):
     BAN = 'BAN'
 
     ABUSE_REPORT_CHOICES = (
-       (DISMISS, _('Dismiss Report')),
-       (WARN, _('Warn User')),
-       (BAN, _('Ban User')),
+        (DISMISS, _('Dismiss Report')),
+        (WARN, _('Warn User')),
+        (BAN, _('Ban User')),
     )
 
-    logged_against = models.ForeignKey(settings.AUTH_USER_MODEL,
-                            verbose_name=_('logged against'),
-                            related_name='abuse_reports_about',
-                            help_text=_('User who is subject of abuse report'))
+    logged_against = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('logged against'),
+        related_name='abuse_reports_about',
+        help_text=_('User who is subject of abuse report'))
 
-    logged_by = models.ForeignKey(settings.AUTH_USER_MODEL,
-                            verbose_name=_('logged by'),
-                            related_name='abuse_reports_by',
-                            help_text=_('User who logged the abuse report'))
+    logged_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('logged by'),
+        related_name='abuse_reports_by',
+        help_text=_('User who logged the abuse report'))
 
     logged_datetime = models.DateTimeField(_('date and time logged'),
                                            default=timezone.now)
@@ -321,12 +325,13 @@ class AbuseReport(models.Model):
     abuse_comment = models.TextField(_('abuse comment'),
                                      help_text=_('Content of abuse report'))
 
-    moderator = models.ForeignKey(settings.AUTH_USER_MODEL,
-                            related_name='abuse_reports_moderated_by',
-                            verbose_name=_('moderator'),
-                            blank=True,
-                            null=True,
-                            help_text=_('Moderator who has decided on report'))
+    moderator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='abuse_reports_moderated_by',
+        verbose_name=_('moderator'),
+        blank=True,
+        null=True,
+        help_text=_('Moderator who has decided on report'))
 
     moderator_decision = models.CharField(_('moderator decision'),
                                           max_length=20,
@@ -335,9 +340,11 @@ class AbuseReport(models.Model):
 
     moderator_comment = models.TextField(_('moderator comment'), blank=True)
 
-    decision_datetime = models.DateTimeField(_('decision datetime'),
+    decision_datetime = models.DateTimeField(
+        _('decision datetime'),
         blank=True, null=True,
-        help_text=_('Time and date when moderator made a decision on the report'))
+        help_text=_('Time and date when moderator made a decision on the '
+                    'report'))
 
     class Meta:
         verbose_name = _('abuse report')
@@ -345,8 +352,8 @@ class AbuseReport(models.Model):
 
     def __str__(self):
         return 'Reported by {} against {}'.format(
-                                        self.logged_by.get_full_name(),
-                                        self.logged_against.get_full_name())
+            self.logged_by.get_full_name(),
+            self.logged_against.get_full_name())
 
 
 class Skill(models.Model):
@@ -398,15 +405,14 @@ class UserSkill(models.Model):
         """
         choice_values = [choice[0] for choice in self.PROFICIENCY_CHOICES]
         if '' in choice_values:
-            choice_values.remove('') # Remove the empty proficiency choice
-        choice_values.sort() # Ensure values are in the correct order
+            choice_values.remove('')  # Remove the empty proficiency choice
+        choice_values.sort()  # Ensure values are in the correct order
 
         value = choice_values.index(self.proficiency) + 1
         factor = 100 / len(choice_values)
         percentage = round(value * factor)
 
         return percentage
-
 
     class Meta:
         verbose_name = _('user skill')
@@ -485,8 +491,9 @@ class LinkBrand(models.Model):
     Recognised third-party services.
     """
     name = models.CharField(_('brand name'), max_length=100, unique=True)
-    domain = models.CharField(_('domain'), max_length=100, unique=True,
-            help_text=_('Do not include scheme '
+    domain = models.CharField(
+        _('domain'), max_length=100, unique=True, help_text=_(
+            'Do not include scheme '
             '(e.g. http://, https://)  or subdomain (e.g. www.).'
             ' Valid examples include "github.com", "facebook.com", etc.'))
 

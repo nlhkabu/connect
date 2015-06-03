@@ -1,12 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.forms.formsets import formset_factory
 
-from connect.accounts.factories import (BrandFactory, RoleFactory, SkillFactory,
-                                UserLinkFactory, UserFactory)
-from connect.accounts.forms import (BaseLinkFormSet, BaseSkillFormSet,
-                            LinkForm, SkillForm)
+from connect.accounts.factories import (
+    BrandFactory, SkillFactory, UserLinkFactory, UserFactory
+)
+from connect.accounts.forms import (
+    BaseLinkFormSet, BaseSkillFormSet, LinkForm, SkillForm
+)
 from connect.accounts.models import UserLink, UserSkill
-from connect.accounts.view_utils import match_link_to_brand, save_links, save_skills
+from connect.accounts.view_utils import (
+    match_link_to_brand, save_links, save_skills
+)
 from connect.tests import BoostedTestCase as TestCase
 
 
@@ -86,7 +90,7 @@ class ViewUtilsTest(TestCase):
             anchor='Github',
             url='http://github.com/myaccount/',
         )
-        userlinks = [link,]
+        userlinks = [link]
 
         match_link_to_brand(userlinks)
         link = UserLink.objects.get(user=link_user)

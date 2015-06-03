@@ -4,13 +4,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import views as auth_views
 from django.core import mail
-from django.core.urlresolvers import resolve, reverse
+from django.core.urlresolvers import reverse
 
-from connect.accounts.factories import (InvitedPendingFactory, ModeratorFactory,
-                                RoleFactory, SkillFactory, UserFactory)
+from connect.accounts import factories
+from connect.accounts import views
 from connect.accounts.models import UserLink, UserSkill
-from connect.accounts.views import (activate_account, close_account, profile_settings,
-                            request_invitation, update_email, update_password)
 from connect.config.factories import SiteConfigFactory
 from connect.tests import BoostedTestCase as TestCase
 
@@ -42,12 +40,14 @@ class ResetPasswordTest(TestCase):
     def test_password_reset_confirm_url_and_template(self):
         self.check_url('/accounts/password/reset/MMMM/fjdklafjsl/',
                        auth_views.password_reset_confirm)
-        response = self.client.post(reverse('accounts:password-reset-confirm',
-                                             kwargs={
-                                                'uidb64': 'MMM',
-                                                'token': 'fsaljfkdl'
-                                            }))
-        self.assertTemplateUsed(response, 'accounts/password_reset_confirm.html')
+        response = self.client.post(reverse(
+            'accounts:password-reset-confirm',
+            kwargs={
+                'uidb64': 'MMM',
+                'token': 'fsaljfkdl'
+            }))
+        self.assertTemplateUsed(response,
+                                'accounts/password_reset_confirm.html')
 
     def test_password_reset_complete_url_and_template(self):
         self.check_url('/accounts/password/reset/complete/',
@@ -62,7 +62,7 @@ class RequestInvitationTest(TestCase):
     def setUp(self):
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
-        self.moderator = ModeratorFactory()
+        self.moderator = factories.ModeratorFactory()
 
     def post_data(self, first='First'):
         return self.client.post(
@@ -76,7 +76,8 @@ class RequestInvitationTest(TestCase):
         )
 
     def test_url_and_template(self):
-        self.check_url('/accounts/request-invitation/', request_invitation)
+        self.check_url('/accounts/request-invitation/',
+                       views.request_invitation)
         self.check_template('accounts:request-invitation',
                             'accounts/request_invitation.html')
 
@@ -84,33 +85,34 @@ class RequestInvitationTest(TestCase):
         """
         Test that the request has been saved as a new user.
         """
-        response = self.post_data()
         user = User.objects.get(email='new_test@test.test')
 
         self.assertEqual(user.registration_method, 'REQ')
         self.assertIsNotNone(user.applied_datetime)
-        self.assertEqual(user.application_comments, 'Please give me an account')
+        self.assertEqual(user.application_comments,
+                         'Please give me an account')
 
     def test_notification_emails_sent_to_moderators(self):
         # Setup moderators to receive emails
         factory.create_batch(
-            ModeratorFactory,
+            factories.ModeratorFactory,
             3,
             moderator=self.moderator
         )
 
-        response = self.post_data()
-
         expected_subject = 'New account request at {}'.format(self.site.name)
         expected_intro = 'Hi {},'.format('Moderator')
-        expected_content = 'new account application has be registered at {}'.format(
-            self.site.name
-        )
+        expected_content = (
+            'new account application has be registered at {}'
+        ).format(self.site.name)
 
-        expected_url = ('href="http://testserver/moderation/review-applications/"')
+        expected_url = (
+            'href="http://testserver/moderation/review-applications/"'
+        )
         email = mail.outbox[0]
 
-        self.assertEqual(len(mail.outbox), 4) # 3 created as batch, plus original.
+        # 3 created as batch, plus original.
+        self.assertEqual(len(mail.outbox), 4)
         self.assertEqual(email.subject, expected_subject)
         self.assertIn(expected_intro, email.body)
         self.assertIn(expected_content, email.body)
@@ -126,26 +128,25 @@ class RequestInvitationTest(TestCase):
 
 class ActivateAccountTest(TestCase):
     def setUp(self):
-        self.invited_user = InvitedPendingFactory(
+        self.invited_user = factories.InvitedPendingFactory(
             email='validuser@test.test',
             auth_token='mytoken',
         )
-        self.activated_user = InvitedPendingFactory(
+        self.activated_user = factories.InvitedPendingFactory(
             auth_token='used',
             auth_token_is_used=True,
         )
 
     def test_url_and_template(self):
-        self.check_url('/accounts/activate/mytoken', activate_account)
-        response = self.client.get(reverse('accounts:activate-account',
-                                            kwargs={'token': 'mytoken'}))
+        self.check_url('/accounts/activate/mytoken', views.activate_account)
+        response = self.client.get(reverse(
+            'accounts:activate-account', kwargs={'token': 'mytoken'}))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/activate_account.html')
         # Test we see appropriate form
         expected_html = '<legend>Activate Account</legend>'
         self.assertInHTML(expected_html, response.content.decode())
-
 
     def test_invalid_token(self):
         """
@@ -155,7 +156,6 @@ class ActivateAccountTest(TestCase):
         response = self.client.get('/accounts/activate/notoken')
 
         self.assertEqual(response.status_code, 404)
-
 
     def test_used_token(self):
         """
@@ -199,10 +199,10 @@ class ActivateAccountTest(TestCase):
 
 class ProfileSettingsTest(TestCase):
     def setUp(self):
-        self.standard_user = UserFactory()
+        self.standard_user = factories.UserFactory()
 
     def test_url(self):
-        self.check_url('/accounts/profile/', profile_settings)
+        self.check_url('/accounts/profile/', views.profile_settings)
 
     def test_authenticated_user_can_access_page(self):
         self.client.login(username=self.standard_user.email, password='pass')
@@ -214,14 +214,14 @@ class ProfileSettingsTest(TestCase):
     def test_unauthenticated_user_cannot_access_page(self):
         response = self.client.get(reverse('accounts:profile-settings'))
 
-        #Unauthenticated user is redirected to login page
+        # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response, '/accounts/login/?next=/accounts/profile/')
 
     def test_can_update_profile(self):
         # Setup skills and roles
-        django = SkillFactory(name='django')
-        mentor = RoleFactory(name='mentor')
+        django = factories.SkillFactory(name='django')
+        mentor = factories.RoleFactory(name='mentor')
 
         self.client.login(username=self.standard_user.email, password='pass')
         response = self.client.post(
@@ -265,7 +265,7 @@ class ProfileSettingsTest(TestCase):
 
 class UpdateEmailTest(TestCase):
     def setUp(self):
-        self.standard_user = UserFactory()
+        self.standard_user = factories.UserFactory()
 
     def post_data(self):
         return self.client.post(
@@ -277,12 +277,12 @@ class UpdateEmailTest(TestCase):
         )
 
     def test_url(self):
-        self.check_url('/accounts/update/email/', update_email)
+        self.check_url('/accounts/update/email/', views.update_email)
 
     def test_unautheticated_user_cannot_update_email(self):
         response = self.post_data()
 
-        #Unauthenticated user is redirected to login page
+        # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response, '/accounts/login/?next=/accounts/update/email/')
 
@@ -306,7 +306,7 @@ class UpdateEmailTest(TestCase):
 
 class UpdatePasswordTest(TestCase):
     def setUp(self):
-        self.standard_user = UserFactory()
+        self.standard_user = factories.UserFactory()
 
     def post_data(self):
         return self.client.post(
@@ -318,12 +318,12 @@ class UpdatePasswordTest(TestCase):
         )
 
     def test_url(self):
-        self.check_url('/accounts/update/password/', update_password)
+        self.check_url('/accounts/update/password/', views.update_password)
 
     def test_unauthenticated_user_cannot_update_password(self):
         response = self.post_data()
 
-        #Unauthenticated user is redirected to login page
+        # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response, '/accounts/login/?next=/accounts/update/password/')
 
@@ -348,7 +348,7 @@ class UpdatePasswordTest(TestCase):
 
 class CloseAccountTest(TestCase):
     def setUp(self):
-        self.standard_user = UserFactory()
+        self.standard_user = factories.UserFactory()
 
     def post_valid_data(self):
         return self.client.post(
@@ -359,12 +359,12 @@ class CloseAccountTest(TestCase):
         )
 
     def test_url(self):
-        self.check_url('/accounts/close/', close_account)
+        self.check_url('/accounts/close/', views.close_account)
 
     def test_unautheticated_user_cannot_close_account(self):
         response = self.post_valid_data()
 
-        #Unauthenticated user is redirected to login page
+        # Unauthenticated user is redirected to login page
         self.assertRedirects(
             response, '/accounts/login/?next=/accounts/close/')
 

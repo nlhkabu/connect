@@ -1,11 +1,11 @@
 from django.core.exceptions import PermissionDenied
 from django.test import TestCase
 
-from connect.accounts.factories import (AbuseReportFactory, BrandFactory,
-                                InvitedPendingFactory, ModeratorFactory,
-                                RequestedPendingFactory, RoleFactory,
-                                SkillFactory, UserFactory, UserLinkFactory,
-                                UserSkillFactory)
+from connect.accounts.factories import (
+    AbuseReportFactory, BrandFactory, InvitedPendingFactory, ModeratorFactory,
+    RequestedPendingFactory, RoleFactory, SkillFactory, UserFactory,
+    UserLinkFactory, UserSkillFactory
+)
 from connect.accounts.models import CustomUser, UserLink, UserSkill
 
 
@@ -51,7 +51,7 @@ class UserModelTest(TestCase):
                                               first_name='standard_user',
                                               last_name='user')
 
-        self.assertEqual(user.email,'standard_user@test.test')
+        self.assertEqual(user.email, 'standard_user@test.test')
         self.assertEqual(user.first_name, 'standard_user')
         self.assertEqual(user.last_name, 'user')
         self.assertEqual(user.registration_method, CustomUser.INVITED)
@@ -62,7 +62,7 @@ class UserModelTest(TestCase):
 
     def test_standard_user_user_cannot_invite_new_user(self):
         with self.assertRaises(PermissionDenied):
-            user = self.standard_user.invite_new_user(
+            self.standard_user.invite_new_user(
                 email='standard_user@test.test',
                 first_name='standard_user',
                 last_name='user'
@@ -76,22 +76,21 @@ class UserModelTest(TestCase):
                                      email='reset_email@test.test')
 
         self.assertEqual(self.invited_pending.email, 'reset_email@test.test')
-        self.assertNotEqual(self.invited_pending.decision_datetime, decision_datetime)
+        self.assertNotEqual(self.invited_pending.decision_datetime,
+                            decision_datetime)
         self.assertNotEqual(self.invited_pending.auth_token, auth_token)
 
     def test_standard_user_user_cannot_reinvite_user(self):
-        decision_datetime = self.invited_pending.decision_datetime
-        auth_token = self.invited_pending.auth_token
-
         with self.assertRaises(PermissionDenied):
             self.standard_user.reinvite_user(user=self.invited_pending,
-                                        email='reset_email@test.test')
+                                             email='reset_email@test.test')
 
     def test_moderator_can_approve_user_application(self):
         self.moderator.approve_user_application(self.requested_pending)
 
         self.assertEqual(self.requested_pending.moderator, self.moderator)
-        self.assertEqual(self.requested_pending.moderator_decision, CustomUser.APPROVED)
+        self.assertEqual(self.requested_pending.moderator_decision,
+                         CustomUser.APPROVED)
         self.assertIsNotNone(self.requested_pending.decision_datetime)
         self.assertIsNotNone(self.requested_pending.auth_token)
 
@@ -103,7 +102,8 @@ class UserModelTest(TestCase):
         self.moderator.reject_user_application(self.requested_pending)
 
         self.assertEqual(self.requested_pending.moderator, self.moderator)
-        self.assertEqual(self.requested_pending.moderator_decision, CustomUser.REJECTED)
+        self.assertEqual(self.requested_pending.moderator_decision,
+                         CustomUser.REJECTED)
         self.assertIsNotNone(self.requested_pending.decision_datetime)
         self.assertIsNotNone(self.requested_pending.auth_token)
 
@@ -147,14 +147,14 @@ class UserSkillTest(TestCase):
 
 class RoleTest(TestCase):
     def test_string_method(self):
-        role=RoleFactory(name='MyRole')
+        role = RoleFactory(name='MyRole')
 
         self.assertEqual(role.__str__(), 'MyRole')
 
 
 class UserLinkTest(TestCase):
     def setUp(self):
-        self.github = BrandFactory() # Github is default brand.
+        self.github = BrandFactory()  # Github is default brand.
 
     def test_string_method(self):
         user_link = UserLinkFactory(anchor='MyLink')
@@ -205,9 +205,8 @@ class LinkBrandTest(TestCase):
     def test_false_positive_does_not_apply_brand(self):
         UserLinkFactory(url='http://notreallyfacebook.com/me')
 
-        new_brand = BrandFactory(name='Facebook',
-                                 domain='facebook.com',
-                                 fa_icon='fa-facebook')
+        BrandFactory(name='Facebook', domain='facebook.com',
+                     fa_icon='fa-facebook')
 
         # Retreive the link to check that it does not have the new brand
         link = UserLink.objects.get(url='http://notreallyfacebook.com/me')

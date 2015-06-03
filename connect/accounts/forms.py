@@ -14,11 +14,13 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from connect.accounts.models import CustomUser, Role, Skill, UserSkill
-from connect.accounts.utils import (get_user, invite_user_to_reactivate_account,
-                    validate_email_availability)
+from connect.accounts.utils import (
+    get_user, invite_user_to_reactivate_account, validate_email_availability
+)
 
 
 User = get_user_model()
+
 
 @parsleyfy
 class CustomPasswordResetForm(forms.Form):
@@ -36,7 +38,7 @@ class CustomPasswordResetForm(forms.Form):
         })
 
     def save(self, domain_override=None,
-             subject_template_name='accounts/emails/password_reset_subject.txt',
+             subject_template_name='accounts/emails/password_reset_subject.txt',  # NoQA
              email_template_name='accounts/emails/password_reset_email.html',
              use_https=False, token_generator=default_token_generator,
              from_email=None, request=None, html_email_template_name=None):
@@ -70,7 +72,8 @@ class CustomPasswordResetForm(forms.Form):
                 'user': user,
                 'token': token_generator.make_token(user),
                 'protocol': 'https' if use_https else 'http',
-                'link_color': 'e51e41', # TODO: dynamically retrieve color from CSS
+                # TODO: dynamically retrieve color from CSS
+                'link_color': 'e51e41'
             }
 
             subject = loader.render_to_string(subject_template_name, context)
@@ -145,11 +148,12 @@ class RequestInvitationForm(forms.Form):
         })
 
     comments = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'placeholder': _('Please explain why you would like to join this site'),
-        }),
+        widget=forms.Textarea(attrs={'placeholder': _('Please explain why you '
+                                                      'would like to join '
+                                                      'this site')}),
         error_messages={
-            'required': _('Please describe why you would like to create an account.')
+            'required': _('Please describe why you would like '
+                          'to create an account.')
         }
     )
 
@@ -246,7 +250,6 @@ class BaseSkillFormSet(BaseFormSet):
             return
 
         skills = []
-        duplicates = False
 
         for form in self.forms:
             if form.cleaned_data:
@@ -284,13 +287,10 @@ class SkillForm(forms.Form):
     Form for individual user skills
     """
     skills = Skill.objects.all()
-    skill = forms.ModelChoiceField(
-                        queryset=skills,
-                        required=False)
+    skill = forms.ModelChoiceField(queryset=skills, required=False)
 
-    proficiency = forms.ChoiceField(
-                        choices=UserSkill.PROFICIENCY_CHOICES,
-                        required=False)
+    proficiency = forms.ChoiceField(choices=UserSkill.PROFICIENCY_CHOICES,
+                                    required=False)
 
 
 class BaseLinkFormSet(BaseFormSet):
@@ -346,21 +346,16 @@ class LinkForm(forms.Form):
     Form for individual user links
 
     """
-    anchor = forms.CharField(
-                    max_length=100,
-                    widget=forms.TextInput(attrs={
-                        'placeholder': _('Link Name / Anchor Text'),
-                    }),
-                    required=False)
+    anchor = forms.CharField(max_length=100,
+                             widget=forms.TextInput(attrs={
+                                 'placeholder': _('Link Name / Anchor Text'),
+                             }),
+                             required=False)
 
     url = forms.URLField(
-                    widget=forms.URLInput(attrs={
-                        'placeholder': _('URL'),
-                    }),
-                    error_messages={
-                        'invalid': _('Please enter a valid URL.')
-                    },
-                    required=False)
+        widget=forms.URLInput(attrs={'placeholder': _('URL')}),
+        error_messages={'invalid': _('Please enter a valid URL.')},
+        required=False)
 
 
 class RoleModelMultipleChoiceField(forms.ModelMultipleChoiceField):
@@ -379,10 +374,9 @@ class ProfileForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(ProfileForm, self).__init__(*args, **kwargs)
 
-
         self.fields['first_name'] = forms.CharField(
             max_length=30,
-            initial = self.user.first_name,
+            initial=self.user.first_name,
             widget=forms.TextInput(attrs={
                 'placeholder': _('First Name'),
             }),
@@ -392,7 +386,7 @@ class ProfileForm(forms.Form):
 
         self.fields['last_name'] = forms.CharField(
             max_length=30,
-            initial = self.user.last_name,
+            initial=self.user.last_name,
             widget=forms.TextInput(attrs={
                 'placeholder': _('Last Name'),
             }),
@@ -401,20 +395,20 @@ class ProfileForm(forms.Form):
             })
 
         self.fields['bio'] = forms.CharField(
-                        initial = self.user.bio,
-                        widget=forms.Textarea(attrs={
-                            'class': 'bio',
-                            'placeholder': _('Add some details about yourself...'),
-                            'rows': 'auto',
-                        }),
-                        required=False)
+            initial=self.user.bio,
+            widget=forms.Textarea(attrs={
+                'class': 'bio',
+                'placeholder': _('Add some details about yourself...'),
+                'rows': 'auto',
+            }),
+            required=False)
 
         roles = Role.objects.all()
         self.fields['roles'] = RoleModelMultipleChoiceField(
-                                   initial = self.user.roles.all(),
-                                   queryset=roles,
-                                   widget=forms.CheckboxSelectMultiple(),
-                                   required=False)
+            initial=self.user.roles.all(),
+            queryset=roles,
+            widget=forms.CheckboxSelectMultiple(),
+            required=False)
 
 
 @parsleyfy
@@ -427,7 +421,7 @@ class UpdateEmailForm(forms.Form):
         super(UpdateEmailForm, self).__init__(*args, **kwargs)
 
         self.fields['email'] = forms.EmailField(
-            initial = self.user.email,
+            initial=self.user.email,
             widget=forms.EmailInput(attrs={
                 'placeholder': _('Email')
             }),
