@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
-from connect.utils import generate_salt, hash_time, send_connect_email
+from connect.utils import send_connect_email, generate_unique_id
 
 
 def create_inactive_user(email, first_name, last_name):
@@ -32,7 +32,7 @@ def invite_user_to_reactivate_account(user, request):
     their account.
     """
     # Build and send a reactivation link for closed account
-    user.auth_token = hash_time(generate_salt())  # Reset token
+    user.auth_token = generate_unique_id()  # Reset token
     user.auth_token_is_used = False
     user.save()
 

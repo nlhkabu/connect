@@ -11,7 +11,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from connect.utils import generate_salt, hash_time
+from connect.utils import generate_unique_id
 from connect.accounts.utils import create_inactive_user
 
 
@@ -235,7 +235,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                 new_user.moderator = self
                 new_user.moderator_decision = new_user.PRE_APPROVED
                 new_user.decision_datetime = timezone.now()
-                new_user.auth_token = hash_time(generate_salt())
+                new_user.auth_token = generate_unique_id()
                 new_user.save()
                 return new_user
             else:
@@ -250,7 +250,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         if self.is_moderator and self.has_perm('accounts.invite_user'):
             # Reset email, set a new token and update decision datetime
             user.email = email
-            user.auth_token = hash_time(generate_salt())
+            user.auth_token = generate_unique_id()
             user.decision_datetime = timezone.now()
             user.save()
 
@@ -268,7 +268,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             user.moderator = self
             user.moderator_decision = user.APPROVED
             user.decision_datetime = timezone.now()
-            user.auth_token = hash_time(generate_salt())
+            user.auth_token = generate_unique_id()
             user.save()
 
             return user
