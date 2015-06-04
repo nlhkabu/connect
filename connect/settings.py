@@ -1,5 +1,6 @@
 import os
 import cbs
+import dj_database_url
 from cbs import BaseSettings as DefaultSettings
 from django.utils.translation import ugettext_lazy as _
 
@@ -68,16 +69,15 @@ class BaseSettings(DefaultSettings):
     TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
     # DATABASE
+    # override this config by setting an environment called DATABASE_URL,
+    # eg: postgres://username:password@ip-addres:port/database-name
+    # or: sqlite:///path/to/my-database.sqlite3
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.getenv('DB_NAME', 'testdb'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', ''),
-            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        },
+        'default': dj_database_url.config(
+            default='postgres://postgres@localhost:5432/testdb'
+        )
     }
+
 
     # TIME / LOCATION CONFIGURATION
     TIME_ZONE = 'Australia/Melbourne'
@@ -186,6 +186,7 @@ class LocalSettings(BaseSettings):
     }
 
 
+
 class StagingSettings(BaseSettings):
     # EMAIL
     @property
@@ -203,9 +204,7 @@ class StagingSettings(BaseSettings):
 
 
 class ProductionSettings(StagingSettings):
-    # DATABASE
-    import dj_database_url
-    DATABASES = {'default': dj_database_url.config()}
+    pass
 
 
 # Now, let's activate our settings
