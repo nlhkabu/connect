@@ -15,20 +15,18 @@ Feature: Activate Account
     Scenario Outline: Invited user submits invalid data to the activate account form
         Given I am "an invited, but not active user"
         When I visit my activation page "7891011"
-        And I enter "<first name>" into the "first name" field
-        And I enter "<last name>" into the "last name" field
+        And I enter "<full name>" into the "full name" field
         And I enter "<new pass>" into the "password" field
         And I enter "<confirm pass>" into the "confirm password" field
         And I submit the form
         Then I see "<error>"
 
         Examples:
-            |   first name  |   last name   |    new pass   |   confirm pass    |   error                                           |
-            |   ""          |   Last        |    pass       |   pass            |   Please enter your first name.                   |
-            |   First       |   ""          |    pass       |   pass            |   Please enter your last name.                    |
-            |   First       |   Last        |    ""         |   pass            |   Please select a password.                       |
-            |   First       |   Last        |    pass       |   ""              |   Please confirm your password.                   |
-            |   First       |   Last        |    pass       |   notmatching     |   Your passwords do not match. Please try again.  |
+            |   full name   |    new pass   |   confirm pass    |   error                                           |
+            |   ""          |    pass       |   pass            |   Please enter your full name.                    |
+            |   First Last  |    ""         |   pass            |   Please select a password.                       |
+            |   First Last  |    pass       |   ""              |   Please confirm your password.                   |
+            |   First Last  |    pass       |   notmatching     |   Your passwords do not match. Please try again.  |
 
     Scenario: Invited user activates their account
         Given I am "an invited, but not active user"

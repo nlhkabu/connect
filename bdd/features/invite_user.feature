@@ -11,19 +11,17 @@ Feature: Invite User
     Scenario Outline: Moderator submits invalid data to the invite user form
         Given I am "a logged in moderator"
         When I visit the "invite user" page
-        And I enter "<first name>" into the "first name" field
-        And I enter "<last name>" into the "last name" field
+        And I enter "<full name>" into the "full name" field
         And I enter "<email>" into the "email" field
         And I submit the form
         Then I see "<error>"
 
         Examples:
-            |   first name  |   last name   |    email                      |   error                                                               |
-            |   ""          |   Last        |    new.user@test.test         |   Please enter a first name.                                          |
-            |   First       |   ""          |    new.user@test.test         |   Please enter a last name.                                           |
-            |   First       |   Last        |    ""                         |   Please enter an email address.                                      |
-            |   First       |   Last        |    invalidemail               |   Please enter a valid email address.                                 |
-            |   First       |   Last        |    standard.user@test.test    |   Sorry, this email address is already registered to another user.    |
+            |   full name   |    email                      |   error                                                               |
+            |   ""          |    new.user@test.test         |   Please enter a full name.                                           |
+            |   First Last  |    ""                         |   Please enter an email address.                                      |
+            |   First Last  |    invalidemail               |   Please enter a valid email address.                                 |
+            |   First Last  |    standard.user@test.test    |   Sorry, this email address is already registered to another user.    |
 
     Scenario: Moderator invites new user
         Given I am "a logged in moderator"
