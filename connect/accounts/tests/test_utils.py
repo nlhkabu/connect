@@ -23,18 +23,17 @@ class AccountUtilsTest(TestCase):
         self.site = get_current_site(self.client.request)
         self.site.config = SiteConfigFactory(site=self.site)
         self.closed_user = UserFactory(
-            first_name='Closed',
+            full_name='Closed',
             email='closed.user@test.test',
             is_closed=True,
         )
 
     def test_create_inactive_user(self):
-        user = create_inactive_user('test@test.test', 'first', 'last')
+        user = create_inactive_user('test@test.test', 'first last')
         moderators = Group.objects.get(name='moderators')
 
         self.assertEqual(user.email, 'test@test.test')
-        self.assertEqual(user.first_name, 'first')
-        self.assertEqual(user.last_name, 'last')
+        self.assertEqual(user.full_name, 'first last')
         self.assertEqual(user.is_active, False)
         self.assertEqual(user.is_moderator, False)
         self.assertNotIn(moderators, user.groups.all())
@@ -60,7 +59,7 @@ class AccountUtilsTest(TestCase):
         invite_user_to_reactivate_account(self.closed_user, request)
 
         expected_subject = 'Reactivate your {} account'.format(self.site.name)
-        expected_intro = 'Hi {},'.format(self.closed_user.first_name)
+        expected_intro = 'Hi {},'.format(self.closed_user.full_name)
         expected_content = '{} using this email address.'.format(
             self.site.name)
         expected_url = 'http://testserver/accounts/activate/{}'.format(

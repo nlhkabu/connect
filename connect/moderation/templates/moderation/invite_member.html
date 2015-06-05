@@ -22,26 +22,12 @@
             {% csrf_token %}
             {{ invitation_form.form_type }}
             <dl>
-                <dt>{% trans "First Name" %}</dt>
+                <dt>{% trans "Full Name" %}</dt>
                 <dd>
-                    {{ invitation_form.first_name }}
-                    {% if invitation_form.first_name.errors %}
+                    {{ invitation_form.full_name }}
+                    {% if invitation_form.full_name.errors %}
                         <span class="form-error">
-                            {% for error in invitation_form.first_name.errors %}
-                                <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
-                            {% endfor %}
-                        </span>
-                    {% endif %}
-                </dd>
-                <span class="clearfix"></span>
-            </dl>
-            <dl>
-                <dt>{% trans "Last Name" %}</dt>
-                <dd>
-                    {{ invitation_form.last_name }}
-                    {% if invitation_form.last_name.errors %}
-                        <span class="form-error">
-                            {% for error in invitation_form.last_name.errors %}
+                            {% for error in invitation_form.full_name.errors %}
                                 <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
                             {% endfor %}
                         </span>

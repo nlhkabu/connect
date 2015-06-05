@@ -32,7 +32,7 @@ class UserSkillInline(admin.TabularInline):
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Personal info'), {'fields': ('full_name',)}),
         (_('Registration info'), {'fields': ('registration_method',
                                              'application_comments',
                                              'moderator',
@@ -56,8 +56,8 @@ class CustomUserAdmin(UserAdmin):
     )
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
-    list_display = ('email', 'first_name', 'last_name', 'is_staff')
-    search_fields = ('email', 'first_name', 'last_name')
+    list_display = ('email', 'full_name', 'is_staff')
+    search_fields = ('email', 'full_name')
     ordering = ('email',)
 
     inlines = (UserSkillInline, UserLinkInline, UserAbuseReportInline)

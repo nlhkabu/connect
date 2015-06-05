@@ -11,8 +11,7 @@ def impl(context, url):
 @then('I see the activate account form, prepopulated with my data')
 def impl(context):
     assert context.browser.find_by_css('.activate-account').visible
-    assert context.browser.find_by_name('first_name').value == 'Inactive'
-    assert context.browser.find_by_name('last_name').value == 'User'
+    assert context.browser.find_by_name('full_name').value == 'Inactive User'
 
 
 # Unique to Scenario: Invited user activates their account

@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy
 from connect.utils import send_connect_email, generate_unique_id
 
 
-def create_inactive_user(email, first_name, last_name):
+def create_inactive_user(email, full_name):
     """
     Create inactive user with basic details.
     Used when moderators invite new users and when a member of the public
@@ -19,8 +19,7 @@ def create_inactive_user(email, first_name, last_name):
 
     user = User.objects.create_user(email)
     user.is_active = False
-    user.first_name = first_name
-    user.last_name = last_name
+    user.full_name = full_name
     user.set_unusable_password()
 
     return user

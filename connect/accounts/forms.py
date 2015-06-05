@@ -131,14 +131,9 @@ class RequestInvitationForm(forms.Form):
         self.request = kwargs.pop('request', None)
         super(RequestInvitationForm, self).__init__(*args, **kwargs)
 
-    first_name = forms.CharField(
+    full_name = forms.CharField(
         max_length=30,
-        error_messages={'required': _('Please enter your first name.')}
-    )
-
-    last_name = forms.CharField(
-        max_length=30,
-        error_messages={'required': _('Please enter your last name.')}
+        error_messages={'required': _('Please enter your full name.')}
     )
 
     email = forms.EmailField(
@@ -198,16 +193,10 @@ class ActivateAccountForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(ActivateAccountForm, self).__init__(*args, **kwargs)
 
-        self.fields['first_name'] = forms.CharField(
-            initial=self.user.first_name,
+        self.fields['full_name'] = forms.CharField(
+            initial=self.user.full_name,
             error_messages={
-                'required': _('Please enter your first name.')
-            })
-
-        self.fields['last_name'] = forms.CharField(
-            initial=self.user.last_name,
-            error_messages={
-                'required': _('Please enter your last name.')
+                'required': _('Please enter your full name.')
             })
 
     password = forms.CharField(
@@ -374,24 +363,14 @@ class ProfileForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super(ProfileForm, self).__init__(*args, **kwargs)
 
-        self.fields['first_name'] = forms.CharField(
+        self.fields['full_name'] = forms.CharField(
             max_length=30,
-            initial=self.user.first_name,
+            initial=self.user.full_name,
             widget=forms.TextInput(attrs={
-                'placeholder': _('First Name'),
+                'placeholder': _('Full Name'),
             }),
             error_messages={
-                'required': _('Please enter your first name.')
-            })
-
-        self.fields['last_name'] = forms.CharField(
-            max_length=30,
-            initial=self.user.last_name,
-            widget=forms.TextInput(attrs={
-                'placeholder': _('Last Name'),
-            }),
-            error_messages={
-                'required': _('Please enter your last name.')
+                'required': _('Please enter your full name.')
             })
 
         self.fields['bio'] = forms.CharField(

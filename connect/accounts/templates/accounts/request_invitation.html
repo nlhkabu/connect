@@ -19,24 +19,10 @@
                 <dl>
                     <dt>{% trans "First Name" %}</dt>
                     <dd>
-                        {{ form.first_name }}
-                        {% if form.first_name.errors %}
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
                             <span class="form-error">
-                                {% for error in form.first_name.errors %}
-                                    <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
-                                {% endfor %}
-                            </span>
-                        {% endif %}
-                    </dd>
-                    <span class="clearfix"></span>
-                </dl>
-                <dl>
-                    <dt>{% trans "Last Name" %}</dt>
-                    <dd>
-                        {{ form.last_name }}
-                        {% if form.last_name.errors %}
-                            <span class="form-error">
-                                {% for error in form.last_name.errors %}
+                                {% for error in form.full_name.errors %}
                                     <span><i class="fa fa-exclamation-triangle"></i>{{ error|escape }}</span>
                                 {% endfor %}
                             </span>

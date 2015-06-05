@@ -26,8 +26,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = CustomUser
 
-    first_name = 'Standard'
-    last_name = 'User'
+    full_name = 'Standard'
     # Emails must be unique - so use a sequence here:
     email = factory.Sequence(lambda n: 'user.{}@test.test'.format(n))
     password = make_password('pass')
@@ -67,7 +66,7 @@ class ModeratorFactory(UserFactory):
     """
     Creates a moderator in 'moderators' group
     """
-    first_name = 'Moderator'
+    full_name = 'Moderator'
     is_moderator = True
     groups = Group.objects.filter(name='moderators')
 
@@ -80,8 +79,7 @@ class InvitedPendingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = CustomUser
 
-    first_name = 'Invited Pending'
-    last_name = 'User'
+    full_name = 'Invited Pending User'
     email = factory.Sequence(
         lambda username: 'invited.pending.{}@test.test'.format(username))
 
@@ -103,8 +101,7 @@ class RequestedPendingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = CustomUser
 
-    first_name = 'Requested Pending'
-    last_name = 'User'
+    full_name = 'Requested Pending User'
     email = factory.Sequence(
         lambda username: 'requested.pending.{}@test.test'.format(username))
     registration_method = CustomUser.REQUESTED
