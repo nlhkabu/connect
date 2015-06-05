@@ -93,8 +93,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # Custom connect fields
     bio = models.TextField(_('biography'), blank=True)
 
-    roles = models.ManyToManyField('Role', verbose_name=_('role'),
-                                   null=True, blank=True)
+    roles = models.ManyToManyField('Role', verbose_name=_('role'), blank=True)
 
     is_moderator = models.BooleanField(
         _('moderator status'), default=False,
@@ -388,7 +387,6 @@ class UserSkill(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("user"))
     skill = models.ForeignKey(Skill, verbose_name=_('skill'))
     proficiency = models.IntegerField(_('proficiency'),
-                                      max_length=2,
                                       choices=PROFICIENCY_CHOICES,
                                       default=BEGINNER)
 
