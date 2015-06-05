@@ -1,5 +1,7 @@
 language: python
 python: 2.7
+addons:
+  postgresql: "9.4"
 env:
   - TOX_ENV=py34-1.7
   - TOX_ENV=py34-1.8
