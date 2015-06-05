@@ -39,7 +39,7 @@ def impl(context):
 def impl(context):
     context.browser.find_by_css('.show-warnings').click()
 
-@then('I see the proir warnings modal, with information inside it')
+@then('I see the prior warnings modal, with information inside it')
 def impl(context):
     assert context.browser.is_text_present('One prior warning for Standard User')
     assert context.browser.is_text_present('This is a complaint', wait_time=20) # Default from our factory
