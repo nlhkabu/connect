@@ -74,6 +74,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
+    full_name = models.CharField(_('full name'), max_length=100, blank=True)
+
     is_staff = models.BooleanField(
         _('staff status'), default=False,
         help_text=_('Designates whether the user can log '
