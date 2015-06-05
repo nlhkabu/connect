@@ -23,7 +23,7 @@ class InviteMemberForm(forms.Form):
     full_name = forms.CharField(
         max_length=100,
         error_messages={
-            'required': _('Please enter a name.')
+            'required': _('Please enter a full name.')
         })
 
     email = forms.EmailField(

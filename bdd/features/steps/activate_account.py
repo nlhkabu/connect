@@ -18,8 +18,7 @@ def impl(context):
 @when('I activate my account')
 def impl(context):
     context.execute_steps('''
-        when I enter "First" into the "first name" field
-         and I enter "Last" into the "last name" field
+        when I enter "First Last" into the "full name" field
          and I enter "pass" into the "password" field
          and I enter "pass" into the "confirm password" field
          and I submit the form
