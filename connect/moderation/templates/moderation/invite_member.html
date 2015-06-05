@@ -22,7 +22,7 @@
             {% csrf_token %}
             {{ invitation_form.form_type }}
             <dl>
-                <dt>{% trans "Full Name" %}</dt>
+                <dt>{% trans "Name" %}</dt>
                 <dd>
                     {{ invitation_form.full_name }}
                     {% if invitation_form.full_name.errors %}

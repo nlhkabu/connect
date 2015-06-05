@@ -367,7 +367,7 @@ class ProfileForm(forms.Form):
             max_length=30,
             initial=self.user.full_name,
             widget=forms.TextInput(attrs={
-                'placeholder': _('Full Name'),
+                'placeholder': _('Name'),
             }),
             error_messages={
                 'required': _('Please enter your full name.')
