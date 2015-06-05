@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-06 17:51+1100\n"
+"POT-Creation-Date: 2015-06-05 15:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,111 +17,135 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:75
+#: forms.py:26
+msgid "Please enter a full name."
+msgstr ""
+
+#: forms.py:31 forms.py:58
+msgid "Please enter an email address."
+msgstr ""
+
+#: forms.py:32 forms.py:59
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: forms.py:97
+msgid "Please confirm that you wish to revoke this invitation."
+msgstr ""
+
+#: forms.py:111
 msgid ""
 "Please explain your decision. This information will not be sent to the user, "
 "but will be recorded in the moderation logs."
 msgstr ""
 
-#: forms.py:112
+#: forms.py:115 forms.py:149
+msgid "Please explain your decision."
+msgstr ""
+
+#: forms.py:127
+msgid "Please describe your complaint."
+msgstr ""
+
+#: forms.py:144
 msgid ""
 "Please explain your decision. This information will be sent to both users "
 "and recorded in the moderation logs."
 msgstr ""
 
-#: forms.py:130
+#: forms.py:165
 msgid "All"
 msgstr ""
 
-#: forms.py:131
+#: forms.py:166
 msgid "Today"
 msgstr ""
 
-#: forms.py:132
+#: forms.py:167
 msgid "Yesterday"
 msgstr ""
 
-#: forms.py:133
+#: forms.py:168
 msgid "This Week (Last 7 days)"
 msgstr ""
 
-#: forms.py:134
+#: forms.py:169
 msgid "Custom Date Range"
 msgstr ""
 
-#: forms.py:152
+#: forms.py:188
 msgid "Start Date"
 msgstr ""
 
-#: forms.py:164
+#: forms.py:200
 msgid "End Date"
 msgstr ""
 
-#: forms.py:185
-msgid "To filter by date, please provide a start and end date"
+#: forms.py:220
+msgid "To filter by date, please provide a start and end date."
 msgstr ""
 
-#: models.py:26
+#: models.py:25
 msgid "Invitation"
 msgstr ""
 
-#: models.py:27
+#: models.py:26
 msgid "Invitation Resent"
 msgstr ""
 
-#: models.py:28
+#: models.py:27
 msgid "Application Approved"
 msgstr ""
 
-#: models.py:29
+#: models.py:28
 msgid "Application Rejected"
 msgstr ""
 
-#: models.py:30
+#: models.py:29
 msgid "Abuse Report Dismissed"
 msgstr ""
 
-#: models.py:31
+#: models.py:30
 msgid "Official Warning"
 msgstr ""
 
-#: models.py:32 templates/moderation/review_abuse.html:59
+#: models.py:31 templates/moderation/review_abuse.html:63
 msgid "Ban User"
 msgstr ""
 
-#: models.py:35
+#: models.py:34
 msgid "date and time recorded"
 msgstr ""
 
-#: models.py:37
+#: models.py:36
 msgid "message type"
 msgstr ""
 
-#: models.py:39
+#: models.py:38
 msgid "log comment"
 msgstr ""
 
-#: models.py:40
+#: models.py:39
 msgid "pertains to"
 msgstr ""
 
-#: models.py:42
+#: models.py:41
 msgid "User who moderation log is about"
 msgstr ""
 
-#: models.py:44
+#: models.py:43
 msgid "logged by"
 msgstr ""
 
-#: models.py:46
+#: models.py:45
 msgid "Moderator who created the log"
 msgstr ""
 
-#: models.py:49
+#: models.py:48
 msgid "log entry"
 msgstr ""
 
-#: models.py:50
+#: models.py:49
 msgid "log entries"
 msgstr ""
 
@@ -181,11 +205,13 @@ msgid "Please find the moderator's comments below:"
 msgstr ""
 
 #: templates/moderation/emails/abuse_report_ban_this_user.html:15
+#: templates/moderation/emails/abuse_report_dismissed.html:14
 #: templates/moderation/emails/abuse_report_warn_this_user.html:15
 #, python-format
 msgid ""
 "<p>If you wish to appeal this decision, please contact <a href=\"mailto:"
-"%(email)s\">%(email)s</a>.</p>"
+"%(contact_email)s\" style=\"color: #%(link_color)s;\">%(contact_email)s</a>."
+"</p>"
 msgstr ""
 
 #: templates/moderation/emails/abuse_report_ban_this_user.html:21
@@ -203,13 +229,6 @@ msgid ""
 "%(name)s at %(site_name)s.</p> <p>Your report has been reviewed by a "
 "%(site_name)s moderator, and in this instance, they have made the decision "
 "to dismiss the report.</p>"
-msgstr ""
-
-#: templates/moderation/emails/abuse_report_dismissed.html:14
-#, python-format
-msgid ""
-"<p>If you wish to appeal this decision, please contact <a href=\"mailto:"
-"%(contact_email)s\">%(contact_email)s</a>.</p>"
 msgstr ""
 
 #: templates/moderation/emails/abuse_report_dismissed.html:20
@@ -258,7 +277,6 @@ msgstr ""
 
 #: templates/moderation/emails/approve_user.html:11
 #: templates/moderation/emails/invite_new_user.html:11
-#: templates/moderation/emails/reinvite_user.html:9
 msgid ""
 "To activate this account, please click on the following link (or copy it "
 "into a web browser)"
@@ -283,8 +301,9 @@ msgstr ""
 #, python-format
 msgid ""
 "<p>You have been sent this email as a new abuse report has been registered "
-"at %(name)s.</p> <p>To review this report, please visit the <a href=\"%(url)s"
-"\">review abuse reports page</a> on your moderation dashboard.</p>"
+"at %(name)s.</p> <p>To review this report, please visit the review abuse "
+"reports page here: <a href=\"%(url)s\" style=\"color: #%(link_color)s;\">"
+"%(url)s</a>.</p>"
 msgstr ""
 
 #: templates/moderation/emails/notify_moderators_of_abuse_report.html:13
@@ -298,15 +317,16 @@ msgstr ""
 msgid ""
 "<p>You have been sent this email as a new account application has be "
 "registered at %(site)s.</p> <p>To view, approve or reject this application, "
-"please visit the <a href=\"%(url)s\">review membership applications page</a> "
-"on your moderation dashboard.</p>"
+"please visit the review membership applications page here: <a href=\"%(url)s"
+"\" style=\"color: #%(link_color)s;\">%(url)s</a>.</p>"
 msgstr ""
 
 #: templates/moderation/emails/reinvite_user.html:6
 #, python-format
 msgid ""
-"<p>You have been sent this email as a new account has been created for you "
-"at %(site)s.</p>"
+"<p>We've noticed that you have not yet activated your %(site)s account.</p> "
+"<p>To get started with %(site)s, please click on the following link (or copy "
+"it into a web browser):</p>"
 msgstr ""
 
 #: templates/moderation/emails/reject_user.html:6
@@ -314,7 +334,8 @@ msgstr ""
 msgid ""
 "<p>Unfortunately, your application for an account at %(site)s was not "
 "successful.</p> <p>If you wish to appeal this decision, please email <a href="
-"\"mailto:%(email)s\">%(email)s</a>.</p>"
+"\"mailto:%(contact_email)s\" style=\"color: #%(link_color)s;\">"
+"%(contact_email)s</a>.</p>"
 msgstr ""
 
 #: templates/moderation/emails/reject_user.html:13
@@ -323,88 +344,82 @@ msgid "You received this email because you applied for a %(site)s account."
 msgstr ""
 
 #: templates/moderation/invite_member.html:4
-#: templates/moderation/invite_member.html:13
+#: templates/moderation/invite_member.html:20
 #: templates/moderation/moderators_base.html:13
 msgid "Invite a New Member"
 msgstr ""
 
-#: templates/moderation/invite_member.html:14
+#: templates/moderation/invite_member.html:21
 msgid ""
 "Please provide the details of the member you wish to invite.  Once they have "
 "accepted your invitatation, they will be able to edit the details provided "
 "here."
 msgstr ""
 
-#: templates/moderation/invite_member.html:18
-msgid "First Name"
-msgstr ""
-
-#: templates/moderation/invite_member.html:32
-msgid "Last Name"
-msgstr ""
-
-#: templates/moderation/invite_member.html:46
-msgid "Email"
-msgstr ""
-
-#: templates/moderation/invite_member.html:69
-msgid "Invite New Member"
-msgstr ""
-
-#: templates/moderation/invite_member.html:76
-msgid "Invitations pending activation"
-msgstr ""
-
-#: templates/moderation/invite_member.html:78
-#, python-format
-msgid ""
-"%(invitation_count)s member you have invited has not yet activated their "
-"account:"
-msgid_plural ""
-"%(invitation_count)s members you have invited have not yet activated their "
-"account:"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/moderation/invite_member.html:87
-#: templates/moderation/review_applications.html:20
+#: templates/moderation/invite_member.html:25
+#: templates/moderation/invite_member.html:80
+#: templates/moderation/review_applications.html:23
 msgid "Name"
 msgstr ""
 
-#: templates/moderation/invite_member.html:88
-#: templates/moderation/review_applications.html:21
+#: templates/moderation/invite_member.html:39
+msgid "Email"
+msgstr ""
+
+#: templates/moderation/invite_member.html:62
+msgid "Invite New Member"
+msgstr ""
+
+#: templates/moderation/invite_member.html:69
+msgid "Invitations pending activation"
+msgstr ""
+
+#: templates/moderation/invite_member.html:71
+#, python-format
+msgid "%(count)s member you have invited has not yet activated their account:"
+msgid_plural ""
+"%(count)s members you have invited have not yet activated their account:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/moderation/invite_member.html:81
+#: templates/moderation/review_applications.html:24
 msgid "Email Address"
 msgstr ""
 
-#: templates/moderation/invite_member.html:89
+#: templates/moderation/invite_member.html:82
 msgid "Date Invited"
 msgstr ""
 
-#: templates/moderation/invite_member.html:90
-#: templates/moderation/review_abuse.html:21
-#: templates/moderation/review_applications.html:24
+#: templates/moderation/invite_member.html:83
+#: templates/moderation/review_abuse.html:24
+#: templates/moderation/review_applications.html:27
 msgid "Actions"
 msgstr ""
 
-#: templates/moderation/invite_member.html:100
-#: templates/moderation/invite_member.html:108
-#: templates/moderation/invite_member.html:112
+#: templates/moderation/invite_member.html:93
+#: templates/moderation/invite_member.html:101
+#: templates/moderation/invite_member.html:109
 msgid "Resend Invitation"
 msgstr ""
 
-#: templates/moderation/invite_member.html:101
-#: templates/moderation/invite_member.html:116
-#: templates/moderation/invite_member.html:128
+#: templates/moderation/invite_member.html:94
+#: templates/moderation/invite_member.html:113
+#: templates/moderation/invite_member.html:127
 msgid "Revoke Invitation"
 msgstr ""
 
-#: templates/moderation/invite_member.html:121
+#: templates/moderation/invite_member.html:105
+msgid "Email:"
+msgstr ""
+
+#: templates/moderation/invite_member.html:119
 msgid ""
 "Revoke my invitation to <span class=\"name\">this user</span> at <span class="
 "\"email\">this email address</span>."
 msgstr ""
 
-#: templates/moderation/invite_member.html:125
+#: templates/moderation/invite_member.html:123
 msgid "This action will also remove logs related to inviting this user"
 msgstr ""
 
@@ -421,56 +436,56 @@ msgstr ""
 msgid "Period"
 msgstr ""
 
-#: templates/moderation/logs.html:34
+#: templates/moderation/logs.html:40
 msgid "Filter Logs"
 msgstr ""
 
-#: templates/moderation/logs.html:40
+#: templates/moderation/logs.html:46
 msgid "Date"
 msgstr ""
 
-#: templates/moderation/logs.html:41
+#: templates/moderation/logs.html:47
 msgid "Type"
 msgstr ""
 
-#: templates/moderation/logs.html:42
+#: templates/moderation/logs.html:48
 msgid "Comment"
 msgstr ""
 
-#: templates/moderation/logs.html:43
+#: templates/moderation/logs.html:49
 msgid "Logged against (user)"
 msgstr ""
 
-#: templates/moderation/logs.html:44
+#: templates/moderation/logs.html:50
 msgid "Logged by (moderator)"
 msgstr ""
 
-#: templates/moderation/logs.html:58 templates/moderation/review_abuse.html:49
-#: templates/moderation/review_applications.html:38
+#: templates/moderation/logs.html:64 templates/moderation/review_abuse.html:53
+#: templates/moderation/review_applications.html:41
 msgid "Read More"
 msgstr ""
 
-#: templates/moderation/logs.html:72
+#: templates/moderation/logs.html:78
 msgid "Sorry there are no moderation events of this type logged in the system."
 msgstr ""
 
-#: templates/moderation/logs.html:77
+#: templates/moderation/logs.html:83
 msgid "Comments for"
 msgstr ""
 
-#: templates/moderation/logs.html:77
+#: templates/moderation/logs.html:83
 msgid "Log from"
 msgstr ""
 
 #: templates/moderation/moderators_base.html:18
 #: templates/moderation/review_applications.html:4
-#: templates/moderation/review_applications.html:8
+#: templates/moderation/review_applications.html:11
 msgid "Review Membership Applications"
 msgstr ""
 
 #: templates/moderation/moderators_base.html:23
 #: templates/moderation/review_abuse.html:4
-#: templates/moderation/review_abuse.html:8
+#: templates/moderation/review_abuse.html:11
 msgid "Review Abuse Reports"
 msgstr ""
 
@@ -500,206 +515,230 @@ msgid ""
 msgstr ""
 
 #: templates/moderation/report_abuse.html:30
-#: templates/moderation/review_abuse.html:20
-#: templates/moderation/review_abuse.html:119
-#: templates/moderation/review_applications.html:60
+#: templates/moderation/review_abuse.html:23
+#: templates/moderation/review_abuse.html:123
+#: templates/moderation/review_applications.html:63
 msgid "Comments"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:11
+#: templates/moderation/review_abuse.html:14
 msgid ""
 "Review abuse reports currently logged in the system.  User's emails are "
 "provided in the event that you need to gather additional information to make "
 "an appropriate ruling - please only use them for this purpose."
 msgstr ""
 
-#: templates/moderation/review_abuse.html:12
+#: templates/moderation/review_abuse.html:15
 msgid ""
 "To help moderators make informed decisions (especially in the context of "
 "recurring reports), previous warnings are displayed on the accused user."
 msgstr ""
 
-#: templates/moderation/review_abuse.html:17
+#: templates/moderation/review_abuse.html:20
 msgid "Date Lodged"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:18
+#: templates/moderation/review_abuse.html:21
 msgid "Complaint made against"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:19
+#: templates/moderation/review_abuse.html:22
 msgid "Complaint made by"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:33
+#: templates/moderation/review_abuse.html:37
 #, python-format
-msgid "%(warning_count)s prior warning"
-msgid_plural "%(warning_count)s prior warnings"
+msgid "%(count)s prior warning"
+msgid_plural "%(count)s prior warnings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/moderation/review_abuse.html:57
+#: templates/moderation/review_abuse.html:61
 msgid "Dismiss Abuse Report"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:57
+#: templates/moderation/review_abuse.html:61
 msgid "Dismiss Report"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:58
+#: templates/moderation/review_abuse.html:62
 msgid "Warn User"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:70
+#: templates/moderation/review_abuse.html:74
 #, python-format
 msgid "Comments for report logged against %(user)s"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:82
+#: templates/moderation/review_abuse.html:86
 #, python-format
-msgid "%(warning_count)s prior warning for %(name)s"
-msgid_plural "%(warning_count)s prior warnings for %(name)s"
+msgid "%(count)s prior warning for %(name)s"
+msgid_plural "%(count)s prior warnings for %(name)s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/moderation/review_abuse.html:91
+#: templates/moderation/review_abuse.html:95
 msgid "Abuse Report Details"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:93
+#: templates/moderation/review_abuse.html:97
 msgid "Moderator Comment"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:95
+#: templates/moderation/review_abuse.html:99
 msgid "Meta"
-msgstr ""
-
-#: templates/moderation/review_abuse.html:97
-#, python-format
-msgid "Report made on <em>%(date)s</em> by <em>%(reporting_user)s</em>"
 msgstr ""
 
 #: templates/moderation/review_abuse.html:101
 #, python-format
+msgid "Report made on <em>%(date)s</em> by <em>%(reporting_user)s</em>"
+msgstr ""
+
+#: templates/moderation/review_abuse.html:105
+#, python-format
 msgid "Warning issued on <em>%(date)s</em> by <em>%(moderator)s</em>"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:129
+#: templates/moderation/review_abuse.html:133
 msgid "Moderate Abuse Report"
 msgstr ""
 
-#: templates/moderation/review_abuse.html:134
+#: templates/moderation/review_abuse.html:138
 msgid "There are currently no abuse reports logged in the system"
 msgstr ""
 
-#: templates/moderation/review_applications.html:12
+#: templates/moderation/review_applications.html:15
 #, python-format
-msgid "There is %(pending_count)s pending member application:"
-msgid_plural "There are %(pending_count)s pending member applications:"
+msgid "There is %(count)s pending member application:"
+msgid_plural "There are %(count)s pending member applications:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/moderation/review_applications.html:22
+#: templates/moderation/review_applications.html:25
 msgid "Date Requested"
 msgstr ""
 
-#: templates/moderation/review_applications.html:23
+#: templates/moderation/review_applications.html:26
 msgid "Application Comments"
 msgstr ""
 
-#: templates/moderation/review_applications.html:46
+#: templates/moderation/review_applications.html:49
 msgid "Approve Application"
 msgstr ""
 
-#: templates/moderation/review_applications.html:47
+#: templates/moderation/review_applications.html:50
 msgid "Reject Application"
 msgstr ""
 
-#: templates/moderation/review_applications.html:70
+#: templates/moderation/review_applications.html:73
 msgid "Moderate User Application"
 msgstr ""
 
-#: templates/moderation/review_applications.html:75
+#: templates/moderation/review_applications.html:78
 msgid "There are currently no pending membership applications in the system."
 msgstr ""
 
-#: templates/moderation/review_applications.html:81
+#: templates/moderation/review_applications.html:84
 #, python-format
 msgid "Application comments for %(user)s"
 msgstr ""
 
-#: urls.py:9
+#: urls.py:10
 msgid "^invite-user/$"
 msgstr ""
 
-#: urls.py:10
+#: urls.py:11
 msgid "^reinvite-user/$"
 msgstr ""
 
-#: urls.py:11
+#: urls.py:12
 msgid "^revoke-invitation/$"
 msgstr ""
 
-#: urls.py:12
+#: urls.py:14
 msgid "^review-applications/$"
 msgstr ""
 
-#: urls.py:13
+#: urls.py:16
 msgid "^review-abuse-reports/$"
 msgstr ""
 
-#: urls.py:14
+#: urls.py:18
 msgid "^logs/$"
 msgstr ""
 
-#: urls.py:15
+#: urls.py:19
 msgid "^(?P<user_id>\\d+)/report-abuse/$"
 msgstr ""
 
-#: urls.py:16
+#: urls.py:21
 msgid "^abuse-report-logged/$"
 msgstr ""
 
-#: views.py:100 views.py:262
+#: views.py:87
+msgid "{} invited {}"
+msgstr ""
+
+#: views.py:95 views.py:253
 msgid "Welcome to {}"
 msgstr ""
 
-#: views.py:112
+#: views.py:107
 msgid "{} has been invited to {}."
 msgstr ""
 
-#: views.py:150
+#: views.py:144
 msgid "{} resent invitation to {}"
 msgstr ""
 
-#: views.py:163
+#: views.py:157
 msgid "Activate your {} account"
 msgstr ""
 
-#: views.py:173
+#: views.py:167
 msgid "{} has been reinvited to {}."
 msgstr ""
 
-#: views.py:205
+#: views.py:196
 msgid "{} has been uninvited from {}."
 msgstr ""
 
-#: views.py:338
+#: views.py:242
+msgid "{}'s account application has been approved."
+msgstr ""
+
+#: views.py:257
+msgid "{}'s account application has been rejected."
+msgstr ""
+
+#: views.py:327
 msgid "New abuse report at {}"
 msgstr ""
 
-#: views.py:457
+#: views.py:440
+msgid "The report against {} has been dismissed."
+msgstr ""
+
+#: views.py:445
 msgid "Your {} Abuse Report has been dismissed"
 msgstr ""
 
-#: views.py:467
+#: views.py:453
+msgid "{} has been issued a formal warning."
+msgstr ""
+
+#: views.py:458
 msgid "{} has been issued a formal warning from {}"
 msgstr ""
 
-#: views.py:474
+#: views.py:466
 msgid "A formal warning from {}"
 msgstr ""
 
-#: views.py:483
+#: views.py:472
+msgid "{} has been banned from {}."
+msgstr ""
+
+#: views.py:476
 msgid "{} has been banned from {}"
 msgstr ""
