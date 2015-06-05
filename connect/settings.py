@@ -41,6 +41,7 @@ class BaseSettings(DefaultSettings):
             'connect.accounts',
             'connect.moderation',
             'connect.discover',
+            'bdd',
         )
 
     # MIDDLEWARE

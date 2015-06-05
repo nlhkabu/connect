@@ -50,7 +50,6 @@ Feature: View Moderation Logs
         And I submit the form
         Then I see "5" logs
 
-    @wip
     Scenario: Attempt to filter logs by custom date range, without specifying a date
         Given I am "a logged in moderator"
         When I visit the "logs" page
