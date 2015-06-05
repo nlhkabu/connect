@@ -1,7 +1,4 @@
-import random
 import re
-import string
-import time
 import uuid
 
 from django.core.mail import send_mail
