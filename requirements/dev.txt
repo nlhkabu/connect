@@ -1,12 +1,20 @@
+# Local requirements
+
+-r base.txt
+
 # Testing
 factory-boy
 selenium
 behave
 django-behave
 splinter
-Sphinx
-sphinx-rtd-theme
-django-debug-toolbar
-django-extensions
 coverage
 tox
+
+# Documentation
+Sphinx
+sphinx-rtd-theme
+
+# Local debugging
+django-debug-toolbar
+django-extensions
