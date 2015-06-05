@@ -64,12 +64,11 @@ class RequestInvitationTest(TestCase):
         self.site.config = SiteConfigFactory(site=self.site)
         self.moderator = factories.ModeratorFactory()
 
-    def post_data(self, first='First'):
+    def post_data(self, name='First'):
         return self.client.post(
             reverse('accounts:request-invitation'),
             data={
-                'first_name': first,
-                'last_name': 'Last',
+                'full_name': name,
                 'email': 'new_test@test.test',
                 'comments': 'Please give me an account',
             },
@@ -179,8 +178,7 @@ class ActivateAccountTest(TestCase):
         response = self.client.post(
             '/accounts/activate/mytoken',
             data={
-                'first_name': 'Hello',
-                'last_name': 'There',
+                'full_name': 'Hello There',
                 'password': 'abc',
                 'confirm_password': 'abc',
             },
@@ -188,8 +186,7 @@ class ActivateAccountTest(TestCase):
 
         # And that the user is activated
         user = User.objects.get(email='validuser@test.test')
-        self.assertEqual(user.first_name, 'Hello')
-        self.assertEqual(user.last_name, 'There')
+        self.assertEqual(user.full_name, 'Hello There')
         self.assertNotEqual(user.password, old_pass)
         self.assertTrue(user.is_active)
         self.assertTrue(user.auth_token_is_used)
@@ -228,8 +225,7 @@ class ProfileSettingsTest(TestCase):
         response = self.client.post(
             reverse('accounts:profile-settings'),
             data={
-                'first_name': 'New First Name',
-                'last_name': 'New Last Name',
+                'full_name': 'New Full Name',
                 'bio': 'New bio',
                 'roles': [mentor.id],
                 'link-TOTAL_FORMS': 1,
@@ -249,8 +245,7 @@ class ProfileSettingsTest(TestCase):
         user_link = UserLink.objects.get(user=user)
         user_skill = UserSkill.objects.get(user=user)
 
-        self.assertEqual(user.first_name, 'New First Name')
-        self.assertEqual(user.last_name, 'New Last Name')
+        self.assertEqual(user.full_name, 'New Full Name')
         self.assertEqual(user.bio, 'New bio')
         self.assertEqual(user.roles.count(), 1)
         self.assertEqual(user.roles.first(), mentor)

@@ -48,8 +48,7 @@ Feature: Update Profile
         When I visit the "profile" page
         And there are two link formsets showing
         And there are two skill formsets showing
-        And I enter "<first name>" into the "first name" field
-        And I enter "<last name>" into the "last name" field
+        And I enter "<full name>" into the "full name" field
         And I enter "<link 1 anchor>" into the "first anchor" field
         And I enter "<link 1 url>" into the "first url" field
         And I enter "<link 2 anchor>" into the "second anchor" field
@@ -62,14 +61,13 @@ Feature: Update Profile
         Then I see "<message>"
 
         Examples:
-            |   first name  |   last name   |   link 1 anchor   |   link 1 url          |   link 2 anchor   |   link 2 url          |   skill 1 name    |   skill 1 proficiency |   skill 2 name    |   skill 2 proficiency |   message                                     |
-            |   ""          |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Please enter your first name.               |
-            |   First       |   ""          |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Please enter your last name.                |
-            |   First       |   Last        |   ""              |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   All links must have an anchor.              |
-            |   First       |   Last        |   My link1        |   ""                  |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   All links must have a URL.                  |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link1        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl1.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Links must have unique anchors and URLs.    |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   ---------       |   Beginner            |   skill2          |   Expert              |   All skills must have a skill name.          |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   ---------           |   skill2          |   Expert              |   All skills must have a proficiency.         |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill1          |   Expert              |   Each skill can only be entered once.        |
-            |   First       |   Last        |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Your example.com profile has been updated.  |
+            |   full name   |   link 1 anchor   |   link 1 url          |   link 2 anchor   |   link 2 url          |   skill 1 name    |   skill 1 proficiency |   skill 2 name    |   skill 2 proficiency |   message                                     |
+            |   ""          |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Please enter your full name.                |
+            |   First Last  |   ""              |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   All links must have an anchor.              |
+            |   First Last  |   My link1        |   ""                  |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   All links must have a URL.                  |
+            |   First Last  |   My link1        |   http://myurl1.com   |   My link1        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Links must have unique anchors and URLs.    |
+            |   First Last  |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl1.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Links must have unique anchors and URLs.    |
+            |   First Last  |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   ---------       |   Beginner            |   skill2          |   Expert              |   All skills must have a skill name.          |
+            |   First Last  |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   ---------           |   skill2          |   Expert              |   All skills must have a proficiency.         |
+            |   First Last  |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill1          |   Expert              |   Each skill can only be entered once.        |
+            |   First Last  |   My link1        |   http://myurl1.com   |   My link2        |   http://myurl2.com   |   skill1          |   Beginner            |   skill2          |   Expert              |   Your example.com profile has been updated.  |

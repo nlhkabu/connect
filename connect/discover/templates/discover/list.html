@@ -83,10 +83,7 @@
 
                             <div class="user-details">
                                 <h3><a href="#" class="toggle-user-expand">
-                                    {{ user.first_name }}
-                                    {% if user.last_name %}
-                                        {{ user.last_name }}
-                                    {% endif %}
+                                    {{ user.full_name }}
                                 </a></h3>
                                 <p><i class="fa fa-map-marker"></i> Melbourne, Australia</p> <!-- TODO -->
 
@@ -180,7 +177,7 @@
         <div class="dialog" id="welcome-dialog" title="Welcome to {{ request.site.name }}">
             <div class="welcome-message">
                 <p>
-                    {% blocktrans with name=logged_in_user.first_name trimmed %}
+                    {% blocktrans with name=logged_in_user.full_name trimmed %}
                         Hi {{ name }},
                     {% endblocktrans %}
                 </p>

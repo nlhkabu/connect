@@ -9,8 +9,7 @@ from connect.accounts.factories import (InvitedPendingFactory, ModeratorFactory,
 # Setting up our users
 @given('there is a standard user in the database')
 def impl(context):
-    context.standard_user = UserFactory(first_name='Standard',
-                                        last_name='User',
+    context.standard_user = UserFactory(full_name='Standard User',
                                         email='standard.user@test.test',
                                         auth_token='123456')
 
@@ -19,43 +18,38 @@ def impl(context):
     context.execute_steps('''
         given there is a standard user in the database
     ''')
-    context.standard_user2 = UserFactory(first_name='Another',
-                                         last_name='User',
+    context.standard_user2 = UserFactory(full_name='Another User',
                                          email='standard.user2@test.test')
 
 @given('there is an invited, but not yet active user in the database')
 def impl(context):
-    context.invited_user = InvitedPendingFactory(first_name='Inactive',
-                                                 last_name='User',
+    context.invited_user = InvitedPendingFactory(full_name='Inactive User',
                                                  email='inactive.user@test.test',
                                                  auth_token='7891011')
 
 @given('there is a closed user in the database')
 def impl(context):
-    context.closed_user = UserFactory(first_name='Closed', last_name='User',
+    context.closed_user = UserFactory(full_name='Closed User',
                                       email='closed.user@test.test',
                                       is_active=False, is_closed=True)
 
 @given('there is a moderator in the database')
 def impl(context):
     management.call_command('loaddata', 'group_perms', verbosity=0)
-    context.moderator = ModeratorFactory(first_name='Moderator',
-                                         last_name='User',
+    context.moderator = ModeratorFactory(full_name='Moderator User',
                                          email='moderator@test.test')
 
 @given('there is a pending user in the database')
 def impl(context):
     context.pending_user = RequestedPendingFactory(
-        first_name='Pending',
-        last_name='Approval',
+        full_name='Pending Approval',
         email='pending.approval@test.test')
 
 @given('I have invited a new member to the application')
 def impl(context):
     context.execute_steps('''
         When I visit the "invite user" page
-        And I enter "Invited" into the "first name" field
-        And I enter "User" into the "last name" field
+        And I enter "Invited User" into the "full name" field
         And I enter "invited.user@test.test" into the "email" field
         And I submit the form
     ''')

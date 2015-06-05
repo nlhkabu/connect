@@ -15,8 +15,7 @@ class UserModelTest(TestCase):
     def setUp(self):
         self.moderator = ModeratorFactory()
         self.standard_user = UserFactory(
-            first_name='Firsto',
-            last_name='Namo',
+            full_name='Firsto Namo',
         )
         self.invited_pending = InvitedPendingFactory()
         self.requested_pending = RequestedPendingFactory()
@@ -48,12 +47,10 @@ class UserModelTest(TestCase):
 
     def test_moderator_can_invite_new_user(self):
         user = self.moderator.invite_new_user(email='standard_user@test.test',
-                                              first_name='standard_user',
-                                              last_name='user')
+                                              full_name='standard_user user')
 
         self.assertEqual(user.email, 'standard_user@test.test')
-        self.assertEqual(user.first_name, 'standard_user')
-        self.assertEqual(user.last_name, 'user')
+        self.assertEqual(user.full_name, 'standard_user user')
         self.assertEqual(user.registration_method, CustomUser.INVITED)
         self.assertEqual(user.moderator, self.moderator)
         self.assertEqual(user.moderator_decision, CustomUser.PRE_APPROVED)
@@ -64,8 +61,7 @@ class UserModelTest(TestCase):
         with self.assertRaises(PermissionDenied):
             self.standard_user.invite_new_user(
                 email='standard_user@test.test',
-                first_name='standard_user',
-                last_name='user'
+                full_name='standard_user user'
             )
 
     def test_moderator_can_reinvite_user(self):
@@ -114,8 +110,8 @@ class UserModelTest(TestCase):
 
 class AbuseReportTest(TestCase):
     def test_string_method(self):
-        user1 = UserFactory(first_name='a', last_name='b')
-        user2 = UserFactory(first_name='c', last_name='d')
+        user1 = UserFactory(full_name='a b')
+        user2 = UserFactory(full_name='c d')
 
         report = AbuseReportFactory(logged_against=user2,
                                     logged_by=user1)
@@ -132,7 +128,7 @@ class SkillTest(TestCase):
 
 class UserSkillTest(TestCase):
     def test_string_method(self):
-        user = UserFactory(first_name='a', last_name='b')
+        user = UserFactory(full_name='a b')
         skill = SkillFactory(name='MySkill')
         user_skill = UserSkillFactory(user=user, skill=skill)
 

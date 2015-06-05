@@ -6,8 +6,7 @@ from behave import *
 def impl(context):
     context.execute_steps('''
         when I visit the "invite user" page
-        when I enter "First" into the "first name" field
-        when I enter "Last" into the "last name" field
+        when I enter "First Last" into the "full name" field
         when I enter "new.user@test.test" into the "email" field
         when I submit the form
     ''')

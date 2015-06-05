@@ -13,8 +13,7 @@ class TestInviteMemberForm(TestCase):
 
     def form_data(self, email):
         return InviteMemberForm(data={
-            'first_name': 'First',
-            'last_name': 'Fast',
+            'full_name': 'First Fast',
             'email': email,
         })
 

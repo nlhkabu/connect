@@ -5,8 +5,7 @@ from behave import *
 @then('I see the profile settings form, prepopulated with my data')
 def impl(context):
     assert context.browser.find_by_css('.profile-settings').visible
-    assert context.browser.find_by_name('first_name').value == 'Standard'
-    assert context.browser.find_by_name('last_name').value == 'User'
+    assert context.browser.find_by_name('full_name').value == 'Standard User'
 
 
 # Unique to Scenario: Biography field expands

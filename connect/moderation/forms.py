@@ -20,16 +20,10 @@ class InviteMemberForm(forms.Form):
     """
     Form for moderator to invite a new member.
     """
-    first_name = forms.CharField(
-        max_length=30,
+    full_name = forms.CharField(
+        max_length=100,
         error_messages={
-            'required': _('Please enter a first name.')
-        })
-
-    last_name = forms.CharField(
-        max_length=30,
-        error_messages={
-            'required': _('Please enter a last name.')
+            'required': _('Please enter a full name.')
         })
 
     email = forms.EmailField(

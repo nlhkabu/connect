@@ -39,10 +39,9 @@ def request_invitation(request):
         if form.is_valid():
 
             # Create inactive user
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
+            full_name = form.cleaned_data['full_name']
             email = form.cleaned_data['email']
-            new_user = create_inactive_user(email, first_name, last_name)
+            new_user = create_inactive_user(email, full_name)
 
             # Add additional details
             comments = form.cleaned_data['comments']
@@ -95,8 +94,7 @@ def activate_account(request, token):
             if form.is_valid():
 
                 # Activate the user's account
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
+                user.full_name = form.cleaned_data['full_name']
                 user.password = make_password(form.cleaned_data['password'])
                 user.is_active = True
 
@@ -161,8 +159,7 @@ def profile_settings(request):
         if form.is_valid() and skill_formset.is_valid() \
            and link_formset.is_valid():
             # Save user info
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
+            user.full_name = form.cleaned_data['full_name']
             user.bio = form.cleaned_data['bio']
             user.roles = form.cleaned_data['roles']
 

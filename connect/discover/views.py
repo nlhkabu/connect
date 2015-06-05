@@ -28,7 +28,7 @@ def dashboard(request):
     listed_users = User.objects.filter(
         is_active=True
     ).order_by(
-        'first_name'
+        'full_name'
     ).prefetch_related(
         'userskill_set',
         'userskill_set__skill',

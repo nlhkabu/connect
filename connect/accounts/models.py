@@ -70,9 +70,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_('email address'), max_length=254, unique=True)
 
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-
-    last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    full_name = models.CharField(_('full name'), max_length=100, blank=True)
 
     is_staff = models.BooleanField(
         _('staff status'), default=False,
@@ -176,17 +174,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         )
 
     def get_full_name(self):
-        """
-        Returns the first_name plus the last_name, with a space in between.
-        """
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
+        return self.full_name.strip()
 
     def get_short_name(self):
         """
         Returns the short name for the user - required for admin.
         """
-        return self.first_name
+        return self.full_name.split(' ')[0]
 
     def is_pending_activation(self):
         """
@@ -219,7 +213,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         else:
             return False
 
-    def invite_new_user(self, email, first_name, last_name):
+    def invite_new_user(self, email, full_name):
         """
         Invite an inactive user (who needs to activate their account).
         Returns none if user already exists.
@@ -230,7 +224,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             try:
                 User.objects.get(email=email)
             except User.DoesNotExist:
-                new_user = create_inactive_user(email, first_name, last_name)
+                new_user = create_inactive_user(email, full_name)
                 new_user.registration_method = new_user.INVITED
                 new_user.moderator = self
                 new_user.moderator_decision = new_user.PRE_APPROVED

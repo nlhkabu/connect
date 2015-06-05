@@ -118,8 +118,7 @@ class RequestInvitationFormTest(TestCase):
         return self.client.post(
             reverse('accounts:request-invitation'),
             data={
-                'first_name': 'First',
-                'last_name': 'Last',
+                'full_name': 'First Last',
                 'email': email,
                 'comments': 'Comments',
             }
@@ -170,8 +169,7 @@ class ActivateAccountFormTest(TestCase):
             reverse('accounts:activate-account',
                     args=(self.pending_user.auth_token,)),
             data={
-                'first_name': 'First',
-                'last_name': 'Last',
+                'full_name': 'First Last',
                 'password': 'pass1',
                 'confirm_password': 'pass2',
             }
@@ -188,8 +186,7 @@ class ActivateAccountFormTest(TestCase):
         form = ActivateAccountForm(
             user=self.pending_user,
             data={
-                'first_name': 'First',
-                'last_name': 'Last',
+                'full_name': 'First Last',
                 'password': 'pass1',
                 'confirm_password': 'pass1',
             }
@@ -207,32 +204,24 @@ class ProfileFormTest(TestCase):
         self.standard_user = UserFactory()
         self.client.login(username=self.standard_user.email, password='pass')
 
-    def form_data(self, first, last):
+    def form_data(self, name):
         return ProfileForm(
             user=self.standard_user,
             data={
-                'first_name': first,
-                'last_name': last,
+                'full_name': name,
                 'bio': 'My bio',
                 'roles': [self.mentor.id, self.mentee.id],
             }
         )
 
     def test_valid_data(self):
-        form = self.form_data('First', 'Last')
+        form = self.form_data('First Last')
 
         self.assertTrue(form.is_valid())
 
-    def test_missing_first_name(self):
-        form = self.form_data('', 'Last')
-        errors = form['first_name'].errors.as_data()
-
-        self.assertEqual(len(errors), 1)
-        self.assertEqual(errors[0].code, 'required')
-
-    def test_missing_last_name(self):
-        form = self.form_data('First', '')
-        errors = form['last_name'].errors.as_data()
+    def test_missing_full_name(self):
+        form = self.form_data('')
+        errors = form['full_name'].errors.as_data()
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0].code, 'required')
@@ -256,8 +245,7 @@ class SkillFormsetTest(TestCase):
         return ProfileForm(
             user=self.standard_user,
             data={
-                'first_name': 'First',
-                'last_name': 'Last',
+                'full_name': 'First Last',
                 'link-TOTAL_FORMS': 0,
                 'link-INITIAL_FORMS': 0,
                 'skill-TOTAL_FORMS': 1,
@@ -350,8 +338,7 @@ class LinkFormsetTest(TestCase):
         return ProfileForm(
             user=self.standard_user,
             data={
-                'first_name': 'First',
-                'last_name': 'Last',
+                'full_name': 'First Last',
                 'link-TOTAL_FORMS': 1,
                 'link-INITIAL_FORMS': 0,
                 'skill-TOTAL_FORMS': 0,

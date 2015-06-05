@@ -78,10 +78,9 @@ def invite_user(request):
     if invitation_form.is_valid():
 
         # Invite user
-        first_name = invitation_form.cleaned_data['first_name']
-        last_name = invitation_form.cleaned_data['last_name']
+        full_name = invitation_form.cleaned_data['full_name']
         email = invitation_form.cleaned_data['email']
-        new_user = moderator.invite_new_user(email, first_name, last_name)
+        new_user = moderator.invite_new_user(email, full_name)
 
         # Log moderation event
         msg_type = ModerationLogMsg.INVITATION

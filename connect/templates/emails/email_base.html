@@ -178,7 +178,7 @@
                                                             <div style="color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;text-align: left;">
                                                                 {% block intro %}
                                                                     <p>
-                                                                        {% blocktrans with name=recipient.first_name trimmed %}
+                                                                        {% blocktrans with name=recipient.full_name trimmed %}
                                                                             Hi {{ name }},
                                                                         {% endblocktrans %}
                                                                     </p>

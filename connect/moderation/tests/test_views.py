@@ -104,8 +104,7 @@ class InviteUserTest(TestCase):
         self.site.config = SiteConfigFactory(site=self.site)
 
         self.moderator = ModeratorFactory(
-            first_name='My',
-            last_name='Moderator',
+            full_name='My Moderator',
         )
 
         self.client.login(username=self.moderator.email, password='pass')
@@ -114,8 +113,7 @@ class InviteUserTest(TestCase):
         return self.client.post(
             reverse('moderation:invite-user'),
             data={
-                'first_name': 'Hello',
-                'last_name': 'There',
+                'full_name': 'Hello There',
                 'email': 'invite.user@test.test',
             },
             follow=True,
@@ -124,26 +122,21 @@ class InviteUserTest(TestCase):
     def test_invalid_data_returns_to_moderation_home(self):
         response = self.client.post(reverse('moderation:invite-user'),
             data={
-                'first_name': 'Hello',
-                'last_name': 'There',
+                'full_name': 'Hello There',
                 'email': 'invalid',
             },
             follow=True
         )
 
-        first_name_val = 'value="Hello"'
-        last_name_val = 'value="There"'
-
-        self.assertIn(first_name_val, response.content.decode())
-        self.assertIn(last_name_val, response.content.decode())
+        full_name_val = 'value="Hello There"'
+        self.assertIn(full_name_val, response.content.decode())
 
     def test_can_invite_new_user(self):
         self.post_data()
         user = User.objects.get(email='invite.user@test.test')
 
         self.assertTrue(user)
-        self.assertEqual(user.first_name, 'Hello')
-        self.assertEqual(user.last_name, 'There')
+        self.assertEqual(user.full_name, 'Hello There')
 
     def test_can_log_invitation(self):
         self.post_data()
@@ -161,7 +154,7 @@ class InviteUserTest(TestCase):
         invited_user = User.objects.get(email='invite.user@test.test')
         expected_subject = 'Welcome to {}'.format(self.site.name)
         expected_recipient = 'invite.user@test.test'
-        expected_intro = 'Hi {},'.format('Hello')
+        expected_intro = 'Hi {},'.format('Hello There')
         expected_content = 'created for you at {}'.format(
             self.site.name
         )
@@ -197,13 +190,11 @@ class ReInviteUserTest(TestCase):
         self.site.config = SiteConfigFactory(site=self.site)
 
         self.moderator = ModeratorFactory(
-            first_name='My',
-            last_name='Moderator',
+            full_name='My Moderator',
         )
 
         self.invited_user = InvitedPendingFactory(
-            first_name='Hello',
-            last_name='There',
+            full_name='Hello There',
             email='reinviteme@test.test',
             moderator=self.moderator,
             auth_token='myauthtoken',
@@ -265,7 +256,7 @@ class ReInviteUserTest(TestCase):
         response = self.post_data()
         expected_subject = 'Activate your {} account'.format(self.site.name)
         expected_recipient = 'invite.user@test.test'
-        expected_intro = 'Hi {},'.format('Hello')
+        expected_intro = 'Hi {},'.format('Hello There')
         expected_content = 'you have not yet activated your'
         expected_footer = 'My Moderator registered a new {} account'.format(
             self.site.name
@@ -292,15 +283,13 @@ class RevokeInvitationTest(TestCase):
 
     def setUp(self):
         self.moderator = ModeratorFactory(
-            first_name='My',
-            last_name='Moderator',
+            full_name='My Moderator',
         )
 
         self.other_moderator = ModeratorFactory()
 
         self.invited_user = InvitedPendingFactory(
-            first_name='Revoke',
-            last_name='Me',
+            full_name='Revoke Me',
             email='revokeme@test.test',
             moderator=self.moderator,
         )
@@ -384,8 +373,7 @@ class ReviewApplicationTest(TestCase):
         self.standard_user = UserFactory()
         self.applied_user = RequestedPendingFactory()
         self.moderator = ModeratorFactory(
-            first_name='My',
-            last_name='Moderator',
+            full_name='My Moderator',
         )
 
     def post_data(self, decision, comments, user_id=''):
@@ -843,7 +831,7 @@ class ReviewAbuseTest(TestCase):
                             ))
 
         reporting_intro = 'Hi {},'.format(
-            self.reporting_user.first_name,
+            self.reporting_user.full_name,
         )
         reporting_content = 'against {} at {}'.format(
             self.accused_user.get_full_name(),
@@ -864,7 +852,7 @@ class ReviewAbuseTest(TestCase):
         # Offending user's email
         offending_subject = 'A formal warning from {}'.format(self.site.name)
         offending_intro = 'Hi {},'.format(
-            self.accused_user.first_name,
+            self.accused_user.full_name,
         )
         offending_content = 'against you at {}'.format(self.site.name)
         offending_url = self.site.config.email
@@ -915,7 +903,7 @@ class ReviewAbuseTest(TestCase):
             self.site.name
         )
         reporting_intro = 'Hi {},'.format(
-            self.reporting_user.first_name,
+            self.reporting_user.full_name,
         )
         reporting_content = 'against {} at {}'.format(
             self.accused_user.get_full_name(),
@@ -938,7 +926,7 @@ class ReviewAbuseTest(TestCase):
         offending_subject = ('Your {} account has been terminated'
                             .format(self.site.name))
         offending_intro = 'Hi {},'.format(
-            self.accused_user.first_name,
+            self.accused_user.full_name,
         )
         offending_content = 'against you at {}'.format(self.site.name)
         offending_content_2 = "ban you from future use of {}".format(
