@@ -30,7 +30,8 @@ Feature: Update Profile
         And I click on add skill
         Then another skill formset is added to the bottom of the form
 
-    Scenario: Remove a form form the links list
+    @wip
+    Scenario: Remove a form from the links list
         Given I am "a logged in user"
         When I visit the "profile" page
         And I click on remove next to the first link form
