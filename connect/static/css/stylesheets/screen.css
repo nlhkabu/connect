@@ -2,7 +2,7 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-/* line 5, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -24,45 +24,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../../../.gem/ruby/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
@@ -1637,22 +1637,20 @@ legend span {
   <thead>
     <tr>
       <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Name</th>
       <th>Username</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Nick</td>
-      <td>Pack</td>
+      <td>Nick Pack</td>
       <td>@nickpack</td>
     </tr>
   </tbody>
 </table>
 */
-/* line 29, ../sass/ribs/_tables.scss */
+/* line 27, ../sass/ribs/_tables.scss */
 table {
   max-width: 100%;
   background: #FFF;
@@ -1661,7 +1659,7 @@ table {
   width: 100%;
   margin: 10px 0;
 }
-/* line 36, ../sass/ribs/_tables.scss */
+/* line 34, ../sass/ribs/_tables.scss */
 table th,
 table td {
   padding: 8px 35px 8px 0;
@@ -1670,15 +1668,15 @@ table td {
   vertical-align: top;
   border-top: 1px solid #ececec;
 }
-/* line 44, ../sass/ribs/_tables.scss */
+/* line 42, ../sass/ribs/_tables.scss */
 table th {
   font-weight: bold;
 }
-/* line 48, ../sass/ribs/_tables.scss */
+/* line 46, ../sass/ribs/_tables.scss */
 table thead th {
   vertical-align: bottom;
 }
-/* line 52, ../sass/ribs/_tables.scss */
+/* line 50, ../sass/ribs/_tables.scss */
 table caption thead tr:first-child th,
 table caption thead tr:first-child td,
 table colgroup thead tr:first-child th,
@@ -1687,11 +1685,11 @@ table thead:first-child tr:first-child th,
 table thead:first-child tr:first-child td {
   border-top: 0;
 }
-/* line 61, ../sass/ribs/_tables.scss */
+/* line 59, ../sass/ribs/_tables.scss */
 table tbody tbody {
   border-top: 2px solid #ececec;
 }
-/* line 65, ../sass/ribs/_tables.scss */
+/* line 63, ../sass/ribs/_tables.scss */
 table table {
   background: #FFF;
 }
@@ -1703,22 +1701,20 @@ table table {
   <thead>
     <tr>
       <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Name</th>
       <th>Username</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Nick</td>
-      <td>Pack</td>
+      <td>Nick Pack</td>
       <td>@nickpack</td>
     </tr>
   </tbody>
 </table>
 */
-/* line 93, ../sass/ribs/_tables.scss */
+/* line 89, ../sass/ribs/_tables.scss */
 .table-condensed th,
 .table-condensed td {
   padding: 4px 5px;
@@ -1731,22 +1727,20 @@ table table {
   <thead>
     <tr>
       <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Name</th>
       <th>Username</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Nick</td>
-      <td>Pack</td>
+      <td>Nick Pack</td>
       <td>@nickpack</td>
     </tr>
   </tbody>
 </table>
 */
-/* line 121, ../sass/ribs/_tables.scss */
+/* line 115, ../sass/ribs/_tables.scss */
 .table-bordered {
   border: 1px solid #ececec;
   border-collapse: separate;
@@ -1755,12 +1749,12 @@ table table {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 126, ../sass/ribs/_tables.scss */
+/* line 120, ../sass/ribs/_tables.scss */
 .table-bordered th,
 .table-bordered td {
   border-left: 1px solid #ececec;
 }
-/* line 131, ../sass/ribs/_tables.scss */
+/* line 125, ../sass/ribs/_tables.scss */
 .table-bordered caption thead tr:first-child th,
 .table-bordered caption tbody tr:first-child th,
 .table-bordered caption tbody tr:first-child td,
@@ -1772,7 +1766,7 @@ table table {
 .table-bordered tbody:first-child tr:first-child td {
   border-top: 0;
 }
-/* line 143, ../sass/ribs/_tables.scss */
+/* line 137, ../sass/ribs/_tables.scss */
 .table-bordered thead:first-child tr:first-child > th:first-child,
 .table-bordered tbody:first-child tr:first-child > td:first-child,
 .table-bordered tbody:first-child tr:first-child > th:first-child {
@@ -1780,7 +1774,7 @@ table table {
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
 }
-/* line 149, ../sass/ribs/_tables.scss */
+/* line 143, ../sass/ribs/_tables.scss */
 .table-bordered thead:first-child tr:first-child > th:last-child,
 .table-bordered tbody:first-child tr:first-child > td:last-child,
 .table-bordered tbody:first-child tr:first-child > th:last-child {
@@ -1788,7 +1782,7 @@ table table {
   -moz-border-radius-topright: 3px;
   border-top-right-radius: 3px;
 }
-/* line 155, ../sass/ribs/_tables.scss */
+/* line 149, ../sass/ribs/_tables.scss */
 .table-bordered thead:last-child tr:last-child > th:first-child,
 .table-bordered tbody:last-child tr:last-child > td:first-child,
 .table-bordered tbody:last-child tr:last-child > th:first-child,
@@ -1798,7 +1792,7 @@ table table {
   -moz-border-radius-bottomleft: 3px;
   border-bottom-left-radius: 3px;
 }
-/* line 163, ../sass/ribs/_tables.scss */
+/* line 157, ../sass/ribs/_tables.scss */
 .table-bordered thead:last-child tr:last-child > th:last-child,
 .table-bordered tbody:last-child tr:last-child > td:last-child,
 .table-bordered tbody:last-child tr:last-child > th:last-child,
@@ -1808,19 +1802,19 @@ table table {
   -moz-border-radius-bottomright: 3px;
   border-bottom-right-radius: 3px;
 }
-/* line 171, ../sass/ribs/_tables.scss */
+/* line 165, ../sass/ribs/_tables.scss */
 .table-bordered tfoot tbody:last-child tr:last-child td:first-child {
   -webkit-border-bottom-left-radius: 0;
   -moz-border-radius-bottomleft: 0;
   border-bottom-left-radius: 0;
 }
-/* line 174, ../sass/ribs/_tables.scss */
+/* line 168, ../sass/ribs/_tables.scss */
 .table-bordered tfoot tbody:last-child tr:last-child td:last-child {
   -webkit-border-bottom-right-radius: 0;
   -moz-border-radius-bottomright: 0;
   border-bottom-right-radius: 0;
 }
-/* line 178, ../sass/ribs/_tables.scss */
+/* line 172, ../sass/ribs/_tables.scss */
 .table-bordered caption thead tr:first-child th:first-child,
 .table-bordered caption tbody tr:first-child td:first-child,
 .table-bordered colgroup thead tr:first-child th:first-child,
@@ -1829,7 +1823,7 @@ table table {
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
 }
-/* line 184, ../sass/ribs/_tables.scss */
+/* line 178, ../sass/ribs/_tables.scss */
 .table-bordered caption thead tr:first-child th:last-child,
 .table-bordered caption tbody tr:first-child td:last-child,
 .table-bordered colgroup thead tr:first-child th:last-child,
@@ -1846,22 +1840,20 @@ table table {
   <thead>
     <tr>
       <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Name</th>
       <th>Username</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Nick</td>
-      <td>Pack</td>
+      <td>Nick Pack</td>
       <td>@nickpack</td>
     </tr>
   </tbody>
 </table>
 */
-/* line 217, ../sass/ribs/_tables.scss */
+/* line 209, ../sass/ribs/_tables.scss */
 .table-striped tbody > tr:nth-child(odd) > td,
 .table-striped tbody > tr:nth-child(odd) > th {
   background-color: #EFEFEF;
@@ -1874,22 +1866,20 @@ table table {
   <thead>
     <tr>
       <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Name</th>
       <th>Username</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Nick</td>
-      <td>Pack</td>
+      <td>Nick Pack</td>
       <td>@nickpack</td>
     </tr>
   </tbody>
 </table>
 */
-/* line 248, ../sass/ribs/_tables.scss */
+/* line 238, ../sass/ribs/_tables.scss */
 .table-hover tbody tr:hover > td,
 .table-hover tbody tr:hover > th {
   background-color: #999;
