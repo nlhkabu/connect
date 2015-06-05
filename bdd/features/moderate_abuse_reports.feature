@@ -22,7 +22,7 @@ Feature: Moderate Abuse Reports
         Given I am "a logged in moderator"
         When I visit the "abuse reports" page
         When I click on the prior warnings link
-        Then I see the proir warnings modal, with information inside it
+        Then I see the prior warnings modal, with information inside it
 
     Scenario Outline: Launch form modal
         Given I am "a logged in moderator"
