@@ -146,13 +146,15 @@
     <script src="{% static 'js/vendor/jquery.formset.js' %}"></script>
     <script>
         // Add additional fields to formsets
-        $('.skill-formset').formset({
-            prefix: '{{ skill_formset.prefix }}',
-            formCssClass: 'dynamic-skill-formset',
-            addText: '{% trans "add skill" %}',
-            deleteText: '{% trans "remove" %}',
-            deleteCssClass: 'delete-skill'
-        });
+        {% if has_skills %}
+            $('.skill-formset').formset({
+                prefix: '{{ skill_formset.prefix }}',
+                formCssClass: 'dynamic-skill-formset',
+                addText: '{% trans "add skill" %}',
+                deleteText: '{% trans "remove" %}',
+                deleteCssClass: 'delete-skill'
+            });
+        {% endif %}
 
         $('.link-formset').formset({
             prefix: '{{ link_formset.prefix }}',

@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 
 from connect.accounts import factories
 from connect.accounts import views
-from connect.accounts.models import UserLink, UserSkill
+from connect.accounts.models import UserLink, UserSkill, Skill
 from connect.config.factories import SiteConfigFactory
 from connect.tests import BoostedTestCase as TestCase
 
@@ -253,6 +253,37 @@ class ProfileSettingsTest(TestCase):
         self.assertEqual(user_link.url, 'http://mylink.com/')
         self.assertEqual(user_skill.skill, django)
         self.assertEqual(user_skill.proficiency, UserSkill.INTERMEDIATE)
+
+        # Check that we see success message
+        expected_message = 'profile has been updated.'
+        self.assertIn(expected_message, response.content.decode())
+
+
+    def test_can_update_profile_when_no_skills_exist(self):
+        self.client.login(username=self.standard_user.email, password='pass')
+
+        self.assertEqual(Skill.objects.count(), 0)
+
+        response = self.client.post(
+            reverse('accounts:profile-settings'),
+            data={
+                'full_name': 'New Full Name',
+                'bio': 'New bio',
+                'link-TOTAL_FORMS': 1,
+                'link-INITIAL_FORMS': 0,
+                'link-0-anchor': '',
+                'link-0-url': '',
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        user = User.objects.get(id=self.standard_user.id)
+        self.assertEqual(UserLink.objects.filter(user=user).count(), 0)
+        self.assertEqual(UserSkill.objects.filter(user=user).count(), 0)
+
+        self.assertEqual(user.full_name, 'New Full Name')
+        self.assertEqual(user.bio, 'New bio')
 
         # Check that we see success message
         expected_message = 'profile has been updated.'
