@@ -14,5 +14,7 @@ PyYAML==3.11 # Fixtures
 # Third Party Plugins
 django-endless-pagination==2.0
 django-gravatar2==1.1.3
-django-parsley
 
+# Use forked version of Django Parsley as master project has a JS matching error.
+# Pull request pending, see: https://github.com/agiliq/Django-parsley/pull/58
+git+git://github.com/nlhkabu/Django-parsley.git@master
