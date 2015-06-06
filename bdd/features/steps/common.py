@@ -208,7 +208,10 @@ def impl(context):
 # Form Errors and Confirmation Messages
 @then('I see "{message}"')
 def impl(context, message):
-    assert context.browser.is_text_present(message, wait_time=30)
+    if not context.browser.is_text_present(message, wait_time=3):
+        raise AssertionError('could not find {message!r} in page body:\n{body}'.format(
+            message=message, body=context.browser.find_by_tag('body').text
+        ))
 
 
 # Clicking on an link by text
