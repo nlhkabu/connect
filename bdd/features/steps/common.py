@@ -220,8 +220,8 @@ def impl(context, link_text):
 # Common Redirects
 @then('I am redirected to my dashboard')
 def impl(context):
-    assert b'Dashboard' in context.browser.title
+    assert 'Dashboard' in context.browser.title
 
 @then('I am redirected to the login page')
 def impl(context):
-    assert b'Login' in context.browser.title
+    assert 'Login' in context.browser.title

@@ -11,4 +11,4 @@ def impl(context):
 
 @then('I am redirected to a confirmation page')
 def impl(context):
-    assert b'Account Closed' in context.browser.title
+    assert 'Account Closed' in context.browser.title
