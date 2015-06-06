@@ -15,7 +15,11 @@ Please see ``TODO.rst`` for major planned features.
 Documentation
 _____________
 
-Beginner documentation is available at http://django-mentor-connect.readthedocs.org/en/latest/
+Documentation is available at http://django-mentor-connect.readthedocs.org/en/latest/
+
+.. image:: https://readthedocs.org/projects/django-mentor-connect/badge/?version=latest
+    :target: https://readthedocs.org/projects/django-mentor-connect/?badge=latest
+    :alt: Documentation Status
 
 
 Demo
