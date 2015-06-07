@@ -762,6 +762,21 @@ class ReviewAbuseTest(TestCase):
         self.assertEqual(len(context_reports), 1)
         self.assertIn(self.abuse_report, context_reports)
 
+    def test_moderator_cannot_see_abuse_reports_when_they_have_made_complaint(self):
+        moderator_abuse_report = AbuseReportFactory(
+            logged_by=self.moderator
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:review-abuse'))
+
+        # We should only see self.abuse_report - as this is the only undecided
+        # abuse report that is not made by the logged in moderator
+        context_reports = response.context['reports']
+
+        self.assertEqual(len(context_reports), 1)
+        self.assertIn(self.abuse_report, context_reports)
+
     def test_invalid_report_id_raises_404(self):
         self.client.login(username=self.moderator.email, password='pass')
         response = self.post_data(AbuseReport.BAN, 'comment',
