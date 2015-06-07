@@ -78,7 +78,6 @@ class BaseSettings(DefaultSettings):
         )
     }
 
-
     # TIME / LOCATION CONFIGURATION
     TIME_ZONE = 'Australia/Melbourne'
     LANGUAGE_CODE = 'en'
@@ -184,7 +183,6 @@ class LocalSettings(BaseSettings):
         ],
         'SHOW_TEMPLATE_CONTEXT': True,
     }
-
 
 
 class StagingSettings(BaseSettings):
