@@ -10,8 +10,8 @@ Connect
 A *moderated* social platform that helps individuals connect based on location, skills and interests.
 Connect is BSD licenced.
 
-.. image::
-    https://codeship.com/projects/86e14520-1ec8-0132-5410-3e0b0834453b/status?branch=master
+.. image:: https://travis-ci.org/nlhkabu/connect.svg?branch=master
+    :target: https://travis-ci.org/nlhkabu/connect
 
 .. note::
     Connect is in active development and not yet feature complete.

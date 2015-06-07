@@ -15,7 +15,11 @@ Please see ``TODO.rst`` for major planned features.
 Documentation
 _____________
 
-Beginner documentation is available at http://django-mentor-connect.readthedocs.org/en/latest/
+Documentation is available at http://django-mentor-connect.readthedocs.org/en/latest/
+
+.. image:: https://readthedocs.org/projects/django-mentor-connect/badge/?version=latest
+    :target: https://readthedocs.org/projects/django-mentor-connect/?badge=latest
+    :alt: Documentation Status
 
 
 Demo
@@ -33,6 +37,43 @@ Use the following authentication details to login:
 | email: moderator@test.test
 | password: demo
 |
+
+
+
+Contributing
+____________
+
+After cloning the repo, install the requirements with:
+
+    pip install -r requirements/dev.txt
+
+Create a local admin account with
+
+    python manage.py createsuperuser
+
+And then check out the site with
+
+    python manage.py runserver
+
+
+If you want to contribute changes to the code, you'll want to run the test suite.
+
+Run the unit tests with
+
+    python manage.py test
+
+And run the BDD tests with
+
+    python manage.py test bdd
+
+To run an individual BDD feature, use, eg:
+
+    python manage.py test bdd --behave_include logout
+
+
+Make sure all the BDD tests pass before submitting any PRs, and feel free to
+add yourself to AUTHORS.rst if you want the glory!
+
 
 
 Licence

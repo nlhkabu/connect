@@ -156,16 +156,21 @@ def profile_settings(request):
         skill_formset = SkillFormSet(request.POST, prefix='skill')
         link_formset = LinkFormSet(request.POST, prefix='link')
 
-        if form.is_valid() and skill_formset.is_valid() \
-           and link_formset.is_valid():
+        forms = [form, link_formset]
+
+        if has_skills:
+            forms.append(skill_formset)
+
+        if all([f.is_valid() for f in forms]):
             # Save user info
             user.full_name = form.cleaned_data['full_name']
             user.bio = form.cleaned_data['bio']
             user.roles = form.cleaned_data['roles']
-
             user.save()
 
-            save_skills(request, user, skill_formset)
+            if has_skills:
+                save_skills(request, user, skill_formset)
+
             save_links(request, user, link_formset)
 
             user_links = UserLink.objects.filter(user=user)

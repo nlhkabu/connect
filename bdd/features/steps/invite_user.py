@@ -1,4 +1,5 @@
-from behave import *
+from behave import given, then
+from common import DEFAULT_WAIT
 
 
 # Unique to Scenario: Moderator invites new user
@@ -13,9 +14,9 @@ def impl(context):
 
 @then('I see that the user has been added to my list of invitations pending activation')
 def impl(context):
-    assert context.browser.is_element_present_by_css('table.invitation-table', wait_time=5)
-    assert context.browser.is_text_present('First Last', wait_time=5)
-    assert context.browser.is_text_present('new.user@test.test', wait_time=5)
-    assert context.browser.is_text_present('Resend Invitation', wait_time=5)
-    assert context.browser.is_text_present('Revoke Invitation', wait_time=5)
+    assert context.browser.is_element_present_by_css('table.invitation-table', wait_time=DEFAULT_WAIT)
+    assert context.browser.is_text_present('First Last', wait_time=DEFAULT_WAIT)
+    assert context.browser.is_text_present('new.user@test.test', wait_time=DEFAULT_WAIT)
+    assert context.browser.is_text_present('Resend Invitation', wait_time=DEFAULT_WAIT)
+    assert context.browser.is_text_present('Revoke Invitation', wait_time=DEFAULT_WAIT)
 

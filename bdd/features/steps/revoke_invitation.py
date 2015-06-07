@@ -1,4 +1,5 @@
-from behave import *
+from behave import then, when
+from common import DEFAULT_WAIT
 
 
 # Unique to Scenario: Moderator does not confirm revocation
@@ -14,4 +15,4 @@ def impl(context):
 @then('the invited user has been removed from my pending invitations list')
 def impl(context):
     assert context.browser.is_text_not_present('invited.user@test.test',
-                                               wait_time=5)
+                                               wait_time=DEFAULT_WAIT)
