@@ -70,6 +70,11 @@ To run an individual BDD feature, use, eg:
 
     python manage.py test bdd --behave_include logout
 
+If you don't want to install and configure postgres on your laptop, you can
+override the default database using the DATABASE_URL environment variable, eg:
+
+    export DATABASE_URL=sqlite:///`pwd`/db.sqlite
+
 
 Make sure all the BDD tests pass before submitting any PRs, and feel free to
 add yourself to AUTHORS.rst if you want the glory!
