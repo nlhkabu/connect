@@ -1,7 +1,7 @@
 Installation
 ============
 
-Connect is currently tested with ``Python 3.3`` and ``Django 1.7``.
+Connect is currently tested with ``Python 3.4`` and ``Django 1.7 & 1.8``.
 
 
 Dependencies
