@@ -630,6 +630,23 @@ class ReportAbuseTest(TestCase):
         """
         self.client.login(username=self.reporting_user.email, password='pass')
         response = self.post_data(self.moderator.id, 'This moderator is nasty')
+
+        recipients = []
+
+        for email in mail.outbox:
+            recipients.append(email.to[0])
+
+        self.assertEqual(len(mail.outbox), 10) # There are 10 other moderators
+        self.assertNotIn(self.moderator.email, recipients)
+
+    def test_moderator_not_sent_email_when_they_report_abuse(self):
+        """
+        Test that a moderator does not receive an email when they made a
+        complaint regarding another user.
+        """
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.post_data(self.accused_user.id, 'This user is nasty')
+
         recipients = []
 
         for email in mail.outbox:

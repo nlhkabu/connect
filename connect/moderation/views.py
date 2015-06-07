@@ -315,9 +315,10 @@ def report_abuse(request, user_id):
 
             # Send email(s) to moderator(s) alerting them of new report.
             # Do not nofity moderators where the report is logged against them
-            moderators = (User.objects.filter(is_moderator=True,
-                                              is_active=True)
-                                      .exclude(id=logged_against.id))
+            # or when they have made the complaint
+            moderators = (User.objects.filter(is_moderator=True, is_active=True)
+                                      .exclude(id=logged_against.id)
+                                      .exclude(id=logged_by.id))
 
             site = get_current_site(request)
 
