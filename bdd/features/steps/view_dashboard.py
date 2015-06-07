@@ -1,8 +1,9 @@
 import factory
-from behave import *
-from django.conf import settings
+from behave import given, then, when
 from connect.accounts.factories import UserFactory, UserSkillFactory
 from connect.accounts.models import Role, Skill
+from common import DEFAULT_WAIT
+
 
 # Background
 @given('the following users exist')
@@ -76,11 +77,11 @@ def impl(context):
 @then('the member card expands')
 def impl(context):
     assert context.browser.is_element_present_by_css('table.skills',
-                                                     wait_time=5)
+                                                     wait_time=DEFAULT_WAIT)
 
 @then('"View Full Profile" turns into "Collapse"')
 def impl(context):
-    assert context.browser.is_text_present('Collapse', wait_time=5)
+    assert context.browser.is_text_present('Collapse', wait_time=DEFAULT_WAIT)
 
 
 # Unique to Scenario: Report Abuse
@@ -91,7 +92,7 @@ def impl(context):
 @then('I am taken to a new page to report that member')
 def impl(context):
     assert context.browser.is_text_present('Log an abuse report against',
-                                           wait_time=5)
+                                           wait_time=DEFAULT_WAIT)
 
 
 # Unique to Scenario: Many users prompt pagination

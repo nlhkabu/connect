@@ -1,5 +1,6 @@
 from connect.accounts.factories import AbuseReportFactory, AbuseWarningFactory
-from behave import *
+from behave import given, then, when
+from common import DEFAULT_WAIT
 
 
 # Background
@@ -27,7 +28,7 @@ def impl(context):
 
 @then('I see existing warnings')
 def impl(context):
-    assert context.browser.is_text_present('One prior warning', wait_time=20)
+    assert context.browser.is_text_present('One prior warning', wait_time=DEFAULT_WAIT)
 
 @then('I cannot see reports relating to myself')
 def impl(context):
@@ -42,8 +43,8 @@ def impl(context):
 @then('I see the prior warnings modal, with information inside it')
 def impl(context):
     assert context.browser.is_text_present('One prior warning for Standard User')
-    assert context.browser.is_text_present('This is a complaint', wait_time=20) # Default from our factory
-    assert context.browser.is_text_present('This is a formal warning', wait_time=20) # Default from our factory
+    assert context.browser.is_text_present('This is a complaint', wait_time=DEFAULT_WAIT) # Default from our factory
+    assert context.browser.is_text_present('This is a formal warning', wait_time=DEFAULT_WAIT) # Default from our factory
     assert context.browser.is_text_present('by Another User')
     assert context.browser.is_text_present('by Moderator User')
 
