@@ -1,9 +1,10 @@
-import factory
-from behave import *
-from splinter.exceptions import ElementDoesNotExist
+from behave import given, when, then
 from django.core import management
-from connect.accounts.factories import (InvitedPendingFactory, ModeratorFactory,
-                                RequestedPendingFactory, UserFactory)
+from connect.accounts.factories import (
+    InvitedPendingFactory, ModeratorFactory, RequestedPendingFactory, UserFactory
+)
+
+DEFAULT_WAIT = 5
 
 
 # Setting up our users
@@ -208,7 +209,7 @@ def impl(context):
 # Form Errors and Confirmation Messages
 @then('I see "{message}"')
 def impl(context, message):
-    if not context.browser.is_text_present(message, wait_time=3):
+    if not context.browser.is_text_present(message, wait_time=DEFAULT_WAIT):
         raise AssertionError('could not find {message!r} in page body:\n{body}'.format(
             message=message, body=context.browser.find_by_tag('body').text
         ))
