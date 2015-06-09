@@ -11,8 +11,8 @@ Assuming you have the following installed:
 
 * python 3
 * pip
-* PostgreSQL
 * virtualenv-wrapper
+* PostgreSQL (although sqlite can be used on dev machines)
 
 You will also need to install a YAML parser:
 
@@ -29,7 +29,7 @@ Next setup your virtualenv with:
 
 .. code-block:: bash
 
-    $ mkvirtualenv --python=/bin/python3 <appname>
+    $ mkvirtualenv --python=/usr/bin/python3 <appname>
     $ pip install -r requirements/dev.txt
 
 
@@ -50,6 +50,8 @@ Using PostgreSQL:
     $ \l # Check database access permissions
     $ \q # (or Ctrl-D) Exit from psql
 
+If you've decided to use sqlite in dev, then you don't need to run anything at
+this point.
 
 Configuring your environment
 ____________________________
@@ -58,10 +60,8 @@ In your ``postactivate`` virtualenv hook, set the following environment variable
 
 .. code-block:: bash
 
-    export SECRET_KEY="<a long random string>"
-    export DB_NAME="<appname>"
-    export DB_USER="<appname>"
-    export DB_PASSWORD="<database password>"
+    export SECRET_KEY="<a long random string>"  # optional in dev
+    export DATABASE_URL="postgres//<appname>:<password>@localhost:5432/<appname>"
     export DEFAULT_FROM_EMAIL="<email you want to send in-app emails from>"
 
 In you ``predeactivate`` virtualenv hook:
@@ -69,10 +69,16 @@ In you ``predeactivate`` virtualenv hook:
 .. code-block:: bash
 
     unset SECRET_KEY
-    unset DB_NAME
-    unset DB_USER
-    unset DB_PASSWORD
+    unset DATABASE_URL
     unset DEFAULT_FROM_EMAIL
+
+If you want to use sqlite (not recommended for staging, CI or production), then
+set DATABASE_URL to something like this:
+
+.. code-block:: bash
+
+    export DATABASE_URL="sqlite:///home/yourusername/path/to/db.sqlite"
+
 
 In ``settings.py``, you may also wish to override:
 
@@ -138,13 +144,27 @@ _____________
 
 To run Connect's `Behave`_ tests, you will need to have PhantomJS_ installed.
 
+.. code-block:: bash
+
+    $ npm install phantomjs
+    $ ./manage.py test bdd
+
+To run an individual test, use
+
+.. code-block:: bash
+
+    $ npm install phantomjs
+    $ ./manage.py test bdd --behave_include featurename
+
+
 Alternatively you can use any other `supported browser`_ (e.g. Chrome, Firefox)
 by installing it on your system and specifying it when you run your tests:
 
 .. code-block:: bash
 
-    $ ./manage.py test <appname> --behave_browser <browser>
+    $ ./manage.py test bdd --behave_browser <browser>
 
 .. _Behave: http://pythonhosted.org/behave/
 .. _PhantomJS: http://phantomjs.org/
 .. _`supported browser`: http://splinter.cobrateam.info/en/latest/index.html#drivers
+
