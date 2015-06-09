@@ -61,7 +61,7 @@ In your ``postactivate`` virtualenv hook, set the following environment variable
 .. code-block:: bash
 
     export SECRET_KEY="<a long random string>"  # optional in dev
-    export DATABASE_URL="postgres//<appname>:<password>@localhost:5432/<appname>"
+    export DATABASE_URL="postgres://<appname>:<password>@localhost:5432/<appname>"
     export DEFAULT_FROM_EMAIL="<email you want to send in-app emails from>"
 
 In you ``predeactivate`` virtualenv hook:
