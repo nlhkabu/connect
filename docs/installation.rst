@@ -1,7 +1,7 @@
 Installation
 ============
 
-Connect is currently tested with ``Python 3.3`` and ``Django 1.7``.
+Connect is currently tested with ``Python 3.4`` and ``Django 1.7 & 1.8``.
 
 
 Dependencies
@@ -139,15 +139,27 @@ And you'll be able to open up the development site in your web browser at http:/
     #. Set up some additional data in your database. (See :doc:`configuration` for more information.)
 
 
-Changing the Color
-__________________
+Edit scss files (style)
+_______________________
 
-Connect is built with Sass_.
+Connect is built with Sass_ and Compass_.
+
+If you need to install them, you will also need ``ruby`` but the installation process is beyond the scope of this project.
+
+Please refer to the Saas and Compass documentation.
+
+
+To compile locally your scss changes to the css file, use the command ``compass compile`` in the ``static/css`` folder of the app concerned by the changes.
+
+
+.. _Sass: http://sass-lang.com/
+.. _Compass: http://compass-style.org/
+
+
+.. rubric:: Example: Changing the highlighting color
 
 You can change the default pink highlight color by editing the ``$highlight``
 variable at the top of ``static/css/sass/_color.scss``
-
-.. _Sass: http://sass-lang.com/
 
 
 Running Tests

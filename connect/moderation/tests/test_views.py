@@ -93,7 +93,7 @@ class ModerationHomeTest(TestCase):
         response = self.client.get(reverse('moderation:moderators'))
         expected_html = '<legend>Invite a New Member</legend>'
 
-        self.assertInHTML(expected_html, response.content.decode())
+        self.assertInHTML(expected_html, response.content.decode("utf-8"))
 
 
 class InviteUserTest(TestCase):
@@ -129,7 +129,7 @@ class InviteUserTest(TestCase):
         )
 
         full_name_val = 'value="Hello There"'
-        self.assertIn(full_name_val, response.content.decode())
+        self.assertIn(full_name_val, response.content.decode("utf-8"))
 
     def test_can_invite_new_user(self):
         self.post_data()
@@ -223,7 +223,7 @@ class ReInviteUserTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('<legend>Invite a New Member</legend>',
-                      response.content.decode())
+                      response.content.decode("utf-8"))
 
     def test_reinvitation_reset_auth_token(self):
         response = self.post_data()
@@ -323,7 +323,7 @@ class RevokeInvitationTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('<legend>Invite a New Member</legend>',
-                      response.content.decode())
+                      response.content.decode("utf-8"))
 
     def test_invalid_user_id_raises_404(self):
         """
@@ -594,7 +594,7 @@ class ReportAbuseTest(TestCase):
                          self.accused_user.get_full_name()
                         ))
 
-        self.assertInHTML(expected_html, response.content.decode())
+        self.assertInHTML(expected_html, response.content.decode("utf-8"))
 
     def test_can_report_abuse(self):
         self.client.login(username=self.reporting_user.email, password='pass')
@@ -630,6 +630,23 @@ class ReportAbuseTest(TestCase):
         """
         self.client.login(username=self.reporting_user.email, password='pass')
         response = self.post_data(self.moderator.id, 'This moderator is nasty')
+
+        recipients = []
+
+        for email in mail.outbox:
+            recipients.append(email.to[0])
+
+        self.assertEqual(len(mail.outbox), 10) # There are 10 other moderators
+        self.assertNotIn(self.moderator.email, recipients)
+
+    def test_moderator_not_sent_email_when_they_report_abuse(self):
+        """
+        Test that a moderator does not receive an email when they made a
+        complaint regarding another user.
+        """
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.post_data(self.accused_user.id, 'This user is nasty')
+
         recipients = []
 
         for email in mail.outbox:
@@ -740,6 +757,21 @@ class ReviewAbuseTest(TestCase):
 
         # We should only see self.abuse_report - as this is the only undecided
         # abuse report that is not about the logged in moderator
+        context_reports = response.context['reports']
+
+        self.assertEqual(len(context_reports), 1)
+        self.assertIn(self.abuse_report, context_reports)
+
+    def test_moderator_cannot_see_abuse_reports_when_they_have_made_complaint(self):
+        moderator_abuse_report = AbuseReportFactory(
+            logged_by=self.moderator
+        )
+
+        self.client.login(username=self.moderator.email, password='pass')
+        response = self.client.get(reverse('moderation:review-abuse'))
+
+        # We should only see self.abuse_report - as this is the only undecided
+        # abuse report that is not made by the logged in moderator
         context_reports = response.context['reports']
 
         self.assertEqual(len(context_reports), 1)

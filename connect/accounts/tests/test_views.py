@@ -146,7 +146,7 @@ class ActivateAccountTest(TestCase):
         self.assertTemplateUsed(response, 'accounts/activate_account.html')
         # Test we see appropriate form
         expected_html = '<legend>Activate Account</legend>'
-        self.assertInHTML(expected_html, response.content.decode())
+        self.assertInHTML(expected_html, response.content.decode("utf-8"))
 
     def test_invalid_token(self):
         """
@@ -165,7 +165,7 @@ class ActivateAccountTest(TestCase):
         response = self.client.get('/accounts/activate/used')
         expected_html = '<h3 class="lined">Token is Used</h3>'
 
-        self.assertInHTML(expected_html, response.content.decode())
+        self.assertInHTML(expected_html, response.content.decode("utf-8"))
 
     def test_account_activation(self):
         """
@@ -256,7 +256,7 @@ class ProfileSettingsTest(TestCase):
 
         # Check that we see success message
         expected_message = 'profile has been updated.'
-        self.assertIn(expected_message, response.content.decode())
+        self.assertIn(expected_message, response.content.decode("utf-8"))
 
 
     def test_can_update_profile_when_no_skills_exist(self):
@@ -287,7 +287,7 @@ class ProfileSettingsTest(TestCase):
 
         # Check that we see success message
         expected_message = 'profile has been updated.'
-        self.assertIn(expected_message, response.content.decode())
+        self.assertIn(expected_message, response.content.decode("utf-8"))
 
 
 class UpdateEmailTest(TestCase):
@@ -328,7 +328,7 @@ class UpdateEmailTest(TestCase):
 
         # Check that we see success message
         expected_message = 'email has been updated.'
-        self.assertIn(expected_message, response.content.decode())
+        self.assertIn(expected_message, response.content.decode("utf-8"))
 
 
 class UpdatePasswordTest(TestCase):
@@ -370,7 +370,7 @@ class UpdatePasswordTest(TestCase):
 
         # Check that we see success message
         expected_message = 'password has been updated.'
-        self.assertIn(expected_message, response.content.decode())
+        self.assertIn(expected_message, response.content.decode("utf-8"))
 
 
 class CloseAccountTest(TestCase):
