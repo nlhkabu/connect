@@ -43,38 +43,41 @@ Use the following authentication details to login:
 Contributing
 ____________
 
-After cloning the repo, install the requirements with:
+After cloning the repo, install the requirements with::
 
     pip install -r requirements/dev.txt
 
-Create a local admin account with
+Create a local admin account with::
 
     python manage.py createsuperuser
 
-And then check out the site with
+And then check out the site with::
 
     python manage.py runserver
 
 
 If you want to contribute changes to the code, you'll want to run the test suite.
 
-Run the unit tests with
+Run the unit tests with::
 
     python manage.py test
 
-And run the BDD tests with
+And run the BDD tests with::
 
     python manage.py test bdd
 
-To run an individual BDD feature, use, eg:
+To run an individual BDD feature, use, eg::
 
     python manage.py test bdd --behave_include logout
 
-If you don't want to install and configure postgres on your laptop, you can
-override the default database using the DATABASE_URL environment variable, eg:
+If you want to use postgres locally instead of sqlite (we recommend you use
+posgtres in CI, staging and production, so running it locally can help you
+catch database edge case bugs early), you can override the default database
+using the `DATABASE_URL` environment variable, eg:
 
-    export DATABASE_URL=sqlite:///`pwd`/db.sqlite
+    export DATABASE_URL=posgtres://USER:PASSWORD@HOST:PORT/DB-NAME
 
+For more info, check out `docs/installation.rst` and `docs/configuration.rst`.
 
 Make sure all the BDD tests pass before submitting any PRs, and feel free to
 add yourself to AUTHORS.rst if you want the glory!

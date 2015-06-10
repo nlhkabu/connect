@@ -74,7 +74,7 @@ class BaseSettings(DefaultSettings):
     # or: sqlite:///path/to/my-database.sqlite3
     DATABASES = {
         'default': dj_database_url.config(
-            default='postgres://postgres@localhost:5432/testdb'
+            default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite')
         )
     }
 
@@ -199,6 +199,15 @@ class StagingSettings(BaseSettings):
 
     # STATIC
     STATIC_ROOT = os.path.join(BASE_DIR, 'connect/static/')
+
+    # DATABASE
+    # set this config by setting an environment called DATABASE_URL,
+    # eg: postgres://username:password@ip-addres:port/database-name
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='postgres://connectuser:password@localhost:5432/connectdb'
+        )
+    }
 
 
 class ProductionSettings(StagingSettings):

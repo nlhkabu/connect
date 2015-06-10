@@ -1,6 +1,6 @@
-======================
-Database Configuration
-======================
+==================
+Site Configuration
+==================
 
 After you have installed Connect, but before you start inviting new users, you will need to configure a few things in the database.
 
