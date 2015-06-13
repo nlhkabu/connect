@@ -52,9 +52,3 @@ Feature: View Dashboard
         When I visit the "dashboard" page
         And I click on "Report Abuse" on another member's card
         Then I am taken to a new page to report that member
-
-    Scenario: Many users prompt pagination
-        Given I am "a logged in user"
-        And there are more than ten users
-        When I visit the "dashboard" page
-        Then I see that the list of members is paginated

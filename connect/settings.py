@@ -35,7 +35,6 @@ class BaseSettings(DefaultSettings):
             'django.contrib.humanize',
             'django_behave',
             'django_gravatar',
-            'endless_pagination',
             'parsley',
             'connect',
             'connect.config',
@@ -142,16 +141,6 @@ class BaseSettings(DefaultSettings):
     }
 
     # --- BEGIN CONFIGURATIONS FOR THIRD-PARTY APPS --- #
-
-    # ENDLESS PAGINATION
-    from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-
-    TEMPLATE_CONTEXT_PROCESSORS += (
-        'django.core.context_processors.request',
-    )
-
-    ENDLESS_PAGINATION_PREVIOUS_LABEL = '<i class="fa fa-chevron-left"></i>'
-    ENDLESS_PAGINATION_NEXT_LABEL = '<i class="fa fa-chevron-right"></i>'
 
     # GRAVATAR
     # See: https://github.com/twaddington/django-gravatar/#configuring

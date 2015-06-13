@@ -1,5 +1,5 @@
 {% extends "discover/dashboard.html" %}
-{% load endless gravatar i18n staticfiles %}
+{% load gravatar i18n staticfiles %}
 
 {% block page_title %}{% trans "Dashboard" %}{% endblock %}
 
@@ -70,7 +70,6 @@
         </div>
         <div class="twelve columns omega">
             {% if listed_users %}
-                {% paginate listed_users %}
                 {% for user in listed_users %}
                     <!-- start card -->
                     <div class="user-card {% if user != logged_in_user %} not-me{% endif %}">
@@ -159,11 +158,6 @@
                     </div>
                     <!-- end card-->
                 {% endfor %}
-
-                <div class="pagination">
-                    {% show_pages %}
-                </div>
-
             {% else %}
                 <div class="no-results">
                     <h4>{% trans "Sorry!" %}</h4>

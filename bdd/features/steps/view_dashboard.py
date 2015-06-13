@@ -93,16 +93,3 @@ def impl(context):
 def impl(context):
     assert context.browser.is_text_present('Log an abuse report against',
                                            wait_time=DEFAULT_WAIT)
-
-
-# Unique to Scenario: Many users prompt pagination
-@given('there are more than ten users')
-def impl(context):
-    factory.create_batch(UserFactory, 5)
-
-@then('I see that the list of members is paginated')
-def impl(context):
-    assert context.browser.is_element_present_by_css('.pagination')
-
-
-
