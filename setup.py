@@ -23,7 +23,6 @@ REQUIREMENTS = [
     'pytz',
     'dj-database-url',
     'PyYAML',
-    'django-endless-pagination',
     'django-gravatar2',
     'django-parsley',
     'psycopg2>2.5',
