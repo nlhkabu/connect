@@ -23,6 +23,10 @@ Contributors
 * Nicole Harris <n.harris@kabucreative.com.au>
 * Olivier Harris <o.harris@kabucreative.com.au>
 * Rémy Hubscher <rhubscher@mozilla.com>
+* Harry Percival <https://github.com/hjwp>
+* Hamish Downer <https://github.com/foobacca>
+* Joachim Jablon <https://github.com/ewjoachim>
+* Adrien Brunet <https://github.com/adrienbrunet>
 
 
 Special thanks
@@ -30,4 +34,3 @@ Special thanks
 
 * Folks on #django IRC for feedback and bug smashing
 * Idan Gazit for additional mentoring
-* People adding issues and bugs when using the software
