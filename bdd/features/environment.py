@@ -27,9 +27,6 @@ def before_all(context):
     if context.browser.driver_name == 'PhantomJS':
         context.browser.driver.set_window_size(1280, 1024)
 
-    # Django's default LiveServerTestCase port
-    context.server_url = 'http://localhost:8081/'
-
 
 def before_scenario(context, scenario):
 

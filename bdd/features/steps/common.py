@@ -93,22 +93,21 @@ def impl(context, user_type):
 def impl(context, page_name):
 
     PAGE_URLS = {
-        'close account': 'accounts/close/',
-        'login': 'accounts/login/',
-        'request account': 'accounts/request-invitation/',
-        'reset password': 'accounts/password/reset/',
-        'update email': 'accounts/update/email/',
-        'update password': 'accounts/update/password/',
-        'profile': 'accounts/profile/',
-        'dashboard': '', # root url
-        'invite user': 'moderation/',
-        'review applications': 'moderation/review-applications/',
-        'abuse reports': 'moderation/review-abuse-reports/',
-        'logs': 'moderation/logs/'
+        'close account': '/accounts/close/',
+        'login': '/accounts/login/',
+        'request account': '/accounts/request-invitation/',
+        'reset password': '/accounts/password/reset/',
+        'update email': '/accounts/update/email/',
+        'update password': '/accounts/update/password/',
+        'profile': '/accounts/profile/',
+        'dashboard': '/', # root url
+        'invite user': '/moderation/',
+        'review applications': '/moderation/review-applications/',
+        'abuse reports': '/moderation/review-abuse-reports/',
+        'logs': '/moderation/logs/'
     }
 
-    context.browser.visit(context.server_url + PAGE_URLS[page_name])
-
+    context.browser.visit(context.config.server_url + PAGE_URLS[page_name])
 
 # Common Form Inputs
 @when('I enter "{user_input}" into the "{field_name}" field')
@@ -185,16 +184,16 @@ def impl(context, modal_name):
     modal_name = modal_name.title()
 
     MODAL_PAGE_URLS = {
-        'Approve Application': 'moderation/review-applications/',
-        'Reject Application': 'moderation/review-applications/',
-        'Resend Invitation': 'moderation/',
-        'Revoke Invitation': 'moderation/',
-        'Dismiss Report': 'moderation/review-abuse-reports/',
-        'Warn User': 'moderation/review-abuse-reports/',
-        'Ban User': 'moderation/review-abuse-reports/',
+        'Approve Application': '/moderation/review-applications/',
+        'Reject Application': '/moderation/review-applications/',
+        'Resend Invitation': '/moderation/',
+        'Revoke Invitation': '/moderation/',
+        'Dismiss Report': '/moderation/review-abuse-reports/',
+        'Warn User': '/moderation/review-abuse-reports/',
+        'Ban User': '/moderation/review-abuse-reports/',
     }
 
-    context.browser.visit(context.server_url + MODAL_PAGE_URLS[modal_name])
+    context.browser.visit(context.config.server_url + MODAL_PAGE_URLS[modal_name])
     context.browser.click_link_by_text(modal_name)
 
 @when('I click on the close button')

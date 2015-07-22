@@ -4,7 +4,7 @@ from behave import *
 # Common to this feature
 @when('I visit my activation page "{url}"')
 def impl(context, url):
-    context.browser.visit(context.server_url + 'accounts/activate/' + url )
+    context.browser.visit(context.config.server_url + '/accounts/activate/' + url )
 
 
 # Unique to Scenario: Invited user visits page to activate account
