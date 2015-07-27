@@ -1,0 +1,8 @@
+# Testing
+factory-boy
+selenium
+behave
+django-behave
+splinter
+coverage
+tox

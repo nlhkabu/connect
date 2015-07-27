@@ -1,15 +1,7 @@
 # Local requirements
 
 -r base.txt
-
-# Testing
-factory-boy
-selenium
-behave
-django-behave
-splinter
-coverage
-tox
+-r testing.txt
 
 # Documentation
 Sphinx
