@@ -8,7 +8,6 @@ env:
     - TOX_ENV=flake8
 before_script:
     - psql -c 'create database connectdb;' -U postgres
-    - python manage.py migrate --noinput
 script:
     - tox -e $TOX_ENV
 install:
