@@ -10,7 +10,9 @@ Please see ``TODO.rst`` for major planned features.
 
 .. image:: https://travis-ci.org/nlhkabu/connect.svg?branch=master
     :target: https://travis-ci.org/nlhkabu/connect
-
+    
+.. image:: https://coveralls.io/repos/nlhkabu/connect/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/nlhkabu/connect?branch=master
 
 Documentation
 _____________
