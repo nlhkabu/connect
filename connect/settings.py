@@ -222,5 +222,6 @@ class ProductionSettings(BaseSettings):
 
 
 # Now, let's activate our settings
+print("DJANGO MODE IS SET TO: '{}'".format(os.getenv('DJANGO_MODE')))
 MODE = os.getenv('DJANGO_MODE', 'Local')
 cbs.apply('{}Settings'.format(MODE.title()), globals())
