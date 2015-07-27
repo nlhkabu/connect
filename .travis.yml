@@ -6,6 +6,9 @@ env:
     - TOX_ENV=py34-1.7
     - TOX_ENV=py34-1.8
     - TOX_ENV=flake8
+before_script:
+    - psql -c 'create database connectdb;' -U connectuser
+    - python manage.py migrate --noinput
 script:
     - tox -e $TOX_ENV
 install:
