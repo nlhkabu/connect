@@ -33,7 +33,6 @@ class BaseSettings(DefaultSettings):
             'django.contrib.sites',
             'django.contrib.flatpages',
             'django.contrib.humanize',
-            'django_behave',
             'django_gravatar',
             'parsley',
             'connect',
@@ -41,7 +40,6 @@ class BaseSettings(DefaultSettings):
             'connect.accounts',
             'connect.moderation',
             'connect.discover',
-            'bdd',
         )
 
     # MIDDLEWARE
@@ -63,9 +61,6 @@ class BaseSettings(DefaultSettings):
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-    # TESTING
-    TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
     # DATABASE
     # override this config by setting an environment called DATABASE_URL,
@@ -90,6 +85,9 @@ class BaseSettings(DefaultSettings):
     # MEDIA
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
+
+    # STATIC
+    STATIC_ROOT = os.path.join(BASE_DIR, 'connect/static/')
 
     # AUTH
     AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -158,6 +156,8 @@ class LocalSettings(BaseSettings):
         return super().INSTALLED_APPS + (
             'debug_toolbar',
             'django_extensions',
+            'django_behave',
+            'bdd',
         )
 
     @property
@@ -173,21 +173,22 @@ class LocalSettings(BaseSettings):
         'SHOW_TEMPLATE_CONTEXT': True,
     }
 
+    # TESTING
+    TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
+
 
 class StagingSettings(BaseSettings):
-    # EMAIL
     @property
     def INSTALLED_APPS(self):
-        return super().INSTALLED_APPS + ('djrill',)
+        return super().INSTALLED_APPS + (
+            'djrill',
+            'django_behave',
+            'bdd',
+        )
 
+    # EMAIL
     EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
     MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY')
-
-    # WSGI
-    WSGI_APPLICATION = 'connect.wsgi.application'
-
-    # STATIC
-    STATIC_ROOT = os.path.join(BASE_DIR, 'connect/static/')
 
     # DATABASE
     # set this config by setting an environment called DATABASE_URL,
@@ -198,9 +199,26 @@ class StagingSettings(BaseSettings):
         )
     }
 
+    # TESTING
+    TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
-class ProductionSettings(StagingSettings):
-    pass
+
+class ProductionSettings(BaseSettings):
+    @property
+    def INSTALLED_APPS(self):
+        return super().INSTALLED_APPS + ('djrill')
+
+    EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
+    MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY')
+
+    # DATABASE
+    # set this config by setting an environment called DATABASE_URL,
+    # eg: postgres://username:password@ip-addres:port/database-name
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='postgres://connectuser:password@localhost:5432/connectdb'
+        )
+    }
 
 
 # Now, let's activate our settings
