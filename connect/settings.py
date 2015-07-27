@@ -206,7 +206,7 @@ class StagingSettings(BaseSettings):
 class ProductionSettings(BaseSettings):
     @property
     def INSTALLED_APPS(self):
-        return super().INSTALLED_APPS + ('djrill')
+        return super().INSTALLED_APPS + ('djrill',)
 
     EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
     MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY')
