@@ -1,6 +1,0 @@
-exclude *.pyc
-exclude */__pycache__
-include *.rst
-include LICENSE
-recursive-include connect/ *.html *.scss *.css *.png *.js *.ico
-recursive-include connect/static/

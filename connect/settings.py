@@ -83,7 +83,7 @@ class BaseSettings(DefaultSettings):
     )
 
     # MEDIA
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'connect/media/')
     MEDIA_URL = '/media/'
 
     # STATIC
@@ -95,7 +95,7 @@ class BaseSettings(DefaultSettings):
 
     # EMAIL
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'dev@test.test')
 
     # CACHING
     # Do this here because thanks to django-pylibmc-sasl and pylibmc
