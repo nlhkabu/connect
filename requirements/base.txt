@@ -4,6 +4,8 @@ django<1.9
 psycopg2>2.5
 dj-static==0.0.6 # Serve Static files from WSGI server
 django-classy-settings==1.1.0
+pytz==2016.3
+
 
 # Image Support
 Pillow==2.5.3

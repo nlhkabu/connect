@@ -120,3 +120,11 @@ docs/_build/
 ##############################
 /static/
 /media/
+/connect/media
+
+# PyCharm #
+.idea/
+
+# NPM #
+node_modules/
+
