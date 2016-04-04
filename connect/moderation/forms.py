@@ -74,8 +74,7 @@ class ReInviteMemberForm(forms.Form):
 
         user = get_object_or_404(User, id=user_id)
 
-        if (user.moderator != self.logged_in_moderator
-                or not user.is_invited_pending_activation()):
+        if (user.moderator != self.logged_in_moderator or not user.is_invited_pending_activation()):
             raise Http404
 
         # If this email is not already registered to this user

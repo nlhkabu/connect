@@ -148,7 +148,7 @@
                             <nav class="pull-right">
                                 <a href="#" class="pull-right toggle-user-expand full-profile">{% trans "View Full Profile" %}</a>
                                 {% if user != logged_in_user %}
-                                    <a href="#" class="pull-right">
+                                    <a href="{% url 'connections:connect-with-user' user.id %}" class="pull-right connect-btn">
                                         {% trans "Connect" %}
                                     </a>
                                 {% endif %}

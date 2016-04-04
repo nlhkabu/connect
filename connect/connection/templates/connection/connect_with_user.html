@@ -1,0 +1,7 @@
+{% extends "logged_in.html" %}
+{% load gravatar i18n %}
+
+{% block page_title %}{% trans "Contact Another User" %}{% endblock %}
+{% block page_content %}
+  Connect user {{ other_user }}
+{% endblock %}

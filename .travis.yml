@@ -3,11 +3,11 @@ python: 2.7
 addons:
     postgresql: "9.4"
 env:
-    - TOX_ENV=py34-1.7
+    - TOX_ENV=py34-1.9
     - TOX_ENV=py34-1.8
     - TOX_ENV=flake8
 before_script:
-    - psql -c 'create database connectdb;' -U connectuser
+    - psql -c 'create database connectdb;' -U postgres
 script:
     - tox -e $TOX_ENV
 install:
